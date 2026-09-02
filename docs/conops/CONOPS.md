@@ -812,9 +812,9 @@ stateDiagram-v2
 
 ## 10. Maintenance & Ground Support Equipment (GSE) Concepts
 
-In accordance with ISO/IEC/IEEE 29148:2018 §5.2.4, NATO STANAG 4586 Edition 4, and MIL-HDBK-470A (Designing and Developing Maintainable Systems), the Tactical UAS lifecycle support architecture is structured around rapid field turnarounds, tool-less modular Line Replaceable Unit (LRU) swaps, and deterministic preventative maintenance intervals.
+In accordance with ISO/IEC/IEEE 29148:2018 §5.2.4, NATO STANAG 4586 Edition 4, MIL-HDBK-470A (Designing and Developing Maintainable Systems), EASA Part-ML (Annex Vb to Regulation (EU) No 1321/2014), and EASA Part-66 aircraft maintenance licensing regulations, the Tactical UAS lifecycle support architecture is structured around rapid field turnarounds, tool-less modular Line Replaceable Unit (LRU) swaps, standardized Ground Support Equipment (GSE), and deterministic preventative maintenance intervals.
 
-System availability and operational turnaround times are governed by the Mean Time To Restore System ($MTTRS$) dynamic formulation:
+System operational availability and field turnaround times are governed by the Mean Time To Restore System ($MTTRS$) and Operational Availability ($A_o$) dynamic formulations:
 
 $$
 \begin{aligned}
@@ -823,36 +823,41 @@ A_o &= \frac{MTBF}{MTBF + MTTRS + MTBM}
 \end{aligned}
 $$
 
-Where and Operational Parameters:
-- $MTTRS$: Mean Time To Restore System to fully mission-capable status following component fault or scheduled swap.
-- $\bar{t}_{\mathrm{diag}}$: Mean diagnostic isolation time via automated Built-In-Test (BITE) diagnostics.
-- $P_k$: Conditional replacement probability for Line Replaceable Unit (LRU) $k$.
-- $t_{\mathrm{swap},k}$: Tool-less physical replacement duration for LRU $k$.
-- $\bar{t}_{\mathrm{BITE}}$: Automated post-installation verification and sensor handshake duration.
-- $A_o$: Operational availability metric target ($A_o \ge 0.985$).
-- $MTBF$: Mean Time Between Failures ($MTBF \ge 500.0\text{ flight hours}$).
-- $MTBM$: Mean Time Between Maintenance intervals.
+| Parameter | Symbol | Nominal Value | Units | Description & Constraint |
+| :--- | :--- | :--- | :--- | :--- |
+| Mean Time To Restore System | MTTRS | 14.5 | min | Expected time to restore system to mission-ready status |
+| Mean Diagnostic Isolation Time | t_diag_bar | 1.5 | min | Diagnostic fault localization duration via BITE telemetry |
+| Conditional Swap Probability | P_k | Variable | - | Probability of replacing LRU k during maintenance action |
+| LRU Swap Duration | t_swap_k | 2.0 to 10.0 | min | Physical replacement duration for specific LRU k |
+| Post-Installation BITE Verification | t_BITE_bar | 0.5 | min | Automated post-installation handshake and functional check |
+| Operational Availability Target | A_o | 0.988 | - | Operational availability metric target (A_o >= 0.985) |
+| Mean Time Between Failures | MTBF | 500.0 | hr | Mean operating flight hours between unscheduled failures |
+| Mean Time Between Maintenance | MTBM | 50.0 | hr | Scheduled preventative maintenance interval |
+| LRU Count | N_LRU | 4 | - | Total number of tool-less field-replaceable LRUs |
 
 ---
 
 ### 10.1 Three-Tier Maintenance Model (O-Level, I-Level, D-Level)
 The maintenance and sustainment concept is organized into three discrete, formalized tiers adhering to military and civil aerospace maintenance doctrines:
 
-| Maintenance Tier | Operational Location & Facility | Target Turnaround Time | Primary Maintenance Activities & Scope | Authorized Personnel |
+| Maintenance Tier | Operational Location & Facility | Target Turnaround Time | Primary Maintenance Activities & Scope | Authorized Personnel & Certification Level |
 | :--- | :--- | :--- | :--- | :--- |
-| **O-Level (Organizational)** | Forward Operating Base (FOB) / Field Staging Point | <= 15.0 min | Pre/post-flight inspections; smart battery module hot-swaps (<= 2 min); tool-less LRU replacements; automated PBIT diagnostics; propeller blade checks | Certified Maintenance Technician (MT) / Remote Pilot in Command |
-| **I-Level (Intermediate)** | Regional Mobile Maintenance Shelter / Field Workshop | <= 4.0 hr | Multi-axis optical gimbal collimation; actuator servo rigging and dynamic load testing; sensor calibration; RF transceiver module repairs; firmware cryptographic rollovers | Lead Avionics / Propulsion Maintenance Specialist |
-| **D-Level (Depot / Factory)** | Centralized Factory Overhaul Facility | <= 14.0 days | Phased-array ultrasonic composite structural NDI; propulsion motor stator rewinding and rotor dynamic balancing; PCB X-ray inspection; environmental stress screening (ESS) | Certified Aerospace Depot Engineers & Quality Assurance Inspectors |
+| **O-Level (Organizational)** | Forward Operating Base (FOB) / Field Staging Point | <= 15.0 min | Pre/post-flight inspections; smart battery module hot-swaps (<= 2 min); tool-less LRU replacements; automated PBIT diagnostics; propeller blade checks; CG balance and gross weight verification | EASA Part-ML / Part-66 Category L or Certified UAS Remote Pilot / O-Level Technician |
+| **I-Level (Intermediate)** | Regional Mobile Maintenance Shelter / Field Workshop | <= 4.0 hr | Multi-axis optical gimbal collimation; actuator servo dynamic load testing; differential pitot-static pressure calibration; RF field strength and spectrum sniffing; CAN FD/SPI/Ethernet bus protocol analysis; parachute squib resistance checks | EASA Part-66 Category B1.3 / B2 Lead UAS Maintenance Specialist |
+| **D-Level (Depot / Factory)** | Centralized Factory Overhaul Facility | <= 14.0 days | Phased-array ultrasonic composite structural NDI; propulsion motor stator rewinding and rotor dynamic balancing; PCB X-ray inspection; environmental stress screening (ESS); DO-178C / DO-254 software/firmware recertification | EASA Part-66 Category C / Part-145 Depot Aerospace Systems Engineer & QA Inspector |
 
-#### 10.1.1 Standard Maintenance Task Cards (MTC-01 through MTC-04)
-To ensure repeatable maintenance quality and airworthiness compliance, maintenance actions are executed using standardized maintenance task cards specifying exact inspection limits, tool callouts, and passing criteria.
+---
 
-| Task Card ID | Task Card Nomenclature | Applicable Maintenance Tier & Frequency | Scope of Inspection & Required Operations | Exact Tool Callouts & Equipment | Inspection Limits & Passing Criteria | Sign-off Authority Role |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **MTC-01** | Pre-Flight & Daily Airworthiness Inspection Card | O-Level / Prior to every flight sortie (or daily) | Visual airframe structural check; propeller leading edge inspection; pitot probe port clearing; battery terminal inspection; automated PBIT diagnostic execution | Calibrated Digital Torque Driver (0.5–2.5 N·m); Optical Magnifier (10x); Multimeter (Fluke 87V); ESD Grounding Strap (1 MΩ) | Zero composite skin cracks; Propeller nick depth < 0.2 mm; Fastener torque 1.2 N·m +/- 0.1 N·m; Battery delta V <= 10 mV; PBIT 100% PASS | Certified O-Level Maintenance Technician |
-| **MTC-02** | 50-Flight-Hour Periodic Service Task Card | I-Level / Every 50 flight hours or 100 landings | Propulsion motor bearing axial/radial play check; ESC phase resistance check; servo linkage backlash and rigging; barometric altimeter pressure zeroing against GSE-04; parachute squib continuity check | Dial Test Indicator & Magnetic Base (0.01 mm); Digital Milliohm Meter; GSE-04 Air Data Pressure Test Box; Low-Current Squib Tester (< 5 mA) | Motor axial runout <= 0.05 mm, radial play <= 0.03 mm; ESC phase balance <= 2%; Servo backlash <= 0.2 deg; Altimeter error <= 0.1 hPa; Squib R = 2.0 Ω +/- 0.2 Ω | Certified I-Level Lead Technician |
-| **MTC-03** | 100-Flight-Hour Avionics & Sensor Recalibration Card | I-Level / Every 100 flight hours or 250 landings | Full CAN FD bus health and termination check; optical gimbal multi-axis boresight alignment using GSE-05; smart battery 1C dynamic capacity discharge test; composite spar ultrasonic spot scan; pyrotechnic squib calendar life verification | CAN Bus Protocol Analyzer; GSE-05 Optical Boresight Collimator; GSE-01 Intelligent Energy Hub; Portable Ultrasonic Flaw Detector (Olympus Epoch 650) | Optical alignment error <= 0.05 deg; Bus termination 60 Ω +/- 2 Ω; Zero bus error frames; Battery capacity >= 90% nominal; Zero internal composite delamination | Lead Avionics & Sensor Inspector |
-| **MTC-04** | Annual Depot Overhaul & Recertification Card | D-Level / Every 300 flight hours or 12 calendar months | Complete airframe teardown; phased-array ultrasonic structural scan; motor stator rewinding and rotor dynamic balancing; PCB solder joint X-ray inspection; thermal cycling (-40 °C to +55 °C); vibration screening (MIL-STD-810H Method 514.8) | Phased-Array Ultrasonic Testing (PAUT) Rig; Micro Dynamic Balancing Machine; Thermal-Vibration Environmental Chamber; X-Ray PCB Inspection Station; HIL Master Test Bench | 100% compliance with factory acceptance parameters; Rotor residual unbalance <= 0.5 mg·mm; Clock drift <= 1.0 ppm; Zero solder micro-cracks; Full DO-178C DAL-A re-verification | Depot Chief Engineer & QA Manager |
+#### 10.1.1 Standard Maintenance Task Cards (MTC-01 through MTC-05)
+To ensure repeatable maintenance quality, airworthiness compliance, and metrological traceability, maintenance actions are executed using standardized maintenance task cards specifying exact inspection limits, Ground Support Equipment (GSE) callouts, technician certification levels, task durations, and digital signature sign-off requirements.
+
+| Task Card ID | Task Card Nomenclature | Applicable Tier & Frequency | Task Duration | Ground Support Equipment (GSE) Mapping | Scope of Inspection & Maintenance Procedures | Inspection Limits & Passing Criteria | Technician Certification Level | Digital Signature & Sign-Off Requirement |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **MTC-01** | Pre-Flight & Turnaround Airworthiness Inspection Card | O-Level / Prior to every flight sortie and post-flight turnaround | <= 12.0 min | **GSE-02** (CG Balance & Scale), **GSE-03** (Torque Driver), **GSE-06** (RF Field Sniffer) | Visual airframe structural check; propeller leading edge and root inspection; pitot probe clearance; battery terminal impedance check; fastener torque verification; 3-point CG and takeoff mass measurement; RF C2 telemetry field strength check; automated PBIT diagnostic execution | Zero composite cracks; Prop nick depth < 0.20 mm; Fastener torque 1.20 N*m +/- 0.05 N*m (GSE-03); AUW mass <= 25.0 kg and CG within +/- 3.0 mm of datum (GSE-02); RF signal RSSI >= -65 dBm at 10 m (GSE-06); Battery delta V <= 10 mV; PBIT 100% PASS | EASA Part-ML / Part-66 Category L or Certified Remote Pilot / O-Level Technician | Single cryptographic Ed25519 digital signature in Electronic Flight Bag (EFB) Maintenance Logbook |
+| **MTC-02** | 50-Flight-Hour Scheduled Periodic Air Data & Mechanical Service Card | O/I-Level / Every 50 flight hours or 120 sorties | <= 45.0 min | **GSE-04** (Differential Pitot-Static Test Set), **GSE-03** (Torque Driver), **GSE-01** (Avionics Breakout Box) | Pitot-static pneumatic line leak decay test; dynamic pressure sensor calibration across 0 to 200 hPa; static barometric pressure zero check; motor mount fastener torque verification; CAN FD bus error frame audit; control surface pushrod and horn backlash check | Pneumatic leak rate <= 0.010 hPa/min at 150 hPa (GSE-04); Airspeed calibration error <= 0.20 m/s; Fastener torques 4.50 N*m +/- 0.10 N*m (GSE-03); CAN bus error frame count = 0 over 60 s, bus termination 60.0 Ω +/- 1.0 Ω (GSE-01); Control surface backlash <= 0.15 deg | EASA Part-66 Category B1.3 / B2 or Certified I-Level UAS Maintenance Technician | Dual digital signature (Technician + Quality Airworthiness Inspector) via PKI-authenticated digital maintenance logbook |
+| **MTC-03** | 100-Flight-Hour Avionics, RF Datalink & Optical Gimbal Recalibration Card | I-Level / Every 100 flight hours or 250 landings | <= 2.5 hr | **GSE-01** (Avionics Breakout Box), **GSE-05** (Optical Boresight Collimator), **GSE-06** (RF Field Sniffer), **GSE-02** (CG Balance Jig) | Multi-bus avionics signal integrity, timing jitter, and bus load audit (CAN FD, SPI, 100BASE-T1); multi-spectral EO/IR optical gimbal boresight collimation and angular offset correction; RF datalink transmitter power, harmonic suppression, and antenna VSWR check; payload reconfiguration and precise 3-axis CG re-balancing; smart battery 1C capacity discharge and cell impedance cycle test | Optical boresight alignment error <= 0.02 deg (GSE-05); RF transmitter EIRP 30.0 dBm +/- 0.5 dBm, ACLR >= 35 dBc, VSWR <= 1.35:1 (GSE-06); Bus timing jitter <= 15 ns, bit error rate < 10^-9 (GSE-01); CG offset shift <= 1.0 mm from nominal (GSE-02); Battery usable capacity >= 92.0% nominal | EASA Part-66 Category B2 (Avionics) or I-Level Master Avionics Technician | Digital cryptographic certificate sign-off (X.509 token) logged to Centralized Maintenance Management System (CMMS) |
+| **MTC-04** | 150-Flight-Hour Actuator, Propulsion & Parachute Pyrotechnic Recertification Card | I-Level / Every 150 flight hours or 12 calendar months | <= 4.0 hr | **GSE-01** (Avionics Breakout Box / Actuator Exerciser), **GSE-03** (Torque Driver), **GSE-02** (Electronic Scale), Low-Current Squib Tester (< 5 mA) | Flight control actuator dynamic load response, full-stroke slew rate, torque saturation, and stall current testing; brushless motor bearing axial/radial runout, stator winding resistance balance, and dynamic vibration analysis; ballistic parachute canopy inspection, deployment line integrity, and pyrotechnic squib bridge resistance verification; complete airframe structural fastener replacement and re-torque | Actuator full-travel slew time <= 45 ms, stall torque >= 2.5 N*m, backlash <= 0.10 deg (GSE-01); Motor axial runout <= 0.03 mm, radial play <= 0.02 mm, ESC phase resistance balance <= 1.5%; Squib circuit bridge resistance 2.00 Ω +/- 0.15 Ω with test current < 2.0 mA; Structural fastener torques within +/- 2.0% of nominal rating (GSE-03) | EASA Part-66 Category B1.3 / B2 Lead UAS Technician & Certified Ordnance Specialist | Tripartite digital sign-off (Technician, Pyrotechnic Inspector, Lead Quality Engineer) with CMMS timestamp |
+| **MTC-05** | Annual Depot Overhaul, Structural NDI & Factory Recertification Card | D-Level / Every 300 flight hours or 24 calendar months | <= 24.0 hr (<= 14 days) | **GSE-01** through **GSE-06**, PAUT Ultrasonic Rig, ESS Environmental Chamber, Rotor Balancing Rig, X-Ray PCB Station, HIL Master Test Bench | Complete vehicle teardown to bare carbon monocoque fuselage; phased-array ultrasonic structural non-destructive inspection (NDI) for internal composite delamination or resin micro-cracking; motor rotor dynamic balancing; PCB solder joint X-ray inspection; environmental stress screening (thermal cycling -40 °C to +55 °C and random vibration per MIL-STD-810H Method 514.8); complete pitot-static and air data computer recalibration (GSE-04); full multi-bus communication recertification (GSE-01); precision optical bench re-alignment (GSE-05); complete RF spectrum characterization (GSE-06); full mass properties and 3D moment of inertia determination (GSE-02); RTCA DO-178C DAL-A flight software hash verification and DO-254 firmware reload | Zero composite delamination (PAUT acoustic attenuation < 2.0 dB); Rotor residual unbalance <= 0.20 mg*mm; Zero solder micro-cracks / voiding; Master oscillator clock drift <= 0.5 ppm; 100% compliance with factory new-build acceptance specifications; HIL closed-loop regression test 100% PASS (zero anomalies over 10-hour automated test matrix) | EASA Part-66 Category C / Part-145 Depot Aerospace Systems Engineer & QA Inspector | Factory Certificate of Airworthiness (EASA Form 1 / FAA Form 8130-3 equivalent) digitally signed with HSM-backed corporate private key |
 
 ---
 
@@ -926,49 +931,59 @@ flowchart TD
 ---
 
 ### 10.2 Ground Support Equipment (GSE) Taxonomy
-The Ground Support Equipment (GSE) suite provides all electrical, mechanical, and calibration interfaces required for rapid field deployment:
+The standardized Ground Support Equipment (GSE) suite provides all electrical, mechanical, pneumatic, optical, RF, and calibration interfaces required for rapid field deployment and depot maintenance:
 
-| GSE Identifier | GSE Nomenclature | Functional Purpose & Capabilities | Operating Constraints & Ratings |
+| GSE Identifier | GSE Nomenclature | Functional Purpose & Metrological Capabilities | Operating Constraints & Environmental Ratings |
 | :--- | :--- | :--- | :--- |
-| **GSE-01** | Multi-Bay Intelligent Energy Management & Charging Hub | Simultaneously balances and charges up to 6 smart energy modules at 2C charge rate; incorporates fire-suppressed containment chamber. | Input: 100-240V AC / 12-28V DC; Charge Time: <= 35 min; Rating: IP54 |
-| **GSE-02** | Ruggedized Field Control Terminal | Dual-screen daylight-readable (1500 nits) terminal executing STANAG 4586 C2 and video display software. | Operating Temp: -40 °C to +55 °C; Battery Life: >= 6.0 hr; Rating: IP67 |
-| **GSE-03** | Telescoping Antenna Mast & Tracker | 6.0 m pneumatic deployable mast with 2-axis motorized antenna tracking positioner for 5.8 GHz directional datalinks. | Height: 6.0 m; Deployment Time: <= 3.0 min; Wind Limit: 20.0 m/s; 360 deg Azimuth |
-| **GSE-04** | Air Data Calibration & Pressure Test Box | Precision pneumatic pressure generator used to verify airspeed sensor calibration, static ports, and leak integrity. | Accuracy: +/- 0.1 hPa; Pressure Range: 300 to 1100 hPa; Portable rugged case |
-| **GSE-05** | Precision Optical Boresight Rig | Optical collimator and laser alignment fixture for zeroing payload optical gimbal axes against airframe inertial reference axes. | Angular Precision: <= 0.05 deg; Field portable carbon frame |
+| **GSE-01** | Multi-Bus Avionics Breakout Box & CAN/SPI/Ethernet Protocol Analyzer | Hardware-in-the-loop signal breakout, non-intrusive bus tapping, frame sniffing, jitter analysis, and protocol decoding for CAN FD (ISO 11898-1/2), SPI, RS-422, and 100BASE-T1 Ethernet avionics buses. | Operating Temp: -20 °C to +55 °C; Bus Tolerant: 3.3V / 5V / 12V / 24V; Rating: IP54 |
+| **GSE-02** | Multi-Point Electronic CG Balance Jig & Digital Scale (+/- 0.5 g) | Multi-point 3-pad electronic load-cell fixture measuring total all-up vehicle mass and calculating longitudinal (X_cg), lateral (Y_cg), and vertical (Z_cg) Center of Gravity offsets relative to leading-edge datum. | Mass Range: 0.0 to 40.0 kg; Accuracy: +/- 0.5 g; CG Resolution: +/- 0.2 mm; Rating: IP65 |
+| **GSE-03** | Calibrated Digital Torque Driver (0.5 to 10.0 N*m, ISO 6789-1:2017) | Precision digital torque application and logging driver for structural fasteners, motor arm clamps, propeller collets, and avionics chassis screws with audible/haptic cutoff and digital cycle logging. | Torque Range: 0.50 to 10.00 N*m; Accuracy: +/- 1.0%; Overload: 15.0 N*m; Rating: ESD Safe (< 10^6 Ω) |
+| **GSE-04** | Differential Pitot-Static Calibration Test Set (0 to 200 hPa, leak resolution 0.005 hPa) | Automated dual-channel pneumatic pressure generator for differential dynamic pressure (0 to 200 hPa) airspeed simulation and static pressure barometric altimetry verification with automated pneumatic leak decay detection. | Dynamic Range: 0 to 200 hPa; Static Range: 300 to 1100 hPa; Pressure Accuracy: +/- 0.02 hPa; Leak Resolution: 0.005 hPa/min; Rating: IP67 (in transit) |
+| **GSE-05** | Optical Boresight Collimator & Target Reticle Alignment Optical Bench | Precision infinity-focus optical collimation bench with motorized target reticle and laser projection for aligning multi-spectral (EO/IR) gimbal sensor optical axes against airframe inertial reference datum (X_b, Y_b, Z_b). | Angular Precision: <= 0.01 deg (36 arcsec); Reticle Orthogonality: <= 0.005 deg; Focal Length: 1000 mm; Thermal Drift: < 0.001 deg/°C |
+| **GSE-06** | Calibrated 2.4 GHz / 5.8 GHz RF Field Strength Sniffer & Spectrum Sniffer | Handheld calibrated wideband RF spectrum analyzer and field strength sniffer for evaluating EIRP, harmonic distortion, adjacent-channel leakage ratio (ACLR), antenna VSWR, and receiver sensitivity across 2.4 GHz and 5.8 GHz C2/video bands. | Freq Bands: 2.400–2.4835 GHz / 5.725–5.875 GHz; Freq Accuracy: +/- 0.5 ppm; Power Accuracy: +/- 0.5 dBm; Noise Floor: -120 dBm @ 10 kHz RBW; Rating: IP54 |
+
+---
 
 #### 10.2.1 Ground Support Equipment Calibration Matrix
-All Ground Support Equipment and precision maintenance tooling are subject to mandatory periodic calibration schedules adhering to ISO/IEC 17025, ANSI/NCSL Z540-1, and MIL-STD-45662A metrology standards.
+All Ground Support Equipment and precision maintenance tooling are subject to mandatory periodic calibration schedules adhering to ISO/IEC 17025, ANSI/NCSL Z540-1, ISO 6789-1:2017, and MIL-STD-45662A metrology standards.
 
-| GSE Identifier | GSE Nomenclature | Calibration Interval | Reference Standard / Normative Baseline | Parameter / Test Scope | Tolerance Limit / Calibration Accuracy | Calibration Facility Tier |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **GSE-01** | Intelligent Energy Management Hub | 90 Days | ISO/IEC 17025 / NIST Calibrated Shunt | Voltage measurement accuracy, current regulation (up to 40A), over-temperature cutoff threshold | Voltage: +/- 10 mV; Current: +/- 0.1 A; Temp cutoff: +/- 1.0 °C | I-Level / Certified Electronics Lab |
-| **GSE-02** | Ruggedized Field Control Terminal | 1 Year | IEEE 802.11 / MIL-STD-810H | RF transmitter output power, display luminance calibration, internal battery capacity | RF Power: +/- 0.5 dBm; Luminance: >= 1400 nits; Capacity: >= 85% | Factory Depot / Metrology Facility |
-| **GSE-03** | Telescoping Antenna Mast & Tracker | 180 Days | ANSI/TIA-222-H / STANAG 4586 | 2-axis positioner angular accuracy, backlash, mast verticality under wind load | Azimuth / Elevation: +/- 0.2 deg; Mast verticality: <= 0.5 deg | I-Level / Field Calibration Bench |
-| **GSE-04** | Air Data Pressure Test Box | 90 Days | NIST Traceable Primary Barometric Standard | Pitot dynamic pressure generation, static pressure accuracy, pneumatic seal leak rate | Pressure: +/- 0.1 hPa; Airspeed simulation: +/- 0.2 m/s; Leak: <= 0.05 hPa/min | I-Level / Pneumatic Metrology Lab |
-| **GSE-05** | Precision Optical Boresight Rig | 180 Days | ISO 10110 / MIL-STD-810H | Collimator optical axis alignment, crosshair reticle orthogonality, laser zeroing | Collimator alignment: <= 0.02 deg; Reticle orthogonality: <= 0.01 deg | Depot / Precision Optics Lab |
-| **GSE-06** | Calibrated Digital Torque Drivers | 30 Days | ISO 6789-1:2017 | Torque measurement accuracy across 0.5 N·m to 5.0 N·m range | Torque accuracy: +/- 4.0% of indicated reading | O-Level / Base Tool Metrology Crib |
-| **GSE-07** | Squib Continuity Safe Test Meter | 90 Days | MIL-STD-1576 / DoD 4145.26-M | Maximum test current clamping (< 5 mA), resistance measurement accuracy | Test current: <= 5.0 mA max; Resistance: +/- 0.05 Ω | I-Level / Certified Armory Facility |
-| **GSE-08** | Digital Multimeter & Bus Analyzer | 1 Year | ISO/IEC 17025 / Fluke Calibrated Master | DC/AC voltage, four-wire Kelvin resistance, CAN bus waveform timing | DC Voltage: +/- 0.05%; Resistance: +/- 0.1%; Timing: +/- 10 ns | Certified Metrology Calibration Center |
+| GSE Identifier | GSE Nomenclature | Calibration Interval | Reference Standard / Normative Baseline | Parameter / Metrological Test Scope | Tolerance Limit / Calibration Accuracy | Calibration Facility Tier | Metrology Certificate Requirement |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **GSE-01** | Multi-Bus Avionics Breakout Box & Protocol Analyzer | 180 Days | ISO/IEC 17025 / NIST Traceable Digital Timebase & Logic Analyzer Master | Timing jitter, protocol frame timing, bus termination resistance, logic voltage thresholds | Timing Jitter: <= 5 ns; Voltage Threshold: +/- 10 mV; Bus Termination: 60.0 Ω +/- 0.5 Ω | I-Level / Certified Avionics Metrology Lab | ISO/IEC 17025 Accredited Calibration Certificate with NIST Traceability |
+| **GSE-02** | Multi-Point Electronic CG Balance Jig & Digital Scale | 90 Days | OIML R76 Class II / NIST Handbook 44 Class II Standard Weights | Multi-pad mass measurement linearity, corner-load repeatability, CG calculation algorithm | Mass Accuracy: +/- 0.5 g across 0–40.0 kg range; CG Resolution: +/- 0.2 mm | I-Level / Mass & Weight Metrology Crib | OIML Class II Verification Certificate & Calibration Report |
+| **GSE-03** | Calibrated Digital Torque Driver (0.5 to 10.0 N*m) | 30 Days (or 5000 cycles) | ISO 6789-1:2017 / ISO 6789-2:2017 Type I Class C Calibration Bench | Clockwise and counter-clockwise torque accuracy across 0.50 to 10.00 N*m range | Torque Accuracy: +/- 1.0% of indicated reading; Resolution: 0.01 N*m | O-Level / Base Tool Metrology Crib | ISO 6789 Conformance Certificate & Calibration Log |
+| **GSE-04** | Differential Pitot-Static Calibration Test Set | 90 Days | ISO/IEC 17025 / NIST Traceable Primary Deadweight Barometric Standard | Differential dynamic pressure (0–200 hPa), absolute static pressure (300–1100 hPa), pneumatic leak rate | Differential Pressure: +/- 0.02 hPa; Airspeed Simulation: +/- 0.10 m/s; Leak Resolution: 0.005 hPa/min | I-Level / Pneumatic Metrology Calibration Lab | ISO/IEC 17025 Pneumatic Calibration Certificate |
+| **GSE-05** | Optical Boresight Collimator & Target Reticle Bench | 180 Days | ISO 10110 / MIL-STD-810H / Master Autocollimator Standard | Collimator optical axis parallelism, crosshair reticle orthogonality, laser zero offset | Angular Alignment: <= 0.01 deg (36 arcsec); Reticle Orthogonality: <= 0.005 deg | Depot / Factory Precision Optical Metrology Facility | Factory Optical Metrology Certificate & Interferometric Report |
+| **GSE-06** | Calibrated 2.4 GHz / 5.8 GHz RF Field Strength Sniffer | 1 Year | IEEE 802.11 / ETSI EN 300 328 / ETSI EN 301 893 / ISO/IEC 17025 | RF power measurement accuracy, frequency stability, spectrum resolution, noise floor | Freq Accuracy: +/- 0.5 ppm; Power Measurement: +/- 0.5 dBm; Noise Floor: -120 dBm @ 10 kHz RBW | Certified RF Metrology Center / Depot Lab | ISO/IEC 17025 RF Calibration Certificate & Spectral Purity Test Sheet |
 
 ---
 
 ### 10.3 Calibration Fixtures & Sensor Alignment Rigs
 - **Multi-Axis Inertial Calibration Fixture:** Used during I-Level maintenance to verify gyroscopic scale factors, accelerometer bias drift, and thermal compensation polynomials over $-40^\circ\text{C}$ to $+55^\circ\text{C}$.
 - **Magnetic Heading Calibration Base:** Non-magnetic designated field circle utilized to calibrate vehicle soft-iron and hard-iron magnetometer calibration vectors.
-- **Optical Collimation Bench:** High-precision optical collimator bench for verifying payload boresight zero offsets against the airframe longitudinal datum.
+- **Optical Collimation Bench (GSE-05):** High-precision optical collimator bench for verifying payload boresight zero offsets against the airframe longitudinal datum.
+- **Dynamic Propeller & Rotor Balancing Bench:** Micro-dynamic balancing stand ensuring propeller and motor rotor residual unbalance remains below $0.20\text{ mg}\cdot\text{mm}$.
 
 ---
 
 ### 10.4 Ruggedized Transit Cases & Environmental Storage
-- All system elements are enclosed in high-impact transit cases with pressure equalization valves and custom closed-cell foam inserts.
+- All system elements are enclosed in high-impact transit cases meeting MIL-STD-810H Method 514.8 (Vibration) and Method 516.8 (Shock) with automated pressure equalization valves and custom closed-cell polyethylene foam inserts.
 - Built-in humidity indicator cards and desiccant ports ensure relative humidity inside storage containers remains strictly below $40\%$ during transport and long-term storage.
 
 ---
 
 ### 10.5 Field Maintenance Tooling & Spares Provisioning
-- **Standard Field Tool Kit (FTK-01):** Includes calibrated torque limiters ($0.5\text{ N}\cdot\text{m}$ to $5.0\text{ N}\cdot\text{m}$), ESD-grounding wrist straps, connector pin extraction tools, and diagnostic bus analyzer dongles.
+- **Standard Field Tool Kit (FTK-01):** Includes calibrated digital torque drivers (**GSE-03**, $0.5\text{ N}\cdot\text{m}$ to $10.0\text{ N}\cdot\text{m}$), ESD-grounding wrist straps, connector pin extraction tools, and diagnostic bus analyzer dongles (**GSE-01**).
 - **Authorized Field Spares Kit (FSK-01):** Pre-packaged spares allocation supporting $100.0\text{ hr}$ of autonomous operations (includes matched propeller sets, motor/ESC modules, pitot probes, replacement silicone seals, and spare structural fasteners).
 - **Depot Maintenance Support Package (DSP-01):** Comprehensive depot overhaul inventory including bare carbon fuselage frames, replacement wing spar sets, PCB replacement kits, and master wiring harnesses.
+
+---
+
+### 10.6 Digital Maintenance Tracking & Airworthiness Recordkeeping
+In accordance with EASA Part-ML.A.305 and Part-M.A.305 (Continuing Airworthiness Record System):
+- **Electronic Maintenance Logbook (ELOG):** Every maintenance action, component swap, inspection task card (MTC-01 through MTC-05), and GSE calibration record is logged digitally with PKI cryptographic digital signatures (Ed25519 / X.509 certificates).
+- **Component Life Tracking:** All serialized LRUs (FCC, battery modules, ESCs, motors, optical gimbals, parachute squibs) maintain automated operating hour counters, cycle counters, and environmental exposure metrics synchronized via GCS telemetry to the Centralized Maintenance Management System (CMMS).
+- **Tamper-Evident Audit Ledger:** Maintenance sign-offs and airworthiness releases are chained via SHA-256 cryptographic hashes, guaranteeing full traceability for civil and military airworthiness authorities.
 
 ## 11. Operational Impacts, System Limitations & Documented Trade Studies
 
