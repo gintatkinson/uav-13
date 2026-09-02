@@ -9,8 +9,8 @@
 ## 1. Scope & System Identification
 - **System Identifier:** `DEAP01-uas-infrastructure-safety`
 - **Operational Domain:** `UAS Mission Operations, Ground Infrastructure Safety & Resilient C2 Assurance`
-- **Research Scope:** Authoritative standards-obligation population catalog and normative baseline for civil and defense unmanned aircraft systems (UAS), ground control stations (GCS), command and control (C2) data links, electronic warfare (EW) / cyber resiliency, rules of engagement (ROE) interlocks, pre-flight/in-flight Go/No-Go decision matrices, PACE communications planning, SORA OSO-01..24 airworthiness matrix, ASTM F3269-17 Run-Time Assurance (RTA), ASTM F3411-22a / FAA 14 CFR §89.310 Remote ID roster, RTCA DO-365B Detect and Avoid (DAA) well-clear separation, and MIL-STD-1629A / SAE ARP4761 / MIL-STD-882E / RTCA DO-178C FMECA component-class failure mode criticality roster.
-- **Applicability Statement:** Defense autonomy and weapon safety interlocks (DoD Directive 3000.09, CJCSI 3121.01B, NATO STANAG 4586), OT/ICS cyber security and counter-EW electromagnetic resilience (NIST SP 800-82r3, MITRE ATT&CK for ICS / D3FEND, MIL-STD-461G, ISO/SAE 21434), civil and specific category operational flight safety (FAA 14 CFR §107.49, EASA AMC1 UAS.SPEC.050, JARUS SORA v2.5), multi-tier robust C2 communications (RTCA DO-362A, ASTM F3411-22a), Specific category airworthiness objectives (JARUS SORA v2.5 Annex E §E.1–§E.24), flight control runtime assurance (ASTM F3269-17), Remote ID tracking (FAA 14 CFR §89.310, ASTM F3411-22a), airborne collision avoidance (RTCA DO-365B), and hardware/software failure mode criticality and automated containment (MIL-STD-1629A §4.3–§4.6, SAE ARP4761 §4.3.1–§4.3.3, MIL-STD-882E Task 205 §4.2, RTCA DO-178C §6.3.1).
+- **Research Scope:** Authoritative standards-obligation population catalog and normative baseline for civil and defense unmanned aircraft systems (UAS), ground control stations (GCS), command and control (C2) data links, electronic warfare (EW) / cyber resiliency, rules of engagement (ROE) interlocks, pre-flight/in-flight Go/No-Go decision matrices, PACE communications planning, SORA OSO-01..24 airworthiness matrix, ASTM F3269-17 Run-Time Assurance (RTA), ASTM F3411-22a / FAA 14 CFR §89.310 Remote ID roster, RTCA DO-365B Detect and Avoid (DAA) well-clear separation, MIL-STD-1629A / SAE ARP4761 / MIL-STD-882E / RTCA DO-178C FMECA component-class failure mode criticality roster, INCOSE SEH v5.0 systems engineering lifecycle processes, and MIL-STD-810H environmental engineering considerations.
+- **Applicability Statement:** Defense autonomy and weapon safety interlocks (DoD Directive 3000.09, CJCSI 3121.01B, NATO STANAG 4586), OT/ICS cyber security and counter-EW electromagnetic resilience (NIST SP 800-82r3, MITRE ATT&CK for ICS / D3FEND, MIL-STD-461G, ISO/SAE 21434), civil and specific category operational flight safety (FAA 14 CFR §107.49, EASA AMC1 UAS.SPEC.050, JARUS SORA v2.5), multi-tier robust C2 communications (RTCA DO-362A, ASTM F3411-22a), Specific category airworthiness objectives (JARUS SORA v2.5 Annex E §E.1–§E.24), flight control runtime assurance (ASTM F3269-17), Remote ID tracking (FAA 14 CFR §89.310, ASTM F3411-22a), airborne collision avoidance (RTCA DO-365B), hardware/software failure mode criticality and automated containment (MIL-STD-1629A §4.3–§4.6, SAE ARP4761 §4.3.1–§4.3.3, MIL-STD-882E Task 205 §4.2, RTCA DO-178C §6.3.1), systems engineering and multi-domain architecture (INCOSE SEH v5.0 §3.3.1–§5.4), and climatic/environmental stress resilience (MIL-STD-810H Method 501.7–521.4).
 
 ## 2. Normative Standards & Baseline Documents Inventory
 | Standard / Baseline ID | Issuing Body | Title | Applicable Clauses | Obligation Category | Declared Total | Clause Citation |
@@ -35,6 +35,8 @@
 | SAE ARP4761 | SAE International | Guidelines and Methods for Conducting the Safety Assessment Process on Civil Airborne Systems and Equipment | §4.3.1 Functional Hazard Assessment, §4.3.3 FMECA Process, App. L Failure Probability Allocation, App. M Common Cause Analysis | System Safety Assessment & Failure Analysis | 4 | SAE ARP4761 §4.3.1, §4.3.3, SAE ARP4761 App. L, App. M |
 | MIL-STD-882E | U.S. Department of Defense | Standard Practice for System Safety | Task 106 §4.2 Hazard Mitigation, Task 204 §4.2 Probability Levels, Task 205 §4.2 System Hazard Analysis, Task 208 §4.2 Functional Thread Isolation | System Safety & Hazard Analysis | 4 | MIL-STD-882E Task 106 §4.2, Task 204 §4.2, Task 205 §4.2, Task 208 §4.2 |
 | RTCA DO-178C | RTCA / EUROCAE | Software Considerations in Airborne Systems and Equipment Certification | §6.3.1 Software Fault Detection, §6.3.2 Software Partitioning, §6.4.3 Redundancy Management, §6.4.4 Structural Coverage | Airborne Software Safety & Fault Detection | 4 | RTCA DO-178C §6.3.1, §6.3.2, §6.4.3, §6.4.4 |
+| INCOSE SEH v5.0 | International Council on Systems Engineering (INCOSE) | Systems Engineering Handbook: A Guide for System Life Cycle Processes and Activities (v5.0) | §3.3.1 Life Cycle Stages & Concept Definition, §4.3 Architecture Definition & System Modeling, §4.6 System Analysis & Multi-Domain Threat Assessment, §5.4 System Verification & Validation Traceability | Systems Engineering & Architecture Governance | 4 | INCOSE SEH v5.0 §3.3.1, §4.3, §4.6, §5.4 |
+| MIL-STD-810H | U.S. Department of Defense | Environmental Engineering Considerations and Laboratory Tests | Method 501.7 §4.2 High Temperature Operational Limits, Method 502.7 §4.2 Low Temperature & Cold Soak Limits, Method 506.6 §4.2 Rain, Wind & Severe Atmospheric Precipitation, Method 521.4 §4.2 Icing & Freezing Rain Environmental Protection | Environmental Engineering & Climatic Resilience | 4 | MIL-STD-810H Method 501.7 §4.2, Method 502.7 §4.2, Method 506.6 §4.2, Method 521.4 §4.2 |
 
 ## 3. Declared-Total Population Register
 The Declared-Total Population Register catalogs every applicable normative obligation, safety constraint, METL task, and control pattern with its mandatory formal public clause citation. Un-cited additions are strictly prohibited.
@@ -153,6 +155,14 @@ The Declared-Total Population Register catalogs every applicable normative oblig
 | `OBL-FMECA-DO178C-02` | Airborne Software Safety & Fault Detection | RTCA DO-178C | 1 | Software Architectural Fault Containment & Memory Partitioning | RTCA DO-178C §6.3.2 |
 | `OBL-FMECA-DO178C-03` | Airborne Software Safety & Fault Detection | RTCA DO-178C | 1 | Structural Coverage Analysis for Safety-Critical Software Logic | RTCA DO-178C §6.4.4 |
 | `OBL-FMECA-DO178C-04` | Airborne Software Safety & Fault Detection | RTCA DO-178C | 1 | Software Verification of Redundancy Management & State Handover | RTCA DO-178C §6.4.3 |
+| `OBL-INCOSE-01` | Systems Engineering & Architecture Governance | INCOSE SEH v5.0 | 1 | Life Cycle Stages & Concept Definition Framework Audit | INCOSE SEH v5.0 §3.3.1 |
+| `OBL-INCOSE-02` | Systems Engineering & Architecture Governance | INCOSE SEH v5.0 | 1 | Architecture Definition & Multi-Domain System Decomposition | INCOSE SEH v5.0 §4.3 |
+| `OBL-INCOSE-03` | Systems Engineering & Architecture Governance | INCOSE SEH v5.0 | 1 | Multi-Domain Threat Analysis & System Safety Assessment | INCOSE SEH v5.0 §4.6 |
+| `OBL-INCOSE-04` | Systems Engineering & Architecture Governance | INCOSE SEH v5.0 | 1 | System Verification, Validation & Digital Thread Traceability | INCOSE SEH v5.0 §5.4 |
+| `OBL-MIL810H-01` | Environmental Engineering & Climatic Resilience | MIL-STD-810H | 1 | High Temperature Operational Envelope & Thermal Margin Test | MIL-STD-810H Method 501.7 §4.2 |
+| `OBL-MIL810H-02` | Environmental Engineering & Climatic Resilience | MIL-STD-810H | 1 | Low Temperature Cold-Soak & Sub-Zero Battery Startup Test | MIL-STD-810H Method 502.7 §4.2 |
+| `OBL-MIL810H-03` | Environmental Engineering & Climatic Resilience | MIL-STD-810H | 1 | Dynamic Wind, Gust & Rain Ingress Environmental Assessment | MIL-STD-810H Method 506.6 §4.2 |
+| `OBL-MIL810H-04` | Environmental Engineering & Climatic Resilience | MIL-STD-810H | 1 | Structural Icing Accumulation & De-Icing System Validation | MIL-STD-810H Method 521.4 §4.2 |
 
 ## 4. External Additions & Domain Extensions Registry
 All external additions, proprietary extensions, and domain-specific baselines MUST carry authoritative public clause citations. Un-cited additions are strictly prohibited.
@@ -211,6 +221,14 @@ All external additions, proprietary extensions, and domain-specific baselines MU
 | `OBL-ASTMF3411-02` | ASTM F3411-22a | ASTM F3411-22a §6.3 | Direct RF Remote ID Handover & Degradation Alert | Phase 1 (Structural) | `docs/catalogs/MISSION_OPERATIONS_CATALOG.md` |
 | `OBL-ASTMF3411-03` | ASTM F3411-22a | ASTM F3411-22a §7.2 | Network Remote ID Transmit Latency & Broker SLA | Phase 2 (Behavioral) | `docs/catalogs/MISSION_OPERATIONS_CATALOG.md` |
 | `OBL-ASTMF3411-04` | ASTM F3411-22a | ASTM F3411-22a §8.4 | Cryptographic Auth & Remote ID Spoof Prevention | Phase 3 (Operational) | `docs/catalogs/MISSION_OPERATIONS_CATALOG.md` |
+| `OBL-INCOSE-01` | INCOSE SEH v5.0 | INCOSE SEH v5.0 §3.3.1 | Life Cycle Stages & Concept Definition Framework | Phase 1 (Structural) | `docs/catalogs/MISSION_OPERATIONS_CATALOG.md` |
+| `OBL-INCOSE-02` | INCOSE SEH v5.0 | INCOSE SEH v5.0 §4.3 | Architecture Definition & Multi-Domain System Decomposition | Phase 1 (Structural) | `docs/catalogs/MISSION_OPERATIONS_CATALOG.md` |
+| `OBL-INCOSE-03` | INCOSE SEH v5.0 | INCOSE SEH v5.0 §4.6 | Multi-Domain Threat Analysis & System Safety Assessment | Phase 2 (Behavioral) | `docs/catalogs/MISSION_OPERATIONS_CATALOG.md` |
+| `OBL-INCOSE-04` | INCOSE SEH v5.0 | INCOSE SEH v5.0 §5.4 | System Verification, Validation & Digital Thread Traceability | Phase 3 (Operational) | `docs/catalogs/MISSION_OPERATIONS_CATALOG.md` |
+| `OBL-MIL810H-01` | MIL-STD-810H | MIL-STD-810H Method 501.7 §4.2 | High Temperature Operational Envelope & Thermal Margin | Phase 1 (Structural) | `docs/catalogs/MISSION_OPERATIONS_CATALOG.md` |
+| `OBL-MIL810H-02` | MIL-STD-810H | MIL-STD-810H Method 502.7 §4.2 | Low Temperature Cold-Soak & Sub-Zero Battery Startup | Phase 1 (Structural) | `docs/catalogs/MISSION_OPERATIONS_CATALOG.md` |
+| `OBL-MIL810H-03` | MIL-STD-810H | MIL-STD-810H Method 506.6 §4.2 | Dynamic Wind, Gust & Rain Ingress Environmental Assessment | Phase 2 (Behavioral) | `docs/catalogs/MISSION_OPERATIONS_CATALOG.md` |
+| `OBL-MIL810H-04` | MIL-STD-810H | MIL-STD-810H Method 521.4 §4.2 | Structural Icing Accumulation & De-Icing System Validation | Phase 3 (Operational) | `docs/catalogs/MISSION_OPERATIONS_CATALOG.md` |
 | `OBL-SORA-OSO-01` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.1 | UAS Design Reliability & Airworthiness Standards Conformance | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
 | `OBL-SORA-OSO-02` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.2 | UAS Manufacturing Competency & Quality Management System Audit | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
 | `OBL-SORA-OSO-03` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.3 | UAS Maintenance System Competency & Part-ML Inspection Verification | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
@@ -279,8 +297,8 @@ All external additions, proprietary extensions, and domain-specific baselines MU
 ## 6. Normative Completeness & Gap Analysis
 | Metric Parameter | Value | Target Threshold | Compliance Status |
 | :--- | :--- | :--- | :--- |
-| Declared Total Normative Obligations | 112 | >= 1 | Conforming |
-| Declared Total Safety Constraints | 112 | >= 1 | Conforming |
+| Declared Total Normative Obligations | 120 | >= 1 | Conforming |
+| Declared Total Safety Constraints | 120 | >= 1 | Conforming |
 | Declared Total Operational Missions | 8 | >= 1 | Conforming |
 | Declared Total Control Interlocks | 16 | >= 1 | Conforming |
 | Clause Citation Traceability Percentage | 100% | 100% | Conforming |

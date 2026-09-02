@@ -150,76 +150,191 @@ stateDiagram-v2
 ## 3. Threat, EW & Cyber Environment Taxonomy
 
 ### 3.1 Governance & Standards Baseline
-The cyber physical and electronic warfare protection framework defends UAS infrastructure against intentional adversarial interference, spoofing, and lateral penetration pursuant to:
+The cyber-physical, electronic warfare, environmental, mechanical, kinetic, and systems safety protection framework defends UAS infrastructure against intentional adversarial interference, physical component failures, atmospheric extremes, and mid-air/ground collisions pursuant to:
 - **NIST SP 800-82r3 §4.2, §5.3, §6.2, §6.4** (*Guide to Operational Technology Security*)
 - **MITRE ATT&CK for ICS §T0814, §T0855, §T0843 & MITRE D3FEND §D3-MCR** (*ICS Threat & Defense*)
 - **MIL-STD-461G §5.4, §5.18, §5.19, §5.20** (*Electromagnetic Compatibility Requirements*)
 - **ISO/SAE 21434 §5.3, §6.4, §9.4, §10.4** (*Cybersecurity Engineering*)
+- **MIL-STD-810H Method 501.7 §4.2, Method 502.7 §4.2, Method 506.6 §4.2, Method 521.4 §4.2** (*Environmental Engineering Considerations & Laboratory Tests*)
+- **MIL-STD-882E Task 106 §4.2, Task 204 §4.2, Task 205 §4.2, Task 208 §4.2** (*Standard Practice for System Safety*)
+- **INCOSE SEH v5.0 §3.3.1, §4.3, §4.6, §5.4** (*Systems Engineering Handbook*)
+- **JARUS SORA v2.5 Annex B §B.2, Annex C §C.3, Annex D §D.2, Annex E §E.4, §E.14, §E.18, §E.23, §E.24** (*Specific Operations Risk Assessment*)
+- **RTCA DO-365B §2.2.4, §2.2.4.1, §2.2.4.2, §2.2.5.3** (*MOPS for Detect and Avoid Systems*)
+- **MIL-STD-1629A §4.3, §4.4, §4.5, §4.6 & SAE ARP4761 §4.3.1, App. L, App. M** (*Procedures for Performing a FMECA & System Safety Assessment*)
 
-/// ObligationAllocation: [OBL-NIST80082-01, OBL-NIST80082-02, OBL-NIST80082-03, OBL-NIST80082-04, OBL-MITRE-01, OBL-MITRE-02, OBL-MITRE-03, OBL-MITRE-04, OBL-MIL461G-01, OBL-MIL461G-02, OBL-MIL461G-03, OBL-MIL461G-04, OBL-ISO21434-01, OBL-ISO21434-02, OBL-ISO21434-03, OBL-ISO21434-04]
-/// ObligationWitness: [OBL-NIST80082-01, OBL-NIST80082-02, OBL-NIST80082-03, OBL-NIST80082-04, OBL-MITRE-01, OBL-MITRE-02, OBL-MITRE-03, OBL-MITRE-04, OBL-MIL461G-01, OBL-MIL461G-02, OBL-MIL461G-03, OBL-MIL461G-04, OBL-ISO21434-01, OBL-ISO21434-02, OBL-ISO21434-03, OBL-ISO21434-04]
+/// ObligationAllocation: [OBL-NIST80082-01, OBL-NIST80082-02, OBL-NIST80082-03, OBL-NIST80082-04, OBL-MITRE-01, OBL-MITRE-02, OBL-MITRE-03, OBL-MITRE-04, OBL-MIL461G-01, OBL-MIL461G-02, OBL-MIL461G-03, OBL-MIL461G-04, OBL-ISO21434-01, OBL-ISO21434-02, OBL-ISO21434-03, OBL-ISO21434-04, OBL-INCOSE-01, OBL-INCOSE-02, OBL-INCOSE-03, OBL-INCOSE-04, OBL-MIL810H-01, OBL-MIL810H-02, OBL-MIL810H-03, OBL-MIL810H-04]
+/// ObligationWitness: [OBL-NIST80082-01, OBL-NIST80082-02, OBL-NIST80082-03, OBL-NIST80082-04, OBL-MITRE-01, OBL-MITRE-02, OBL-MITRE-03, OBL-MITRE-04, OBL-MIL461G-01, OBL-MIL461G-02, OBL-MIL461G-03, OBL-MIL461G-04, OBL-ISO21434-01, OBL-ISO21434-02, OBL-ISO21434-03, OBL-ISO21434-04, OBL-INCOSE-01, OBL-INCOSE-02, OBL-INCOSE-03, OBL-INCOSE-04, OBL-MIL810H-01, OBL-MIL810H-02, OBL-MIL810H-03, OBL-MIL810H-04]
 
-### 3.2 Threat & Countermeasure Matrix
+### 3.2 Cross-Catalog Multi-Domain Threat Derivation Schema & Master Threat Taxonomy
 
-| Threat Vector ID | Threat Classification | Standard Reference | Threat Mechanism | Countermeasure / Mitigation | Verification Method |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| `THR-EW-01` | GNSS Jamming & Broad Spectrum Noise | MIL-STD-461G §5.18, NIST SP 800-82r3 §4.2 | High-power RF noise swamping L1/L2 GNSS receiver bands | Tightly-coupled INS dead-reckoning and optical flow visual odometry failover | RF Chamber Jamming Simulation |
-| `THR-EW-02` | GNSS Spoofing & Meaconing | NIST SP 800-82r3 §4.2, MITRE ATT&CK §T0855 | False ephemeris/pseudorange signals inducing spatial trajectory drift | Receiver Autonomous Integrity Monitoring (RAIM) & Chi-Square Innovation Filter | Multi-Channel GNSS Spoof Injection |
-| `THR-EW-03` | C2 Datalink Denial of Service | MITRE ATT&CK §T0814, NIST SP 800-82r3 §6.2 | Narrowband/swept RF jamming on primary C2 uplink | Fast pseudo-random Frequency Hopping Spread Spectrum (FHSS) & PACE link switch | C2 Bandwidth Stress Benchmark |
-| `THR-EW-04` | High-Intensity Radiated Fields (HIRF) | MIL-STD-461G §5.4, §5.18 | EMP / electromagnetic pulse inducing transient currents in avionics | Faradic shielding, double-braided conduit grounding, TVS surge clamping | MIL-STD-461G RS103 / CS115 Pulse Test |
-| `THR-CYB-01` | Unauthorized Command Injection | MITRE ATT&CK §T0855, MITRE D3FEND §D3-MCR | Adversary transmitting forged flight mode change or disarm packets | Ed25519 / HMAC-SHA256 signature validation with monotonically increasing nonces | Fuzzing & Forgery Packet Injection |
-| `THR-CYB-02` | Replay Attack on Telemetry & C2 | MITRE D3FEND §D3-MCR, NIST SP 800-82r3 §6.2 | Capturing legitimate commands and retransmitting in altered state | Strict timestamp epoch window and sliding session token ring | Packet Replay Assertion Test |
-| `THR-CYB-03` | Ground Station OT Lateral Compromise | NIST SP 800-82r3 §5.3, ISO/SAE 21434 §6.4 | Malware pivot from public internet GCS network to internal C2 bridge | Air-gapped boundary diode and zero-trust microsegmentation | Network Segmentation Penetration Test |
-| `THR-CYB-04` | Firmware Modification & Bus Tamper | MITRE ATT&CK §T0843, ISO/SAE 21434 §9.4 | Flashing malicious bootloader or injecting CAN/Ethernet frame anomalies | Hardware root of trust (TPM 2.0 / Secure Boot) and CAN ID rate bounding | Secure Boot Chain Verification |
+The unified Multi-Domain Threat Taxonomy establishes an open, extensible, and mathematically grounded hazard baseline linking physical, environmental, electromagnetic, cyber, and operational airspace domains across three canonical catalogs:
+1. **Kinetic & Airspace Vectors (`THR-KIN-*`)**: Derived directly from `SORA_AIRWORTHINESS_DAA_CATALOG.md` (RTCA DO-365B DAA Well-Clear volume separation, SORA Annex C/D/E mid-air collision and ground risk mitigations, ASTM F3269-17 simplex geofence barrier monitors, and ASTM F3322-18 emergency parachute kinetic energy limits).
+2. **Mechanical & Structural Failure Vectors (`THR-MEC-*`)**: Derived from `FMECA_COMPONENT_CLASS_ROSTER_CATALOG.md` (MIL-STD-1629A / SAE ARP4761 piece-part failure analysis covering primary flight actuators, carbon airframe composite delamination, and pyrotechnic recovery actuators).
+3. **Propulsion, Power & Thermal Failure Vectors (`THR-PWR-*`)**: Derived from `FMECA_COMPONENT_CLASS_ROSTER_CATALOG.md` (Lithium-ion battery thermal runaway containment under SORA Annex E OSO-24, ESC inverter commutation phase dropouts, and 28V DC bus regulator short-to-ground faults).
+4. **Environmental, Atmospheric & Climatic Vectors (`THR-ENV-*`)**: Derived from `MIL-STD-810H` and `JARUS SORA v2.5 Annex E OSO-04/12/23` (severe in-flight atmospheric icing accumulation, low-altitude microburst wind shear, blowing particulate erosion, and extreme ambient temperature boundary excursions).
+5. **Electronic Warfare Vectors (`THR-EW-*`)**: Broad-spectrum and swept-band GNSS jamming, carrier-phase spoofing and meaconing, C2 RF link denial-of-service, and High-Intensity Radiated Fields (HIRF) / EMP surge clamping pursuant to `MIL-STD-461G` and `NIST SP 800-82r3`.
+6. **Cybersecurity & Command Injection Vectors (`THR-CYB-*`)**: Cryptographic forged command injection, telemetry replay exploitation, GCS lateral operational technology pivots, and unauthorized bootloader firmware tampering under `MITRE ATT&CK for ICS`, `MITRE D3FEND`, and `ISO/SAE 21434`.
 
-### 3.3 Mathematical Formulations: EW Resilience & Cyber Integrity
+```mermaid
+flowchart TD
+    subgraph MultiDomainThreats ["Cross-Catalog Multi-Domain Threat Architecture"]
+        subgraph KineticDomain ["Kinetic & Airspace Vectors (THR-KIN-*)"]
+            TK1["Cooperative DAA Intruder (DO-365B)"]
+            TK2["Non-Cooperative Radar Track"]
+            TK3["Geofence 3D Barrier Breach"]
+            TK4["High-Energy Ground Impact"]
+        end
 
-#### 1. Jammer-to-Signal Ratio and Detection Threshold
-The effective Jammer-to-Signal power ratio at the airborne receiver antenna in logarithmic scale:
+        subgraph MechanicalDomain ["Mechanical & Structural Vectors (THR-MEC-*)"]
+            TM1["Actuator Jam / Hardover"]
+            TM2["Composite Spar Delamination"]
+            TM3["Pyrotechnic Squib Inhibit"]
+        end
+
+        subgraph PowerDomain ["Propulsion & Power Vectors (THR-PWR-*)"]
+            TP1["LiPo Thermal Runaway (OSO-24)"]
+            TP2["ESC Phase Loss & Motor Stall"]
+            TP3["DC Bus Short / Rail Dropout"]
+        end
+
+        subgraph EnvironmentalDomain ["Environmental & Climatic Vectors (THR-ENV-*)"]
+            TE1["Atmospheric Icing Accretion"]
+            TE2["Microburst Wind Shear"]
+            TE3["Blowing Sand / Dust Erosion"]
+            TE4["Extreme Thermal Excursion"]
+        end
+
+        subgraph EWDomain ["Electronic Warfare Vectors (THR-EW-*)"]
+            TEW1["GNSS Broadband Jamming"]
+            TEW2["GNSS Spoofing / Meaconing"]
+            TEW3["C2 Datalink Saturation DoS"]
+            TEW4["HIRF / EMP Pulse Immersion"]
+        end
+
+        subgraph CyberDomain ["Cybersecurity & OT Vectors (THR-CYB-*)"]
+            TC1["Unauthorized Command Injection"]
+            TC2["Telemetry / C2 Replay Attack"]
+            TC3["GCS OT Lateral Compromise"]
+            TC4["Firmware Root of Trust Tamper"]
+        end
+    end
+
+    KineticDomain --> CentralContainment["Unified Autonomous Threat Containment Engine"]
+    MechanicalDomain --> CentralContainment
+    PowerDomain --> CentralContainment
+    EnvironmentalDomain --> CentralContainment
+    EWDomain --> CentralContainment
+    CyberDomain --> CentralContainment
+
+    CentralContainment --> Act1["Simplex RTA Recovery (ASTM F3269-17)"]
+    CentralContainment --> Act2["PACE Link Handover (DO-362A)"]
+    CentralContainment --> Act3["Contingency RTH / Safe Hold"]
+    CentralContainment --> Act4["Ballistic Parachute FTS (ASTM F3322-18)"]
+```
+
+### 3.3 Master Threat & Countermeasure Matrix
+
+| Threat Vector ID | Threat Classification & Domain | Standard & Clause Reference | Threat Mechanism & Root Cause | Severity Rating (MIL-STD-882E) | Detection Mechanism & Latency Bound | Autonomous Mitigation & Containment Rule | Verification Method |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `THR-KIN-01` | Kinetic / Cooperative Air Collision | RTCA DO-365B §2.2.4, SORA v2.5 Annex C §C.3 | Transponder/ADS-B equipped intruder penetrating DAA Well-Clear volume (DMOD = 0.66 NM, HMD <= 4000 ft, tau_mod <= 35 s) | Catastrophic (Category I) | Dual ADS-B In receiver + TCAS correlation filter (latency <= 1.0 s) | Autonomous horizontal heading escape Delta psi >= 15 deg or vertical rate climb/descent >= 500 ft/min | Fast-Time DAA Encounter Simulation (DO-365B) |
+| `THR-KIN-02` | Kinetic / Non-Cooperative Air Collision | RTCA DO-365B §2.2.5.3, SORA v2.5 Annex D §D.2 | Non-broadcasting airborne hazard closing on collision trajectory without active beacon | Catastrophic (Category I) | Airborne primary radar + EO/IR multi-spectral sensor fusion tracker (latency <= 2.0 s) | Emergency tactical break maneuver; dynamic vertical/horizontal separation outside track horizon | Radar Target Injection Bench Test |
+| `THR-KIN-03` | Kinetic / Operational Geofence Escape | JARUS SORA v2.5 Annex E §E.14, ASTM F3269-17 §5.2 | Kinematic drift or navigation bias driving vehicle across 3D containment boundary into unsegregated airspace | Critical (Category II) | Simplex RTA dynamic geofence barrier monitor evaluating d_boundary >= v * tau + v^2 / (2 * a) (latency <= 50 ms) | Simplex RTA safe-turn override (180 deg course reversal); if containment breached > 2.0 s, triggers emergency motor cutoff | 3D Geofence Polytope Penetration Test |
+| `THR-KIN-04` | Kinetic / High-Energy Ground Impact | JARUS SORA v2.5 Annex B §B.2, Annex E §E.18 | Uncontrolled kinetic energy descent over populated ground risk buffer resulting in critical surface strike | Catastrophic (Category I) | Continuous vertical rate and attitude accelerometer divergence monitor (latency <= 20 ms) | Autonomous ballistic parachute deployment (ASTM F3322-18) constraining terminal impact energy E_impact <= 80 J | Ballistic Drop & Parachute Deployment Test |
+| `THR-MEC-01` | Mechanical / Actuator Jam & Hardover | MIL-STD-1629A §4.3, SAE ARP4761 App. L | Servo gear fracture, mechanical binding, or resolver sensor loss causing flight control surface freeze or hardover | Critical (Category II) | Dual-lane resolver disparity check and motor drive current monitor (latency <= 20 ms) | Split-surface clutch disengagement; differential thrust and paired aileron/elevon re-trimming to maintain wings-level | Hardware-in-the-Loop Actuator Jam Injection |
+| `THR-MEC-02` | Mechanical / Structural Airframe Failure | MIL-STD-1629A §4.3, SAE ARP4761 §4.3.1 | Carbon composite delamination, structural wing spar fracture, or rotor blade shedding from aerodynamic flutter | Catastrophic (Category I) | High-frequency 3-axis vibration FFT analysis and aerodynamic roll/pitch rate divergence (latency <= 10 ms) | Immediate thrust shutdown on faulted arm, multi-rotor asymmetrical mixer recalculation; emergency parachute deployment | Structural Vibration & Dynamic Load Testing |
+| `THR-MEC-03` | Mechanical / Parachute Ejection Jam | MIL-STD-1629A §4.3, MIL-STD-882E Task 205 §4.2 | Pyrotechnic initiator squib open-circuit, mechanical mortar barrel jam, or spring latch freeze | Catastrophic (Category I) | Continuous bridge-wire squib continuity test and optical deployment sensor (latency <= 5 ms) | Dual-redundant independent pyrotechnic cutters with secondary pneumatic backup release circuit | Dual-Squib Pyrotechnic Resistance & Firing Test |
+| `THR-PWR-01` | Power / Battery Thermal Runaway | MIL-STD-1629A §4.3, JARUS SORA v2.5 Annex E §E.24 | Internal dendrite growth or mechanical puncture inducing catastrophic exothermic reaction (T_cell > 65 deg C, V_cell < 2.8 V) | Catastrophic (Category I) | Active Smart BMS multi-node thermistor and voltage monitoring at 100 Hz (latency <= 10 ms) | Active BMS string disconnection, auxiliary reserve power engagement, maximum thrust limit reduction, forced emergency descent | UN 38.3 & Thermal Runaway Containment Test |
+| `THR-PWR-02` | Power / ESC Inverter Phase Loss | MIL-STD-1629A §4.3, SAE ARP4761 §4.3.1 | High-current thermal breakdown in inverter bridge causing single-phase open or short circuit on BLDC motor | Critical (Category II) | ESC back-EMF zero-crossing detector and phase current comparator (latency <= 5 ms) | Dynamic motor mixer recalculation reallocating thrust authority to remaining operational rotors; executes immediate RTL | ESC Phase Cutout Dynamometer Test |
+| `THR-PWR-03` | Power / Main DC Bus Short-to-Ground | MIL-STD-1629A §4.3, MIL-STD-882E Task 205 §4.2 | 28V DC regulator failure shorting primary power distribution bus rail to ground chassis | Catastrophic (Category I) | Solid-state eFuse overcurrent sensing and bus voltage dropout monitor (latency <= 50 us) | Dual-isolated diode OR-ing architecture maintains secondary Bus B power; electronic circuit breaker isolates shorted branch | Bus Short-Circuit Transient Injection Test |
+| `THR-ENV-01` | Environmental / Severe Icing Accretion | MIL-STD-810H Method 521.4 §4.2, JARUS SORA v2.5 Annex E §E.23 | Supercooled liquid droplet accretion on pitot probes, leading edges, and rotor blades increasing weight and drag | Critical (Category II) | Dual-pitot dynamic pressure disparity detector + optical ice accretion sensor (latency <= 1.0 s) | Automated resistive electro-thermal leading edge/pitot heater activation; commanded descent out of icing altitude layer | Icing Wind Tunnel & DO-160G Section 24 Test |
+| `THR-ENV-02` | Environmental / Wind Shear & Microburst | MIL-STD-810H Method 506.6 §4.2, FAA 14 CFR §107.49(a) | Sudden localized vertical downdraft (> 10 m/s) and horizontal wind vector inversion destabilizing hover/glide | Critical (Category II) | High-rate IMU / ADU total energy rate estimator (E_dot_mech < threshold) (latency <= 100 ms) | Total Energy Control System (TECS) pitch-up escape climb with maximum continuous power; aborts landing approach | Severe Turbulence Simulation & Flight Test |
+| `THR-ENV-03` | Environmental / Sand & Particulate Ingestion | MIL-STD-810H Method 510.7 §4.2, AMC1 UAS.SPEC.050 §3.2 | Blowing sand and fine silica particulate eroding rotor leading edges and infiltrating optical sensor gimbals | Moderate (Category III) | Motor bearing temperature rise and optical encoder tracking error monitor (latency <= 5.0 s) | Commands gimbal stow/park position; initiates diversion to clean alternate landing zone | MIL-STD-810H Blowing Dust Chamber Test |
+| `THR-ENV-04` | Environmental / Extreme Temperature Excursion | MIL-STD-810H Method 501.7 §4.2, Method 502.7 §4.2, SORA v2.5 Annex E §E.4 | Ambient temperature outside operational envelope (-20 deg C to +55 deg C) degrading battery discharge capacity and cooling | Moderate (Category III) | Calibrated avionics and battery bay ambient temperature sensors (latency <= 1.0 s) | Pre-flight launch inhibit; in-flight throttle derating and conservative bingo energy recalculation | Environmental Thermal Chamber Cycling Test |
+| `THR-EW-01` | Electronic Warfare / GNSS Jamming | MIL-STD-461G §5.18, NIST SP 800-82r3 §4.2 | High-power intentional RF noise swamping L1/L2 GNSS receiver frontend, dropping carrier-to-noise ratio | Critical (Category II) | Receiver AGC attenuation monitor and Jammer-to-Signal (J/S) power estimator (latency <= 200 ms) | Automatic failover to tightly-coupled INS dead-reckoning + optical flow visual odometry; engages GPS-denied contingency hold | Anechoic RF Chamber Jamming Simulation |
+| `THR-EW-02` | Electronic Warfare / GNSS Spoofing | NIST SP 800-82r3 §4.2, MITRE ATT&CK for ICS §T0855 | False ephemeris/pseudorange RF signal transmission inducing continuous spatial drift and altitude offset | Critical (Category II) | Receiver Autonomous Integrity Monitoring (RAIM) + Chi-Square (chi^2) Kalman Filter Innovation residual gating (latency <= 100 ms) | Immediate exclusion of spoofed GNSS signals; lockstep transition to magnetic/visual dead-reckoning; alarms GCS | Multi-Channel RF GNSS Spoof Injection Test |
+| `THR-EW-03` | Electronic Warfare / C2 Link Jamming DoS | MITRE ATT&CK for ICS §T0814, NIST SP 800-82r3 §6.2 | Narrowband / swept RF noise jamming directed at primary C2 uplink, degrading signal-to-noise margin | Moderate (Category III) | Uplink heartbeat loss monitor and Packet Error Rate (PER > 0.05 for 2.0 s) (latency <= 1.0 s) | Automated PACE link switching to 915 MHz FHSS mesh / SATCOM; if unestablished within 5 s, initiates DO-362A Lost-Link RTH | C2 Datalink RF Jamming & Stress Benchmark |
+| `THR-EW-04` | Electronic Warfare / HIRF & EMP Pulse | MIL-STD-461G §5.4, §5.18, JARUS SORA v2.5 Annex E §E.23 | Electromagnetic pulse or radar illumination inducing transient voltage spikes in avionic wiring harnesses | Catastrophic (Category I) | TVS surge clamp voltage threshold sensors and power rail ripple detectors (latency <= 10 us) | Faradic shielded enclosure, double-braided conduit grounding, TVS clamping diodes shunt transient currents to chassis | MIL-STD-461G RS103 / CS115 Pulse Injection Test |
+| `THR-CYB-01` | Cybersecurity / Unauthorized Command Injection | MITRE ATT&CK for ICS §T0855, MITRE D3FEND §D3-MCR | Adversary transmitting forged flight mode change, disarm, or waypoint redirect commands over RF uplink | Catastrophic (Category I) | Ed25519 cryptographic signature verification and high-water mark nonce validation (latency <= 5 ms) | Immediate drop of unauthenticated packets; security alarm dispatch to GCS; temporary uplink source lockout | Fuzzing & Cryptographic Forgery Injection Test |
+| `THR-CYB-02` | Cybersecurity / C2 Replay Attack | MITRE D3FEND §D3-MCR, NIST SP 800-82r3 §6.2 | Intercepting valid legacy command packets and retransmitting during unauthorized operational phase | Critical (Category II) | Monotonically increasing 64-bit sequence counters + timestamp epoch skew checking abs(t - tau) <= 100 ms (latency <= 5 ms) | Reject stale/replayed packets; increment replay counter; isolate transmitting node if replay burst persists | Packet Replay Harness & Assertion Test |
+| `THR-CYB-03` | Cybersecurity / GCS Lateral Compromise | NIST SP 800-82r3 §5.3, ISO/SAE 21434 §6.4 | Malware pivot from external internet network to internal GCS flight control bridge and telemetry stream | Critical (Category II) | Unidirectional data diode flow monitor + zero-trust microsegmentation policy engine (latency <= 50 ms) | Hardware-enforced optical data diode isolates internal C2 bridge; revokes compromised GCS authorization token | GCS Network Segmentation & Pen-Testing |
+| `THR-CYB-04` | Cybersecurity / Firmware & Bus Tamper | MITRE ATT&CK for ICS §T0843, ISO/SAE 21434 §9.4 | Flashing unauthorized autopilot bootloader or injecting anomalous frame IDs onto internal CAN/Ethernet bus | Catastrophic (Category I) | Hardware Root of Trust (TPM 2.0 / Secure Boot) + CAN ID message frequency / payload rate anomaly monitor (latency <= 10 ms) | Secure Boot halts execution on hash mismatch; CAN bus firewall isolates compromised transceiver node | Secure Boot Chain & CAN Bus Fuzzing Audit |
+
+### 3.4 Mathematical Formulations: Multi-Domain Threat & EW/Cyber Integrity
+
+#### 1. Jammer-to-Signal (J/S) Power Ratio and Physical Link Saturation
+The effective Jammer-to-Signal power ratio $\text{JS}_{\text{ratio}}(t)$ (in logarithmic dB scale) at the airborne receiver antenna:
 
 $$\begin{aligned}
-\text{JS}_{\text{ratio}} &= P_{\text{jam}} + G_{\text{jam\_ant}} - L_{\text{prop,jam}} - \left(P_{\text{sat}} + G_{\text{rx\_ant}} - L_{\text{prop,sat}}\right) \\
+P_{\text{jam\_rx}}(t) &= P_{\text{jam}} + G_{\text{jam\_tx}} + G_{\text{rx\_ant}}(\theta_{\text{jam}}) - 20 \log_{10}\left(\frac{4\pi d_{\text{jam}}(t)}{\lambda_{\text{carrier}}}\right) - L_{\text{prop,jam}} \\
+P_{\text{sat\_rx}}(t) &= P_{\text{sat}} + G_{\text{sat\_tx}} + G_{\text{rx\_ant}}(\theta_{\text{sat}}) - 20 \log_{10}\left(\frac{4\pi d_{\text{sat}}}{\lambda_{\text{carrier}}}\right) - L_{\text{prop,sat}} \\
+\text{JS}_{\text{ratio}}(t) &= P_{\text{jam\_rx}}(t) - P_{\text{sat\_rx}}(t) \\
 \text{JammingDetected}(t) &= \begin{cases}
 1 & \text{if } \text{JS}_{\text{ratio}}(t) \ge \Gamma_{\text{jam\_threshold}} \lor \text{AGC}_{\text{attenuation}}(t) \ge \Lambda_{\text{sat}} \\
 0 & \text{otherwise}
 \end{cases}
 \end{aligned}$$
 
-#### 2. Innovation Filter for GNSS Spoofing Detection
-Residual innovation sequence $\nu(t)$ in the Kalman filter navigation state estimator:
+where nominal detection thresholds are $\Gamma_{\text{jam\_threshold}} = 30.0\text{ dB}$ and Automatic Gain Control (AGC) saturation threshold $\Lambda_{\text{sat}} = 45.0\text{ dB}$.
+
+#### 2. Chi-Square ($\chi^2$) Innovation Filter for GNSS Spoofing Detection
+Let the navigation Kalman filter state estimator have state transition $\hat{x}(t|t-1)$ and measurement model $z_{\text{GNSS}}(t) = H x(t) + v(t)$ with measurement noise covariance $R_{\text{sensor}}$. The residual innovation vector $\nu(t)$ and innovation covariance matrix $S(t)$ are:
 
 $$\begin{aligned}
 \nu(t) &= z_{\text{GNSS}}(t) - H \cdot \hat{x}_{\text{INS}}(t|t-1) \\
-\chi^2(t) &= \nu^T(t) \cdot S^{-1}(t) \cdot \nu(t) \\
+S(t) &= H \cdot P(t|t-1) \cdot H^T + R_{\text{sensor}} \\
+\chi^2(t) &= \nu(t)^T \cdot S^{-1}(t) \cdot \nu(t) = \sum_{i=1}^{k} \frac{\nu_i^2(t)}{\sigma_{s,i}^2(t)} \\
 \text{SpoofingTrip}(t) &= \begin{cases}
-1 & \text{if } \chi^2(t) > \chi^2_{\text{critical}, p=0.001} \quad \text{for } N_{\text{consecutive}} \ge 3 \\
-0 & \text{otherwise (GNSS Valid)}
+1 & \text{if } \chi^2(t) > \chi^2_{\text{critical}, p=0.001, k=6} \quad \text{for } N_{\text{consecutive}} \ge 3 \\
+0 & \text{otherwise (GNSS Navigation Valid)}
 \end{cases}
 \end{aligned}$$
 
-#### 3. Cryptographic Message Nonce & Timestamp Verification
-A received command payload $M = (c, \text{nonce}, \tau_{\text{stamp}}, \sigma)$ is authentic if and only if:
+where for $k = 6$ degrees of freedom (3D position, 3D velocity) at significance level $p = 0.001$, the critical test threshold is $\chi^2_{\text{critical}} = 22.46$.
+
+#### 3. Cryptographic Command Authentication & Monotonic Anti-Replay Verification
+A received flight control or payload command payload $M = (c, \text{nonce}, \tau_{\text{stamp}}, \sigma)$ is verified authentic and authorized under:
 
 $$\begin{aligned}
 \text{ValidCommand}(M, t) &= \mathbf{1}_{\{\text{Ed25519\_Verify}(K_{\text{GCS\_pub}}, (c, \text{nonce}, \tau_{\text{stamp}}), \sigma) = 1\}} \cdot \mathbf{1}_{\{\text{nonce} > \text{nonce}_{\text{high\_water}}\}} \cdot \mathbf{1}_{\{|t - \tau_{\text{stamp}}| \le \Delta \tau_{\text{skew\_max}}\}}
 \end{aligned}$$
 
-### 3.4 Mermaid Flowchart: Cyber Threat Defense-in-Depth
+where maximum allowable network clock skew is bounded by $\Delta \tau_{\text{skew\_max}} = 100\text{ ms}$.
+
+#### 4. Multi-Domain Threat State & Unified Autonomous Containment Decision Function
+Let the composite multi-domain threat vector $\mathbf{T}(t)$ evaluate the normalized hazard metrics across the 6 orthogonal threat domains:
+
+$$\begin{aligned}
+\mathbf{T}(t) &= \left[ \tau_{\text{kin}}(t),\, \tau_{\text{mec}}(t),\, \tau_{\text{pwr}}(t),\, \tau_{\text{env}}(t),\, \tau_{\text{ew}}(t),\, \tau_{\text{cyb}}(t) \right]^T \in [0, 1]^6 \\
+\text{Action}_{\text{containment}}(t) &= \begin{cases}
+\text{EMERGENCY\_FTS\_PARACHUTE} & \text{if } \tau_{\text{kin}}(t) \ge \Theta_{\text{crit}} \lor \tau_{\text{pwr}}(t) \ge \Theta_{\text{crit}} \lor \tau_{\text{mec}}(t) \ge \Theta_{\text{crit}} \\
+\text{SIMPLEX\_RTA\_SAFE\_HOLD} & \text{if } \tau_{\text{kin}}(t) \ge \Theta_{\text{warn}} \lor \tau_{\text{env}}(t) \ge \Theta_{\text{warn}} \\
+\text{PACE\_LINK\_SWITCH} & \text{if } \tau_{\text{ew}}(t) \ge \Theta_{\text{warn}} \lor \tau_{\text{cyb}}(t) \ge \Theta_{\text{warn}} \\
+\text{NOMINAL\_MISSION} & \text{otherwise}
+\end{cases}
+\end{aligned}$$
+
+where critical emergency threshold is $\Theta_{\text{crit}} = 0.90$ and preventative warning threshold is $\Theta_{\text{warn}} = 0.60$.
+
+### 3.5 Mermaid Flowchart: Multi-Domain Threat Defense-in-Depth
 
 ```mermaid
 flowchart TD
-    RF_In["Incoming RF / Data Signal"] --> PHY_Check{"Physical & Layer 1 Check"}
+    RF_In["Multi-Domain Input Vectors (RF, Kinematic, Environmental, Bus)"] --> PHY_Check{"Layer 1: Physical & Sensor Telemetry Check"}
 
-    PHY_Check -->|"HIRF / Signal Surge"| Surge_Clamp["TVS Clamp & Shield Filter"]
-    PHY_Check -->|"J/S Ratio Exceeded"| EW_Failover["Trip Anti-Jam Failover to INS and PACE"]
-    PHY_Check -->|"Signal Nominal"| L2_Crypto{"Layer 2 Crypto & Frame Auth"}
+    PHY_Check -->|"HIRF / EMP Surge"| Surge_Clamp["TVS Clamp & Structural Shielding"]
+    PHY_Check -->|"J/S Ratio Exceeded"| EW_Failover["Trip Anti-Jam Failover to INS & PACE"]
+    PHY_Check -->|"Atmospheric Icing / Wind Shear"| Env_Mitigate["Trigger De-Ice Heaters / TECS Escape"]
+    PHY_Check -->|"Signal Nominal"| L2_Crypto{"Layer 2: Cryptographic & Bus Security"}
 
     L2_Crypto -->|"Bad Ed25519 Signature"| Drop_Pkt["Drop Packet & Log Alarm"]
     L2_Crypto -->|"Nonce Replayed / Expired"| Drop_Replay["Drop Replay & Isolate Source"]
-    L2_Crypto -->|"Signature & Nonce Valid"| L3_Integrity{"Layer 3 State & Logic Filter"}
+    L2_Crypto -->|"Bus Frame Anomaly"| Bus_Firewall["CAN Firewall Isolates Node"]
+    L2_Crypto -->|"Signature & Nonce Valid"| L3_Integrity{"Layer 3: State Estimation & Airspace Safety"}
 
-    L3_Integrity -->|"Chi-Square Sensor Anomaly"| Isolate_Sensor["Isolate Sensor (RAIM Trip)"]
-    L3_Integrity -->|"Command State Verified"| Execute_Cmd["Execute Flight / Payload Command"]
+    L3_Integrity -->|"Chi-Square Sensor Anomaly"| Isolate_Sensor["Isolate Sensor (RAIM Spoofing Trip)"]
+    L3_Integrity -->|"DAA Well-Clear Loss / Geofence Breach"| Simplex_RTA["Simplex RTA Escape Maneuver"]
+    L3_Integrity -->|"Structural / Thermal Critical Fault"| FTS_Parachute["Deploy Ballistic Parachute FTS"]
+    L3_Integrity -->|"All Vectors Clear"| Execute_Cmd["Execute Flight & Payload Guidance"]
 ```
 
 ---
@@ -405,5 +520,7 @@ stateDiagram-v2
 | JARUS SORA v2.5 | Specific Category Risk Assessment | 4 | Annex B §B.2 – Annex E §E.4 | GRC M1-M3 Proof, ARC Reduction, Containment Check | Fully Populated |
 | RTCA DO-362A | C2 Datalink Performance & Redundancy | 4 | §2.2 – §3.4 | 99.99% Availability, Link Budget, Lost-Link Switch | Fully Populated |
 | ASTM F3411-22a | Remote Identification & RF Continuity | 4 | §6.1 – §8.4 | Bluetooth/NAN Beacon, Handover Test, Cryptographic Auth | Fully Populated |
+| INCOSE SEH v5.0 | Systems Engineering & Architecture Governance | 4 | §3.3.1 – §5.4 | Life Cycle Audit, Decomposition Review, Traceability Matrix | Fully Populated |
+| MIL-STD-810H | Environmental Engineering & Climatic Resilience | 4 | Method 501.7 – Method 521.4 | Thermal Chamber, Rain/Wind Ingress, Icing Tunnel Test | Fully Populated |
 
-Total Declared Obligations: **48** | Total Realized: **48** (100% Conforming)
+Total Declared Obligations: **56** | Total Realized: **56** (100% Conforming)
