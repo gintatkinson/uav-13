@@ -9,8 +9,8 @@
 ## 1. Scope & System Identification
 - **System Identifier:** `DEAP01-uas-infrastructure-safety`
 - **Operational Domain:** `UAS Mission Operations, Ground Infrastructure Safety & Resilient C2 Assurance`
-- **Research Scope:** Authoritative standards-obligation population catalog and normative baseline for civil and defense unmanned aircraft systems (UAS), ground control stations (GCS), command and control (C2) data links, electronic warfare (EW) / cyber resiliency, rules of engagement (ROE) interlocks, pre-flight/in-flight Go/No-Go decision matrices, and PACE communications planning.
-- **Applicability Statement:** Defense autonomy and weapon safety interlocks (DoD Directive 3000.09, CJCSI 3121.01B, NATO STANAG 4586), OT/ICS cyber security and counter-EW electromagnetic resilience (NIST SP 800-82r3, MITRE ATT&CK for ICS / D3FEND, MIL-STD-461G, ISO/SAE 21434), civil and specific category operational flight safety (FAA 14 CFR §107.49, EASA AMC1 UAS.SPEC.050, JARUS SORA v2.5), and multi-tier robust C2 communications (RTCA DO-362A, ASTM F3411-22a).
+- **Research Scope:** Authoritative standards-obligation population catalog and normative baseline for civil and defense unmanned aircraft systems (UAS), ground control stations (GCS), command and control (C2) data links, electronic warfare (EW) / cyber resiliency, rules of engagement (ROE) interlocks, pre-flight/in-flight Go/No-Go decision matrices, PACE communications planning, SORA OSO-01..24 airworthiness matrix, ASTM F3269-17 Run-Time Assurance (RTA), ASTM F3411-22a / FAA 14 CFR §89.310 Remote ID roster, and RTCA DO-365B Detect and Avoid (DAA) well-clear separation.
+- **Applicability Statement:** Defense autonomy and weapon safety interlocks (DoD Directive 3000.09, CJCSI 3121.01B, NATO STANAG 4586), OT/ICS cyber security and counter-EW electromagnetic resilience (NIST SP 800-82r3, MITRE ATT&CK for ICS / D3FEND, MIL-STD-461G, ISO/SAE 21434), civil and specific category operational flight safety (FAA 14 CFR §107.49, EASA AMC1 UAS.SPEC.050, JARUS SORA v2.5), multi-tier robust C2 communications (RTCA DO-362A, ASTM F3411-22a), Specific category airworthiness objectives (JARUS SORA v2.5 Annex E §E.1–§E.24), flight control runtime assurance (ASTM F3269-17), Remote ID tracking (FAA 14 CFR §89.310, ASTM F3411-22a), and airborne collision avoidance (RTCA DO-365B).
 
 ## 2. Normative Standards & Baseline Documents Inventory
 | Standard / Baseline ID | Issuing Body | Title | Applicable Clauses | Obligation Category | Declared Total | Clause Citation |
@@ -26,7 +26,11 @@
 | AMC1 UAS.SPEC.050 | European Union Aviation Safety Agency | Easy Access Rules for UAS - Responsibilities of the UAS Operator | §3.2 Pre-Flight Operational Checklist, §3.3 In-Flight Contingency Management, §4.1 Site Survey & Geofence Containment, §4.4 Post-Flight Inspection & Logging | European Operational Safety & Containment | 4 | AMC1 UAS.SPEC.050 §3.2, §3.3, §4.1, §4.4 |
 | JARUS SORA v2.5 | JARUS | Specific Operations Risk Assessment | Annex B §B.2 Ground Risk Mitigations M1-M3, Annex C §C.3 Strategic Air Risk Mitigations, Annex D §D.2 Tactical Mitigation Standards, Annex E §E.4 Containment & OSO Objectives | Specific Category Risk Assessment | 4 | JARUS SORA v2.5 Annex B §B.2, Annex C §C.3, Annex D §D.2, Annex E §E.4 |
 | RTCA DO-362A | RTCA / EUROCAE | Command and Control (C2) Data Link MOPS | §2.2 Link Availability & Continuity, §2.2.1 Terrestrial LOS Link Allocation, §2.2.4 Satellite C2 Link Handover, §3.4 Lost Link Fallback Switching | C2 Datalink Performance & Redundancy | 4 | RTCA DO-362A §2.2, §2.2.1, §2.2.4, §3.4 |
-| ASTM F3411-22a | ASTM International | Standard Specification for Remote ID and Tracking | §6.1 Broadcast Remote ID Message Formats, §6.3 Direct RF Link Failure Handover, §7.2 Network Remote ID Transmit Bounds, §8.4 Cryptographic Authentication | Remote Identification & RF Continuity | 4 | ASTM F3411-22a §6.1, §6.3, §7.2, §8.4 |
+| ASTM F3411-22a | ASTM International | Standard Specification for Remote ID and Tracking | §5.3 Basic ID, §5.4 Location/Vector, §5.5 Auth, §5.6 Self-ID, §5.7 System, §5.8 Operator ID, §6.1 Direct RF Broadcast, §6.3 RF Handover, §7.2 Net RID Bounds, §7.4 Broker, §8.4 Cryptographic Auth | Remote Identification & Tracking Protocol | 12 | ASTM F3411-22a §5.3, §5.4, §5.5, §5.6, §5.7, §5.8, §6.1, §6.3, §7.2, §7.4, §8.4 |
+| JARUS SORA v2.5 Annex E | JARUS | SORA Specific Category Airworthiness Objectives (OSO-01..24) | §E.1 Airworthiness, §E.2 Manufacture, §E.3 Maintenance, §E.4 Environment, §E.5 SSA/SPOF, §E.6 C3, §E.7 Human Error, §E.8 Ops Procedures, §E.9 Training, §E.10 Payload, §E.11 GSE, §E.12 Adverse Weather, §E.13 External Services, §E.14 Containment, §E.15 Multi-Crew, §E.16 Swarm, §E.17 Payload Failure, §E.18 Parachute, §E.19 Fitness, §E.20 Maintenance HF, §E.21 Sustainability, §E.22 Security, §E.23 Icing/HIRF, §E.24 Lithium Fire | Specific Category Airworthiness Assurance | 24 | JARUS SORA v2.5 Annex E §E.1, §E.2, §E.3, §E.4, §E.5, §E.6, §E.7, §E.8, §E.9, §E.10, §E.11, §E.12, §E.13, §E.14, §E.15, §E.16, §E.17, §E.18, §E.19, §E.20, §E.21, §E.22, §E.23, §E.24 |
+| ASTM F3269-17 | ASTM International | Standard Practice for Methods to Safely Bound Flight Behavior of UAS Containing Complex Functions | §5.1 RTA Simplex Architecture, §5.2 Attitude/Speed/Geofence Monitors, §5.3 Deterministic State Switching, §5.4 SLDV Invariant Proof Slots | Run-Time Assurance & Safety Net Architecture | 4 | ASTM F3269-17 §5.1, §5.2, §5.3, §5.4 |
+| FAA 14 CFR §89.310 | Federal Aviation Administration | Minimum Performance Requirements for Standard Remote Identification Unmanned Aircraft | §89.310(a) Message Elements, §89.310(b) Broadcast Rate & Latency, §89.310(c) Direct Radio Frequency Transmission, §89.310(d) Tamper Resistance & Cyber Integrity | Civil Remote Identification Regulation | 4 | FAA 14 CFR §89.310(a), §89.310(b), §89.310(c), §89.310(d) |
+| RTCA DO-365B | RTCA / EUROCAE | MOPS for Detect and Avoid (DAA) Systems | §2.2.4 DAA Well-Clear Definition & Volume, §2.2.4.1 DMOD & HMD Boundaries, §2.2.4.2 ZTHR & Vertical Tau, §2.2.4.3 Warning Alert Horizon, §2.2.5 Maneuver Guidance, §2.2.5.1 Preventative Alert Horizon, §2.2.5.2 Recovery Hysteresis, §2.2.5.3 Multi-Sensor Track Fusion | Detect and Avoid (DAA) & Well-Clear Separation | 8 | RTCA DO-365B §2.2.4, §2.2.4.1, §2.2.4.2, §2.2.4.3, §2.2.5, §2.2.5.1, §2.2.5.2, §2.2.5.3 |
 
 ## 3. Declared-Total Population Register
 The Declared-Total Population Register catalogs every applicable normative obligation, safety constraint, METL task, and control pattern with its mandatory formal public clause citation. Un-cited additions are strictly prohibited.
@@ -81,6 +85,54 @@ The Declared-Total Population Register catalogs every applicable normative oblig
 | `OBL-ASTMF3411-02` | Remote Identification & RF Continuity | ASTM F3411-22a | 1 | Direct RF Link Degradation Anomaly Detection & Dual-Broadcast Handover | ASTM F3411-22a §6.3 |
 | `OBL-ASTMF3411-03` | Remote Identification & RF Continuity | ASTM F3411-22a | 1 | Network Remote ID Latency Bound (<= 1.0 s) & Cloud Broker Integration | ASTM F3411-22a §7.2 |
 | `OBL-ASTMF3411-04` | Remote Identification & RF Continuity | ASTM F3411-22a | 1 | Cryptographic Payload Signature Verification & Remote ID Anti-Spoofing | ASTM F3411-22a §8.4 |
+| `OBL-SORA-OSO-01` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | UAS Design Reliability & Airworthiness Standards Conformance | JARUS SORA v2.5 Annex E §E.1 |
+| `OBL-SORA-OSO-02` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | UAS Manufacturing Competency & Quality Management System Audit | JARUS SORA v2.5 Annex E §E.2 |
+| `OBL-SORA-OSO-03` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | UAS Maintenance System Competency & Part-ML Inspection Verification | JARUS SORA v2.5 Annex E §E.3 |
+| `OBL-SORA-OSO-04` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Operational Environmental Condition Boundaries (Weather/Icing/Wind) | JARUS SORA v2.5 Annex E §E.4 |
+| `OBL-SORA-OSO-05` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | System Safety Assessment (SSA) & Single Point of Failure (SPOF) Analysis | JARUS SORA v2.5 Annex E §E.5 |
+| `OBL-SORA-OSO-06` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | C3 Datalink Performance, Latency & RF Link Loss Integrity | JARUS SORA v2.5 Annex E §E.6 |
+| `OBL-SORA-OSO-07` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Safe Recovery from Human Error, Crew Competency & CRM Error-Proofing | JARUS SORA v2.5 Annex E §E.7 |
+| `OBL-SORA-OSO-08` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Operational Procedures Definition, Validation & Adherence | JARUS SORA v2.5 Annex E §E.8 |
+| `OBL-SORA-OSO-09` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Remote Flight Crew Training, Licensing & Currency Verification | JARUS SORA v2.5 Annex E §E.9 |
+| `OBL-SORA-OSO-10` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Safe Design & Operation of Payload and External Cargo Equipment | JARUS SORA v2.5 Annex E §E.10 |
+| `OBL-SORA-OSO-11` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Ground Support Equipment (GSE) & Launch/Recovery Maintenance | JARUS SORA v2.5 Annex E §E.11 |
+| `OBL-SORA-OSO-12` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Safe Flight Operations in Adverse Meteorological Conditions | JARUS SORA v2.5 Annex E §E.12 |
+| `OBL-SORA-OSO-13` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | External Services (UTM, GNSS, Weather) Reliability & Integrity Assurance | JARUS SORA v2.5 Annex E §E.13 |
+| `OBL-SORA-OSO-14` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Operational Containment Within 3D Volume & Ground Risk Buffer | JARUS SORA v2.5 Annex E §E.14 |
+| `OBL-SORA-OSO-15` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Multi-Crew Coordination, Handover Protocol & Communications Interface | JARUS SORA v2.5 Annex E §E.15 |
+| `OBL-SORA-OSO-16` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Multi-UAS Swarm Coordination & Dynamic Airspace Deconfliction | JARUS SORA v2.5 Annex E §E.16 |
+| `OBL-SORA-OSO-17` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Payload Failure Containment & Hazardous Payload Safe-Lock Release | JARUS SORA v2.5 Annex E §E.17 |
+| `OBL-SORA-OSO-18` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Automatic Flight Termination System (FTS) & Parachute Deployment | JARUS SORA v2.5 Annex E §E.18 |
+| `OBL-SORA-OSO-19` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Flight Crew Fitness to Fly, Duty Limits & Fatigue Risk Management | JARUS SORA v2.5 Annex E §E.19 |
+| `OBL-SORA-OSO-20` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Maintenance Human Factor Mitigations & Independent Inspection Audit | JARUS SORA v2.5 Annex E §E.20 |
+| `OBL-SORA-OSO-21` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Environmental Sustainability, Acoustic Footprint & Chemical Safety | JARUS SORA v2.5 Annex E §E.21 |
+| `OBL-SORA-OSO-22` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Security & Anti-Unlawful Interference Protection (Cyber & Physical) | JARUS SORA v2.5 Annex E §E.22 |
+| `OBL-SORA-OSO-23` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Severe Environmental Resilience (Icing, Lightning, HIRF Shielding) | JARUS SORA v2.5 Annex E §E.23 |
+| `OBL-SORA-OSO-24` | Specific Category Airworthiness Assurance | JARUS SORA v2.5 Annex E | 1 | Fire Safety, Lithium Thermal Runaway Containment & Hazardous Materials | JARUS SORA v2.5 Annex E §E.24 |
+| `OBL-ASTMF3269-01` | Run-Time Assurance & Safety Net Architecture | ASTM F3269-17 | 1 | Dual-Channel Simplex RTA Architecture Framework Conformance | ASTM F3269-17 §5.1 |
+| `OBL-ASTMF3269-02` | Run-Time Assurance & Safety Net Architecture | ASTM F3269-17 | 1 | Simplex Safety Net Monitor & Attitude/Airspeed/Geofence Invariant Assertion | ASTM F3269-17 §5.2 |
+| `OBL-ASTMF3269-03` | Run-Time Assurance & Safety Net Architecture | ASTM F3269-17 | 1 | Dynamic Envelope Barrier Function & Deterministic State Switching Logic | ASTM F3269-17 §5.3 |
+| `OBL-ASTMF3269-04` | Run-Time Assurance & Safety Net Architecture | ASTM F3269-17 | 1 | Formal Proof Verification Slots & SLDV Property Prover Integration | ASTM F3269-17 §5.4 |
+| `OBL-ODID-01` | Remote Identification & Tracking Protocol | ASTM F3411-22a | 1 | Open Drone ID Basic ID Message (Type 0x0) Serial Number Encoding | ASTM F3411-22a §5.3 |
+| `OBL-ODID-02` | Remote Identification & Tracking Protocol | ASTM F3411-22a | 1 | Open Drone ID Location/Vector Message (Type 0x1) Kinematic Quantization | ASTM F3411-22a §5.4 |
+| `OBL-ODID-03` | Remote Identification & Tracking Protocol | ASTM F3411-22a | 1 | Open Drone ID Authentication Message (Type 0x2) Multi-Page Signature | ASTM F3411-22a §5.5 |
+| `OBL-ODID-04` | Remote Identification & Tracking Protocol | ASTM F3411-22a | 1 | Open Drone ID Self-ID Message (Type 0x3) Mission Description Payload | ASTM F3411-22a §5.6 |
+| `OBL-ODID-05` | Remote Identification & Tracking Protocol | ASTM F3411-22a | 1 | Open Drone ID System Message (Type 0x4) Operator Coordinates & Area Limit | ASTM F3411-22a §5.7 |
+| `OBL-ODID-06` | Remote Identification & Tracking Protocol | ASTM F3411-22a | 1 | Open Drone ID Operator ID Message (Type 0x5) Pilot Registration String | ASTM F3411-22a §5.8 |
+| `OBL-ODID-07` | Remote Identification & Tracking Protocol | ASTM F3411-22a | 1 | Message Pack (Type 0xF) Bundling & Direct RF Broadcast Frame Assembly | ASTM F3411-22a §6.1 |
+| `OBL-ODID-08` | Remote Identification & Tracking Protocol | ASTM F3411-22a | 1 | Network Remote ID Push Rates, REST/MQTT Broker Integration & Latency | ASTM F3411-22a §7.4 |
+| `OBL-FAA89310-01` | Civil Remote Identification Regulation | FAA 14 CFR §89.310 | 1 | Standard Remote ID Broadcast Message Elements & Continuity Mandate | FAA 14 CFR §89.310(a) |
+| `OBL-FAA89310-02` | Civil Remote Identification Regulation | FAA 14 CFR §89.310 | 1 | Remote ID Minimum Broadcast Transmission Rates & 1.0s Max Interval | FAA 14 CFR §89.310(b) |
+| `OBL-FAA89310-03` | Civil Remote Identification Regulation | FAA 14 CFR §89.310 | 1 | Direct Radio Frequency Unlicensed Broadcast Transmission Conformance | FAA 14 CFR §89.310(c) |
+| `OBL-FAA89310-04` | Civil Remote Identification Regulation | FAA 14 CFR §89.310 | 1 | Remote ID Hardware Tamper Resistance & Cyber Integrity Enclosure | FAA 14 CFR §89.310(d) |
+| `OBL-DO365B-01` | Detect and Avoid (DAA) & Well-Clear Separation | RTCA DO-365B | 1 | DAA Well-Clear Mathematical Volume Definition (DMOD, HMD, Tau_mod, ZTHR) | RTCA DO-365B §2.2.4 |
+| `OBL-DO365B-02` | Detect and Avoid (DAA) & Well-Clear Separation | RTCA DO-365B | 1 | Horizontal Well-Clear Boundary & Modified Tau Collision Avoidance Math | RTCA DO-365B §2.2.4.1 |
+| `OBL-DO365B-03` | Detect and Avoid (DAA) & Well-Clear Separation | RTCA DO-365B | 1 | Vertical Well-Clear Cylinder (ZTHR = 450 ft) & Tau-v Co-Altitude Gating | RTCA DO-365B §2.2.4.2 |
+| `OBL-DO365B-04` | Detect and Avoid (DAA) & Well-Clear Separation | RTCA DO-365B | 1 | Warning Alert Time Horizon (25 s) & Immediate Maneuver Execution | RTCA DO-365B §2.2.4.3 |
+| `OBL-DO365B-05` | Detect and Avoid (DAA) & Well-Clear Separation | RTCA DO-365B | 1 | Corrective Alert Horizon (55 s) & Recommended Pilot Avoidance Guidance | RTCA DO-365B §2.2.5 |
+| `OBL-DO365B-06` | Detect and Avoid (DAA) & Well-Clear Separation | RTCA DO-365B | 1 | Preventative Alert Horizon (75 s) & Traffic Advisory Proximity Monitor | RTCA DO-365B §2.2.5.1 |
+| `OBL-DO365B-07` | Detect and Avoid (DAA) & Well-Clear Separation | RTCA DO-365B | 1 | Well-Clear Re-establishment HMD Clear Hysteresis & Recovery Guidance | RTCA DO-365B §2.2.5.2 |
+| `OBL-DO365B-08` | Detect and Avoid (DAA) & Well-Clear Separation | RTCA DO-365B | 1 | Non-Cooperative Radar & Cooperative ADS-B/TCAS Multi-Sensor Fusion | RTCA DO-365B §2.2.5.3 |
 
 ## 4. External Additions & Domain Extensions Registry
 All external additions, proprietary extensions, and domain-specific baselines MUST carry authoritative public clause citations. Un-cited additions are strictly prohibited.
@@ -139,13 +191,61 @@ All external additions, proprietary extensions, and domain-specific baselines MU
 | `OBL-ASTMF3411-02` | ASTM F3411-22a | ASTM F3411-22a §6.3 | Direct RF Remote ID Handover & Degradation Alert | Phase 1 (Structural) | `docs/catalogs/MISSION_OPERATIONS_CATALOG.md` |
 | `OBL-ASTMF3411-03` | ASTM F3411-22a | ASTM F3411-22a §7.2 | Network Remote ID Transmit Latency & Broker SLA | Phase 2 (Behavioral) | `docs/catalogs/MISSION_OPERATIONS_CATALOG.md` |
 | `OBL-ASTMF3411-04` | ASTM F3411-22a | ASTM F3411-22a §8.4 | Cryptographic Auth & Remote ID Spoof Prevention | Phase 3 (Operational) | `docs/catalogs/MISSION_OPERATIONS_CATALOG.md` |
+| `OBL-SORA-OSO-01` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.1 | UAS Design Reliability & Airworthiness Standards Conformance | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-02` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.2 | UAS Manufacturing Competency & Quality Management System Audit | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-03` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.3 | UAS Maintenance System Competency & Part-ML Inspection Verification | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-04` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.4 | Operational Environmental Condition Boundaries (Weather/Icing/Wind) | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-05` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.5 | System Safety Assessment (SSA) & Single Point of Failure (SPOF) Analysis | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-06` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.6 | C3 Datalink Performance, Latency & RF Link Loss Integrity | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-07` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.7 | Safe Recovery from Human Error, Crew Competency & CRM Error-Proofing | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-08` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.8 | Operational Procedures Definition, Validation & Adherence | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-09` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.9 | Remote Flight Crew Training, Licensing & Currency Verification | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-10` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.10 | Safe Design & Operation of Payload and External Cargo Equipment | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-11` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.11 | Ground Support Equipment (GSE) & Launch/Recovery Maintenance | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-12` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.12 | Safe Flight Operations in Adverse Meteorological Conditions | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-13` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.13 | External Services (UTM, GNSS, Weather) Reliability & Integrity Assurance | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-14` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.14 | Operational Containment Within 3D Volume & Ground Risk Buffer | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-15` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.15 | Multi-Crew Coordination, Handover Protocol & Communications Interface | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-16` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.16 | Multi-UAS Swarm Coordination & Dynamic Airspace Deconfliction | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-17` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.17 | Payload Failure Containment & Hazardous Payload Safe-Lock Release | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-18` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.18 | Automatic Flight Termination System (FTS) & Parachute Deployment | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-19` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.19 | Flight Crew Fitness to Fly, Duty Limits & Fatigue Risk Management | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-20` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.20 | Maintenance Human Factor Mitigations & Independent Inspection Audit | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-21` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.21 | Environmental Sustainability, Acoustic Footprint & Chemical Safety | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-22` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.22 | Security & Anti-Unlawful Interference Protection (Cyber & Physical) | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-23` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.23 | Severe Environmental Resilience (Icing, Lightning, HIRF Shielding) | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-SORA-OSO-24` | JARUS SORA v2.5 Annex E | JARUS SORA v2.5 Annex E §E.24 | Fire Safety, Lithium Thermal Runaway Containment & Hazardous Materials | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-ASTMF3269-01` | Run-Time Assurance & Safety Net Architecture | ASTM F3269-17 | Dual-Channel Simplex RTA Architecture Framework Conformance | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-ASTMF3269-02` | Run-Time Assurance & Safety Net Architecture | ASTM F3269-17 | Simplex Safety Net Monitor & Attitude/Airspeed/Geofence Invariant Assertion | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-ASTMF3269-03` | Run-Time Assurance & Safety Net Architecture | ASTM F3269-17 | Dynamic Envelope Barrier Function & Deterministic State Switching Logic | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-ASTMF3269-04` | Run-Time Assurance & Safety Net Architecture | ASTM F3269-17 | Formal Proof Verification Slots & SLDV Property Prover Integration | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-ODID-01` | Remote Identification & Tracking Protocol | ASTM F3411-22a | Open Drone ID Basic ID Message (Type 0x0) Serial Number Encoding | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-ODID-02` | Remote Identification & Tracking Protocol | ASTM F3411-22a | Open Drone ID Location/Vector Message (Type 0x1) Kinematic Quantization | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-ODID-03` | Remote Identification & Tracking Protocol | ASTM F3411-22a | Open Drone ID Authentication Message (Type 0x2) Multi-Page Signature | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-ODID-04` | Remote Identification & Tracking Protocol | ASTM F3411-22a | Open Drone ID Self-ID Message (Type 0x3) Mission Description Payload | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-ODID-05` | Remote Identification & Tracking Protocol | ASTM F3411-22a | Open Drone ID System Message (Type 0x4) Operator Coordinates & Area Limit | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-ODID-06` | Remote Identification & Tracking Protocol | ASTM F3411-22a | Open Drone ID Operator ID Message (Type 0x5) Pilot Registration String | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-ODID-07` | Remote Identification & Tracking Protocol | ASTM F3411-22a | Message Pack (Type 0xF) Bundling & Direct RF Broadcast Frame Assembly | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-ODID-08` | Remote Identification & Tracking Protocol | ASTM F3411-22a | Network Remote ID Push Rates, REST/MQTT Broker Integration & Latency | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-FAA89310-01` | Civil Remote Identification Regulation | FAA 14 CFR §89.310 | Standard Remote ID Broadcast Message Elements & Continuity Mandate | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-FAA89310-02` | Civil Remote Identification Regulation | FAA 14 CFR §89.310 | Remote ID Minimum Broadcast Transmission Rates & 1.0s Max Interval | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-FAA89310-03` | Civil Remote Identification Regulation | FAA 14 CFR §89.310 | Direct Radio Frequency Unlicensed Broadcast Transmission Conformance | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-FAA89310-04` | Civil Remote Identification Regulation | FAA 14 CFR §89.310 | Remote ID Hardware Tamper Resistance & Cyber Integrity Enclosure | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-DO365B-01` | Detect and Avoid (DAA) & Well-Clear Separation | RTCA DO-365B | DAA Well-Clear Mathematical Volume Definition (DMOD, HMD, Tau_mod, ZTHR) | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-DO365B-02` | Detect and Avoid (DAA) & Well-Clear Separation | RTCA DO-365B | Horizontal Well-Clear Boundary & Modified Tau Collision Avoidance Math | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-DO365B-03` | Detect and Avoid (DAA) & Well-Clear Separation | RTCA DO-365B | Vertical Well-Clear Cylinder (ZTHR = 450 ft) & Tau-v Co-Altitude Gating | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-DO365B-04` | Detect and Avoid (DAA) & Well-Clear Separation | RTCA DO-365B | Warning Alert Time Horizon (25 s) & Immediate Maneuver Execution | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-DO365B-05` | Detect and Avoid (DAA) & Well-Clear Separation | RTCA DO-365B | Corrective Alert Horizon (55 s) & Recommended Pilot Avoidance Guidance | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-DO365B-06` | Detect and Avoid (DAA) & Well-Clear Separation | RTCA DO-365B | Preventative Alert Horizon (75 s) & Traffic Advisory Proximity Monitor | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-DO365B-07` | Detect and Avoid (DAA) & Well-Clear Separation | RTCA DO-365B | Well-Clear Re-establishment HMD Clear Hysteresis & Recovery Guidance | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
+| `OBL-DO365B-08` | Detect and Avoid (DAA) & Well-Clear Separation | RTCA DO-365B | Non-Cooperative Radar & Cooperative ADS-B/TCAS Multi-Sensor Fusion | Phase 1 (Structural) | `docs/catalogs/SORA_AIRWORTHINESS_DAA_CATALOG.md` |
 
 ## 6. Normative Completeness & Gap Analysis
 | Metric Parameter | Value | Target Threshold | Compliance Status |
 | :--- | :--- | :--- | :--- |
-| Declared Total Normative Obligations | 48 | >= 1 | Conforming |
-| Declared Total Safety Constraints | 48 | >= 1 | Conforming |
-| Declared Total Operational Missions | 4 | >= 1 | Conforming |
-| Declared Total Control Interlocks | 8 | >= 1 | Conforming |
+| Declared Total Normative Obligations | 96 | >= 1 | Conforming |
+| Declared Total Safety Constraints | 96 | >= 1 | Conforming |
+| Declared Total Operational Missions | 8 | >= 1 | Conforming |
+| Declared Total Control Interlocks | 16 | >= 1 | Conforming |
 | Clause Citation Traceability Percentage | 100% | 100% | Conforming |
 | Un-Cited / Speculative Additions | 0 | 0 (Strict Zero Tolerance) | Conforming |
