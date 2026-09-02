@@ -76,7 +76,7 @@ The Mission Essential Task List (METL) establishes the doctrinally grounded, qua
 
 | Task ID | Task Name | Condition Statement | Standard Metric | Verification Method | Gate 24 Allocation Tag | Public Clause Citation |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `MET-01` | PreFlightSystemCheckout | Pre-launch stationary ground state with active energy and avionics power | 100% PBIT pass, IMU bias convergence t_PBIT <= 10.0 s, battery SoC >= 95.0% | Automated BIT Log Inspection | `/// OperationalAllocation: [MET-01]` | NATO STANAG 4586 Annex B §4.1 |
+| `MET-01` | PreFlightSystemCheckout | Pre-launch stationary ground state across 10 physical/electronic subsystems with ground support equipment connected | 100% PBIT pass across 10 subsystems (Structures tap/torque/CG, Controls backlash/current, Pitot leak/offset/heater, Propulsion/BMS phase/quiescent/R_i/SoC/delta_V, Avionics IMU/GNSS/PDOP, DAA radar/ADS-B, FTS squib/pin, C2 PER/Remote ID, Payload boresight/cryo lock, 3-tier release ECDSA token 0x5349) | Automated Subsystem PBIT Telemetry & 3-Tier Multi-Disciplinary Digital Logbook Inspection | `/// OperationalAllocation: [MET-01]` | NATO STANAG 4586 Annex B §4.1 |
 | `MET-02` | AutonomousIngressTransit | En-route corridor navigation under active flight plan | Lateral cross-track error e_xtrack <= 2.0 m, vertical error e_z <= 1.0 m | Flight Navigation Log Review | `/// OperationalAllocation: [MET-02]` | RTCA DO-365B §2.2.3 |
 | `MET-03` | AreaSurveillanceOrbit | On-station target tracking within designated geographic boundary | Orbit radius R_orbit = 300.0 m +/- 5.0 m, payload pointing jitter <= 0.05 deg | Telemetry & Video Frame Analysis | `/// OperationalAllocation: [MET-03]` | NATO STANAG 4586 Annex B §3.2 |
 | `MET-04` | DynamicAirspaceDeconfliction | Traffic conflict geometry detected by onboard DAA sensors | Maintain Well-Clear separation (D_horizontal >= 1200.0 m, H_vertical >= 137.0 m) | DAA Collision Event Log Review | `/// OperationalAllocation: [MET-04]` | RTCA DO-365B §2.2.4 |
@@ -89,37 +89,68 @@ The Mission Essential Task List (METL) establishes the doctrinally grounded, qua
 
 ### 2.1 MET-01: PreFlightSystemCheckout
 
-Formal specification for pre-flight built-in test (PBIT), sensor bias calibration, actuator authority validation, and cryptographic key binding prior to motor arming.
+Formal specification for comprehensive pre-flight built-in test (PBIT), physical structural integrity validation, air data calibration, propulsion and battery impedance verification, sensor bias convergence, detect and avoid self-test, flight termination interlocks, command-and-control link margins, cryogenic payload cooling, and multi-tier cryptographic airworthiness release authorization prior to motor arming.
+
+Pre-flight checkout enforces a strict 3-tier airworthiness release architecture:
+1. **Tier 1 (Automated Bus Telemetry & Sensor BITE):** Continuous digital interrogation of all onboard sensors, avionics buses (CAN FD, SPI, ARINC 429, RS-422, Ethernet), and power rails.
+2. **Tier 2 (Physical GSE & Mechanical Interlocks):** Calibrated ground support equipment (GSE-01 through GSE-06) verification of structural torques, pitot pneumatic decay, acoustic delamination, servo backlash, and mechanical FTS safety pins.
+3. **Tier 3 (Cryptographic Airworthiness Sign-Off):** Digital maintenance manifest verification requiring an authenticated ECDSA electronic signature token (`0x5349`) issued by a Certified O-Level Maintenance Technician.
 
 #### Condition Specification
 | Parameter | Condition Value / State | Engineering Unit | Validation Rule |
 | :--- | :--- | :--- | :--- |
-| Operational State | Stationary Ground Pad | State Enum | Vehicle landed and anchored |
-| Primary DC Bus Voltage | 22.2 to 25.2 | V | 6S LiPo nominal voltage range |
-| Avionics Temperature | -20.0 to +55.0 | °C | Internal thermal envelope |
-| Visible GNSS Satellites | >= 12 | Count | Multi-constellation lock (GPS + Galileo) |
-| Position Dilution of Precision | <= 2.0 | Dimensionless | PDOP geometry convergence |
-| C2 Uplink Signal Strength | >= -85.0 | dBm | Primary 5.8 GHz link established |
+| Operational State | Stationary Ground Pad | State Enum | Vehicle landed, anchored, and weight-on-wheels interlock active |
+| Ambient Ground Temperature | -20.0 to +55.0 | °C | MIL-STD-810H Method 501.7 / 502.7 operational thermal boundary |
+| Ambient Barometric Pressure | 700.0 to 1060.0 | hPa | Static airfield pressure within nominal density altitude limits |
+| Ground Wind Velocity | <= 8.0 steady, gusts <= 10.0 | m/s | Safe ground checkout and sensor alignment wind envelope |
+| Primary DC Power Bus Voltage | 22.2 to 25.2 | V | 6S LiPo operational voltage range across main power distribution bus |
+| Regulated Avionics Supply Rails | 5.0 +/- 0.1 and 12.0 +/- 0.2 | V | Secondary power distribution board output rail regulation limits |
+| Ground Support Equipment (GSE) | Connected (GSE-01 to GSE-06) | State Enum | Active diagnostic test bench interfaces synchronized |
+| Visible GNSS Constellation | >= 12 | Count | Multi-constellation tracking (GPS L1/L2 + Galileo E1/E5b) |
+| Position Dilution of Precision | <= 2.0 | Dimensionless | Geodetic PDOP geometry convergence threshold |
+| DAA RF Operating Environment | Clear 360-deg FOV | State Enum | Zero near-field RF blockage or multipath reflecting obstacles |
+| FTS Mechanical Interlock State | Ground Safety State | State Enum | Mechanical safety pin monitored prior to final launch release |
+| C2 Uplink Signal Strength | >= -85.0 | dBm | Primary 5.8 GHz COFDM link established with GCS |
+| Maintenance Authorization State | Authenticated Smartcard / PKI | State Enum | Certified Maintenance Technician logged into Ground Control Station |
 
 #### Standard Specification
-| Metric Name | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| PBIT Completion Duration | <= 10.0 | <= 4.0 | s | CAN 2.0B / CANopen | t_PBIT <= 10.0 s |
-| IMU Accelerometer Bias Convergence | <= 15.0 | <= 5.0 | mg | SPI / ARINC 429 | t_conv <= 8.0 s |
-| IMU Gyroscope Drift Convergence | <= 0.5 | <= 0.1 | deg/s | SPI / ARINC 429 | t_conv <= 8.0 s |
-| Actuator Full-Stroke Travel Check | 100.0 | 100.0 | % | DroneCAN / PWM | t_act <= 2.0 s |
-| Battery Pack State-of-Charge (SoC) | >= 95.0 | >= 99.0 | % | SMBus / CAN 2.0B | t_bms <= 500 ms |
-| Cell Voltage Disparity | <= 20.0 | <= 5.0 | mV | SMBus / CAN 2.0B | Continuous 50 Hz |
-| Cryptographic Identity Binding | 100.0 | 100.0 | % Pass | TPM 2.0 / SPI | t_auth <= 1.0 s |
+| Metric ID | Subsystem Domain | Metric Name / Description | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| MET-01-S01 | Structures & Airframe | Composite Skin Delamination Tap Test | 0 delamination | 0 delamination | Count | Acoustic Tap Hammer / NDI Sensor | t_tap <= 120.0 s |
+| MET-01-S02 | Structures & Airframe | Primary Joint Fastener Torque | >= 4.5 | >= 5.0 | N*m | Calibrated Digital Torque Driver (GSE-03) | t_torque <= 60.0 s |
+| MET-01-S03 | Structures & Airframe | Center of Gravity (CG) Longitudinal Envelope | [x_ref - 5.0, x_ref + 5.0] | x_ref +/- 1.0 | mm | Multi-Point Electronic Scale (GSE-02) | t_wb <= 30.0 s |
+| MET-01-S04 | Flight Controls | Control Surface Trailing Edge Backlash | <= 0.20 | <= 0.05 | deg | Digital Inclinometer / Laser Protractor | t_backlash <= 15.0 s |
+| MET-01-S05 | Flight Controls | Servo Peak Current Draw Under 1.5 N*m Load | <= 2.20 | <= 1.80 | A | DroneCAN / Actuator Shunt Monitor | t_sweep <= 2.0 s |
+| MET-01-S06 | Pitot-Static & Air Data | Static Line Pressure Decay Leak Rate at 100 hPa | <= 0.05 | <= 0.01 | hPa/min | Air Data Calibration Box (GSE-04) | t_leak = 60.0 s |
+| MET-01-S07 | Pitot-Static & Air Data | Pitot Dynamic Pressure Offset at Zero Wind | <= 2.0 | <= 0.5 | Pa | CAN 2.0B / Differential Pressure Sensor | Continuous @ 100 Hz |
+| MET-01-S08 | Pitot-Static & Air Data | Pitot Anti-Ice Heater Current Draw | [1.80, 2.40] | 2.10 +/- 0.10 | A | Power Distribution Telemetry / Shunt | t_heat <= 3.0 s |
+| MET-01-S09 | Propulsion & BMS | BLDC Motor Phase-to-Phase Resistance Balance | <= 2.5 | <= 1.0 | % disparity | ESC Diagnostic Micro-Ohm Injector | t_motor <= 2.0 s |
+| MET-01-S10 | Propulsion & BMS | ESC Idling Quiescent Standby Current | <= 0.45 | <= 0.25 | A | Telemetry CAN Bus / Integrated Shunt | Continuous @ 50 Hz |
+| MET-01-S11 | Propulsion & BMS | Battery Cell Internal Resistance (R_i) | <= 3.5 | <= 2.0 | mOhm | Smart BMS SMBus / CAN 2.0B | t_bms <= 500.0 ms |
+| MET-01-S12 | Propulsion & BMS | Battery Pack State-of-Charge (SoC) | >= 95.0 | >= 99.0 | % | Smart BMS SMBus / CAN 2.0B | Continuous @ 50 Hz |
+| MET-01-S13 | Propulsion & BMS | Battery Cell Voltage Delta (V_max - V_min) | <= 20.0 | <= 5.0 | mV | Smart BMS Analog Front-End / CAN 2.0B | Continuous @ 50 Hz |
+| MET-01-S14 | Avionics & Navigation | Dual IMU Gyro In-Run Bias Stability | <= 0.05 | <= 0.01 | deg/s | High-Speed SPI / ARINC 429 | t_align <= 8.0 s |
+| MET-01-S15 | Avionics & Navigation | GNSS Multi-Constellation C/N_0 (12+ Satellites) | >= 42.0 | >= 48.0 | dB-Hz | Multi-Band GNSS / High-Speed UART | t_gnss <= 15.0 s |
+| MET-01-S16 | Avionics & Navigation | Position Dilution of Precision (PDOP) | <= 2.0 | <= 1.2 | Dimensionless | Multi-Band GNSS / High-Speed UART | Continuous @ 10 Hz |
+| MET-01-S17 | Detect and Avoid (DAA) | 77 GHz FMCW Radar Loopback Attenuation | >= -12.0 | >= -8.0 | dB | Radar SPI / 100BASE-T1 Ethernet | t_radar <= 1.5 s |
+| MET-01-S18 | Detect and Avoid (DAA) | ADS-B In 1090 MHz Receiver Sensitivity Floor | <= -88.0 | <= -92.0 | dBm | 1090 MHz RF Front-End / UART | t_adsb <= 2.0 s |
+| MET-01-S19 | Flight Termination (FTS) | Pyrotechnic Squib Bridgewire DC Resistance | [1.05, 1.25] | 1.15 +/- 0.05 | Ohm | FTS Micro-Current Continuity Circuit | t_squib <= 500.0 ms |
+| MET-01-S20 | Flight Termination (FTS) | Mechanical Safety Pin Status | 0x01 (REMOVED) | 0x01 (REMOVED) | State Hex | Hardwired Optical / Microswitch GPIO | Continuous Interlock |
+| MET-01-S21 | C2 & Communications | Primary 5.8 GHz COFDM Datalink Packet Error Rate | <= 10^-4 | <= 10^-6 | PER | 5.8 GHz COFDM Modem / Ethernet | Continuous @ 20 Hz |
+| MET-01-S22 | C2 & Communications | Remote ID Direct Broadcast RF Field Strength at 10 m | >= -75.0 | >= -65.0 | dBm | 2.4 GHz BLE / Wi-Fi Direct Beacon | Continuous @ 1 Hz |
+| MET-01-S23 | Payload & Gimbal | Gimbal Optical Boresight Collimation Error | <= 0.05 | <= 0.01 | deg | Optical Collimator (GSE-05) / RS-422 | t_boresight <= 10.0 s |
+| MET-01-S24 | Payload & Gimbal | MWIR Detector Cryocooler Lock Temperature (T_cryo) | <= 77.0 | <= 72.0 | K | Cryogenic Controller Serial Link | t_cool <= 180.0 s |
+| MET-01-S25 | Airworthiness Release | Certified Maintenance Technician Digital Sign-Off | Valid (0x5349) | Valid (0x5349) | ECDSA Token | TPM 2.0 PKI Verification / GCS Link | t_auth <= 5.0 s |
+| MET-01-S26 | Airworthiness Release | 3-Tier Multi-Disciplinary Pre-Flight Gate Pass Rate | 100.0 | 100.0 | % Pass | System Executive State Machine | t_release <= 1.0 s |
 
 #### Verification Specification
 | Verification Attribute | Detail Specification |
 | :--- | :--- |
-| Verification Method | Automated BIT Log Inspection & Cryptographic Token Assertion |
-| Evidence Artifact | `tests/pbit_checkout_test.py` -> `logs/pbit_telemetry_report.json` |
-| Acceptance Criteria | Zero BIT fault flags; 100% sensor sanity; all 6 battery cell voltages within 20 mV disparity; cryptographic GCS token authenticated. |
-| Pass / Fail Threshold | `PBIT_STATUS == 0x0000_0000` (All subsystems healthy) within 10.0 s of boot. |
-| Traceability | `/// OperationalAllocation: [MET-01]` \| NATO STANAG 4586 Annex B §4.1 \| CJCSI 3500.02H |
+| Verification Method | Automated Subsystem PBIT Telemetry Audit, Physical GSE Inspection, and 3-Tier Multi-Disciplinary Digital Logbook Sign-Off Verification |
+| Evidence Artifact | `tests/pbit_checkout_test.py` -> `logs/pbit_telemetry_report.json` and `logs/airworthiness_release_manifest.json` |
+| Acceptance Criteria | Full conjunction across all 10 physical and electronic subsystems:<br>1. **Structures & Airframe:** 0 composite delamination via acoustic tap; fastener torque >= 4.5 N*m; longitudinal CG within [x_ref - 5.0, x_ref + 5.0] mm.<br>2. **Flight Controls:** Control surface trailing edge backlash <= 0.20 deg; servo peak current <= 2.20 A under 1.5 N*m dynamic load.<br>3. **Pitot-Static & Air Data:** Static line pressure decay <= 0.05 hPa/min at 100 hPa; zero-wind pitot dynamic pressure offset <= 2.0 Pa; pitot anti-ice heater current within [1.80, 2.40] A.<br>4. **Propulsion & BMS:** Motor phase resistance balance <= 2.5% disparity; ESC idling quiescent current <= 0.45 A; cell internal resistance R_i <= 3.5 mOhm; pack SoC >= 95.0%; cell voltage disparity delta_V <= 20.0 mV.<br>5. **Avionics & Navigation:** Dual IMU gyro in-run bias stability <= 0.05 deg/s; GNSS multi-constellation C/N_0 >= 42.0 dB-Hz across 12+ satellites; PDOP <= 2.0.<br>6. **Detect and Avoid:** 77 GHz FMCW radar loopback attenuation >= -12.0 dB; ADS-B In 1090 MHz receiver sensitivity <= -88.0 dBm.<br>7. **Flight Termination:** Pyrotechnic squib bridgewire DC resistance within [1.05, 1.25] Ohm at test current I_test < 5.0 mA; mechanical safety pin in REMOVED state (0x01).<br>8. **C2 & Communications:** Primary 5.8 GHz COFDM datalink PER <= 10^-4; Remote ID broadcast field strength >= -75.0 dBm at 10 m.<br>9. **Payload & Gimbal:** Gimbal optical boresight collimation error <= 0.05 deg; MWIR cryocooler locked at temperature T <= 77 K.<br>10. **Airworthiness Release:** Certified Maintenance Technician digital logbook sign-off verified with valid ECDSA token (0x5349) completing the 3-tier airworthiness release. |
+| Pass / Fail Threshold | `PBIT_STATUS == 0x0000_0000` (100% subsystem pass) and `AIRWORTHINESS_TOKEN == 0x5349` with zero active diagnostic fault flags within pre-launch timeout bounds. |
+| Traceability | `/// OperationalAllocation: [MET-01]` \| NATO STANAG 4586 Annex B §4.1 \| ISO/IEC/IEEE 29148:2018 §6.4.2 \| CJCSI 3500.02H \| SAE ARP4754A §5.4 |
 
 ---
 
