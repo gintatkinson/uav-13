@@ -32,17 +32,40 @@ In accordance with ISO/IEC/IEEE 29148:2018 §5.2.4 and the JSON Schema data cont
 5. **Visual Observer (VO):** Certified visual observer airspace lookout training and tactical radio voice protocol qualification.
 
 ### 4.4 Workload Constraints & Human Factors Considerations
-To prevent operator fatigue and ensure situational awareness during complex operations:
-- **Maximum Shift Duration:** Continuous RPIC supervisory console time is bounded by $t_{\mathrm{shift}} \le 4.0\text{ hr}$ with a mandatory rest interval $t_{\mathrm{rest}} \ge 30.0\text{ min}$.
-- **Cognitive Workload Threshold:** Systems shall be engineered to maintain RPIC NASA-Task Load Index (TLX) composite score below 35 during nominal operations and below 55 during degraded or contingency flight phases.
-- **Dual-Operator Architecture:** Primary flight safety oversight (RPIC) and sensor payload analysis (PO) are decoupled across distinct physical workstations to prevent operational task interference.
+To prevent operator fatigue, maintain situational awareness, and guarantee human-in-the-loop safety during complex multi-vehicle operations, human factors engineering conforms to MIL-STD-1472H and ISO 9241-210:
+- **Dual-Operator Architecture:** Primary flight safety oversight (RPIC) and sensor payload analysis (PO) are decoupled across distinct physical workstations to prevent cognitive bottlenecking and cross-task operational interference.
+- **Cognitive Workload Thresholds:** The Ground Control Station human-machine interface (HMI) shall be engineered to maintain the composite NASA-Task Load Index (NASA-TLX) workload score strictly within acceptable physiological envelopes:
+  - Nominal Flight Phase Composite Score: $\text{TLX}_{\mathrm{nominal}} \le 35$
+  - Degraded / Contingency Flight Phase Composite Score: $\text{TLX}_{\mathrm{contingency}} \le 55$
+
+The quantitative NASA-TLX 6-dimensional evaluation matrix is defined as follows:
+
+| TLX Dimension ID | Workload Dimension | Evaluation Question & Operator Assessment | Scale Range | Weighting Factor | Nominal Limit (Score <= 35) | Contingency Limit (Score <= 55) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **TLX-01** | Mental Demand (MD) | How much mental and perceptual activity was required (thinking, deciding, calculating, remembering, looking, searching)? | 0 - 100 | 0.25 | <= 30 | <= 60 |
+| **TLX-02** | Physical Demand (PD) | How much physical activity was required (pushing, pulling, turning, controlling, activating)? | 0 - 100 | 0.05 | <= 15 | <= 25 |
+| **TLX-03** | Temporal Demand (TD) | How much time pressure was felt due to the rate or pace at which the tasks or task elements occurred? | 0 - 100 | 0.20 | <= 35 | <= 65 |
+| **TLX-04** | Performance (OP) | How successful was the operator in achieving the goals of the task set by the experimenter or commander? (0 = Good, 100 = Poor) | 0 - 100 | 0.20 | <= 20 | <= 45 |
+| **TLX-05** | Effort (EF) | How hard did the operator have to work (mentally and physically) to accomplish their level of performance? | 0 - 100 | 0.15 | <= 35 | <= 60 |
+| **TLX-06** | Frustration (FR) | How insecure, discouraged, irritated, stressed, and annoyed versus secure, gratified, content, and relaxed did the operator feel? | 0 - 100 | 0.15 | <= 25 | <= 50 |
+| **TLX-TOTAL** | **Weighted Composite Score** | Composite = sum(w_i * Score_i) | 0 - 100 | 1.00 | **<= 35.0** | **<= 55.0** |
+
+#### 4.4.1 Operational Shift Rotation Protocol
+To mitigate vigilance degradation and circadian desynchronization:
+1. **Maximum Continuous Shift Duration ($t_{\mathrm{shift}}$):** Continuous supervisory console time for an RPIC or PO shall not exceed $t_{\mathrm{shift}} \le 4.0\text{ hr}$ ($240.0\text{ min}$).
+2. **Mandatory Rest Interval ($t_{\mathrm{rest}}$):** A mandatory non-operational rest interval of $t_{\mathrm{rest}} \ge 30.0\text{ min}$ is enforced between consecutive console shifts.
+3. **Maximum Daily Cumulative Console Time ($t_{\mathrm{daily\_max}}$):** Total cumulative flight control / supervisory time shall not exceed $t_{\mathrm{daily\_max}} \le 8.0\text{ hr}$ within any sliding 24-hour operational window.
+4. **Shift Handover Overlap:** A structured $15.0\text{ min}$ operational overlap period is conducted prior to shift relief, encompassing verbal briefing, flight telemetry review, weather/NOTAM verification, and co-signing of the digital flight logbook.
 
 ### 4.5 Authority Handoff Chains & Control Transfer Protocols
-Handoff of command and control between Ground Control Stations (e.g., GCS Alpha to GCS Bravo) or between RPIC and autonomous flight modes follows a strict cryptographic 4-way handshake with handoff completion time bounded by $t_{\mathrm{handoff}} \le 5.0\text{ s}$:
-1. **Initiation:** Receiving station (GCS Bravo) transmits an encrypted Control Request Token over the authenticated C2 link.
-2. **Authorization:** Relinquishing station (GCS Alpha) and Mission Commander authenticate the token and transmit an explicit Control Handoff Grant.
-3. **Verification:** GCS Bravo executes cross-telemetry alignment, confirms identical waypoint buffer state, and transmits Acknowledgment.
-4. **Commit:** Flight Control Computer transfers primary C2 authority to GCS Bravo and transitions GCS Alpha to Monitor-Only mode.
+Handoff of command and control between Ground Control Stations (e.g., GCS Alpha to GCS Bravo) or between RPIC and autonomous flight modes follows a strict cryptographic 4-way handshake with handoff completion time bounded by $t_{\mathrm{handoff}} \le 5.0\text{ s}$.
+
+#### 4.5.1 Cryptographic 4-Way Handoff State Machine
+The 4-way handoff protocol ensures seamless, deterministic control transfer without flight path discontinuity:
+1. **State 1 - Initiation (Token Request):** Receiving station (GCS Bravo) transmits an encrypted and signed `Control_Request(Token, Hash, Nonce_B)` token to the Mission Commander and active Flight Control Computer (FCC) over the authenticated C2 link using Curve25519 / Ed25519 asymmetric cryptography.
+2. **State 2 - Authorization & Stability Gate:** Active station (GCS Alpha) and Mission Commander authenticate the cryptographic token, verify that the air vehicle is in a stable dynamic flight trim ($\|\Delta \mathbf{v}\| \le 0.5\text{ m/s}$, $\|\Delta \boldsymbol{\omega}\| \le 2.0^\circ\text{/s}$), and issue a signed `Control_Handoff_Grant(Signature_A, Token_Hash)`.
+3. **State 3 - Telemetry & Buffer Synchronization:** GCS Bravo receives the grant, verifies exact alignment of the onboard waypoint buffer, active geofence polygons, and sensor payload states, and transmits a signed `Sync_Acknowledgment(CRC32_Match, State_Confirmed)`.
+4. **State 4 - Committal & Mode Relegation:** Flight Control Computer commits primary C2 authority to GCS Bravo, transmits `Handoff_Complete(Active_C2=Bravo)`, and automatically relegates GCS Alpha to Monitor-Only (shadow) mode.
 
 ```mermaid
 sequenceDiagram
@@ -52,15 +75,26 @@ sequenceDiagram
     participant GCS_B as GCS Bravo (Standby C2)
     participant MC as Mission Commander
 
-    GCS_B->>MC: Request Handoff Authorization Token
-    MC-->>GCS_B: Sign and Issue Cryptographic Token
-    GCS_B->>FCC: Transmit Control_Request(Token, Hash)
-    FCC->>GCS_A: Query Handoff Readiness Status
-    GCS_A-->>FCC: Confirm Flight State Stable and Release Grant
-    FCC->>GCS_B: Verify Waypoint Buffer and Grant Master Control
-    GCS_B->>FCC: Acknowledge Active C2 Committal
+    GCS_B->>MC: Request Handoff Authorization Token (Nonce_B)
+    MC-->>GCS_B: Sign and Issue Cryptographic Token (Ed25519)
+    GCS_B->>FCC: Transmit Control_Request(Token, Nonce_B)
+    FCC->>GCS_A: Query Flight Stability & Handoff Readiness
+    GCS_A-->>FCC: Confirm Stability & Issue Control_Handoff_Grant
+    FCC->>GCS_B: Push State Vector & Request Sync Acknowledgment
+    GCS_B-->>FCC: Transmit Sync_Acknowledgment(CRC32_Match)
+    FCC->>GCS_B: Grant Master C2 Authority (Active)
     FCC->>GCS_A: Relegate GCS Alpha to Monitor-Only Mode
 ```
+
+#### 4.5.2 Timeout Recovery & Rejection Protocols
+To guarantee fail-safe determinism under communication disruptions or corrupted handoffs:
+- **Timeout Recovery Protocol ($\tau_{\mathrm{timeout}} = 5.0\text{ s}$):** If any handshake phase fails to receive a cryptographically valid response within the timeout threshold $\tau_{\mathrm{timeout}} \le 5.0\text{ s}$, the FCC automatically terminates the handoff transaction, issues an `ERR_HANDOFF_TIMEOUT` alert, maintains active C2 control exclusively with GCS Alpha, and resets GCS Bravo to Standby / Disconnected status.
+- **Handoff Rejection Protocol:** The FCC or Mission Commander shall immediately reject and abort the handoff sequence under any of the following rejection conditions:
+  1. *Cryptographic Validation Failure:* Invalid signature, expired certificate, or replayed nonce detected (`ERR_AUTH_INVALID`).
+  2. *Flight Trim Instability:* Air vehicle engaged in active emergency containment maneuver (`EMG-01`..`EMG-07`) or exceeding rotational rate thresholds (`ERR_VEHICLE_UNSTABLE`).
+  3. *Mission State Mismatch:* Waypoint buffer checksum or geofence CRC32 mismatch between GCS Bravo and FCC (`ERR_BUFFER_DESYNC`).
+  4. *Manual Commander Veto:* Mission Commander transmits an explicit `ABORT_HANDOFF` discrete.
+  Upon rejection, the system instantly logs a formal security audit event, broadcasts the rejection diagnostic code, and retains uninterrupted flight guidance under GCS Alpha.
 
 ### 4.6 Operational Lifecycle Stages ($\Phi_{\mathrm{lifecycle}}$)
 The system operates across six mutually exclusive, deterministic lifecycle stages:

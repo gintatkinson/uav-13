@@ -40,6 +40,38 @@ The operational system boundary encompasses all physical, logical, communication
 - **System Mass & Payload Envelope:** Maximum Takeoff Weight (MTOW) of $25.0\text{ kg}$ ($m_{\mathrm{MTOW}} = 25.0\text{ kg}$) with a dedicated mission payload capacity of $5.0\text{ kg}$ ($m_{\mathrm{payload}} = 5.0\text{ kg}$) and nominal mission endurance of $90.0\text{ min}$.
 - **Regulatory & Jurisdictional Boundary:** Governed under JARUS SORA v2.5 Specific Category operations (mitigated GRC-2, ARC-b), civil aviation standard scenarios, and national military flight clearances.
 
+#### 1.3.1 Coordinate Reference Frames
+All navigation, guidance, sensor tracking, and flight dynamics computations are referenced across three standard orthogonal right-handed coordinate frames:
+1. **WGS-84 Geodetic Reference Frame ($\phi, \lambda, h_{\mathrm{ellips}}$):** Standard World Geodetic System 1984 ellipsoid defining global latitude ($\phi$), longitude ($\lambda$), and ellipsoidal height ($h_{\mathrm{ellips}}$). Used for GNSS positioning, global waypoint navigation, UTM/U-space geo-zone containment queries, and long-range spatial alignment.
+2. **North-East-Down (NED) Local Tangent Plane ($X_n, Y_n, Z_n$):** Local Cartesian coordinate frame tangent to the WGS-84 reference ellipsoid at the mission origin / takeoff coordinate ($[0,0,0]^T$). $X_n$ points true North, $Y_n$ points East, and $Z_n$ points downward into the Earth. Used for local kinematic trajectory planning, relative separation vectors, and SORA Ground Risk Buffer calculations.
+3. **Body-Fixed Reference Frame ($X_b, Y_b, Z_b$):** Rigid-body frame with its origin fixed at the air vehicle center of gravity ($CG$). $X_b$ points forward along the longitudinal fuselage centerline, $Y_b$ points out the right wing (starboard), and $Z_b$ points downward through the belly perpendicular to $X_b \times Y_b$. Used for body-rate gyroscopic measurements ($p, q, r$), linear accelerations ($u, v, w$), aerodynamic lift/drag vectors, and sensor gimbal transform matrices.
+
+#### 1.3.2 Physical Mass Budget Breakdown
+The structural and operational mass distribution of the Tactical UAS is budgeted across functional subsystems to strictly adhere to the certified Maximum Takeoff Weight ($m_{\mathrm{MTOW}} = 25.0\text{ kg}$):
+
+| Subsystem Component / Mass Group | Subsystem Mass (m) | Mass Fraction (%) | Allocation & Technical Description |
+| :--- | :--- | :--- | :--- |
+| Airframe Structure | 8.5 kg | 34.0% | Carbon-fiber composite monocoque fuselage, high-aspect wings, empennage, and internal chassis ribs |
+| Avionics & Sensors | 3.2 kg | 12.8% | Dual-redundant Flight Control Computer (FCC), triple IMU suite, multi-GNSS receivers, and wiring harness |
+| Propulsion & ESCs | 4.3 kg | 17.2% | High-efficiency brushless DC motors, 80A field-oriented electronic speed controllers (ESCs), and composite props |
+| Battery Energy Pack | 6.0 kg | 24.0% | High-energy-density lithium-ion smart battery pack (6S / 22.2V nominal, 30Ah) with integrated BMS |
+| Tactical EO/IR Payload | 2.0 kg | 8.0% | Gyro-stabilized dual-sensor gimbal with HD electro-optical zoom camera, uncooled LWIR sensor, and LRF |
+| Ballistic Parachute & Recovery | 1.0 kg | 4.0% | Pyrotechnic ballistic parachute deployment canister, canopy bridle, and independent deployment electronics |
+| **Total Maximum Takeoff Weight (MTOW)** | **25.0 kg** | **100.0%** | Maximum certified all-up vehicle operational mass |
+
+#### 1.3.3 Master Physical & Operational Limits
+The following master physical and operational constraints govern all flight clearances, control law saturations, and automated safety interlocks:
+
+| Operational Parameter Description | Symbol | Value | Units | Governing Limit & Operational Baseline |
+| :--- | :--- | :--- | :--- | :--- |
+| Maximum Operating Ceiling | h_operating_ceiling | 120.0 | m | Maximum operating altitude AGL per JARUS SORA Specific Category and standard scenario limits |
+| Nominal Cruising Airspeed | v_cruise | 18.0 | m/s | Optimal aerodynamic efficiency cruise velocity for maximum mission endurance |
+| Maximum Never-Exceed Airspeed | v_max | 25.0 | m/s | Maximum structural velocity boundary (V_NE) in level flight |
+| Aerodynamic Stall Airspeed | v_stall | 10.0 | m/s | Minimum controllable flight speed in fixed-wing forward transit mode |
+| Ground Risk Buffer Lateral Radius | R_GRB | 200.0 | m | Mandatory SORA lateral containment buffer bounding maximum ballistic and wind drift trajectory |
+| C2 Datalink Communication Range | R_C2 | 15.0 | km | Line-of-sight command and control radio frequency operational radius from GCS antenna |
+| Nominal Mission Endurance | t_endurance | 90.0 | min | Total continuous airborne operational time on a single fully-charged battery pack |
+
 ### 1.4 Operational Context Diagram
 The following Unified Architecture Framework (UAF) operational context diagram defines the external interfaces, performer nodes, and primary interaction channels:
 
