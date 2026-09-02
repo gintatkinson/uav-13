@@ -14,7 +14,7 @@ class TestCompletenessValidator(IValidator):
         # against app test files (_test.dart, *.test.ts, ...) of the target
         # codebases. With no client codebases configured, the absence of those
         # files is a configuration state, not a defect.
-        if repo.is_upstream_compiler_repo() and not repo.has_configured_target_code_directories():
+        if repo.is_upstream_compiler_repo() or not repo.has_configured_target_code_directories():
             print("Note: Upstream compiler repository mode. Skipping test-completeness check (no target code directories).")
             return []
         

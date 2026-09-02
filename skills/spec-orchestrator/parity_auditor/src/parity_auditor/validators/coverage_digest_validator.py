@@ -274,6 +274,7 @@ class CoverageDigestValidator(IValidator):
             os.path.join(workspace_dir, "docs", "conops"),
             os.path.join(workspace_dir, "docs", "icd"),
             os.path.join(workspace_dir, "docs", "safety"),
+            os.path.join(workspace_dir, "docs", "catalogs"),
             os.path.join(workspace_dir, "schema"),
         ]
 

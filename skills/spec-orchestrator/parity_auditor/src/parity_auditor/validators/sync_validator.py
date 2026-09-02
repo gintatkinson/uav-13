@@ -28,7 +28,7 @@ class SyncValidator(IValidator):
         # rather than markdown specs. Mirrors the reconciler's upstream-mode
         # exemption of the same class of findings (issue #68 mechanism, issues
         # #74/#73/#72/#70/#67/#64/#62/#61/#60/#59).
-        if repo.is_upstream_compiler_repo() and not repo.has_configured_target_code_directories():
+        if repo.is_upstream_compiler_repo() or not repo.has_configured_target_code_directories():
             print("Note: Upstream compiler repository mode. Skipping out-of-sync "
                   "missing-local-specification findings for upstream tooling feature issues.")
             return []

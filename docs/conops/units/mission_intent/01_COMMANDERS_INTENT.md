@@ -1,0 +1,31 @@
+| Attribute | Value |
+| :--- | :--- |
+| **Title** | Tactical Mission Intent: Commander's Intent & Operational Objectives |
+| **Version** | 1.0.0 |
+| **Date** | 2026-09-02 |
+
+# Tactical Mission Intent & Execution Plan
+
+## 1. Commander's Intent & Operational Objectives
+
+- **Operational Purpose:** The primary operational purpose of the Tactical UAS is to execute persistent, autonomous, multi-sensor intelligence, surveillance, reconnaissance (ISR), tactical target tracking, precision kinetic strike delivery, and perimeter security within bounded operational volumes, operating under rigorous supervisory autonomous control with multi-tier command and control (C2) link redundancy and deterministic failsafe containment.
+- **Key Tasks:**
+  - Execute pre-flight Built-In-Test (BIT) self-diagnostics, calibration, and cryptographic link binding within $t_{\mathrm{PBIT}} \le 10.0\text{ s}$ of power activation.
+  - Conduct autonomous ingress transit along designated 3D flight corridors while maintaining strict lateral and vertical containment within $120.0\text{ m}$ AGL ($h_{\mathrm{operating\_ceiling}} = 120.0\text{ m}$).
+  - Perform real-time multi-spectral electro-optical / infrared (EO/IR) surveillance and persistent orbit tracking over target areas of interest.
+  - Maintain continuous DAA (Detect and Avoid) Well-Clear separation minima ($D_{\mathrm{mod}} \ge 1200\text{ m}$, $H_{\mathrm{sep}} \ge 137\text{ m}$) from cooperative and non-cooperative airspace participants.
+  - Stream encrypted sensor telemetry across the primary 5.8 GHz COFDM link with automatic failover across alternate 915 MHz FHSS, contingency LTE/5G, and emergency satellite PACE tiers.
+  - Enforce dual-consent cryptographic arming (Mission Commander + Safety Officer) and positive target identification (PID) interlocks ($C_{\mathrm{PID}} \ge 0.95$) prior to terminal kinetic engagement.
+  - Continuously compute closed-loop Bingo energy state and execute autonomous return-to-base (RTB) or secondary divert routing upon reaching safety thresholds ($E(t) \le E_{\mathrm{bingo}}(t)$).
+  - Perform precision autonomous recovery and post-flight cryptographic data zeroization and diagnostic offload.
+- **End State:** All assigned surveillance and strike corridor waypoints fully traversed and verified; zero unauthorized geofence boundary excursions; zero unmitigated collision hazards; all target tracks positively identified through multi-spectral fusion ($C_{\mathrm{PID}} \ge 0.95$); and successful recovery at the primary base or designated secondary divert landing site with residual energy strictly satisfying $E_{\mathrm{reserve}} \ge 0.20 \cdot E_{\mathrm{capacity}}$ ($E_{\mathrm{reserve}} \ge 216.0\text{ kJ}$).
+
+### 1.1 Normative Baseline & Doctrinal Authority
+This Tactical Mission Intent specification tree is authored in strict compliance with:
+- **NATO STANAG 4586 Edition 3**: Standard Interfaces of UAV Control System (UCS) for NATO UAV Interoperability.
+- **INCOSE Systems Engineering Handbook v5.0**: Technical Planning, System Requirements Definition, and Mission Analysis Processes (§3.2, §3.3).
+- **CJCSI 3500.02H**: Universal Joint Task List (UJTL) and Mission Essential Task List (METL) construction methodology.
+- **MIL-STD-882E**: Department of Defense Standard Practice for System Safety (§4.3, Hazard Identification and Mitigation).
+- **JARUS SORA v2.5**: Specific Operations Risk Assessment (Annex B, Containment and Risk Buffers).
+- **RTCA DO-365B**: Minimum Operational Performance Standards (MOPS) for Detect and Avoid (DAA) Systems.
+- **DoD Directive 3000.09**: Autonomy in Weapon Systems (§3.1, §3.1.a-c).

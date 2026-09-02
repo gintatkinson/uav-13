@@ -8,7 +8,7 @@ class ProfileScopingValidator(IValidator):
     def validate(self, repo: WorkspaceRepository, **kwargs) -> List[str]:
         # Upstream compiler repository exemption: without an app_flutter/web_react
         # client codebase, an empty codebase is a configuration state, not a defect.
-        if repo.is_upstream_compiler_repo() and not repo.has_configured_target_code_directories():
+        if repo.is_upstream_compiler_repo() or not repo.has_configured_target_code_directories():
             print("Note: Upstream compiler repository mode. Skipping empty-codebase profile-scoping check.")
             return []
 

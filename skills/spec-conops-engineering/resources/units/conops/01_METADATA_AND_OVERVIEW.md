@@ -43,54 +43,54 @@ The following Unified Architecture Framework (UAF) operational context diagram d
 
 ```mermaid
 flowchart TB
-    subgraph SpaceSegment["Space & External Positioning Segment"]
-        ExternalPositioning["External Positioning Constellation<br/>(InterfacePort[GNSSConstellation])"]
-        SatcomRelay["Satellite Communication Network<br/>(InterfacePort[EmergencySatcomRelay])"]
+    subgraph SpaceSegment ["Space and External Positioning Segment"]
+        ExternalPositioning["External Positioning Constellation - GNSS"]
+        SatcomRelay["Satellite Communication Network - Emergency SATCOM"]
     end
 
-    subgraph AirSegment["System Under Design (PerformerNode[AirVehicleNode])"]
-        FCC["Flight Control Computer (FCC)<br/>(PerformerNode[FlightGuidanceAutopilot])"]
-        SensorArray["Integrated Sensor Suite<br/>(PerformerNode[NavigationSensorArray])"]
-        PayloadNode["Mission Payload System<br/>(PerformerNode[PayloadSystem])"]
-        DatalinkTransceiver["PACE Datalink Transceiver<br/>(InterfacePort[C2Datalink])"]
-        SafetyWatchdog["Independent Safety Watchdog<br/>(PerformerNode[FlightTerminationWatchdog])"]
+    subgraph AirSegment ["Air Vehicle Segment - Tactical UAS"]
+        FCC["Flight Control Computer (FCC) - DO-178C DAL-A"]
+        SensorArray["Integrated Sensor Suite - IMU/Baro/Mag/GPS"]
+        PayloadNode["Mission Payload System - EO/IR Sensor"]
+        DatalinkTransceiver["PACE Datalink Transceiver Node"]
+        SafetyWatchdog["Independent Safety Watchdog and Flight Termination"]
     end
 
-    subgraph GroundSegment["Control Station Segment (PerformerNode[GroundControlStation])"]
-        C2Console["C2 Mission Console<br/>(PerformerNode[C2MissionConsole])"]
-        AntennaArray["Antenna Tracking System<br/>(InterfacePort[DirectionalAntenna])"]
-        GSEHub["Ground Support Equipment Hub<br/>(PerformerNode[GSEChargingAndDiagnostics])"]
+    subgraph GroundSegment ["Ground Control Station Segment"]
+        C2Console["C2 Mission Console - STANAG 4586 UCS"]
+        AntennaArray["Directional Tracking Antenna Mast"]
+        GSEHub["Ground Support Equipment Hub and Battery Hub"]
     end
 
-    subgraph UserSegment["Operational Human Roles"]
-        RPIC["Remote Pilot in Command (RPIC)<br/>(HumanRole[SupervisoryAuthority])"]
-        PO["Payload Operator (PO)<br/>(HumanRole[PayloadSpecialist])"]
-        MC["Mission Commander (MC)<br/>(HumanRole[MissionCommander])"]
-        MT["Maintenance Technician (MT)<br/>(HumanRole[MaintenanceTechnician])"]
-        VO["Visual Observer (VO)<br/>(HumanRole[AirspaceObserver])"]
+    subgraph UserSegment ["Operational Human Roles"]
+        RPIC["Remote Pilot in Command (RPIC) - Supervisory Authority"]
+        PO["Payload Operator (PO) - Sensor Specialist"]
+        MC["Mission Commander (MC) - Mission Authority"]
+        MT["Maintenance Technician (MT) - Field Support"]
+        VO["Visual Observer (VO) - Airspace Lookout"]
     end
 
-    subgraph ExternalSegment["External Operational Entities"]
-        UTM["U-Space / UTM Service Provider<br/>(InterfacePort[UTMService])"]
-        ATM["Air Traffic Management (ATM/ATC)<br/>(InterfacePort[ATMCoordination])"]
-        ERP_Entity["Emergency Services & Safety Entities<br/>(InterfacePort[ERPCoordination])"]
+    subgraph ExternalSegment ["External Operational Entities"]
+        UTM["U-Space / UTM Service Provider"]
+        ATM["Air Traffic Management - ATM and ATC"]
+        ERP_Entity["Emergency Services and Safety Entities"]
     end
 
-    ExternalPositioning -->|"Positioning Broadcasts"| SensorArray
-    DatalinkTransceiver ---|"Primary RF Datalink"| AntennaArray
-    DatalinkTransceiver ---|"Alternate Network Link"| C2Console
-    DatalinkTransceiver ---|"Emergency Satellite Link"| SatcomRelay
+    ExternalPositioning --> SensorArray
+    DatalinkTransceiver --- AntennaArray
+    DatalinkTransceiver --- C2Console
+    DatalinkTransceiver --- SatcomRelay
     AntennaArray --- C2Console
     
-    RPIC ---|"Supervisory Control"| C2Console
-    PO ---|"Payload Telemetry & Tasking"| C2Console
-    MC -->|"Mission Authorization & ROE Release"| RPIC
-    MT -->|"Pre-Flight BIT Verification"| GSEHub
-    VO -->|"Airspace Advisory Link"| RPIC
+    RPIC --- C2Console
+    PO --- C2Console
+    MC --> RPIC
+    MT --> GSEHub
+    VO --> RPIC
 
-    C2Console ---|"Flight Coordination API"| UTM
-    RPIC ---|"Voice Coordination Link"| ATM
-    MC -->|"Emergency Notification Link"| ERP_Entity
+    C2Console --- UTM
+    RPIC --- ATM
+    MC --> ERP_Entity
 ```
 
 ### 1.5 Normative Standards & Regulatory Baseline
