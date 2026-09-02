@@ -11,13 +11,13 @@ The Mission Essential Task List (METL) establishes the doctrinally grounded, qua
 | Task ID | Task Name | Condition Statement | Standard Metric | Verification Method | Gate 24 Allocation Tag | Public Clause Citation |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `MET-01` | PreFlightSystemCheckout | Pre-launch stationary ground state across 10 physical/electronic subsystems with ground support equipment connected | 100% PBIT pass across 10 subsystems (Structures tap/torque/CG, Controls backlash/current, Pitot leak/offset/heater, Propulsion/BMS phase/quiescent/R_i/SoC/delta_V, Avionics IMU/GNSS/PDOP, DAA radar/ADS-B, FTS squib/pin, C2 PER/Remote ID, Payload boresight/cryo lock, 3-tier release ECDSA token 0x5349) | Automated Subsystem PBIT Telemetry & 3-Tier Multi-Disciplinary Digital Logbook Inspection | `/// OperationalAllocation: [MET-01]` | NATO STANAG 4586 Annex B §4.1 |
-| `MET-02` | AutonomousIngressTransit | En-route corridor navigation under active flight plan | Lateral cross-track error e_xtrack <= 2.0 m, vertical error e_z <= 1.0 m | Flight Navigation Log Review | `/// OperationalAllocation: [MET-02]` | RTCA DO-365B §2.2.3 |
-| `MET-03` | AreaSurveillanceOrbit | On-station target tracking within designated geographic boundary | Orbit radius R_orbit = 300.0 m +/- 5.0 m, payload pointing jitter <= 0.05 deg | Telemetry & Video Frame Analysis | `/// OperationalAllocation: [MET-03]` | NATO STANAG 4586 Annex B §3.2 |
-| `MET-04` | DynamicAirspaceDeconfliction | Traffic conflict geometry detected by onboard DAA sensors | Maintain Well-Clear separation (D_horizontal >= 1200.0 m, H_vertical >= 137.0 m) | DAA Collision Event Log Review | `/// OperationalAllocation: [MET-04]` | RTCA DO-365B §2.2.4 |
-| `MET-05` | ElectronicCounterCountermeasures | Jamming or intentional RF / navigation spoofing detected | Seamless PACE tier switch t_switch <= 1.0 s, dead-reckoning drift <= 1.0% distance | RF Signal Log & Navigation Test | `/// OperationalAllocation: [MET-05]` | MIL-STD-461G RS103 §4.3 |
-| `MET-06` | PrecisionTargetMensuration | Target identified within optical/infrared payload field of view | Target Location Error TLE_CEP90 <= 2.5 m at slant range Range_target = 3.0 km | Optical Mensuration Calibration Log | `/// OperationalAllocation: [MET-06]` | NATO STANAG 4586 Annex B §3.5 |
-| `MET-07` | AutonomousBingoReturnDivert | Energy monitoring detects current energy E_current <= E_bingo threshold | Autonomous RTB or divert trigger t_resp <= 200.0 ms, touchdown with E_reserve >= 216.0 kJ | BMS Telemetry & Flight Recording | `/// OperationalAllocation: [MET-07]` | JARUS SORA v2.5 Annex E §2.1 |
-| `MET-08` | PostMissionDataOffloadShutdown | Post-landing stationary touchdown on recovery pad | Cryptographic key zeroization and data offload in t_offload <= 60.0 s, safe shutdown | Security Audit Log Verification | `/// OperationalAllocation: [MET-08]` | NIST SP 800-88r1 §2.4 |
+| `MET-02` | AutonomousIngressTransit | En-route corridor navigation under active flight plan | Lateral cross-track error e_xtrack <= 2.0 m, vertical error e_z <= 1.0 m, motor RPM in [4500, 7200 RPM], ESC temp <= 75.0 C, pitot lag tau <= 50.0 ms, IMU vibration rejection <= 0.01 g^2/Hz | Flight Navigation Log Review & Multi-Subsystem Telemetry Audit | `/// OperationalAllocation: [MET-02]` | RTCA DO-365B §2.2.3 |
+| `MET-03` | AreaSurveillanceOrbit | On-station target tracking within designated geographic boundary | Orbit radius R_orbit = 300.0 m +/- 5.0 m, gimbal servo temp <= 65.0 C, MWIR NUC interval <= 300.0 s, optical boresight jitter <= 0.02 deg RMS under wind shear | Telemetry & Video Frame Analysis | `/// OperationalAllocation: [MET-03]` | NATO STANAG 4586 Annex B §3.2 |
+| `MET-04` | DynamicAirspaceDeconfliction | Traffic conflict geometry detected by onboard DAA sensors | Maintain Well-Clear separation (D_horizontal >= 1200.0 m, H_vertical >= 137.0 m), 77 GHz radar rate f >= 20.0 Hz, ADS-B decode latency <= 100.0 ms, vertical rate resolution dz/dt <= 0.2 m/s | DAA Collision Event Log Review & HIL Encounter Audit | `/// OperationalAllocation: [MET-04]` | RTCA DO-365B §2.2.4 |
+| `MET-05` | ElectronicCounterCountermeasures | Jamming or intentional RF / navigation spoofing detected | Seamless PACE switch t_switch <= 1.0 s, GNSS J/S anti-jam >= 35.0 dB, CRPA nulling depth >= 25.0 dB, dead-reckoning drift <= 0.5% distance over 60 s GNSS outage | RF Signal Log & Navigation Resiliency Test | `/// OperationalAllocation: [MET-05]` | MIL-STD-461G RS103 §4.3 |
+| `MET-06` | PrecisionTargetMensuration | Target identified within optical/infrared payload field of view | TLE_CEP90 <= 2.5 m at 3.0 km, laser rangefinder PRF = 10.0 Hz, range accuracy <= 0.5 m at 3.0 km, EO/IR pixel pitch 12 um, atmospheric extinction correction | Optical Mensuration Calibration Log & Flight Telemetry Audit | `/// OperationalAllocation: [MET-06]` | NATO STANAG 4586 Annex B §3.5 |
+| `MET-07` | AutonomousBingoReturnDivert | Energy monitoring detects current energy E_current <= E_bingo threshold | Autonomous RTB/divert trigger t_resp <= 200.0 ms, dynamic R_i(T) compensation, headwind gradient vector integration, touchdown reserve E_reserve >= 216.0 kJ | BMS Telemetry & Flight Recording Audit | `/// OperationalAllocation: [MET-07]` | JARUS SORA v2.5 Annex E §2.1 |
+| `MET-08` | PostMissionDataOffloadShutdown | Post-landing stationary touchdown on recovery pad | Zeroization time <= 10.0 s (NIST SP 800-88r1), DC bus discharge time <= 5.0 s (V_bus < 5.0 V), post-flight motor thermal soak T_motor <= 60.0 C, offload <= 60.0 s | Security Audit Log & Safe Electrical Isolation Verification | `/// OperationalAllocation: [MET-08]` | NIST SP 800-88r1 §2.4 |
 
 ---
 
@@ -90,238 +90,293 @@ Pre-flight checkout enforces a strict 3-tier airworthiness release architecture:
 
 ### 2.2 MET-02: AutonomousIngressTransit
 
-Formal specification for autonomous waypoint following, 4D trajectory generation, wind vector compensation, and flight envelope containment during ingress transit.
+Formal specification for autonomous waypoint sequencing, 4D trajectory tracking, wind vector compensation, motor operating RPM bounds containment, ESC thermal regulation, dynamic pitot-static response lag bounding, IMU vibration rejection spectral density gating, and real-time geofence envelope containment during high-speed ingress corridor transit.
 
 #### Condition Specification
 | Parameter | Condition Value / State | Engineering Unit | Validation Rule |
 | :--- | :--- | :--- | :--- |
-| Operational State | En-route Airborne Transit | State Enum | Flight mode `AUTO_MISSION` |
+| Operational State | En-route Airborne Ingress Transit | State Enum | Flight mode `AUTO_MISSION` |
 | Assigned Flight Corridor Width | 50.0 | m | Total lateral clearance boundary |
 | Operating Altitude Floor / Ceiling | 30.0 to 120.0 | m AGL | Operational containment envelope |
-| Ambient Wind Speed Limit | <= 12.0 | m/s | Maximum continuous operating wind |
-| Wind Gust Limit | <= 15.0 | m/s | Maximum 3-second wind gust |
+| Ambient Wind Velocity | <= 12.0 steady, gusts <= 15.0 | m/s | Continuous operating wind envelope |
+| Calibrated Airspeed Envelope (CAS) | 18.0 to 28.0 | m/s | Nominal transit airspeed limits |
+| Ambient In-Flight Air Temperature | -20.0 to +50.0 | °C | In-flight ambient thermal envelope |
+| BLDC Motor Operating RPM Envelope | 4500 to 7200 | RPM | Nominal propulsion drive operating range |
+| ESC Inverter Thermal Boundary | <= 75.0 | °C | MOSFET junction thermal limit |
+| Pitot Air Data System State | Calibrated / Anti-Ice Active | State Enum | Differential pressure ADU locked |
+| IMU Structural Damping State | Isolated Elastomeric Assembly | State Enum | Passive silicone damper array engaged |
 
 #### Standard Specification
-| Metric Name | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| Lateral Cross-Track Error (e_xtrack) | <= 2.0 | <= 0.5 | m | High-speed CAN / Ethernet | Continuous @ 250 Hz |
-| Vertical Altitude Tracking Error (e_z) | <= 1.0 | <= 0.3 | m | High-speed CAN / Ethernet | Continuous @ 250 Hz |
-| True Airspeed Tracking Error (e_v) | <= 1.5 | <= 0.4 | m/s | CAN 2.0B Pitot / ADU | Continuous @ 100 Hz |
-| Guidance Control Loop Rate | 250 | 500 | Hz | Real-Time OS Task Loop | dt <= 4.0 ms |
-| Waypoint Transition Latency | <= 50.0 | <= 10.0 | ms | Internal Memory Bus | t_trans <= 50.0 ms |
-| Geofence Boundary Containment Margin | >= 50.0 | >= 100.0 | m | Simplex RTA Safety Bus | Continuous @ 50 Hz |
+| Metric ID | Subsystem Domain | Metric Name / Description | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| MET-02-S01 | Flight Guidance & Trajectory | Lateral Cross-Track Tracking Error (e_xtrack) | <= 2.0 | <= 0.5 | m | High-Speed CAN / Ethernet | Continuous @ 250 Hz |
+| MET-02-S02 | Flight Guidance & Trajectory | Vertical Altitude Tracking Error (e_z) | <= 1.0 | <= 0.3 | m | High-Speed CAN / Ethernet | Continuous @ 250 Hz |
+| MET-02-S03 | Flight Guidance & Trajectory | Guidance Control Loop Execution Rate | 250 | 500 | Hz | Real-Time OS Task Loop | dt <= 4.0 ms |
+| MET-02-S04 | Flight Guidance & Trajectory | Waypoint Transition Latency | <= 50.0 | <= 10.0 | ms | Internal Memory Bus | t_trans <= 50.0 ms |
+| MET-02-S05 | Flight Guidance & Trajectory | Geofence Boundary Containment Margin | >= 50.0 | >= 100.0 | m | Simplex RTA Safety Bus | Continuous @ 50 Hz |
+| MET-02-S06 | Propulsion & BMS | BLDC Motor Operating Speed Bounds | [4500, 7200] | [5000, 6800] | RPM | DroneCAN / ESC Telemetry | Continuous @ 100 Hz |
+| MET-02-S07 | Propulsion & BMS | ESC Inverter MOSFET Temperature (T_esc) | <= 75.0 | <= 60.0 | °C | CAN 2.0B / NTC Thermistor | Continuous @ 50 Hz |
+| MET-02-S08 | Propulsion & BMS | Dynamic DC Bus Voltage Under Max Load | >= 21.6 | >= 22.8 | V | Power Distribution Telemetry | Continuous @ 100 Hz |
+| MET-02-S09 | Pitot-Static & Air Data | Pitot Airspeed Dynamic Response Lag (tau_lag) | <= 50.0 | <= 20.0 | ms | CAN 2.0B / Differential ADU | Continuous @ 100 Hz |
+| MET-02-S10 | Pitot-Static & Air Data | True Airspeed (TAS) Tracking Error (e_v) | <= 1.5 | <= 0.4 | m/s | CAN 2.0B Pitot / ADU | Continuous @ 100 Hz |
+| MET-02-S11 | Pitot-Static & Air Data | Dynamic Pressure Sensor Linearity Error | <= 1.0 | <= 0.25 | % Full Scale | Digital SPI / I2C Air Data | Continuous @ 100 Hz |
+| MET-02-S12 | Avionics & Navigation | IMU Vibration Rejection Power Spectral Density | <= 0.01 | <= 0.002 | g^2/Hz | High-Speed SPI (10-500 Hz) | Continuous @ 1000 Hz |
+| MET-02-S13 | Avionics & Navigation | EKF Attitude Estimation Error (Roll/Pitch) | <= 0.50 | <= 0.15 | deg | ARINC 429 / High-Speed SPI | Continuous @ 250 Hz |
+| MET-02-S14 | Flight Controls | Control Surface Actuator Slew Rate | >= 180.0 | >= 240.0 | deg/s | DroneCAN / PWM Actuator Bus | dt <= 4.0 ms |
 
 #### Verification Specification
 | Verification Attribute | Detail Specification |
 | :--- | :--- |
-| Verification Method | Flight Navigation Log Review & 6-DOF Kinematic Simulation Audit |
-| Evidence Artifact | `tests/flight_guidance_sim.py` -> `logs/flight_trajectory_eval.csv` |
-| Acceptance Criteria | Maximum lateral deviation <= 2.0 m over entire 15.0 km corridor transit; zero geofence boundary infringements; zero aerodynamic stall warnings. |
-| Pass / Fail Threshold | `max(abs(e_xtrack)) <= 2.0 m` and `max(abs(e_z)) <= 1.0 m` across all ingress waypoints. |
-| Traceability | `/// OperationalAllocation: [MET-02]` \| RTCA DO-365B §2.2.3 \| NATO STANAG 4586 Annex B §3.2 |
+| Verification Method | Flight Navigation Log Review, High-Frequency Multi-Subsystem Telemetry Audit, and 6-DOF Kinematic Simulation |
+| Evidence Artifact | `tests/flight_guidance_sim.py` -> `logs/flight_trajectory_eval.csv` and `logs/ingress_propulsion_telemetry.json` |
+| Acceptance Criteria | Conjunction across all monitored transit subsystems:<br>1. **Flight Guidance & Trajectory:** Lateral cross-track error <= 2.0 m and vertical altitude tracking error <= 1.0 m across entire 15.0 km corridor transit; guidance control loop rate >= 250 Hz; waypoint transition latency <= 50.0 ms; geofence containment margin >= 50.0 m.<br>2. **Propulsion & BMS:** Motor speed maintained within [4500, 7200] RPM; ESC inverter MOSFET temperature <= 75.0 °C; dynamic DC bus voltage >= 21.6 V under full throttle.<br>3. **Pitot-Static & Air Data:** Pitot airspeed dynamic response lag tau <= 50.0 ms; TAS tracking error <= 1.5 m/s; dynamic pressure linearity error <= 1.0%.<br>4. **Avionics & Navigation:** IMU vibration rejection spectral density <= 0.01 g^2/Hz over 10-500 Hz vibration spectrum; EKF dynamic roll/pitch attitude error <= 0.50 deg.<br>5. **Flight Controls:** Actuator deflection slew rate >= 180.0 deg/s without command bus saturation. |
+| Pass / Fail Threshold | `max(abs(e_xtrack)) <= 2.0 m`, `max(abs(e_z)) <= 1.0 m`, `RPM in [4500, 7200]`, `T_esc <= 75.0 °C`, `tau_lag <= 50.0 ms`, and `PSD_imu <= 0.01 g^2/Hz`. |
+| Traceability | `/// OperationalAllocation: [MET-02]` \| RTCA DO-365B §2.2.3 \| NATO STANAG 4586 Annex B §3.2 \| ISO/IEC/IEEE 29148:2018 §6.4.2 |
 
 ---
 
 ### 2.3 MET-03: AreaSurveillanceOrbit
 
-Formal specification for closed-loop target area loitering, continuous payload pointing stabilization, multi-spectral sensor streaming, and orbit radius precision.
+Formal specification for closed-loop target area loitering, direct-drive gimbal servo thermal regulation, continuous MWIR Non-Uniformity Correction (NUC) recalibration, optical boresight stabilization under dynamic wind shear, multi-spectral video encoding, and circular orbit tracking precision.
 
 #### Condition Specification
 | Parameter | Condition Value / State | Engineering Unit | Validation Rule |
 | :--- | :--- | :--- | :--- |
 | Operational State | On-Station Loiter / Orbit | State Enum | Flight mode `LOITER_ORBIT` |
 | Designated Orbit Centerpoint | Geodetic (Lat, Lon, Alt) | Coordinates | Target Area of Interest (TAI) |
-| Nominal Orbit Radius (R_orbit) | 300.0 | m | Nominal orbit radius |
+| Nominal Orbit Radius (R_orbit) | 300.0 | m | Commanded circular orbit radius |
 | Target Standoff Slant Range | 300.0 to 1500.0 | m | Payload optical tracking range |
 | Sensor Payload State | Active EO/IR Multi-Spectral | State Enum | MWIR + 4K Electro-Optical Gimbal |
+| Ambient Wind Shear Envelope | Gusts up to 12.0 m/s with 3.0 m/s/s shear | Vector Gradient | Dynamic wind turbulence field |
+| Gimbal Actuator Thermal Baseline | <= 65.0 | °C | Direct-drive brushless servo motor limit |
+| MWIR Sensor Operating Mode | Cryocooled 640x512 Detector | State Enum | Cryocooler locked at T <= 77.0 K |
 
 #### Standard Specification
-| Metric Name | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| Orbit Radius Deviation | <= 5.0 | <= 1.0 | m | Autopilot CAN / Mavlink v2 | Continuous @ 250 Hz |
-| Payload Pointing Jitter (RMS) | <= 0.05 | <= 0.01 | deg | RS-422 / CAN Gimbal Bus | Continuous @ 100 Hz |
-| Optical Target Centering Error | <= 15.0 | <= 3.0 | pixels | GigE Vision / RTSP | <= 33.3 ms (30 FPS) |
-| Video Stream H.265 Frame Rate | >= 30 | >= 60 | FPS | 1000BASE-T Ethernet | Frame interval <= 33.3 ms |
-| Sensor Gimbal Dynamic Slew Rate | >= 60.0 | >= 120.0 | deg/s | RS-422 Serial Driver | t_slew <= 500 ms |
-| Video Telemetry Timestamp Skew | <= 10.0 | <= 2.0 | ms | Precision Time Protocol (PTP) | Skew <= 10.0 ms |
+| Metric ID | Subsystem Domain | Metric Name / Description | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| MET-03-S01 | Payload & Gimbal | Optical Boresight Jitter Under Wind Shear (RMS) | <= 0.02 | <= 0.008 | deg RMS | RS-422 / CAN Gimbal Bus | Continuous @ 100 Hz |
+| MET-03-S02 | Payload & Gimbal | Gimbal Servo Actuator Temperature (T_servo) | <= 65.0 | <= 50.0 | °C | CAN 2.0B / Digital Thermistor | Continuous @ 20 Hz |
+| MET-03-S03 | Payload & Gimbal | MWIR NUC Shutter Calibration Interval | <= 300.0 | <= 180.0 | s | Payload Serial Control Link | t_nuc <= 300.0 s |
+| MET-03-S04 | Payload & Gimbal | MWIR Detector Cryocooler Lock Temperature | <= 77.0 | <= 72.0 | K | Cryo Controller Serial Bus | t_cool <= 180.0 s |
+| MET-03-S05 | Payload & Gimbal | Gimbal Dynamic Pan/Tilt Slew Rate | >= 60.0 | >= 120.0 | deg/s | RS-422 Serial Driver | t_slew <= 500.0 ms |
+| MET-03-S06 | Flight Guidance & Aerodynamics | Loiter Orbit Radius Deviation (abs(R - 300.0)) | <= 5.0 | <= 1.0 | m | Autopilot CAN / Mavlink v2 | Continuous @ 250 Hz |
+| MET-03-S07 | Flight Guidance & Aerodynamics | Coordinated Turn Bank Angle Stability | <= 35.0 | <= 25.0 | deg | Autopilot Attitude Loop | Continuous @ 250 Hz |
+| MET-03-S08 | Vision & Mission Computer | Optical Target Centering Error | <= 15.0 | <= 3.0 | pixels | GigE Vision / RTSP | <= 33.3 ms (30 FPS) |
+| MET-03-S09 | Vision & Mission Computer | Video Stream H.265 Frame Rate | >= 30 | >= 60 | FPS | 1000BASE-T Ethernet | Frame interval <= 33.3 ms |
+| MET-03-S10 | Vision & Mission Computer | Video Telemetry Timestamp Synchronization Skew | <= 10.0 | <= 2.0 | ms | Precision Time Protocol (PTP) | Skew <= 10.0 ms |
+| MET-03-S11 | Vision & Mission Computer | Edge Neural Object Detector Inference Latency | <= 33.3 | <= 15.0 | ms | Onboard NPU / Tensor Core | Continuous @ 30 FPS |
+| MET-03-S12 | C2 & Datalink | Downlink Video Payload Data Rate | >= 8.0 | >= 15.0 | Mbps | 5.8 GHz COFDM Modem | Continuous @ 30 FPS |
 
 #### Verification Specification
 | Verification Attribute | Detail Specification |
 | :--- | :--- |
-| Verification Method | Telemetry & High-Resolution Video Frame Analysis |
-| Evidence Artifact | `tests/surveillance_orbit_test.py` -> `logs/gimbal_pointing_metrics.json` |
-| Acceptance Criteria | Vehicle maintains circular orbit within 300.0 m +/- 5.0 m; gimbal pointing jitter <= 0.05 deg RMS under 12 m/s winds; uninterrupted video encoding. |
-| Pass / Fail Threshold | `abs(R_actual - 300.0) <= 5.0 m` and `RMS(pointing_error) <= 0.05 deg`. |
-| Traceability | `/// OperationalAllocation: [MET-03]` \| NATO STANAG 4586 Annex B §3.2 \| INCOSE SEH v5.0 §3.2 |
+| Verification Method | Telemetry, High-Resolution Video Frame Analysis, and Gimbal Thermal Telemetry Audit |
+| Evidence Artifact | `tests/surveillance_orbit_test.py` -> `logs/gimbal_pointing_metrics.json` and `logs/mwir_calibration_log.json` |
+| Acceptance Criteria | Multi-subsystem conjunction during on-station orbit:<br>1. **Payload & Gimbal:** Optical boresight jitter <= 0.02 deg RMS under dynamic wind shear <= 12.0 m/s; gimbal servo actuator temperature <= 65.0 °C; MWIR NUC calibration executed at interval <= 300.0 s without video frame dropping; cryocooler maintained at T <= 77.0 K; dynamic slew rate >= 60.0 deg/s.<br>2. **Flight Guidance & Aerodynamics:** Vehicle maintains circular orbit within 300.0 m +/- 5.0 m with coordinated turn bank angle <= 35.0 deg.<br>3. **Vision & Mission Computer:** Optical target centering error <= 15.0 pixels; video stream encoded at >= 30 FPS; telemetry sync skew <= 10.0 ms; edge NPU inference latency <= 33.3 ms.<br>4. **C2 & Datalink:** Downlink payload video stream >= 8.0 Mbps with packet error rate <= 10^-4. |
+| Pass / Fail Threshold | `abs(R_actual - 300.0) <= 5.0 m`, `jitter_RMS <= 0.02 deg`, `T_servo <= 65.0 °C`, and `t_nuc <= 300.0 s`. |
+| Traceability | `/// OperationalAllocation: [MET-03]` \| NATO STANAG 4586 Annex B §3.2 \| INCOSE SEH v5.0 §3.2 \| MIL-STD-810H Method 501.7 |
 
 ---
 
 ### 2.4 MET-04: DynamicAirspaceDeconfliction
 
-Formal specification for onboard Detect and Avoid (DAA) surveillance, intruder track correlation, Well-Clear separation assurance, and autonomous collision avoidance maneuvering.
+Formal specification for onboard Detect and Avoid (DAA) surveillance, high-rate 77 GHz FMCW radar tracking, low-latency ADS-B message decoding, high-resolution vertical rate estimation per RTCA DO-365B, multi-sensor kinematic track fusion, Well-Clear separation assurance, and autonomous collision avoidance maneuvering.
 
 #### Condition Specification
 | Parameter | Condition Value / State | Engineering Unit | Validation Rule |
 | :--- | :--- | :--- | :--- |
-| Operational State | Active Airspace Monitoring | State Enum | DAA subsystem initialized |
-| Airspace Class | Class G / Class E (Unsegregated) | Airspace Enum | Mixed traffic environment |
-| Cooperative Sensing | Dual ADS-B In (1090 MHz / 978 UAT) | Hardware | Operational receiver status |
-| Non-Cooperative Sensing | 77 GHz FMCW Radar + EO/IR DAA | Hardware | Operational sensor track fusion |
-| Track Fusion Rate | >= 10.0 | Hz | Multi-sensor track state update |
+| Operational State | Active Airspace Monitoring | State Enum | DAA subsystem initialized and tracking |
+| Airspace Classification | Class G / Class E (Unsegregated) | Airspace Enum | Mixed cooperative and non-cooperative traffic |
+| Cooperative Sensing System | Dual ADS-B In (1090 MHz / 978 UAT) | Hardware State | Operational receiver RF status |
+| Non-Cooperative Sensing System | 77 GHz FMCW Radar + EO/IR DAA | Hardware State | Operational multi-mode radar transceiver |
+| Multi-Sensor Track Fusion Pipeline | Centralized Extended Kalman Filter | Software State | Real-time state vector fusion active |
+| Intruder Closure Velocity | Up to 150.0 | m/s | Maximum relative approach speed |
+| Well-Clear Boundary (RTCA DO-365B) | DMOD = 1200.0 m, ZTHR = 137.0 m | Geometrical Vol | Declared Well-Clear separation volume |
 
 #### Standard Specification
-| Metric Name | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| Horizontal Well-Clear Distance (DMOD) | >= 1200.0 | >= 1500.0 | m | ARINC 429 / Ethernet | Continuous @ 10 Hz |
-| Vertical Well-Clear Separation (ZTHR) | >= 137.0 (450 ft) | >= 200.0 | m | ARINC 429 / Ethernet | Continuous @ 10 Hz |
-| Modified Tau Horizon (tau_mod) | >= 35.0 | >= 55.0 | s | DAA Kinematics Engine | Continuous @ 10 Hz |
-| Intruder Threat Correlation Latency | <= 1.0 | <= 0.2 | s | High-Speed CAN / Ethernet | t_corr <= 1.0 s |
-| Autonomous Escape Maneuver Trigger | <= 2.0 | <= 0.5 | s | Autopilot Command Bus | t_maneuver <= 2.0 s |
-| Well-Clear Recovery Hysteresis Duration | >= 10.0 | >= 15.0 | s | State Machine Timer | tau_hysteresis >= 10.0 s |
+| Metric ID | Subsystem Domain | Metric Name / Description | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| MET-04-S01 | DAA Radar Subsystem | 77 GHz FMCW Radar Track State Update Rate (f_radar) | >= 20.0 | >= 50.0 | Hz | 100BASE-T1 / High-Speed SPI | dt <= 50.0 ms |
+| MET-04-S02 | DAA Surveillance | ADS-B In Message Processing & Decode Latency | <= 100.0 | <= 30.0 | ms | 1090 MHz RF Front-End / UART | t_adsb <= 100.0 ms |
+| MET-04-S03 | DAA Surveillance | DO-365B Intruder Vertical Rate Resolution (dz/dt) | <= 0.20 | <= 0.05 | m/s | DAA Kinematic Tracker Bus | dt <= 50.0 ms |
+| MET-04-S04 | DAA Surveillance | Multi-Sensor Track Fusion Kinematic Update Rate | >= 20.0 | >= 50.0 | Hz | Real-Time Fusion Coprocessor | dt <= 50.0 ms |
+| MET-04-S05 | Well-Clear Assurance | Horizontal Well-Clear Separation Distance (DMOD) | >= 1200.0 | >= 1500.0 | m | ARINC 429 / Ethernet | Continuous @ 20 Hz |
+| MET-04-S06 | Well-Clear Assurance | Vertical Well-Clear Separation Distance (ZTHR) | >= 137.0 (450 ft) | >= 200.0 | m | ARINC 429 / Ethernet | Continuous @ 20 Hz |
+| MET-04-S07 | Well-Clear Assurance | Modified Tau Time-to-CPA Threshold (tau_mod) | >= 35.0 | >= 55.0 | s | DAA Kinematics Engine | Continuous @ 20 Hz |
+| MET-04-S08 | Collision Avoidance | Intruder Conflict Detection & Correlation Latency | <= 500.0 | <= 100.0 | ms | High-Speed CAN / Ethernet | t_corr <= 500.0 ms |
+| MET-04-S09 | Collision Avoidance | Autonomous Escape Maneuver Command Latency | <= 1.0 | <= 0.25 | s | Autopilot Command Bus | t_maneuver <= 1.0 s |
+| MET-04-S10 | Collision Avoidance | Well-Clear Recovery Hysteresis Duration | >= 10.0 | >= 15.0 | s | State Machine Timer | tau_hysteresis >= 10.0 s |
+| MET-04-S11 | Flight Guidance & Control | Avoidance Maneuver Normal Acceleration Limit | <= 2.50 | <= 1.80 | g | Autopilot Inner Loop | Continuous @ 250 Hz |
+| MET-04-S12 | C2 & DAA Telemetry | Conflict Alert & Resolution Advisory Telemetry Broadcast | <= 250.0 | <= 50.0 | ms | PACE C2 Datalink / Mavlink v2 | t_alert <= 250.0 ms |
 
 #### Verification Specification
 | Verification Attribute | Detail Specification |
 | :--- | :--- |
-| Verification Method | DAA Collision Encounter Simulation & Hardware-in-the-Loop Event Review |
-| Evidence Artifact | `tests/daa_separation_sim.py` -> `logs/daa_encounter_results.json` |
-| Acceptance Criteria | Zero incursions below Well-Clear volume (1200 m horizontal, 137 m vertical) against standard RTCA DO-365B 24-encounter stress suite. |
-| Pass / Fail Threshold | `min(D_horizontal) >= 1200.0 m` or `min(abs(H_vertical)) >= 137.0 m` across all simulated intruder trajectories. |
-| Traceability | `/// OperationalAllocation: [MET-04]` \| RTCA DO-365B §2.2.4 \| NATO STANAG 4586 Annex B §3.3 |
+| Verification Method | DAA Multi-Sensor Hardware-in-the-Loop Simulation & RTCA DO-365B Encounter Review |
+| Evidence Artifact | `tests/daa_separation_sim.py` -> `logs/daa_encounter_results.json` and `logs/radar_adsb_telemetry.csv` |
+| Acceptance Criteria | Multi-subsystem conjunction for airspace deconfliction:<br>1. **Radar & Surveillance:** 77 GHz radar track update rate f >= 20.0 Hz; ADS-B In message decode latency <= 100.0 ms; DO-365B vertical rate resolution dz/dt <= 0.2 m/s; multi-sensor track fusion rate >= 20.0 Hz.<br>2. **Well-Clear Assurance:** Zero incursions below Well-Clear volume (DMOD >= 1200.0 m, ZTHR >= 137.0 m, tau_mod >= 35.0 s) across all 24 RTCA DO-365B standard encounter stress vectors.<br>3. **Collision Avoidance & Guidance:** Conflict correlation <= 500.0 ms; autonomous escape maneuver command issued in <= 1.0 s with normal acceleration load factor <= 2.5 g; recovery hysteresis >= 10.0 s.<br>4. **C2 & Telemetry:** Conflict alert and advisory telemetry broadcast to GCS in <= 250.0 ms. |
+| Pass / Fail Threshold | `min(D_horizontal) >= 1200.0 m` or `min(abs(H_vertical)) >= 137.0 m`, with `f_radar >= 20.0 Hz`, `t_adsb <= 100.0 ms`, and `dz/dt <= 0.2 m/s`. |
+| Traceability | `/// OperationalAllocation: [MET-04]` \| RTCA DO-365B §2.2.4 \| NATO STANAG 4586 Annex B §3.3 \| FAA AC 90-114B |
 
 ---
 
 ### 2.5 MET-05: ElectronicCounterCountermeasures
 
-Formal specification for electronic counter-countermeasures (ECCM), RF jamming detection, PACE communication tier failover, and GPS-denied dead-reckoning navigation.
+Formal specification for electronic counter-countermeasures (ECCM), multi-band GNSS anti-jam mitigation, Controlled Radiation Pattern Antenna (CRPA) adaptive nulling, GPS-denied dead-reckoning navigation bounding, automated PACE communication tier failover, and hardware cryptographic session protection under severe electronic warfare threats.
 
 #### Condition Specification
 | Parameter | Condition Value / State | Engineering Unit | Validation Rule |
 | :--- | :--- | :--- | :--- |
-| Operational State | Contested Electronic Spectrum | State Enum | In-flight operations |
-| RF Threat Environment | Narrowband / Broadband Noise Jamming | EW Vector | Jammer-to-Signal ratio J/S > 15 dB |
-| Navigation Environment | GNSS Spoofing / Pseudorange Denial | EW Vector | Chi-Square residual gamma_k > 16.27 |
-| Primary Communications Link | 5.8 GHz COFDM Datalink | PACE Tier 1 | Nominal primary link |
-| Fallback Communications Links | 915 MHz FHSS / Cellular LTE / SATCOM | PACE Tiers 2-4 | Pre-configured backup channels |
+| Operational State | Contested Electromagnetic Spectrum | State Enum | Airborne mission execution |
+| RF Electronic Attack Environment | Broadband / Sweep Jamming | EW Vector | Jammer-to-Signal ratio J/S >= 35.0 dB |
+| GNSS Deception Environment | Multi-Satellite Pseudorange Spoofing | EW Vector | Innovation gating residual gamma_k > 16.27 |
+| CRPA Antenna System | 4-Element Adaptive Array | Hardware State | Digital beamforming receiver online |
+| Dead-Reckoning Navigation State | GPS-Denied Degraded Mode | State Enum | EKF INS + Optical Flow / Visual Odometry |
+| Primary Communications Link | 5.8 GHz COFDM Datalink | PACE Tier 1 | High-bandwidth payload link |
+| Fallback Communications Links | 915 MHz FHSS / Cellular LTE / SATCOM | PACE Tiers 2-4 | Multi-tier failover channels |
 
 #### Standard Specification
-| Metric Name | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| PACE Link Failover Execution Time | <= 1.0 | <= 0.2 | s | Serial SPI / High-Speed UART | t_switch <= 1.0 s |
-| GPS-Denied Navigation Drift Rate | <= 1.0 | <= 0.2 | % Distance | EKF INS / Optical Flow | Continuous @ 250 Hz |
-| Jamming Detection & Isolation Latency | <= 200.0 | <= 50.0 | ms | RF Frontend AGC Monitor | t_detect <= 200.0 ms |
-| Spoofed GNSS Satellite Rejection Latency | <= 100.0 | <= 20.0 | ms | RAIM / Innovation Gating | t_reject <= 100.0 ms |
-| Alternate Link Re-Sync Lock Time | <= 500.0 | <= 100.0 | ms | 915 MHz FHSS Modem | t_sync <= 500.0 ms |
-| Cryptographic Session Rekeying Time | <= 250.0 | <= 50.0 | ms | AES-256-GCM Hardware Core | t_rekey <= 250.0 ms |
+| Metric ID | Subsystem Domain | Metric Name / Description | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| MET-05-S01 | EW & Navigation Resiliency | GNSS Jammer-to-Signal (J/S) Anti-Jam Threshold | >= 35.0 | >= 45.0 | dB | Multi-Band RF Front-End | Continuous @ 50 Hz |
+| MET-05-S02 | EW & Navigation Resiliency | CRPA Digital Beamforming Spatial Nulling Depth | >= 25.0 | >= 35.0 | dB | 4-Element CRPA Receiver | Continuous @ 100 Hz |
+| MET-05-S03 | EW & Navigation Resiliency | Dead-Reckoning Navigation Drift Over 60 s Outage | <= 0.50 | <= 0.15 | % Distance | EKF INS / Optical Flow Bus | t_outage = 60.0 s |
+| MET-05-S04 | EW & Navigation Resiliency | GNSS Spoofing Detection & Rejection Latency | <= 100.0 | <= 20.0 | ms | RAIM / Chi-Square Gating | t_reject <= 100.0 ms |
+| MET-05-S05 | EW & Navigation Resiliency | Multi-Sensor Dead-Reckoning Loop Rate | >= 250 | >= 500 | Hz | High-Speed SPI / Real-Time OS | dt <= 4.0 ms |
+| MET-05-S06 | C2 & Datalink (PACE) | PACE Tier Link Failover Execution Time (t_switch) | <= 1.0 | <= 0.20 | s | Serial SPI / High-Speed UART | t_switch <= 1.0 s |
+| MET-05-S07 | C2 & Datalink (PACE) | 915 MHz FHSS Alternate Link Sync Re-Lock Time | <= 500.0 | <= 100.0 | ms | Frequency Hopping Modem | t_sync <= 500.0 ms |
+| MET-05-S08 | C2 & Datalink (PACE) | RF Front-End AGC Saturation & Jamming Alarm Latency | <= 50.0 | <= 10.0 | ms | Baseband DSP / CAN 2.0B | t_alarm <= 50.0 ms |
+| MET-05-S09 | Security & Cryptography | Cryptographic Session Rekeying Duration | <= 250.0 | <= 50.0 | ms | AES-256-GCM Hardware Core | t_rekey <= 250.0 ms |
+| MET-05-S10 | Flight Guidance & Control | Degraded Navigation Geofence Buffer Inflation | >= 100.0 | >= 200.0 | m | Safety Simplex Coprocessor | Continuous @ 50 Hz |
 
 #### Verification Specification
 | Verification Attribute | Detail Specification |
 | :--- | :--- |
-| Verification Method | RF Jamming Chamber Injection & GPS Spoofing HIL Navigation Test |
-| Evidence Artifact | `tests/pace_failover_test.py` -> `logs/eccm_mitigation_record.json` |
-| Acceptance Criteria | Autonomous failover to Tier 2 FHSS within 1.0 s of primary link loss; seamless switchover to optical flow odometry maintaining navigation error < 1.0% distance. |
-| Pass / Fail Threshold | `t_switch <= 1.0 s` and `drift_rate <= 0.01 * distance_traveled`. |
-| Traceability | `/// OperationalAllocation: [MET-05]` \| MIL-STD-461G RS103 §4.3 \| RTCA DO-362A §3.4 |
+| Verification Method | Anechoic RF Jamming Chamber Injection, GPS Spoofing HIL Emulation, and Optical Flow Odometry Navigation Test |
+| Evidence Artifact | `tests/pace_failover_test.py` -> `logs/eccm_mitigation_record.json` and `logs/dead_reckoning_drift_eval.csv` |
+| Acceptance Criteria | Multi-subsystem conjunction under EW attack:<br>1. **EW & Navigation Resiliency:** GNSS receiver maintains tracking under J/S >= 35.0 dB; CRPA spatial nulling depth >= 25.0 dB; dead-reckoning drift <= 0.5% total distance traveled during a continuous 60.0 s complete GNSS outage; GNSS spoofing detected and rejected within 100.0 ms.<br>2. **PACE C2 Failover:** Autonomous link failover to Tier 2 FHSS completed within t_switch <= 1.0 s of primary link disruption; 915 MHz link synchronization <= 500.0 ms; AGC jamming alarm raised in <= 50.0 ms.<br>3. **Security & Cryptography:** AES-256-GCM hardware session rekeying executed in <= 250.0 ms.<br>4. **Guidance & Safety:** Safety geofence buffer inflated by >= 100.0 m during GPS-denied operation. |
+| Pass / Fail Threshold | `J_S_margin >= 35.0 dB`, `null_depth >= 25.0 dB`, `drift_rate <= 0.005 * distance_traveled` over 60 s outage, and `t_switch <= 1.0 s`. |
+| Traceability | `/// OperationalAllocation: [MET-05]` \| MIL-STD-461G RS103 §4.3 \| RTCA DO-362A §3.4 \| NATO STANAG 4586 Annex B §3.4 |
 
 ---
 
 ### 2.6 MET-06: PrecisionTargetMensuration
 
-Formal specification for geo-spatial target coordinate extraction, multi-sensor line-of-sight intersection, terrain elevation model mapping, and Target Location Error (TLE) bounding.
+Formal specification for geo-spatial target coordinate mensuration, pulsed laser rangefinding, high-density EO/IR focal plane array metrology, real-time atmospheric extinction compensation, line-of-sight vector kinematics, digital elevation model mapping, and Target Location Error (TLE) bounding.
 
 #### Condition Specification
 | Parameter | Condition Value / State | Engineering Unit | Validation Rule |
 | :--- | :--- | :--- | :--- |
 | Operational State | Target Acquisition & Mensuration | State Enum | Gimbal locked in `TRACK_TARGET` |
-| Slant Range to Target (Range_target) | 1000.0 to 3000.0 | m | Laser rangefinder operating window |
-| Digital Terrain Elevation Data (DTED) | Level 3 (1.0 m resolution) | Resolution | Local onboard elevation map loaded |
-| Vehicle Navigation Covariance Norm | <= 1.5 | m | EKF state position uncertainty |
-| Laser Rangefinder Accuracy | <= 0.5 | m | Time-of-flight optical pulse |
+| Slant Range to Target (Range_target) | 1000.0 to 3000.0 | m | Laser rangefinder operational envelope |
+| Digital Terrain Elevation Data (DTED) | Level 3 (1.0 m grid resolution) | Resolution | Onboard high-resolution DEM loaded |
+| Laser Rangefinder Subsystem | Eye-Safe 1535 nm Pulsed Diode | Hardware State | Operational firing state |
+| EO/IR Detector Specifications | 12.0 um Pixel Pitch Focal Plane Array | Hardware State | Uncooled LWIR / Cryo MWIR sensor |
+| Atmospheric Visibility Condition | Meteorological Optical Range >= 5.0 km | Visibility | Real-time extinction correction active |
+| Vehicle Navigation Covariance Norm | <= 0.50 | m | EKF state position uncertainty |
 
 #### Standard Specification
-| Metric Name | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| Target Location Error (TLE CEP90) | <= 2.5 | <= 1.0 | m | STANAG 4586 DLI / RS-422 | Range = 3.0 km |
-| Target Range Estimation Error | <= 1.0 | <= 0.2 | m | LRF Serial Interface | Continuous @ 20 Hz |
-| Line-of-Sight Kinematic Transform Rate | >= 50 | >= 100 | Hz | Real-Time Vector Math Unit | dt <= 20.0 ms |
-| Mensuration Solution Convergence Time | <= 500.0 | <= 100.0 | ms | Mission Computer Bus | t_mens <= 500.0 ms |
-| Target Coordinate Telemetry Latency | <= 50.0 | <= 10.0 | ms | Ethernet / STANAG DLI | t_tx <= 50.0 ms |
-| Multi-Spectral Positive ID Confidence | >= 0.95 | >= 0.99 | Dimensionless | Edge Neural Classifier | Inference <= 33.3 ms |
+| Metric ID | Subsystem Domain | Metric Name / Description | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| MET-06-S01 | Laser Rangefinder | Laser Rangefinder Pulse Repetition Frequency (PRF) | 10.0 | 20.0 | Hz | RS-422 / High-Speed Serial | Continuous @ 10 Hz |
+| MET-06-S02 | Laser Rangefinder | Laser Range Measurement Accuracy at 3.0 km | <= 0.50 | <= 0.15 | m | LRF Serial Interface | Range = 3.0 km |
+| MET-06-S03 | EO/IR Metrology | EO/IR Focal Plane Array Pixel Pitch | 12.0 | 10.0 | um | Sensor Core Specification | Hardware Architecture |
+| MET-06-S04 | EO/IR Metrology | Atmospheric Extinction Coefficient Correction Rate | >= 10.0 | >= 25.0 | Hz | Radiometric DSP Pipeline | dt <= 100.0 ms |
+| MET-06-S05 | Target Mensuration | Target Location Error (TLE CEP90) at 3.0 km Slant Range | <= 2.50 | <= 1.00 | m | STANAG 4586 DLI / RS-422 | Range = 3.0 km |
+| MET-06-S06 | Target Mensuration | Line-of-Sight Kinematic Coordinate Transform Rate | >= 50.0 | >= 100.0 | Hz | Real-Time Vector Math Unit | dt <= 20.0 ms |
+| MET-06-S07 | Target Mensuration | Mensuration Solution Convergence Time | <= 500.0 | <= 100.0 | ms | Mission Computer Bus | t_mens <= 500.0 ms |
+| MET-06-S08 | Target Mensuration | Target Geodetic Telemetry Transmission Latency | <= 50.0 | <= 10.0 | ms | Ethernet / STANAG DLI | t_tx <= 50.0 ms |
+| MET-06-S09 | Payload & Gimbal | Gimbal Line-of-Sight Collimation Error | <= 0.05 | <= 0.01 | deg | Optical Boresight Register | Continuous @ 100 Hz |
+| MET-06-S10 | AI & Computer Vision | Multi-Spectral Target Classification Confidence | >= 0.95 | >= 0.99 | Dimensionless | Edge Neural Classifier | Inference <= 33.3 ms |
 
 #### Verification Specification
 | Verification Attribute | Detail Specification |
 | :--- | :--- |
-| Verification Method | Surveyed Ground Target Mensuration Calibration & Flight Telemetry Audit |
-| Evidence Artifact | `tests/target_mensuration_test.py` -> `logs/mensuration_accuracy_log.json` |
-| Acceptance Criteria | Computed target geodetic coordinate error relative to DGPS surveyed ground truth <= 2.5 m CEP90 at 3.0 km standoff range under dynamic vehicle maneuvering. |
-| Pass / Fail Threshold | `TLE_CEP90 <= 2.5 m` at `Range_target == 3000.0 m`. |
-| Traceability | `/// OperationalAllocation: [MET-06]` \| NATO STANAG 4586 Annex B §3.5 \| INCOSE SEH v5.0 §3.2 |
+| Verification Method | Surveyed DGPS Ground Target Calibration, Atmospheric Extinction Chamber Model, and Flight Telemetry Audit |
+| Evidence Artifact | `tests/target_mensuration_test.py` -> `logs/mensuration_accuracy_log.json` and `logs/lrf_ranging_samples.csv` |
+| Acceptance Criteria | Multi-subsystem conjunction for precision target mensuration:<br>1. **Laser Rangefinder:** LRF operates at PRF = 10.0 Hz; range accuracy <= 0.50 m at 3.0 km slant range.<br>2. **EO/IR Metrology & Atmosphere:** EO/IR sensor array pixel pitch = 12.0 um; dynamic atmospheric extinction correction applied at >= 10.0 Hz.<br>3. **Mensuration Precision:** Target Location Error TLE CEP90 <= 2.50 m at 3.0 km standoff range; solution convergence time <= 500.0 ms; LOS kinematic transform rate >= 50.0 Hz.<br>4. **Payload & Telemetry:** Gimbal collimation error <= 0.05 deg; target telemetry latency <= 50.0 ms; target classification confidence >= 0.95. |
+| Pass / Fail Threshold | `TLE_CEP90 <= 2.5 m` at `Range_target == 3000.0 m`, with `PRF == 10.0 Hz`, `delta_range <= 0.5 m`, `pixel_pitch == 12.0 um`, and active extinction correction. |
+| Traceability | `/// OperationalAllocation: [MET-06]` \| NATO STANAG 4586 Annex B §3.5 \| INCOSE SEH v5.0 §3.2 \| MIL-STD-810H Method 505.7 |
 
 ---
 
 ### 2.7 MET-07: AutonomousBingoReturnDivert
 
-Formal specification for real-time onboard energy consumption modeling, dynamic Bingo energy threshold evaluation, automated return-to-base (RTB) routing, and statutory reserve preservation.
+Formal specification for real-time onboard energy consumption modeling, dynamic closed-loop battery internal resistance thermal compensation, headwind gradient vector integration, energy-optimal Specific Air Range (SAR) trajectory routing, autonomous return-to-base (RTB) or secondary divert execution, and strict statutory energy reserve preservation (E_reserve >= 216.0 kJ).
 
 #### Condition Specification
 | Parameter | Condition Value / State | Engineering Unit | Validation Rule |
 | :--- | :--- | :--- | :--- |
 | Operational State | In-Flight Energy Management | State Enum | Continuous background monitor |
-| Total Nominal Energy Capacity | 1080000.0 (300.0 Wh) | J | 6S 14Ah nominal energy pack |
-| Minimum Statutory Reserve Energy | 216000.0 (60.0 Wh) | J | Strict 20.0% statutory reserve |
-| Primary Recovery Site | Base Landing Pad (LZ-PRIMARY) | Waypoint ID | Distance d_primary <= 15.0 km |
-| Secondary Divert Recovery Site | Alternate Field (LZ-DIVERT-ALPHA)| Waypoint ID | Distance d_divert <= 5.0 km |
+| Total Nominal Energy Capacity (E_capacity) | 1080000.0 (300.0 Wh) | J | 6S 14Ah nominal energy pack |
+| Minimum Statutory Reserve Energy (E_reserve) | 216000.0 (60.0 Wh) | J | Strict 20.0% statutory reserve threshold |
+| Battery Cell Operating Temperature | -10.0 to +55.0 | °C | Thermal range for internal resistance model |
+| Headwind Gradient Vector Profile | Up to 15.0 m/s with shear dV/dz | Vector Profile | Real-time wind field integration |
+| Primary Recovery Site (LZ-PRIMARY) | Geodetic Coordinates | Waypoint ID | Distance d_primary <= 15.0 km |
+| Secondary Divert Recovery Site (LZ-DIVERT) | Geodetic Coordinates | Waypoint ID | Distance d_divert <= 5.0 km |
 
 #### Standard Specification
-| Metric Name | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| Autonomous Return / Divert Trigger Latency | <= 200.0 | <= 50.0 | ms | Flight Executive State Machine | t_resp <= 200.0 ms |
-| Touchdown Residual Energy Reserve | >= 216.0 (20%) | >= 270.0 (25%) | kJ | Smart BMS Telemetry | At touchdown |
-| Closed-Loop Energy Consumption Accuracy | <= 2.0 | <= 0.5 | % | Current Integrator / Coulomb Count | Continuous @ 50 Hz |
-| Real-Time Specific Air Range (SAR) Update | >= 10 | >= 50 | Hz | Path Planning Coprocessor | dt <= 100.0 ms |
-| Alternate Divert Path Optimization Time | <= 100.0 | <= 20.0 | ms | Trajectory Planner Memory Bus | t_plan <= 100.0 ms |
-| Low-Energy Alert GCS Broadcast Latency | <= 500.0 | <= 100.0 | ms | PACE C2 Datalink | t_c2 <= 500.0 ms |
+| Metric ID | Subsystem Domain | Metric Name / Description | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| MET-07-S01 | Power & BMS | Dynamic Battery Internal Resistance Thermal Compensation | Active (R_i(T)) | Arrhenius Model | Model State | Smart BMS / CAN 2.0B | Update @ 20 Hz |
+| MET-07-S02 | Power & BMS | Statutory Energy Reserve at Recovery Touchdown | >= 216.0 (20%) | >= 270.0 (25%) | kJ | Smart BMS Telemetry | At touchdown |
+| MET-07-S03 | Power & BMS | Closed-Loop Energy Coulomb-Counting Accuracy | <= 1.5 | <= 0.5 | % | Current Integrator / Shunt | Continuous @ 50 Hz |
+| MET-07-S04 | Power & BMS | Minimum Cell Cutoff Voltage Under Return Load | >= 3.30 | >= 3.45 | V/cell | BMS Analog Front-End | Continuous @ 50 Hz |
+| MET-07-S05 | Flight Guidance & Trajectory | Headwind Gradient Vector Integration Update Rate | >= 10.0 | >= 25.0 | Hz | ADU / Path Planner Bus | dt <= 100.0 ms |
+| MET-07-S06 | Flight Guidance & Trajectory | Specific Air Range (SAR) Optimal Speed Computation Rate | >= 10.0 | >= 50.0 | Hz | Path Planning Coprocessor | dt <= 100.0 ms |
+| MET-07-S07 | Flight Guidance & Trajectory | Autonomous Return / Divert Trigger Latency (t_resp) | <= 200.0 | <= 50.0 | ms | Flight Executive State Machine | t_resp <= 200.0 ms |
+| MET-07-S08 | Flight Guidance & Trajectory | Alternate Secondary Divert Path Optimization Time | <= 100.0 | <= 20.0 | ms | Trajectory Planner Memory Bus | t_plan <= 100.0 ms |
+| MET-07-S09 | Propulsion & Motor Drive | Return Transit Propulsion Efficiency (eta_prop) | >= 75.0 | >= 82.0 | % | ESC Telemetry / Power Monitor | Continuous @ 50 Hz |
+| MET-07-S10 | C2 & Safety Alerting | Bingo Low-Energy Alert GCS Broadcast Latency | <= 500.0 | <= 100.0 | ms | PACE C2 Datalink | t_c2 <= 500.0 ms |
 
 #### Verification Specification
 | Verification Attribute | Detail Specification |
 | :--- | :--- |
-| Verification Method | Battery Management System Telemetry & Autonomous Divert Flight Sim |
-| Evidence Artifact | `tests/bingo_energy_math_test.py` -> `logs/bingo_divert_profile.csv` |
-| Acceptance Criteria | Autonomous RTB triggers within 200 ms when E_current <= E_bingo; vehicle completes landing at primary or secondary divert site with reserve energy >= 216.0 kJ. |
-| Pass / Fail Threshold | `E_touchdown >= 216.0 kJ` and `t_response <= 200.0 ms`. |
-| Traceability | `/// OperationalAllocation: [MET-07]` \| JARUS SORA v2.5 Annex E §2.1 \| EASA GM1 UAS.SPEC.050(1)(g) |
+| Verification Method | Battery Management System Telemetry Audit, Dynamic R_i(T) Thermal Chamber Validation, and Autonomous Divert 6-DOF Flight Sim |
+| Evidence Artifact | `tests/bingo_energy_math_test.py` -> `logs/bingo_divert_profile.csv` and `logs/bms_thermal_compensation.json` |
+| Acceptance Criteria | Multi-subsystem conjunction for autonomous return and divert:<br>1. **Power & BMS:** Dynamic closed-loop battery internal resistance thermal compensation R_i(T) active at >= 20 Hz; touchdown residual reserve energy >= 216.0 kJ (>= 20.0% of nominal 1080.0 kJ pack); Coulomb-counting error <= 1.5%; cell voltage >= 3.30 V/cell under cruise return throttle.<br>2. **Guidance & Trajectory:** Atmospheric headwind gradient vector integrated along trajectory at >= 10.0 Hz; autonomous RTB or secondary divert trigger executed in t_resp <= 200.0 ms when E_current <= E_bingo; divert route optimization <= 100.0 ms.<br>3. **Propulsion:** Return transit propulsion system efficiency eta_prop >= 75.0%.<br>4. **C2 & Safety Alerting:** Low-energy Bingo alert transmitted to GCS within <= 500.0 ms. |
+| Pass / Fail Threshold | `E_touchdown >= 216.0 kJ`, `t_response <= 200.0 ms`, with active dynamic R_i(T) compensation and wind gradient vector integration. |
+| Traceability | `/// OperationalAllocation: [MET-07]` \| JARUS SORA v2.5 Annex E §2.1 \| EASA GM1 UAS.SPEC.050(1)(g) \| NATO STANAG 4586 Annex B §3.6 |
 
 ---
 
 ### 2.8 MET-08: PostMissionDataOffloadShutdown
 
-Formal specification for post-flight stationary confirmation, automated cryptographic payload zeroization, mission flight log offload, and deterministic safe electrical isolation.
+Formal specification for post-touchdown stationary state validation, NIST SP 800-88r1 compliant cryptographic key and volatile data zeroization, active DC power bus capacitor bleed discharge to safe voltage, post-flight motor thermal soak bounding, high-speed flight telemetry offload, and deterministic safe electrical isolation.
 
 #### Condition Specification
 | Parameter | Condition Value / State | Engineering Unit | Validation Rule |
 | :--- | :--- | :--- | :--- |
-| Operational State | Landed & Stationary on Pad | State Enum | Weight-on-wheels active |
-| Propulsion System State | Disarmed / Motor RPM == 0 | Motor State | ESC pulse output inhibited |
-| Ground Support Interface | Optical / Direct Ethernet Offload | Interface | Physical GSE connected |
-| Security Key State | Active Session Encryption Keys | Crypto State | Cryptographic volatile storage |
+| Operational State | Landed & Stationary on Pad | State Enum | Weight-on-wheels interlock confirmed active |
+| Propulsion System State | Disarmed / Motor PWM Inhibited | Motor State | ESC gate drive hardware interlock engaged |
+| Motor Stator Temperature Envelope | Ambient to 100.0 | °C | Thermal soak monitoring after touchdown |
+| DC Power Bus Voltage | Nominal 22.2 to 25.2 down to safe cutoff | V | Active bus discharge circuit engaged |
+| Ground Offload Interface | Gigabit Ethernet / USB 3.0 / Optical | Interface | Ground Support Equipment connected |
+| Security Key State | Active Session Ephemeral Keys & Logs | Crypto State | Cryptographic volatile storage |
 
 #### Standard Specification
-| Metric Name | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| Cryptographic Key Zeroization Duration | <= 500.0 | <= 50.0 | ms | Hardware Cryptographic Unit | t_zeroize <= 500.0 ms |
-| Flight Log & Telemetry Offload Duration | <= 60.0 | <= 20.0 | s | Gigabit Ethernet / USB 3.0 | t_offload <= 60.0 s |
-| Complete Safe Electrical System Shutdown | <= 10.0 | <= 3.0 | s | Power Distribution Controller | t_shutdown <= 10.0 s |
-| Memory Overwrite Verification Pass Rate | 100.0 | 100.0 | % | NIST SP 800-88r1 Clear Pattern | Single Pass 0x00/0xFF |
-| Post-Flight Structural BIT Validation | 100.0 | 100.0 | % Pass | CAN 2.0B Health Bus | t_sbit <= 5.0 s |
-| Security Tamper Log Seal Generation | <= 200.0 | <= 50.0 | ms | TPM 2.0 PCR Signing | t_seal <= 200.0 ms |
+| Metric ID | Subsystem Domain | Metric Name / Description | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| MET-08-S01 | Security & Cryptography | Cryptographic Key & Log Zeroization Time (NIST SP 800-88r1) | <= 10.0 | <= 0.50 | s | Hardware Cryptographic Unit | t_zeroize <= 10.0 s |
+| MET-08-S02 | Security & Cryptography | Volatile Memory Overwrite Verification Pass Rate | 100.0 | 100.0 | % | NIST SP 800-88r1 Clear Pattern | Single Pass 0x00/0xFF |
+| MET-08-S03 | Security & Cryptography | Security Tamper Log Cryptographic Seal Generation | <= 200.0 | <= 50.0 | ms | TPM 2.0 PCR Signing | t_seal <= 200.0 ms |
+| MET-08-S04 | Electrical Power & DC Bus | DC Bus Capacitor Discharge Time to V_bus < 5.0 V | <= 5.0 | <= 2.0 | s | Active Bleed Circuit / Shunt | t_discharge <= 5.0 s |
+| MET-08-S05 | Electrical Power & DC Bus | Residual Post-Shutdown DC Bus Voltage (V_bus) | < 5.0 | < 1.0 | V | Power Distribution Telemetry | At t = 5.0 s |
+| MET-08-S06 | Electrical Power & DC Bus | Main Power Contactor Isolation Disconnect Time | <= 50.0 | <= 10.0 | ms | Solid-State Power Switch | t_isolate <= 50.0 ms |
+| MET-08-S07 | Propulsion & Thermal | Post-Flight Motor Stator Thermal Soak Limit (T_motor) | <= 60.0 | <= 45.0 | °C | CAN 2.0B / Motor Thermistor | Soak window <= 300 s |
+| MET-08-S08 | Propulsion & Thermal | ESC Heat Sink Thermal Dissipation Monitor | <= 55.0 | <= 40.0 | °C | CAN 2.0B / ESC NTC Sensor | Soak window <= 300 s |
+| MET-08-S09 | Avionics & Ground Offload | Flight Log & Telemetry Offload Duration (64 GB) | <= 60.0 | <= 20.0 | s | Gigabit Ethernet / USB 3.0 | t_offload <= 60.0 s |
+| MET-08-S10 | Avionics & Ground Offload | Post-Flight Structural BIT (SBIT) Pass Rate | 100.0 | 100.0 | % Pass | CAN 2.0B Health Bus | t_sbit <= 5.0 s |
+| MET-08-S11 | Avionics & Ground Offload | Safe Electrical Isolation Latch Confirmation | <= 10.0 | <= 3.0 | s | Power Distribution Controller | t_shutdown <= 10.0 s |
 
 #### Verification Specification
 | Verification Attribute | Detail Specification |
 | :--- | :--- |
-| Verification Method | Security Audit Log Verification & Memory Forensics Inspection |
-| Evidence Artifact | `tests/crypto_zeroization_test.py` -> `logs/zeroization_audit_log.json` |
-| Acceptance Criteria | All mission cryptographic keys erased and overwritten within 500 ms; full flight telemetry dump transferred in <= 60 s; clean power bus cutoff. |
-| Pass / Fail Threshold | `KEY_ZEROIZED == TRUE` and `OFFLOAD_STATUS == SUCCESS` with zero uncommitted transactions. |
-| Traceability | `/// OperationalAllocation: [MET-08]` \| NIST SP 800-88r1 §2.4 \| DoD Directive 3000.09 §3.1.c |
+| Verification Method | Security Audit Log Verification, NIST SP 800-88r1 Memory Forensics, Bus Voltage Oscilloscope Measurement, and Motor Thermal Imaging Audit |
+| Evidence Artifact | `tests/crypto_zeroization_test.py` -> `logs/zeroization_audit_log.json` and `logs/post_flight_electrical_thermal.json` |
+| Acceptance Criteria | Multi-subsystem conjunction for safe shutdown and offload:<br>1. **Security & Cryptography:** All mission cryptographic keys and ephemeral memory zeroized in t_zeroize <= 10.0 s in accordance with NIST SP 800-88r1; memory overwrite pass rate = 100.0%; TPM 2.0 tamper log seal generated in <= 200.0 ms.<br>2. **Electrical Power & DC Bus:** DC bus capacitor active bleed circuit discharges bus to V_bus < 5.0 V within <= 5.0 s; main power contactor isolation disconnect <= 50.0 ms; complete safe electrical system isolation confirmed in <= 10.0 s.<br>3. **Propulsion & Thermal:** Motor stator core temperature does not exceed thermal soak limit T_motor <= 60.0 °C post touchdown; ESC heat sink temperature <= 55.0 °C.<br>4. **Avionics & Ground Offload:** 64 GB flight log and payload telemetry offloaded via GSE Gigabit Ethernet in <= 60.0 s; post-flight SBIT pass rate = 100.0%. |
+| Pass / Fail Threshold | `t_zeroize <= 10.0 s`, `V_bus < 5.0 V` at `t <= 5.0 s`, `T_motor <= 60.0 °C`, and `t_offload <= 60.0 s` with zero uncommitted transactions. |
+| Traceability | `/// OperationalAllocation: [MET-08]` \| NIST SP 800-88r1 §2.4 \| DoD Directive 3000.09 §3.1.c \| MIL-STD-882E §4.3 |
 
 ---
 

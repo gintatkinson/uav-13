@@ -340,15 +340,18 @@ def _find_matching_section(
 ) -> Optional[Tuple[str, int, str]]:
     """
     Finds a section in the parsed sections dictionary by matching section number or aliases.
+    Prioritizes direct section number prefix match before alias fallback.
     """
+    # Pass 1: Direct prefix match: e.g. "1. Scope", "## 1.", "1 - Scope", "Section 1:"
+    num_pattern = rf'^(?:section\s+)?{sec_num}[.\s:\-—]'
     for heading, (line_no, content) in sections.items():
         h_clean = heading.lower()
-        # Direct prefix match: e.g. "1. Scope", "## 1.", "1 - Scope"
-        num_pattern = rf'^(?:section\s+)?{sec_num}[.\s:\-—]'
         if re.search(num_pattern, h_clean):
             return heading, line_no, content
-        
-        # Check alias matches
+
+    # Pass 2: Check alias matches
+    for heading, (line_no, content) in sections.items():
+        h_clean = heading.lower()
         for alias in aliases:
             if alias.lower() in h_clean:
                 return heading, line_no, content
