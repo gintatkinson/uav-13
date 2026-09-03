@@ -42,12 +42,13 @@ The maintenance and sustainment concept is organized into three discrete, formal
 
 ---
 
-#### 10.1.1 Standard Maintenance Task Cards (MTC-01 through MTC-05)
+#### 10.1.1 Standard Maintenance Task Cards (MTC-01 through MTC-05, including MTC-01A)
 To ensure repeatable maintenance quality, airworthiness compliance, and metrological traceability, maintenance actions are executed using standardized maintenance task cards specifying exact inspection limits, Ground Support Equipment (GSE) callouts, technician certification levels, task durations, and digital signature sign-off requirements.
 
 | Task Card ID | Task Card Nomenclature | Applicable Tier & Frequency | Task Duration | Ground Support Equipment (GSE) Mapping | Scope of Inspection & Maintenance Procedures | Inspection Limits & Passing Criteria | Technician Certification Level | Digital Signature & Sign-Off Requirement |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **MTC-01** | Pre-Flight & Turnaround Airworthiness Inspection Card | O-Level / Prior to every flight sortie and post-flight turnaround | <= 12.0 min | **GSE-02** (CG Balance & Scale), **GSE-03** (Torque Driver), **GSE-06** (RF Field Sniffer) | Visual airframe structural check; propeller leading edge and root inspection; pitot probe clearance; battery terminal impedance check; fastener torque verification; 3-point CG and takeoff mass measurement; RF C2 telemetry field strength check; automated PBIT diagnostic execution | Zero composite cracks; Prop nick depth < 0.20 mm; Fastener torque 1.20 N*m +/- 0.05 N*m (GSE-03); AUW mass <= 25.0 kg and CG within +/- 3.0 mm of datum (GSE-02); RF signal RSSI >= -65 dBm at 10 m (GSE-06); Battery delta V <= 10 mV; PBIT 100% PASS | EASA Part-ML / Part-66 Category L or Certified Remote Pilot / O-Level Technician | Single cryptographic Ed25519 digital signature in Electronic Flight Bag (EFB) Maintenance Logbook |
+| **MTC-01A** | Rapid Sortie Turnaround Inspection Card | O-Level / Between consecutive operational sortie waves (Platform Regeneration) | <= 15.0 min (SLA) | **GSE-02** (CG Balance & Scale), **GSE-03** (Torque Driver), **GSE-06** (RF Field Sniffer) | Rapid post-flight composite tap, fastener torque check, and pitot clear check; hot-swap propulsion battery replacement with auxiliary keep-alive ground power bridging (V_bridge >= 24.0 V) preserving avionics navigation state, GNSS ephemeris, and crypto sessions; payload sensor decontamination, optic cleaning, and modular re-arming; high-speed telemetry log extraction and next-sortie mission plan upload; automated PBIT & health check | Zero composite delamination; Fastener torques 1.20 N*m +/- 0.05 N*m (GSE-03); AUW mass <= 25.0 kg and CG within +/- 3.0 mm (GSE-02); RF signal RSSI >= -65 dBm at 10 m (GSE-06); Keep-alive bridge voltage V_bridge >= 24.0 V continuous; Total turnaround duration T_turnaround <= 15.0 min SLA | EASA Part-ML / Part-66 Category L or Certified Remote Pilot / O-Level Technician | Dual cryptographic Ed25519 digital signature (RPIC + O-Level Technician) in Electronic Flight Bag (EFB) Maintenance Logbook |
 | **MTC-02** | 50-Flight-Hour Scheduled Periodic Air Data & Mechanical Service Card | O/I-Level / Every 50 flight hours or 120 sorties | <= 45.0 min | **GSE-04** (Differential Pitot-Static Test Set), **GSE-03** (Torque Driver), **GSE-01** (Avionics Breakout Box) | Pitot-static pneumatic line leak decay test; dynamic pressure sensor calibration across 0 to 200 hPa; static barometric pressure zero check; motor mount fastener torque verification; CAN FD bus error frame audit; control surface pushrod and horn backlash check | Pneumatic leak rate <= 0.010 hPa/min at 150 hPa (GSE-04); Airspeed calibration error <= 0.20 m/s; Fastener torques 4.50 N*m +/- 0.10 N*m (GSE-03); CAN bus error frame count = 0 over 60 s, bus termination 60.0 Ω +/- 1.0 Ω (GSE-01); Control surface backlash <= 0.15 deg | EASA Part-66 Category B1.3 / B2 or Certified I-Level UAS Maintenance Technician | Dual digital signature (Technician + Quality Airworthiness Inspector) via PKI-authenticated digital maintenance logbook |
 | **MTC-03** | 100-Flight-Hour Avionics, RF Datalink & Optical Gimbal Recalibration Card | I-Level / Every 100 flight hours or 250 landings | <= 2.5 hr | **GSE-01** (Avionics Breakout Box), **GSE-05** (Optical Boresight Collimator), **GSE-06** (RF Field Sniffer), **GSE-02** (CG Balance Jig) | Multi-bus avionics signal integrity, timing jitter, and bus load audit (CAN FD, SPI, 100BASE-T1); multi-spectral EO/IR optical gimbal boresight collimation and angular offset correction; RF datalink transmitter power, harmonic suppression, and antenna VSWR check; payload reconfiguration and precise 3-axis CG re-balancing; smart battery 1C capacity discharge and cell impedance cycle test | Optical boresight alignment error <= 0.02 deg (GSE-05); RF transmitter EIRP 30.0 dBm +/- 0.5 dBm, ACLR >= 35 dBc, VSWR <= 1.35:1 (GSE-06); Bus timing jitter <= 15 ns, bit error rate < 10^-9 (GSE-01); CG offset shift <= 1.0 mm from nominal (GSE-02); Battery usable capacity >= 92.0% nominal | EASA Part-66 Category B2 (Avionics) or I-Level Master Avionics Technician | Digital cryptographic certificate sign-off (X.509 token) logged to Centralized Maintenance Management System (CMMS) |
 | **MTC-04** | 150-Flight-Hour Actuator, Propulsion & Parachute Pyrotechnic Recertification Card | I-Level / Every 150 flight hours or 12 calendar months | <= 4.0 hr | **GSE-01** (Avionics Breakout Box / Actuator Exerciser), **GSE-03** (Torque Driver), **GSE-02** (Electronic Scale), Low-Current Squib Tester (< 5 mA) | Flight control actuator dynamic load response, full-stroke slew rate, torque saturation, and stall current testing; brushless motor bearing axial/radial runout, stator winding resistance balance, and dynamic vibration analysis; ballistic parachute canopy inspection, deployment line integrity, and pyrotechnic squib bridge resistance verification; complete airframe structural fastener replacement and re-torque | Actuator full-travel slew time <= 45 ms, stall torque >= 2.5 N*m, backlash <= 0.10 deg (GSE-01); Motor axial runout <= 0.03 mm, radial play <= 0.02 mm, ESC phase resistance balance <= 1.5%; Squib circuit bridge resistance 2.00 Ω +/- 0.15 Ω with test current < 2.0 mA; Structural fastener torques within +/- 2.0% of nominal rating (GSE-03) | EASA Part-66 Category B1.3 / B2 Lead UAS Technician & Certified Ordnance Specialist | Tripartite digital sign-off (Technician, Pyrotechnic Inspector, Lead Quality Engineer) with CMMS timestamp |
@@ -55,7 +56,45 @@ To ensure repeatable maintenance quality, airworthiness compliance, and metrolog
 
 ---
 
-#### 10.1.2 Tool-Less Modular LRU Replacement Step-by-Step Procedures
+#### 10.1.2 Rapid Sortie Turnaround Inspection Procedure (MTC-01A)
+To support sustained high-tempo operational sorties and immediate platform regeneration between waves, procedure MTC-01A executes an expedited, tool-less 15-minute turnaround Service Level Agreement (SLA) adhering to NATO STANAG 4586 Annex B §4.1, MIL-HDBK-470A, and EASA Part-ML:
+
+```mermaid
+flowchart TD
+    A["Wheels-Stop / Pad Touchdown (t = 0.0 min)"] --> B["Step 1: O-Level Rapid Inspection (t_insp <= 8.0 min)<br/>• Airframe composite tap check<br/>• Fastener torque check (GSE-03)<br/>• Pitot probe clear check"]
+    B --> C["Step 2: Battery Hot-Swap & Ground Power Bridging (t_swap <= 3.0 min)<br/>• Auxiliary keep-alive power (V_bridge >= 24.0 V)<br/>• Preserve INS, GNSS ephemeris & crypto sessions<br/>• Swap Smart Battery Pack"]
+    C --> D["Step 3: Payload Decontamination & Re-Arming (t_rearm <= 4.0 min)<br/>• Optic cleaning & sensor decon<br/>• Modular payload re-arming"]
+    D --> E["Step 4: High-Speed Data Offload & Plan Upload (t_data <= 2.0 min)<br/>• Telemetry log extraction<br/>• Next-sortie mission plan upload"]
+    E --> F["Step 5: CG & RF Field Verification (GSE-02, GSE-06)<br/>• CG balance & mass check (GSE-02)<br/>• RF field strength check (GSE-06)"]
+    F --> G["Step 6: Digital EFB Airworthiness Release (t_release <= 1.0 min)<br/>• Dual ECDSA sign-off (RPIC + O-Level Tech)<br/>• Launch Readiness Complete (T_turnaround <= 15.0 min)"]
+```
+
+##### Step-by-Step Execution Sequence:
+1. **Touchdown & Safe Ingress ($t \le 1.0\text{ min}$):** Following nominal touchdown, the RPIC confirms disarmed motor state and weight-on-wheels interlock. The O-Level technician establishes perimeter safety and connects auxiliary ground power bridging ($V_{\mathrm{bridge}} \ge 24.0\text{ V}$).
+2. **O-Level Rapid Post-Flight Inspection ($t_{\mathrm{insp}} \le 8.0\text{ min}$):**
+   - Perform rapid composite tap test across wing leading edges and fuselage monocoque to confirm zero delamination.
+   - Execute critical joint fastener torque verification with Calibrated Digital Torque Driver (**GSE-03**) at $1.20\text{ N}\cdot\text{m} \pm 0.05\text{ N}\cdot\text{m}$.
+   - Verify pitot-static probe and drain ports are unobstructed and clear of environmental fouling.
+3. **Hot-Swap Propulsion Battery Replacement ($t_{\mathrm{swap}} \le 3.0\text{ min}$):**
+   - With auxiliary keep-alive power actively maintaining $V_{\mathrm{bridge}} \ge 24.0\text{ V}$ on the avionics rail (preserving IMU alignment, GNSS ephemeris, and active cryptographic session keys), release the dual spring latches and slide out the depleted battery pack.
+   - Insert a fully charged Smart Battery Pack ($\text{SoC} \ge 95.0\%$, $\Delta V_{\mathrm{cell}} \le 10\text{ mV}$) along keyed tracks until latches lock.
+   - Verify BMS bus handshake and disconnect auxiliary keep-alive ground power bridging without triggering an avionics cold reboot.
+4. **Payload Sensor Decontamination & Modular Re-Arming ($t_{\mathrm{rearm}} \le 4.0\text{ min}$):**
+   - Clean EO/IR optical apertures with approved optical solvent wipes and inspect protective sapphire window.
+   - Execute modular sensor/payload re-arming and confirm gimbal boresight collimation.
+5. **High-Speed Telemetry Offload & Mission Plan Upload ($t_{\mathrm{data}} \le 2.0\text{ min}$):**
+   - Connect high-speed ground data umbilical (Gigabit Ethernet / USB 3.0).
+   - Extract post-flight telemetry logs and upload cryptographic flight plan coordinates for the subsequent sortie wave.
+6. **Mass Properties & RF Check (**GSE-02**, **GSE-06**):**
+   - Validate all-up takeoff mass $\le 25.0\text{ kg}$ and Center of Gravity within $\pm 3.0\text{ mm}$ of datum using Electronic Scale (**GSE-02**).
+   - Verify C2 telemetry uplink/downlink field strength $\text{RSSI} \ge -65\text{ dBm}$ at $10\text{ m}$ using RF Field Sniffer (**GSE-06**).
+7. **EFB Airworthiness Release Authorization ($t_{\mathrm{release}} \le 1.0\text{ min}$):**
+   - Automated PBIT confirms 100% PASS across all subsystems.
+   - RPIC and Certified O-Level Maintenance Technician countersign the digital airworthiness release via authenticated ECDSA tokens in the Electronic Flight Bag (EFB), completing platform regeneration within the total turnaround SLA limit ($T_{\mathrm{turnaround}} \le 15.0\text{ min}$).
+
+---
+
+#### 10.1.3 Tool-Less Modular LRU Replacement Step-by-Step Procedures
 The Tactical UAS airframe incorporates tool-less quick-disconnect mechanical latches, keyed guide rails, and self-aligning blind-mate electrical connectors allowing rapid field replacement of all primary Line Replaceable Units (LRUs):
 
 ```mermaid

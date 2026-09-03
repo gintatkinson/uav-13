@@ -238,6 +238,7 @@ The Mission Essential Task List (METL) establishes the doctrinally grounded, qua
 | `MET-07` | AutonomousBingoReturnDivert | Energy monitoring detects current energy E_current <= E_bingo threshold | Autonomous RTB/divert trigger t_resp <= 200.0 ms, dynamic R_i(T) compensation, headwind gradient vector integration, touchdown reserve E_reserve >= 216.0 kJ | BMS Telemetry & Flight Recording Audit | `/// OperationalAllocation: [MET-07]` | JARUS SORA v2.5 Annex E §2.1 |
 | `MET-08` | PostMissionDataOffloadShutdown | Post-landing stationary touchdown on recovery pad | Zeroization time <= 10.0 s (NIST SP 800-88r1), DC bus discharge time <= 5.0 s (V_bus < 5.0 V), post-flight motor thermal soak T_motor <= 60.0 C, offload <= 60.0 s | Security Audit Log & Safe Electrical Isolation Verification | `/// OperationalAllocation: [MET-08]` | NIST SP 800-88r1 §2.4 |
 | `MET-09` | DownedVehicleContainment | High-G kinetic impact (a_impact > 10.0g across any axis for t >= 5.0 ms), fuselage chassis breach, uncommanded ground strike, or tamper switch actuation | NIST SP 800-88r1 / FIPS 140-3 Level 3 zeroization tau_zeroize <= 50.0 ms, secure SRAM scrub t <= 100.0 ms, DC bus/payload eFuse isolation tau_iso <= 50.0 ms, 406/121.5 MHz ELT beacon active t <= 500.0 ms with GNSS fix, squib initiator lines grounded/shunted t <= 10.0 ms, BMS cell series string isolation | Dynamic High-G Impact Test, Forensic Memory Dump, Bus Oscilloscope eFuse Audit, & ELT Signal Verification | `/// OperationalAllocation: [MET-09]` | NIST SP 800-88r1 §2.4 / FIPS 140-3 Level 3 / MIL-STD-882E §4.4 / RTCA DO-204B |
+| `MET-10` | RapidSortieTurnaroundPlatformRegeneration | Nominal post-mission touchdown completed, platform regeneration authorized for subsequent operational sortie wave | O-Level inspection t_insp <= 8.0 min, hot-swap battery with keep-alive power V_bridge >= 24.0 V t_swap <= 3.0 min, payload clean/rearm t_rearm <= 4.0 min, data extraction/upload t_data <= 2.0 min, total turnaround T_turnaround <= 15.0 min, EFB release countersigned | Multi-Tier Turnaround Telemetry Audit, Ground Power Oscilloscope Log, & EFB Digital Signature Verification | `/// OperationalAllocation: [MET-10]` | NATO STANAG 4586 Annex B §4.1 / EASA Part-ML / MIL-HDBK-470A |
 
 ---
 
@@ -650,10 +651,45 @@ Formal specification for immediate emergency post-crash containment, automated t
 
 ---
 
-### 2.10 METL Execution Invariants
-1. **Deterministic State Progression:** Progression from `MET-01` through `MET-09` is governed by discrete finite-state transitions in the flight executive.
+### 2.10 MET-10: RapidSortieTurnaroundPlatformRegeneration
+
+Formal specification for rapid organizational-level (O-Level) post-flight inspection, hot-swap propulsion battery replacement with auxiliary keep-alive ground power bridging ($V_{\mathrm{bridge}} \ge 24.0\text{ V}$), modular payload sensor decontamination and re-arming, high-speed telemetry log extraction and next-sortie mission plan upload, cumulative turnaround SLA containment ($T_{\mathrm{turnaround}} \le 15.0\text{ min}$), and dual-consent digital EFB airworthiness turn-around release authorization countersigned by the Remote Pilot in Command (RPIC) and Certified O-Level Maintenance Technician.
+
+#### Condition Specification
+| Parameter | Condition Value / State | Engineering Unit | Validation Rule |
+| :--- | :--- | :--- | :--- |
+| Operational State | Landed & Post-Mission Touchdown Completed | State Enum | Weight-on-wheels confirmed; disarmed state verified |
+| Platform Regeneration Authorization | Authorized for Subsequent Sortie Wave | State Enum | Tactical mission order received; rapid turnaround mode active |
+| Ground Support Equipment Interface | GSE-02, GSE-03, GSE-06 Connected | State Enum | Rapid turnaround staging kit deployed at FOB pad |
+| Auxiliary Ground Power Bridging | Connected & Active (V_bridge >= 24.0 V) | V | Auxiliary keep-alive power rail engaged prior to main battery disconnect |
+| Avionics Navigation & Cryptographic State | Preserved (Zero State Loss) | State Enum | INS alignment, GNSS ephemeris, and active cryptographic session preserved |
+| Maintenance & Operational Personnel | RPIC & Certified O-Level Technician | Personnel Enum | Dual-person turn-around crew staged on recovery pad |
+
+#### Standard Specification
+| Metric ID | Subsystem Domain | Metric Name / Description | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| MET-10-S01 | Structures & Airframe | O-Level Rapid Post-Flight Inspection (Airframe composite tap, fastener torque check, pitot clear check) | <= 8.0 | <= 5.0 | min | GSE-02 / GSE-03 / Visual NDI | t_insp <= 8.0 min |
+| MET-10-S02 | Propulsion & BMS | Hot-Swap Propulsion Battery Replacement with Auxiliary Keep-Alive Ground Power Bridging (V_bridge >= 24.0 V) Preserving Avionics State, GNSS Ephemeris & Crypto Sessions | <= 3.0 | <= 1.5 | min | Auxiliary Power Bus / CAN 2.0B | t_swap <= 3.0 min |
+| MET-10-S03 | Payload & Sensors | Payload Sensor Decontamination, Optic Cleaning & Modular Re-Arming | <= 4.0 | <= 2.0 | min | Optical Decon Kit / Payload Rail | t_rearm <= 4.0 min |
+| MET-10-S04 | Avionics & Ground Offload | High-Speed Telemetry Log Extraction & Next-Sortie Mission Plan Upload | <= 2.0 | <= 1.0 | min | Gigabit Ethernet / USB 3.0 / C2 Link | t_data <= 2.0 min |
+| MET-10-S05 | System Turnaround & Availability | Total Sortie Turnaround Duration from Wheels-Stop to Launch Readiness (T_turnaround) | <= 15.0 | <= 10.0 | min | Mission Executive Timer | T_turnaround <= 15.0 min |
+| MET-10-S06 | Airworthiness Release | Digital EFB Airworthiness Turn-Around Release Countersigned by RPIC & O-Level Technician | Valid (Dual-Signed) | Valid (Dual-Signed) | ECDSA Token | EFB CMMS / PKI Smartcard | t_release <= 1.0 min |
+
+#### Verification Specification
+| Verification Attribute | Detail Specification |
+| :--- | :--- |
+| Verification Method | Multi-Tier Turnaround Telemetry Audit, Ground Power Oscilloscope Log, EFB Digital Signature Verification, and Time-and-Motion Sortie Regeneration Test |
+| Evidence Artifact | `tests/sortie_turnaround_test.py` -> `logs/sortie_turnaround_execution.json` and `logs/efb_turnaround_release_manifest.json` |
+| Acceptance Criteria | Multi-subsystem conjunction for rapid sortie turnaround and platform regeneration:<br>1. **Structures & Airframe:** O-Level rapid post-flight inspection (composite acoustic tap, fastener torque verification via GSE-03, pitot probe unobstructed clearance check) completed within t_insp <= 8.0 min with zero structural discrepancies.<br>2. **Propulsion & BMS:** Hot-swap propulsion battery replacement executed within t_swap <= 3.0 min while auxiliary ground keep-alive power maintains V_bridge >= 24.0 V, preserving avionics navigation state, GNSS ephemeris, and active cryptographic session without cold reboot.<br>3. **Payload & Sensors:** Payload optical window decontamination, IR lens cleaning, and modular re-arming executed within t_rearm <= 4.0 min.<br>4. **Avionics & Ground Offload:** Flight telemetry extraction and next-sortie mission plan upload completed within t_data <= 2.0 min via high-speed interface.<br>5. **Turnaround SLA:** Total turnaround duration from wheels-stop to launch readiness T_turnaround <= 15.0 min.<br>6. **Airworthiness Release:** Digital EFB airworthiness turnaround release countersigned by RPIC and Certified O-Level Technician using authenticated cryptographic tokens. |
+| Pass / Fail Threshold | `T_turnaround <= 15.0 min`, `V_bridge >= 24.0 V` during battery swap, `t_insp <= 8.0 min`, `t_swap <= 3.0 min`, `t_rearm <= 4.0 min`, `t_data <= 2.0 min`, with dual cryptographic signatures verified on EFB release manifest. |
+| Traceability | `/// OperationalAllocation: [MET-10]` \| NATO STANAG 4586 Annex B §4.1 \| EASA Part-ML.A.305 \| MIL-HDBK-470A §4.2 \| ISO/IEC/IEEE 29148:2018 §6.4.2 |
+
+---
+
+### 2.11 METL Execution Invariants
+1. **Deterministic State Progression:** Progression from `MET-01` through `MET-10` is governed by discrete finite-state transitions in the flight executive.
 2. **Allocation Tag Integrity:** Every task defined in the METL table carries an inviolable Gate 24 allocation tag (`/// OperationalAllocation: [MET-XX]`) mapped downstream to SysML v2 architectural activity blocks.
-3. **Safety Interlock Coupling:** Non-compliance with standard metrics in tasks `MET-01` through `MET-07` initiates deterministic degraded mode failsafes in accordance with Section 8 (Go/No-Go Decision Matrix), transitioning to `MET-09` upon terminal impact, chassis breach, uncommanded ground strike, or tamper switch actuation.
+3. **Safety Interlock Coupling:** Non-compliance with standard metrics in tasks `MET-01` through `MET-07` or `MET-10` initiates deterministic degraded mode failsafes in accordance with Section 8 (Go/No-Go Decision Matrix), transitioning to `MET-09` upon terminal impact, chassis breach, uncommanded ground strike, or tamper switch actuation.
 
 ## 3. Measures of Effectiveness (MoE) & Measures of Performance (MoP) Metrics
 
@@ -2090,6 +2126,7 @@ In accordance with INCOSE Systems Engineering Handbook v5.0 and the DEAP Gate 24
 - `/// OperationalAllocation: [MET-07]`
 - `/// OperationalAllocation: [MET-08]`
 - `/// OperationalAllocation: [MET-09]`
+- `/// OperationalAllocation: [MET-10]`
 
 ---
 
@@ -2106,3 +2143,4 @@ In accordance with INCOSE Systems Engineering Handbook v5.0 and the DEAP Gate 24
 | `MET-07` | AutonomousBingoReturnDivert | PowerManagementSubsystem | `SysML::Blocks::BingoEnergyMonitor` | DAL-A | Level 3 (Flight Control) | `tests/bingo_energy_math_test.py` |
 | `MET-08` | PostMissionDataOffloadShutdown | SecurityManagementSubsystem | `SysML::Blocks::CryptoZeroizationUnit` | DAL-B | Level 1 (Data Receipt) | `tests/crypto_zeroization_test.py` |
 | `MET-09` | DownedVehicleContainment | SecurityManagementSubsystem | `SysML::Blocks::DownedVehicleContainmentUnit` | DAL-A | Level 1 (Data Receipt) | `tests/crypto_zeroization_test.py` |
+| `MET-10` | RapidSortieTurnaroundPlatformRegeneration | MaintenanceSupportSubsystem | `SysML::Blocks::PlatformRegenerationExecutive` | DAL-B | Level 2 (Telemetry) | `tests/sortie_turnaround_test.py` |
