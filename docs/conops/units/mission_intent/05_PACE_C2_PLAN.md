@@ -207,3 +207,85 @@ Where and Operational Parameters:
 ### 5.5 Cryptographic Security & Link Integrity
 
 All PACE communication tiers employ authenticated AES-256-GCM encryption with monotonic 64-bit sequence counters and Ed25519 digital signature verification to eliminate eavesdropping, packet tampering, and replay injection in compliance with NIST SP 800-82r3 and DoD Directive 3000.09.
+
+---
+
+### 5.6 GCS-to-GCS Control Authority Handover & STANAG 4586 Levels of Interoperability (LOI 1-5)
+
+In accordance with NATO STANAG 4586 (§3.2, §4.2.2, §5.1.4) and RTCA DO-362A (§2.2.4), seamless Ground Control Station (GCS) control authority handover and multi-station interoperability are structured across five standardized Levels of Interoperability (LOI 1 through LOI 5). Control authority transfer between Ground Control Stations is executed via a deterministic, cryptographically signed 4-way handshake protocol with automated timeout and reversion failsafes.
+
+#### Master STANAG 4586 Levels of Interoperability (LOI 1-5) Matrix
+
+| Level of Interoperability (LOI) | Interoperability Scope & Functionality | Control Authority Boundary | Payload / Vehicle Access | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- |
+| **LOI 1** | Indirect Payload Receipt | Dissemination of secondary sensor imagery and telemetry via ground network relay | Read-only indirect receipt of processed telemetry and video feeds | NATO STANAG 4586 §4.2.2 |
+| **LOI 2** | Direct Payload Receipt | Direct reception of raw telemetry and sensor payload data from Air Vehicle datalink | Direct downlink monitoring without sensor steering authority | NATO STANAG 4586 §4.2.2 |
+| **LOI 3** | Direct Payload Control | Control and operation of airborne payload and sensors without vehicle flight control | Active sensor pointing, zoom, and gimbal steering authority | NATO STANAG 4586 §4.2.2 |
+| **LOI 4** | Vehicle Flight Guidance Control | En-route waypoint navigation, flight plan modification, and flight guidance control | Dynamic waypoint steering without launch and recovery authority | NATO STANAG 4586 §4.2.2 |
+| **LOI 5** | Full Launch & Recovery Control | Complete system authority including takeoff, flight guidance, landing, and post-flight recovery | Full operational command across all flight phases and emergency triggers | NATO STANAG 4586 §4.2.2 |
+
+#### Cryptographic 4-Way Handshake Protocol & Mathematical Timeout Formulation
+
+The GCS-to-GCS handover protocol enforces mutual authentication and non-repudiation using Ed25519 asymmetric signatures and monotonic sequence nonces across four sequential protocol frames:
+1. **HO-REQ (Handover Request):** Donating GCS (GCS Alpha) initiates handover by transmitting an authenticated `HO-REQ` token declaring target LOI level (e.g. LOI-4), Air Vehicle GUID, cryptographic session nonce, and donating GCS signature to Receiving GCS (GCS Bravo) and the Air Vehicle.
+2. **HO-GRANT (Handover Grant):** Receiving GCS (GCS Bravo) verifies operator qualification and telemetry integrity, signs an authorization token, and transmits `HO-GRANT` back to GCS Alpha and the Air Vehicle within $t \le 1000.0\text{ ms}$.
+3. **HO-LOCK (Telemetry Lock):** Air Vehicle verifies GCS Bravo credentials against authorized key stores, establishes primary downlink encryption lock with GCS Bravo, transmits `HO-LOCK` confirmation token, and enters dual-listen command uplink mode.
+4. **HO-ACK (Command Uplink Ack):** Receiving GCS Bravo issues the initial authenticated command heartbeat frame (`HO-ACK`) to the Air Vehicle. Upon valid receipt and verification, the Air Vehicle transfers active C2 flight guidance authority (LOI-4) to GCS Bravo and broadcasts a definitive transfer completion status to GCS Alpha.
+5. **Timeout & Reversion Failsafe:** If receiving GCS Bravo fails to acknowledge within $t_{\mathrm{ho}} \le 3000.0\text{ ms}$ ($\tau_{\mathrm{ho,max}} = 3.0\text{ s}$), or if cryptographic verification fails at any stage, control authority immediately and deterministically reverts to donating GCS Alpha.
+
+$$
+\begin{aligned}
+\Delta t_{\mathrm{ho}}(t) &= t - t_{\mathrm{HO\text{-}REQ}} \\
+\mathrm{HandoverStatus}(t) &= \begin{cases}
+\mathrm{Committed} & \text{if } \mathrm{Ack}_{\mathrm{HO\text{-}ACK}} = \mathrm{True} \land \Delta t_{\mathrm{ho}}(t) \le t_{\mathrm{ho,max}} \\
+\mathrm{Reverted} & \text{if } \Delta t_{\mathrm{ho}}(t) > t_{\mathrm{ho,max}} \lor \mathrm{AuthError} = \mathrm{True}
+\end{cases}
+\end{aligned}
+$$
+
+Where and Operational Parameters:
+
+| Handover Parameter | Symbol | Nominal Value | Units | Operational Constraint | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Handover Timeout Horizon | t_ho_max | 3000.0 | ms | Maximum elapsed time allowed for 4-way token completion (t_ho <= 3000.0 ms) | NATO STANAG 4586 §5.1.4 |
+| HO-GRANT Response Limit | t_grant_max | 1000.0 | ms | Maximum allowed latency for receiving GCS grant transmission | NATO STANAG 4586 §5.1.4 |
+| Dual-Listen Window | t_dual_listen | <= 1500.0 | ms | Overlap interval where vehicle monitors both donating and receiving uplinks | RTCA DO-362A §2.2.4 |
+| Cryptographic Signature Algorithm | Algo_sig | Ed25519 | Dimensionless | Elliptic curve digital signature algorithm for handshake message frames | NIST SP 800-82r3 §6.2 |
+| Handover Reversion Latency | t_revert | <= 100.0 | ms | Maximum latency to re-instate full donating GCS authority upon timeout | NATO STANAG 4586 §5.1.4 |
+
+#### GCS-to-GCS LOI-4 Handover Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor PilotA as PilotAlpha : GCS Alpha Operator
+    participant GCSA as gcs_alpha : GCS Alpha (Donating Primary)
+    participant UAV as uav_c2 : Air Vehicle (Flight Executive)
+    participant GCSB as gcs_bravo : GCS Bravo (Receiving Secondary)
+    actor PilotB as PilotBravo : GCS Bravo Operator
+
+    Note over PilotA,PilotB: STANAG 4586 LOI-4 Control Authority Handover (t_ho <= 3000.0 ms)
+    PilotA->>GCSA: initiateHandoverRequest(target=GCS_Bravo, loi=LOI_4)
+    GCSA->>GCSB: HO-REQ(vehicle_id=UAV-01, loi=LOI_4, nonce_a, sig_a)
+    GCSA->>UAV: HO-REQ_Notify(target=GCS_Bravo, loi=LOI_4, nonce_a)
+
+    alt Handover Handshake Nominal (t <= 3000.0 ms)
+        PilotB->>GCSB: acceptHandoverConsent()
+        GCSB->>GCSA: HO-GRANT(vehicle_id=UAV-01, nonce_b, sig_b)
+        GCSB->>UAV: HO-GRANT(vehicle_id=UAV-01, nonce_b, sig_b)
+        UAV->>UAV: verifySignature(sig_b)
+        UAV->>GCSB: HO-LOCK(telemetry_stream=ACTIVE, token_lock)
+        UAV->>UAV: enterDualListenMode()
+        GCSB->>UAV: HO-ACK(c2_uplink=AUTHENTICATED, cmd_heartbeat)
+        UAV->>UAV: transferFlightGuidanceAuthority(active_gcs=GCS_Bravo)
+        UAV-->>GCSA: notifyHandoverComplete(active_gcs=GCS_Bravo)
+        UAV-->>GCSB: confirmActiveControl(loi=LOI_4)
+        Note over GCSB,UAV: GCS Bravo holds LOI-4 Active Flight Guidance Control
+    else Handshake Timeout or Auth Failure (t > 3000.0 ms)
+        Note over UAV,GCSA: Handover Failsafe: Reversion timer expired (t_ho > 3000.0 ms)
+        UAV->>UAV: abortHandoverAndRevert()
+        UAV-->>GCSA: notifyHandoverAborted(reversion=REVERTED_TO_ALPHA)
+        UAV-->>GCSB: notifyHandoverRejected(reason=TIMEOUT_FAILSAFE)
+        Note over GCSA,UAV: GCS Alpha retains uninterrupted LOI-4 Control Authority
+    end
+```

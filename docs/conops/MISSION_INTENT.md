@@ -1330,6 +1330,88 @@ Where and Operational Parameters:
 
 All PACE communication tiers employ authenticated AES-256-GCM encryption with monotonic 64-bit sequence counters and Ed25519 digital signature verification to eliminate eavesdropping, packet tampering, and replay injection in compliance with NIST SP 800-82r3 and DoD Directive 3000.09.
 
+---
+
+### 5.6 GCS-to-GCS Control Authority Handover & STANAG 4586 Levels of Interoperability (LOI 1-5)
+
+In accordance with NATO STANAG 4586 (§3.2, §4.2.2, §5.1.4) and RTCA DO-362A (§2.2.4), seamless Ground Control Station (GCS) control authority handover and multi-station interoperability are structured across five standardized Levels of Interoperability (LOI 1 through LOI 5). Control authority transfer between Ground Control Stations is executed via a deterministic, cryptographically signed 4-way handshake protocol with automated timeout and reversion failsafes.
+
+#### Master STANAG 4586 Levels of Interoperability (LOI 1-5) Matrix
+
+| Level of Interoperability (LOI) | Interoperability Scope & Functionality | Control Authority Boundary | Payload / Vehicle Access | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- |
+| **LOI 1** | Indirect Payload Receipt | Dissemination of secondary sensor imagery and telemetry via ground network relay | Read-only indirect receipt of processed telemetry and video feeds | NATO STANAG 4586 §4.2.2 |
+| **LOI 2** | Direct Payload Receipt | Direct reception of raw telemetry and sensor payload data from Air Vehicle datalink | Direct downlink monitoring without sensor steering authority | NATO STANAG 4586 §4.2.2 |
+| **LOI 3** | Direct Payload Control | Control and operation of airborne payload and sensors without vehicle flight control | Active sensor pointing, zoom, and gimbal steering authority | NATO STANAG 4586 §4.2.2 |
+| **LOI 4** | Vehicle Flight Guidance Control | En-route waypoint navigation, flight plan modification, and flight guidance control | Dynamic waypoint steering without launch and recovery authority | NATO STANAG 4586 §4.2.2 |
+| **LOI 5** | Full Launch & Recovery Control | Complete system authority including takeoff, flight guidance, landing, and post-flight recovery | Full operational command across all flight phases and emergency triggers | NATO STANAG 4586 §4.2.2 |
+
+#### Cryptographic 4-Way Handshake Protocol & Mathematical Timeout Formulation
+
+The GCS-to-GCS handover protocol enforces mutual authentication and non-repudiation using Ed25519 asymmetric signatures and monotonic sequence nonces across four sequential protocol frames:
+1. **HO-REQ (Handover Request):** Donating GCS (GCS Alpha) initiates handover by transmitting an authenticated `HO-REQ` token declaring target LOI level (e.g. LOI-4), Air Vehicle GUID, cryptographic session nonce, and donating GCS signature to Receiving GCS (GCS Bravo) and the Air Vehicle.
+2. **HO-GRANT (Handover Grant):** Receiving GCS (GCS Bravo) verifies operator qualification and telemetry integrity, signs an authorization token, and transmits `HO-GRANT` back to GCS Alpha and the Air Vehicle within $t \le 1000.0\text{ ms}$.
+3. **HO-LOCK (Telemetry Lock):** Air Vehicle verifies GCS Bravo credentials against authorized key stores, establishes primary downlink encryption lock with GCS Bravo, transmits `HO-LOCK` confirmation token, and enters dual-listen command uplink mode.
+4. **HO-ACK (Command Uplink Ack):** Receiving GCS Bravo issues the initial authenticated command heartbeat frame (`HO-ACK`) to the Air Vehicle. Upon valid receipt and verification, the Air Vehicle transfers active C2 flight guidance authority (LOI-4) to GCS Bravo and broadcasts a definitive transfer completion status to GCS Alpha.
+5. **Timeout & Reversion Failsafe:** If receiving GCS Bravo fails to acknowledge within $t_{\mathrm{ho}} \le 3000.0\text{ ms}$ ($\tau_{\mathrm{ho,max}} = 3.0\text{ s}$), or if cryptographic verification fails at any stage, control authority immediately and deterministically reverts to donating GCS Alpha.
+
+$$
+\begin{aligned}
+\Delta t_{\mathrm{ho}}(t) &= t - t_{\mathrm{HO\text{-}REQ}} \\
+\mathrm{HandoverStatus}(t) &= \begin{cases}
+\mathrm{Committed} & \text{if } \mathrm{Ack}_{\mathrm{HO\text{-}ACK}} = \mathrm{True} \land \Delta t_{\mathrm{ho}}(t) \le t_{\mathrm{ho,max}} \\
+\mathrm{Reverted} & \text{if } \Delta t_{\mathrm{ho}}(t) > t_{\mathrm{ho,max}} \lor \mathrm{AuthError} = \mathrm{True}
+\end{cases}
+\end{aligned}
+$$
+
+Where and Operational Parameters:
+
+| Handover Parameter | Symbol | Nominal Value | Units | Operational Constraint | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Handover Timeout Horizon | t_ho_max | 3000.0 | ms | Maximum elapsed time allowed for 4-way token completion (t_ho <= 3000.0 ms) | NATO STANAG 4586 §5.1.4 |
+| HO-GRANT Response Limit | t_grant_max | 1000.0 | ms | Maximum allowed latency for receiving GCS grant transmission | NATO STANAG 4586 §5.1.4 |
+| Dual-Listen Window | t_dual_listen | <= 1500.0 | ms | Overlap interval where vehicle monitors both donating and receiving uplinks | RTCA DO-362A §2.2.4 |
+| Cryptographic Signature Algorithm | Algo_sig | Ed25519 | Dimensionless | Elliptic curve digital signature algorithm for handshake message frames | NIST SP 800-82r3 §6.2 |
+| Handover Reversion Latency | t_revert | <= 100.0 | ms | Maximum latency to re-instate full donating GCS authority upon timeout | NATO STANAG 4586 §5.1.4 |
+
+#### GCS-to-GCS LOI-4 Handover Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor PilotA as PilotAlpha : GCS Alpha Operator
+    participant GCSA as gcs_alpha : GCS Alpha (Donating Primary)
+    participant UAV as uav_c2 : Air Vehicle (Flight Executive)
+    participant GCSB as gcs_bravo : GCS Bravo (Receiving Secondary)
+    actor PilotB as PilotBravo : GCS Bravo Operator
+
+    Note over PilotA,PilotB: STANAG 4586 LOI-4 Control Authority Handover (t_ho <= 3000.0 ms)
+    PilotA->>GCSA: initiateHandoverRequest(target=GCS_Bravo, loi=LOI_4)
+    GCSA->>GCSB: HO-REQ(vehicle_id=UAV-01, loi=LOI_4, nonce_a, sig_a)
+    GCSA->>UAV: HO-REQ_Notify(target=GCS_Bravo, loi=LOI_4, nonce_a)
+
+    alt Handover Handshake Nominal (t <= 3000.0 ms)
+        PilotB->>GCSB: acceptHandoverConsent()
+        GCSB->>GCSA: HO-GRANT(vehicle_id=UAV-01, nonce_b, sig_b)
+        GCSB->>UAV: HO-GRANT(vehicle_id=UAV-01, nonce_b, sig_b)
+        UAV->>UAV: verifySignature(sig_b)
+        UAV->>GCSB: HO-LOCK(telemetry_stream=ACTIVE, token_lock)
+        UAV->>UAV: enterDualListenMode()
+        GCSB->>UAV: HO-ACK(c2_uplink=AUTHENTICATED, cmd_heartbeat)
+        UAV->>UAV: transferFlightGuidanceAuthority(active_gcs=GCS_Bravo)
+        UAV-->>GCSA: notifyHandoverComplete(active_gcs=GCS_Bravo)
+        UAV-->>GCSB: confirmActiveControl(loi=LOI_4)
+        Note over GCSB,UAV: GCS Bravo holds LOI-4 Active Flight Guidance Control
+    else Handshake Timeout or Auth Failure (t > 3000.0 ms)
+        Note over UAV,GCSA: Handover Failsafe: Reversion timer expired (t_ho > 3000.0 ms)
+        UAV->>UAV: abortHandoverAndRevert()
+        UAV-->>GCSA: notifyHandoverAborted(reversion=REVERTED_TO_ALPHA)
+        UAV-->>GCSB: notifyHandoverRejected(reason=TIMEOUT_FAILSAFE)
+        Note over GCSA,UAV: GCS Alpha retains uninterrupted LOI-4 Control Authority
+    end
+```
+
 ## 6. Rules of Engagement (ROE) & Weapon/Sensor Interlocks
 
 In accordance with DoD Directive 3000.09 (Autonomy in Weapon Systems), CJCSI 3121.01B (Standing Rules of Engagement), NATO STANAG 4586 (§3.8), and MIL-STD-882E (§4.4), the execution of critical operational actions, active sensor designations, and kinetic payload operations is strictly constrained by deterministic First-Order Logic (FOL) predicates and multi-level human authorization interlocks.
@@ -1796,6 +1878,65 @@ Where and Operational Parameters:
 | `DITCH-01` | Northern Agricultural Containment Basin | 45.1720 N, 14.6250 E | 135.0 m | 150.0 m | 200.0 m | 0.0 persons/km^2 (GRC-1) | 100.0 m AGL | JARUS SORA v2.5 Annex B §2.1 |
 | `DITCH-02` | Eastern Quarry Buffer Basin | 45.1450 N, 14.6550 E | 120.0 m | 125.0 m | 180.0 m | 0.0 persons/km^2 (GRC-1) | 80.0 m AGL | JARUS SORA v2.5 Annex B §2.1 |
 | `DITCH-03` | Southern Scrubland Emergency Zone | 45.0950 N, 14.5320 E | 170.0 m | 175.0 m | 220.0 m | 0.0 persons/km^2 (GRC-1) | 120.0 m AGL | JARUS SORA v2.5 Annex B §2.1 |
+
+---
+
+### 7.6 Multi-Asset Swarm Deconfliction, Relative Navigation & MUM-T Coordination
+
+In accordance with NATO STANAG 4586 (§3.2, §4.2.2), RTCA DO-365B (§2.2.4), and JARUS SORA v2.5 (Annex E §E.16), multi-asset operations and Manned-Unmanned Teaming (MUM-T) formations maintain deterministic airspace separation and collision avoidance through decentralized relative navigation state estimators, continuous inter-vehicle broadcast datalinks, dynamic distributed potential field avoidance fields, and structured tactical teaming operational modes.
+
+#### Swarm Dynamic Separation Minima & Relative Navigation Bounds Table
+
+| Separation / Navigation Parameter | Symbol | Nominal Constraint | Units | Operational Definition | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Swarm Horizontal Separation Buffer | d_horiz | d_horiz >= 15.0 | m | Minimum inter-vehicle horizontal dynamic standoff distance | RTCA DO-365B §2.2.4 |
+| Swarm Vertical Separation Buffer | d_vert | d_vert >= 10.0 | m | Minimum inter-vehicle vertical altitude flight layer clearance | RTCA DO-365B §2.2.4 |
+| Relative Positioning Accuracy | sigma_rel | sigma_rel <= 0.5 | m | 1-sigma inter-vehicle relative positioning error (UWB / RTK-DGPS) | NATO STANAG 4586 §4.2 |
+| Relative Navigation State Update Rate | f_rel | f_rel >= 20.0 | Hz | Minimum broadcast telemetry rate for peer state estimation (dt <= 50.0 ms) | NATO STANAG 4586 §5.1 |
+| Relative Velocity Vector Accuracy | sigma_v_rel | sigma_v_rel <= 0.1 | m/s | 1-sigma relative closing velocity vector estimation accuracy | RTCA DO-365B §2.2.4 |
+| Peer Datalink Transport Latency | tau_comm | tau_comm <= 25.0 | ms | Maximum allowable peer-to-peer broadcast latency over mesh datalink | RTCA DO-362A §2.2 |
+| Swarm Collision Time Horizon | tau_cpa | tau_cpa >= 10.0 | s | Lookahead time-to-closest-point-of-approach triggering repulsive field | RTCA DO-365B §2.2.4 |
+
+#### Distributed Potential Field Deconfliction Algorithm & KaTeX Formulation
+
+Each unmanned aircraft in the collaborative swarm evaluates a decentralized artificial potential field generated by neighboring assets. If normalized inter-vehicle distance falls below the safety boundary sphere, a repulsive vector $\mathbf{F}_{\mathrm{rep},i}$ is computed and injected into the autopilot velocity loop:
+
+$$
+\begin{aligned}
+d_{ij} &= \sqrt{\left(\frac{x_i - x_j}{d_{\mathrm{horiz}}}\right)^2 + \left(\frac{y_i - y_j}{d_{\mathrm{horiz}}}\right)^2 + \left(\frac{z_i - z_j}{d_{\mathrm{vert}}}\right)^2} \\
+U_{ij}(\mathbf{p}_i, \mathbf{p}_j) &= \begin{cases}
+\frac{1}{2} k_{\mathrm{swarm}} \left( \frac{1}{d_{ij}^2} - \frac{1}{d_{\mathrm{safe}}^2} \right)^2 & \text{if } d_{ij} < d_{\mathrm{safe}} \\
+0 & \text{if } d_{ij} \ge d_{\mathrm{safe}}
+\end{cases} \\
+\mathbf{F}_{\mathrm{rep},i} &= -\sum_{j \ne i} \nabla_{\mathbf{p}_i} U_{ij}(\mathbf{p}_i, \mathbf{p}_j) \\
+\mathbf{v}_{\mathrm{cmd},i} &= \mathbf{v}_{\mathrm{goal},i} + \frac{\mathbf{F}_{\mathrm{rep},i}}{m_i} \cdot \Delta t
+\end{aligned}
+$$
+
+Where and Operational Parameters:
+
+| Potential Field Parameter | Symbol | Nominal Value | Units | Operational Constraint | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Normalized Safety Sphere Threshold | d_safe | 1.0 | Dimensionless | Normalized boundary unit radius triggering repulsive acceleration | RTCA DO-365B §2.2.4 |
+| Horizontal Buffer Scale | d_horiz | 15.0 | m | Normalization scalar for horizontal Cartesian distance | RTCA DO-365B §2.2.4 |
+| Vertical Buffer Scale | d_vert | 10.0 | m | Normalization scalar for vertical Cartesian distance | RTCA DO-365B §2.2.4 |
+| Swarm Potential Field Gain | k_swarm | 25.0 | N m^2 | Proportional repulsive stiffness gain | RTCA DO-365B §2.2.3 |
+| Integration Time Step | Delta t | 0.05 | s | Guidance loop integration interval (dt = 50.0 ms corresponding to 20.0 Hz) | NATO STANAG 4586 §5.1 |
+| Unconstrained Goal Velocity | v_goal | <= 18.0 | m/s | Nominal mission trajectory velocity vector | NATO STANAG 4586 Annex B §3.4 |
+| Deconflicted Command Velocity | v_cmd | <= 22.0 | m/s | Saturated output velocity vector commanded to flight control loop | RTCA DO-365B §2.2.5 |
+| Air Vehicle Operating Mass | m_i | 5.0 | kg | Nominal operational takeoff mass | JARUS SORA v2.5 Annex B §2.1 |
+
+#### Manned-Unmanned Teaming (MUM-T) Operational Modes
+
+Manned-Unmanned Teaming operations integrate unmanned aircraft with manned airborne assets (e.g., tactical transport, reconnaissance helicopters, or airborne mission coordinators) in compliance with STANAG 4586 Levels of Interoperability (LOI):
+
+| Mode ID | Teaming Mode Name | STANAG 4586 LOI | Primary Teaming Function | Human Authority Role | Control Latency Bound | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `MUMT-01` | Airborne Operator Direct Sensor Receipt & Gimbal Control | LOI 2 / LOI 3 | Direct situational video streaming and sensor payload steering to manned airborne operator | Airborne Payload Operator | tau_ctrl <= 50.0 ms | NATO STANAG 4586 §4.2.2 |
+| `MUMT-02` | Airborne Tactical Commander Flight Route Update & Consent | LOI 4 | Dynamic airborne mission re-tasking, waypoint injection, and route update consent | Airborne Tactical Commander | tau_route <= 200.0 ms | NATO STANAG 4586 §4.2.2 |
+
+- **MUMT-01 (Airborne Operator LOI 2/3 Direct Sensor Receipt):** Enables the manned airborne crew to directly subscribe to raw high-definition EO/IR sensor feeds (LOI 2) and control sensor gimbal pan/tilt/zoom operations (LOI 3) in real time over direct Line-of-Sight datalinks without placing flight control demands on the unmanned vehicle.
+- **MUMT-02 (Airborne Tactical Commander Flight Route Update Consent):** Grants the manned airborne mission commander tactical flight guidance authorization (LOI 4) to dynamically modify waypoints, initiate search orbits, and approve route updates. All commanded flight route updates undergo autonomous geofence boundary validation and deconfliction checks prior to autopilot flight path commitment.
 
 ## 8. Go/No-Go Decision Matrix
 
