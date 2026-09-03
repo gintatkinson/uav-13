@@ -128,6 +128,93 @@ $$
 | `EMG-05` | Geofence Breach Alert | Boundary proximity < 50 m | Execute emergency turnaround maneuver | `Contingency_GeofenceContainment` | 0.20 s | Monitor / Override |
 | `EMG-06` | Structural Anomaly | Vibration threshold exceeded | Throttle reduction and immediate landing | `Contingency_PrecautionaryLand` | 0.50 s | Monitor / Override |
 | `EMG-07` | Flight Termination Cmd | Encrypted abort signal | Deploy parachute / instant motor cutoff | `Emergency_FlightTermination` | 0.02 s | Initiator |
+
+### 12.1 Failsafe State Transition Semantics & Timing Guarantees
+The emergency decision logic executes within a dedicated, hard real-time safety watchdog running on an isolated hardware partition. The state machine operates under the following deterministic transition invariants:
+1. **Priority Arbitration:** In the event of concurrent multiple anomaly triggers, higher-priority states strictly override lower-priority states:
+
+$$
+\\begin{aligned}
+P_{\\mathrm{EMG-07}} > P_{\\mathrm{EMG-03}} > P_{\\mathrm{EMG-05}} > P_{\\mathrm{EMG-06}} > P_{\\mathrm{EMG-04}} > P_{\\mathrm{EMG-02}} > P_{\\mathrm{EMG-01}}
+\\end{aligned}
+$$
+
+2. **Deterministic Response Timing ($t_{\\mathrm{resp}} \\le 200.0\\text{ ms}$):** From initial sensor anomaly threshold crossing to containment command issuance on the actuator bus, the maximum propagation latency is guaranteed to remain strictly bounded by $t_{\\mathrm{resp}} \\le 200.0\\text{ ms}$ across all seven canonical triggers (with flight termination executing within $t_{\\mathrm{resp}} \\le 20.0\\text{ ms}$).
+3. **Fail-Safe Retention:** Once a critical emergency state (`Emergency_FlightTermination` or `Contingency_EmergencyGlide`) is triggered, the state machine is non-reentrant and locks until a physical post-flight ground reset and authorized Maintenance Technician clearance are performed.
+
+### 12.2 Failsafe State Machine Architecture & Statechart Diagram
+The operational state machine partitions autonomous failsafe behavior into deterministic state spaces governed by synchronous clock cycles on the primary Flight Management Unit (FMU) and safety coprocessor:
+
+```mermaid
+stateDiagram-v2
+    [*] --> Phase_NominalExecution : System BIT Passed / Launch Complete
+
+    state Phase_NominalExecution {
+        [*] --> WaypointNavigation
+        WaypointNavigation --> SensorPayloadCapture : On Target
+        SensorPayloadCapture --> WaypointNavigation : Task Completed
+    }
+
+    Phase_NominalExecution --> Degraded_SensorFailsafe : "EMG-04 (Sensor Disparity)"
+    Phase_NominalExecution --> Contingency_DeadReckoning : "EMG-02 (GNSS Loss)"
+    Phase_NominalExecution --> Contingency_LostLinkReturn : "EMG-01 (C2 Heartbeat Loss)"
+    Phase_NominalExecution --> Contingency_GeofenceContainment : "EMG-05 (Geofence Alert)"
+    Phase_NominalExecution --> Contingency_PrecautionaryLand : "EMG-06 (Structural Anomaly)"
+    Phase_NominalExecution --> Contingency_EmergencyGlide : "EMG-03 (Propulsion Failure)"
+    Phase_NominalExecution --> Emergency_FlightTermination : "EMG-07 (Flight Termination Cmd)"
+
+    Degraded_SensorFailsafe --> Contingency_PrecautionaryLand : Secondary Channel Fault
+    Contingency_DeadReckoning --> Contingency_LostLinkReturn : C2 Timeout in Dead Reckoning
+    Contingency_LostLinkReturn --> Emergency_FlightTermination : Outer Geofence Violation
+    Contingency_GeofenceContainment --> Phase_NominalExecution : Corridor Re-established
+    Contingency_EmergencyGlide --> Phase_SecureShutdown : Unpowered Touchdown at Divert Site
+    Contingency_PrecautionaryLand --> Phase_SecureShutdown : Safe Landing Confirmed
+    Emergency_FlightTermination --> Phase_SecureShutdown : Parachute Descent & Ground Quarantine
+
+    state Phase_SecureShutdown {
+        [*] --> PowerGalvanicCutoff
+        PowerGalvanicCutoff --> TelemetryBlackboxLock
+        TelemetryBlackboxLock --> EmergencyBeaconActive
+    }
+```
+
+### 12.3 Contingency Flight Maneuvers & Aerodynamic Descent Profiles
+Autonomous contingency containment maneuvers execute under strict aerodynamic load factor envelopes ($n \\le 2.5\\text{ g}$) to ensure structural integrity and predictable containment boundary dynamics:
+1. **Coordinated Turnaround Maneuver (EMG-05):** Upon detecting geofence buffer penetration, the flight controller commands a maximum bank angle $\\phi_{\\mathrm{max}} = 45.0^\\circ$ at calibrated airspeed $v_{\\mathrm{turn}} = 14.0\\text{ m/s}$, establishing a minimum turning radius:
+
+$$
+\\begin{aligned}
+R_{\\mathrm{turn}} = \\frac{v_{\\mathrm{turn}}^2}{g \\cdot \\tan(\\phi_{\\mathrm{max}})}
+\\end{aligned}
+$$
+
+| Parameter | Symbol | Value | Units | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| Turn Maneuver Airspeed | v_turn | 14.0 | m/s | Calibrated containment turnaround speed |
+| Maximum Bank Angle | phi_max | 45.0 | deg | Maximum commanded bank angle limit |
+| Gravitational Acceleration | g | 9.80665 | m/s^2 | Standard gravitational acceleration constant |
+| Containment Turn Radius | R_turn | 19.98 | m | Minimum radius for 180 deg reversal maneuver |
+
+2. **Optimal L/D Glide Descent Profile (EMG-03):** Following propulsion cut or total inverter failure, pitch attitude is trimmed to $(L/D)_{\\mathrm{max}} = 10.5$ at glide velocity $v_{\\mathrm{glide}} = 13.5\\text{ m/s}$, yielding a steady sink rate $v_z = 1.28\\text{ m/s}$ toward the surveyed emergency divert coordinates.
+3. **Precautionary Flare & Touchdown Maneuver (EMG-06):** At altitude $h = 3.0\\text{ m}$ AGL, the system initiates an autonomous aerodynamic flare maneuver reducing sink rate to $v_z \\le 0.50\\text{ m/s}$ prior to ground contact.
+
+### 12.4 Flight Termination Subsystem (FTS) & Safe-Arm Circuitry
+The Flight Termination Subsystem (FTS) is engineered as an independent, hardware-isolated failsafe chain compliant with JARUS SORA MOC 2511 and STANAG 4586 Level 4 safety integrity:
+1. **Galvanic Isolation & Power Cutoff:** A high-side solid-state power distribution switch physically decouples high-voltage battery bus power from electronic speed controllers (ESCs) in $t_{\\mathrm{cut}} \\le 5.0\\text{ ms}$.
+2. **Pyrotechnic & Ballistic Parachute Deployment:** The emergency parachute canister is actuated by a dual-redundant thermal initiator circuit with independent capacitors ensuring trigger actuation even under total main bus collapse.
+3. **Safe-Arm Interlocks:** Physical remove-before-flight safe-arm pins and redundant cryptographic authorization tokens prevent uncommanded ground termination deployment.
+
+### 12.5 Human-in-the-Loop Override & Veto Timers
+Safety-critical autonomous transitions incorporate deterministic Human-in-the-Loop (HITL) oversight mechanisms balanced with automatic failsafe execution:
+1. **Supervisory Veto Timer Window ($\tau_{\\mathrm{veto}} = 5.0\\text{ s}$):** For non-immediate contingency states (`EMG-01`, `EMG-02`, `EMG-06`), the system displays a visual/audible countdown to the Ground Control Station (GCS) operator, permitting manual flight vector override before automated Return-to-Home or Precautionary Landing initiates.
+2. **Dual-Consent Flight Termination:** Initiation of manual FTS (`EMG-07`) from the GCS requires simultaneous, two-operator cryptographic authorization (Mission Commander + Range Safety Officer).
+3. **Emergency Frequency Preemption:** Manual commands transmitted over the satellite emergency C2 tier immediately preempt all autonomous loiter sequences.
+
+### 12.6 Post-Emergency Ground Recovery, Telemetry Quarantine & Investigation
+Following any contingency landing or flight termination sequence, the system deterministically executes standardized post-emergency ground handling protocols per MIL-STD-882E §4.4:
+1. **Telemetry Black-Box Quarantine:** All non-volatile solid-state storage partitions containing high-rate flight recorder telemetry (1 kHz IMU, actuator feedback, battery cell voltages, and C2 message frames) are mounted read-only and cryptographically hashed (SHA-256) to prevent evidence tampering.
+2. **Emergency Localization Beacon Activation:** The dedicated $406.040\\text{ MHz}$ COSPAS-SARSAT search-and-rescue beacon and $121.5\\text{ MHz}$ homing transponder activate with autonomous GPS coordinates broadcast every 50.0 s for at least 24.0 hours.
+3. **Ground Safety & Ordnance Clearance:** Authorized ground recovery personnel follow strict de-arming checklists (disarming unspent parachute pyrotechnics, verifying zero-voltage bus state, and executing battery thermal stabilization verification).
 """
 
 
@@ -481,6 +568,130 @@ class TestConOpsAndMissionIntentValidators(unittest.TestCase):
             self.assertTrue(len(emg_errors) >= 1)
             self.assertIn("EMG-06", str(emg_errors[0]))
             self.assertIn("EMG-07", str(emg_errors[0]))
+
+    def test_conops_missing_emergency_subsections_fails(self):
+        """Emergency decision matrix missing canonical subsections (12.1-12.6) triggers 'conops-emergency-subsection-missing'."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            conops_dir = os.path.join(tmpdir, "docs", "conops")
+            os.makedirs(conops_dir, exist_ok=True)
+
+            content = _get_valid_conops_content()
+            # Remove subsection 12.4 (FTS) and 12.6 (Post-Emergency Ground Recovery)
+            sec12_4_idx = content.find("### 12.4 Flight Termination Subsystem")
+            sec12_5_idx = content.find("### 12.5 Human-in-the-Loop Override")
+            content_no_12_4 = content[:sec12_4_idx] + content[sec12_5_idx:]
+
+            sec12_6_idx = content_no_12_4.find("### 12.6 Post-Emergency Ground Recovery")
+            content_truncated = content_no_12_4[:sec12_6_idx]
+
+            with open(os.path.join(conops_dir, "CONOPS.md"), "w", encoding="utf-8") as f:
+                f.write(content_truncated)
+
+            repo = WorkspaceRepository(workspace_dir=tmpdir)
+            conops_val = ConopsCompletenessValidator()
+            findings = conops_val.validate(repo)
+
+            sub_errors = [f for f in findings if f.rule_id == "conops-emergency-subsection-missing"]
+            self.assertTrue(len(sub_errors) >= 2, f"Expected >=2 missing subsection findings, got {sub_errors}")
+            missing_nums = {f.detail.get("subsection") for f in sub_errors}
+            self.assertIn("12.4", missing_nums)
+            self.assertIn("12.6", missing_nums)
+
+    def test_conops_missing_emergency_statechart_fails(self):
+        """Emergency decision matrix missing Mermaid statechart triggers 'conops-emergency-statechart-missing'."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            conops_dir = os.path.join(tmpdir, "docs", "conops")
+            os.makedirs(conops_dir, exist_ok=True)
+
+            content = _get_valid_conops_content()
+            # Remove mermaid statechart block
+            mermaid_start = content.find("```mermaid\nstateDiagram-v2")
+            mermaid_end = content.find("```\n\n### 12.3")
+            content_no_mermaid = content[:mermaid_start] + "<!-- statechart removed -->\n" + content[mermaid_end + 5:]
+
+            with open(os.path.join(conops_dir, "CONOPS.md"), "w", encoding="utf-8") as f:
+                f.write(content_no_mermaid)
+
+            repo = WorkspaceRepository(workspace_dir=tmpdir)
+            conops_val = ConopsCompletenessValidator()
+            findings = conops_val.validate(repo)
+
+            statechart_errors = [f for f in findings if f.rule_id == "conops-emergency-statechart-missing"]
+            self.assertEqual(len(statechart_errors), 1, f"Expected statechart error, got {statechart_errors}")
+            self.assertIn("stateDiagram-v2", str(statechart_errors[0]))
+
+    def test_conops_underpopulated_emergency_section_fails(self):
+        """Emergency decision matrix with content under 1500 characters triggers 'conops-emergency-section-underpopulated'."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            conops_dir = os.path.join(tmpdir, "docs", "conops")
+            os.makedirs(conops_dir, exist_ok=True)
+
+            # Minimal section 12 under 1500 chars with stubs
+            short_sec12 = """## 12. 7-Row Emergency Decision & Contingency Matrix
+| Trigger ID | Contingency Trigger | Detection Mechanism | Automated Containment Action | Failsafe State | Max Response Time | HITL Role |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `EMG-01` | Lost C2 Link | Heartbeat loss | Loiter | `Contingency_LostLinkReturn` | 0.50 s | Monitor |
+| `EMG-02` | GNSS Loss | FOM alert | Dead reckoning | `Contingency_DeadReckoning` | 0.10 s | Monitor |
+| `EMG-03` | Propulsion Fail | RPM drop | Glide | `Contingency_EmergencyGlide` | 0.05 s | Informed |
+| `EMG-04` | Sensor Fault | Disparity | Simplex | `Degraded_SensorFailsafe` | 0.05 s | Monitor |
+| `EMG-05` | Geofence Alert | Margin | Turn | `Contingency_GeofenceContainment` | 0.20 s | Monitor |
+| `EMG-06` | Vibration | Vibe | Land | `Contingency_PrecautionaryLand` | 0.50 s | Monitor |
+| `EMG-07` | FTS | Abort | Parachute | `Emergency_FlightTermination` | 0.02 s | Initiator |
+
+### 12.1 Failsafe State Transition Semantics & Timing Guarantees
+Short semantics.
+
+### 12.2 Failsafe State Machine Architecture & Statechart Diagram
+```mermaid
+stateDiagram-v2
+    [*] --> Nominal
+```
+
+### 12.3 Contingency Flight Maneuvers & Aerodynamic Descent Profiles
+Short maneuvers.
+
+### 12.4 Flight Termination Subsystem FTS & Safe-Arm Circuitry
+Short FTS.
+
+### 12.5 Human-in-the-Loop Override & Veto Timers
+Short veto.
+
+### 12.6 Post-Emergency Ground Recovery & Investigation
+Short recovery.
+"""
+            content = _get_valid_conops_content()
+            sec12_idx = content.find("## 12. 7-Row Emergency Decision")
+            content_short = content[:sec12_idx] + short_sec12
+
+            with open(os.path.join(conops_dir, "CONOPS.md"), "w", encoding="utf-8") as f:
+                f.write(content_short)
+
+            repo = WorkspaceRepository(workspace_dir=tmpdir)
+            conops_val = ConopsCompletenessValidator()
+            findings = conops_val.validate(repo)
+
+            underpop_errors = [f for f in findings if f.rule_id == "conops-emergency-section-underpopulated"]
+            self.assertEqual(len(underpop_errors), 1, f"Expected underpopulated error, got {underpop_errors}")
+            self.assertIn("1500 characters", str(underpop_errors[0]))
+
+    def test_conops_emergency_depth_direct_method(self):
+        """Direct invocation of _validate_emergency_matrix_depth verifies all 3 sub-checks."""
+        conops_val = ConopsCompletenessValidator()
+        valid_content = _get_valid_conops_content()
+
+        # Valid content has zero findings
+        findings = conops_val._validate_emergency_matrix_depth(valid_content)
+        self.assertEqual(findings, [])
+
+        # Missing subsection 12.1
+        content_no_12_1 = valid_content.replace("### 12.1 Failsafe State Transition Semantics & Timing Guarantees", "### 12.1 Other Heading")
+        findings = conops_val._validate_emergency_matrix_depth(content_no_12_1)
+        # Wait: 12.1 Other Heading matches prefix 12.1. Let's test removing 12.1 heading entirely
+        content_no_12_1 = valid_content.replace("### 12.1 Failsafe State Transition Semantics & Timing Guarantees", "### Redundant Heading")
+        findings = conops_val._validate_emergency_matrix_depth(content_no_12_1)
+        sub_findings = [f for f in findings if f.rule_id == "conops-emergency-subsection-missing"]
+        self.assertEqual(len(sub_findings), 1)
+        self.assertEqual(sub_findings[0].detail.get("subsection"), "12.1")
 
     def test_conops_malformed_table_fails(self):
         """Unclosed or broken CommonMark table triggers 'conops-table-malformed'."""

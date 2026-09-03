@@ -255,7 +255,7 @@ def _extract_markdown_sections(text: str) -> Dict[str, Tuple[int, str]]:
     current_chunk: List[str] = []
 
     for idx, line in enumerate(lines, start=1):
-        m = re.match(r'^(#{1,3})\s+(.+)$', line.strip())
+        m = re.match(r'^(#{1,2})\s+(.+)$', line.strip())
         if m:
             if current_heading:
                 sections[current_heading] = (current_line, "\n".join(current_chunk))
@@ -393,6 +393,79 @@ class ConopsCompletenessValidator(IValidator):
         "EMG-05",  # Geofence Breach / Airspace Conflict
         "EMG-06",  # Structural / Actuation Anomaly
         "EMG-07",  # Flight Termination Command
+    ]
+
+    CANONICAL_EMERGENCY_SUBSECTIONS: List[Dict[str, Any]] = [
+        {
+            "num": "12.1",
+            "title": "Failsafe State Transition Semantics / Timing Guarantees",
+            "aliases": [
+                "12.1",
+                "failsafe state transition semantics",
+                "state transition semantics",
+                "timing guarantees",
+                "failsafe state transition",
+            ],
+        },
+        {
+            "num": "12.2",
+            "title": "Failsafe State Machine Architecture / Statechart Diagram",
+            "aliases": [
+                "12.2",
+                "failsafe state machine architecture",
+                "state machine architecture",
+                "statechart diagram",
+                "statechart",
+                "state machine",
+            ],
+        },
+        {
+            "num": "12.3",
+            "title": "Contingency Flight Maneuvers / Aerodynamic Descent Profiles",
+            "aliases": [
+                "12.3",
+                "contingency flight maneuvers",
+                "aerodynamic descent profiles",
+                "contingency maneuvers",
+                "descent profiles",
+                "flight maneuvers",
+            ],
+        },
+        {
+            "num": "12.4",
+            "title": "Flight Termination Subsystem FTS / Safe-Arm Circuitry",
+            "aliases": [
+                "12.4",
+                "flight termination subsystem",
+                "flight termination subsystem fts",
+                "safe-arm circuitry",
+                "fts",
+                "safe-arm",
+            ],
+        },
+        {
+            "num": "12.5",
+            "title": "Human-in-the-Loop Override / Veto Timers",
+            "aliases": [
+                "12.5",
+                "human-in-the-loop override",
+                "veto timers",
+                "hitl override",
+                "veto timer",
+            ],
+        },
+        {
+            "num": "12.6",
+            "title": "Post-Emergency Ground Recovery / Telemetry Quarantine / Investigation",
+            "aliases": [
+                "12.6",
+                "post-emergency ground recovery",
+                "telemetry quarantine",
+                "investigation",
+                "ground recovery",
+                "post-emergency recovery",
+            ],
+        },
     ]
 
     def __init__(self, strict_sora_math: bool = True) -> None:
@@ -585,23 +658,19 @@ class ConopsCompletenessValidator(IValidator):
             _, sec12_line, sec12_content = matched_sections[12]
             sec12_tables, _ = _parse_commonmark_tables(sec12_content)
             
-            emergency_rows: List[Dict[str, str]] = []
+            found_triggers: Set[str] = set()
             if sec12_tables:
                 emergency_rows = sec12_tables[0]
-
-            found_triggers: Set[str] = set()
-            for r in emergency_rows:
-                # Find trigger token like EMG-01
-                full_row_str = " ".join(r.values())
-                m_emg = re.search(r'(EMG-0*[1-7])', full_row_str, re.IGNORECASE)
-                if m_emg:
-                    found_triggers.add(m_emg.group(1).upper().replace("-0", "-0" if len(m_emg.group(1).split("-")[1]) == 2 else "-0"))
-                for trig in self.CANONICAL_EMERGENCY_TRIGGERS:
-                    if trig in full_row_str.upper():
-                        found_triggers.add(trig)
-
-            # Fallback regex over raw section text if table structure differed
-            if len(found_triggers) < 7:
+                for r in emergency_rows:
+                    full_row_str = " ".join(r.values())
+                    m_emg = re.search(r'(EMG-0*[1-7])', full_row_str, re.IGNORECASE)
+                    if m_emg:
+                        found_triggers.add(m_emg.group(1).upper().replace("-0", "-0" if len(m_emg.group(1).split("-")[1]) == 2 else "-0"))
+                    for trig in self.CANONICAL_EMERGENCY_TRIGGERS:
+                        if trig in full_row_str.upper():
+                            found_triggers.add(trig)
+            else:
+                # Fallback regex over raw section text if no table was parsed
                 for trig in self.CANONICAL_EMERGENCY_TRIGGERS:
                     if re.search(rf'\b{trig}\b', sec12_content, re.IGNORECASE):
                         found_triggers.add(trig)
@@ -614,6 +683,95 @@ class ConopsCompletenessValidator(IValidator):
                     location=f"{rel_path}:{sec12_line}",
                     detail={"found_triggers": list(found_triggers), "missing_triggers": missing_triggers},
                 ))
+
+            # Emergency Matrix depth, canonical subsections, statechart & density floor (Issue #88)
+            findings.extend(self._validate_emergency_matrix_depth(content, rel_path, sec12_line, sec12_content))
+
+        return findings
+
+    def _is_emergency_subsection_present(self, req: Dict[str, Any], sec_text: str) -> bool:
+        sub_num = req["num"]
+        num_pattern = rf'^(?:#{1,4})\s+(?:subsection\s+|section\s+)?{re.escape(sub_num)}[.\s:\-—]'
+        for line in sec_text.splitlines():
+            s = line.strip()
+            if re.search(num_pattern, s, re.IGNORECASE):
+                return True
+            if s.startswith("#"):
+                s_lower = s.lower()
+                for alias in req.get("aliases", []):
+                    if alias.lower() in s_lower:
+                        return True
+        if re.search(rf'^(?:#{1,4})\s*{re.escape(sub_num)}\b', sec_text, re.MULTILINE | re.IGNORECASE):
+            return True
+        return False
+
+    def _validate_emergency_matrix_depth(
+        self,
+        content: str,
+        rel_path: str = "docs/conops/CONOPS.md",
+        sec12_line: int = 1,
+        sec12_content: Optional[str] = None,
+    ) -> List[Finding]:
+        """
+        Validates Section 12 Emergency Decision & Contingency Matrix for:
+        a) Mandatory presence of canonical subsections 12.1 through 12.6:
+           - 12.1 (Failsafe State Transition Semantics / Timing Guarantees)
+           - 12.2 (Failsafe State Machine Architecture / Statechart Diagram)
+           - 12.3 (Contingency Flight Maneuvers / Aerodynamic Descent Profiles)
+           - 12.4 (Flight Termination Subsystem FTS / Safe-Arm Circuitry)
+           - 12.5 (Human-in-the-Loop Override / Veto Timers)
+           - 12.6 (Post-Emergency Ground Recovery / Telemetry Quarantine / Investigation)
+           Emits Finding 'conops-emergency-subsection-missing' if any subsection is missing.
+        b) Mandatory presence of a valid Mermaid stateDiagram-v2 statechart inside Section 12.
+           Emits Finding 'conops-emergency-statechart-missing' if absent.
+        c) Content density floor: Section 12 content must have at least 1500 characters.
+           Emits Finding 'conops-emergency-section-underpopulated' if below floor.
+        """
+        findings: List[Finding] = []
+        if sec12_content is not None:
+            target_text = sec12_content
+        else:
+            sections = _extract_markdown_sections(content)
+            sec12_match = _find_matching_section(
+                sections,
+                12,
+                "7-Row Emergency Decision & Contingency Matrix",
+                ["emergency decision", "contingency matrix", "7-row emergency", "emergency matrix", "emergency decision & contingency matrix", "emg-"],
+            )
+            if sec12_match:
+                _, sec12_line, target_text = sec12_match
+            else:
+                target_text = content
+
+        # a) Mandatory canonical subsections 12.1 through 12.6
+        for sub in self.CANONICAL_EMERGENCY_SUBSECTIONS:
+            if not self._is_emergency_subsection_present(sub, target_text):
+                findings.append(Finding(
+                    "conops-emergency-subsection-missing",
+                    f"Section 12 in '{rel_path}' is missing mandatory subsection {sub['num']} ('{sub['title']}').",
+                    location=f"{rel_path}:{sec12_line}",
+                    detail={"subsection": sub["num"], "title": sub["title"], "file": rel_path},
+                ))
+
+        # b) Mandatory Mermaid stateDiagram-v2 statechart
+        has_statechart = bool(re.search(r'```mermaid[\s\S]*?stateDiagram(?:-v2)?[\s\S]*?```', target_text, re.IGNORECASE))
+        if not has_statechart:
+            findings.append(Finding(
+                "conops-emergency-statechart-missing",
+                f"Section 12 in '{rel_path}' is missing mandatory Mermaid stateDiagram-v2 statechart diagram.",
+                location=f"{rel_path}:{sec12_line}",
+                detail={"file": rel_path},
+            ))
+
+        # c) Content density floor: Section 12 content must have at least 1500 characters
+        sec12_len = len(target_text.strip())
+        if sec12_len < 1500:
+            findings.append(Finding(
+                "conops-emergency-section-underpopulated",
+                f"Section 12 content in '{rel_path}' has {sec12_len} characters, failing mandatory content density floor of 1500 characters.",
+                location=f"{rel_path}:{sec12_line}",
+                detail={"character_count": sec12_len, "minimum_required": 1500, "file": rel_path},
+            ))
 
         return findings
 
@@ -718,6 +876,77 @@ $$
 | `EMG-05` | {{EMG_TRIGGER_NAME}} | {{EMG_DETECTION_MECHANISM}} | {{EMG_CONTAINMENT_ACTION}} | `{{EMG_FAILSAFE_STATE}}` | {{EMG_MAX_RESPONSE_TIME}} | {{EMG_HITL_ROLE}} |
 | `EMG-06` | {{EMG_TRIGGER_NAME}} | {{EMG_DETECTION_MECHANISM}} | {{EMG_CONTAINMENT_ACTION}} | `{{EMG_FAILSAFE_STATE}}` | {{EMG_MAX_RESPONSE_TIME}} | {{EMG_HITL_ROLE}} |
 | `EMG-07` | {{EMG_TRIGGER_NAME}} | {{EMG_DETECTION_MECHANISM}} | {{EMG_CONTAINMENT_ACTION}} | `{{EMG_FAILSAFE_STATE}}` | {{EMG_MAX_RESPONSE_TIME}} | {{EMG_HITL_ROLE}} |
+
+### 12.1 Failsafe State Transition Semantics & Timing Guarantees
+- **State Transition Semantics:** {{FAILSAFE_TRANSITION_SEMANTICS}}
+- **Priority Arbitration:**
+$$
+\\begin{aligned}
+P_{\\mathrm{EMG-07}} > P_{\\mathrm{EMG-03}} > P_{\\mathrm{EMG-05}} > P_{\\mathrm{EMG-06}} > P_{\\mathrm{EMG-04}} > P_{\\mathrm{EMG-02}} > P_{\\mathrm{EMG-01}}
+\\end{aligned}
+$$
+- **Timing Bounds:** Maximum automated containment reaction time strictly bounded by $t_{\\mathrm{resp}} \\le {{MAX_CONTAINMENT_RESPONSE_TIME_MS}}\\text{ ms}$.
+- **State Latching:** {{FAILSAFE_STATE_LATCHING_RULES}}
+
+### 12.2 Failsafe State Machine Architecture & Statechart Diagram
+```mermaid
+stateDiagram-v2
+    [*] --> Phase_NominalExecution : System BIT Passed / Normal Operation
+
+    state Phase_NominalExecution {
+        [*] --> MissionExecution
+        MissionExecution --> SensorProcessing
+        SensorProcessing --> MissionExecution
+    }
+
+    Phase_NominalExecution --> Degraded_SensorFailsafe : EMG-04 (Sensor Fault)
+    Phase_NominalExecution --> Contingency_DeadReckoning : EMG-02 (GNSS Loss)
+    Phase_NominalExecution --> Contingency_LostLinkReturn : EMG-01 (C2 Loss)
+    Phase_NominalExecution --> Contingency_GeofenceContainment : EMG-05 (Geofence Breach)
+    Phase_NominalExecution --> Contingency_PrecautionaryLand : EMG-06 (Structural Anomaly)
+    Phase_NominalExecution --> Contingency_EmergencyGlide : EMG-03 (Propulsion Loss)
+    Phase_NominalExecution --> Emergency_FlightTermination : EMG-07 (FTS Abort Command)
+
+    Degraded_SensorFailsafe --> Contingency_PrecautionaryLand : Fault Escalation
+    Contingency_DeadReckoning --> Contingency_LostLinkReturn : Timeout Expired
+    Contingency_LostLinkReturn --> Emergency_FlightTermination : Outer Geofence Violation
+    Contingency_GeofenceContainment --> Phase_NominalExecution : Safe Corridor Restored
+    Contingency_EmergencyGlide --> Phase_SecureShutdown : Glide Touchdown
+    Contingency_PrecautionaryLand --> Phase_SecureShutdown : Landing Verified
+    Emergency_FlightTermination --> Phase_SecureShutdown : Parachute Descent & Ground Quarantine
+
+    state Phase_SecureShutdown {
+        [*] --> PowerCutoff
+        PowerCutoff --> TelemetryQuarantineLock
+        TelemetryQuarantineLock --> EmergencyBeaconActive
+    }
+```
+
+### 12.3 Contingency Flight Maneuvers & Aerodynamic Descent Profiles
+- **Containment Turnaround Profile:** Commanded coordinated turn at maximum bank angle $\\phi_{\\mathrm{max}} = {{MAX_BANK_ANGLE_DEG}}^\\circ$ with turnaround airspeed $v_{\\mathrm{turn}} = {{TURNAROUND_AIRSPEED_MPS}}\\text{ m/s}$.
+$$
+\\begin{aligned}
+R_{\\mathrm{turn}} = \\frac{v_{\\mathrm{turn}}^2}{g \\cdot \\tan(\\phi_{\\mathrm{max}})}
+\\end{aligned}
+$$
+- **Optimal Glide Descent Profile:** Best $(L/D)_{\\mathrm{max}} = {{MAX_L_OVER_D_RATIO}}$ unpowered glide descent toward secondary divert coordinates.
+- **Precautionary Landing Profile:** {{PRECAUTIONARY_LANDING_PROFILE}}
+
+### 12.4 Flight Termination Subsystem (FTS) & Safe-Arm Circuitry
+- **Hardware Isolation:** {{FTS_HARDWARE_ISOLATION_DESCRIPTION}}
+- **Power Cutoff Mechanism:** High-voltage main power distribution bus disconnect within $t_{\\mathrm{cut}} \\le {{FTS_CUTOFF_TIME_MS}}\\text{ ms}$.
+- **Deployment Mechanism:** {{FTS_PARACHUTE_DEPLOYMENT_MECHANISM}}
+- **Safe-Arm Interlocks:** {{FTS_SAFE_ARM_INTERLOCKS}}
+
+### 12.5 Human-in-the-Loop Override & Veto Timers
+- **Supervisory Veto Timer:** GCS operator veto countdown window $\\tau_{\\mathrm{veto}} = {{HITL_VETO_WINDOW_SECONDS}}\\text{ s}$ prior to non-immediate failsafe trajectory execution.
+- **Manual Override Precedence:** Dedicated emergency link manual override commands strictly preempt autonomous loiter profiles.
+- **Dual-Consent Authorization:** Critical flight termination requires dual-consent cryptographic confirmation.
+
+### 12.6 Post-Emergency Ground Recovery, Telemetry Quarantine & Investigation
+- **Telemetry Quarantine:** Autonomous write-lock and cryptographic hashing (SHA-256) of flight recorder partitions upon touchdown.
+- **Localization Beacon:** Dedicated emergency homing beacon ($406.040\\text{ MHz}$ COSPAS-SARSAT / $121.5\\text{ MHz}$) active for at least {{BEACON_DURATION_HOURS}} hours.
+- **Ground Ordnance & De-Arming:** {{GROUND_DEARMING_AND_RECOVERY_PROCEDURES}}
 """
         out_p = Path(output_path)
         out_p.parent.mkdir(parents=True, exist_ok=True)
