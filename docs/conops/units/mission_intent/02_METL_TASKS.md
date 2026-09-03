@@ -12,10 +12,10 @@ The Mission Essential Task List (METL) establishes the doctrinally grounded, qua
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | `MET-01` | PreFlightSystemCheckout | Pre-launch stationary ground state across 10 physical/electronic subsystems with ground support equipment connected | 100% PBIT pass across 10 subsystems (Structures tap/torque/CG, Controls backlash/current, Pitot leak/offset/heater, Propulsion/BMS phase/quiescent/R_i/SoC/delta_V, Avionics IMU/GNSS/PDOP, DAA radar/ADS-B, FTS squib/pin, C2 PER/Remote ID, Payload boresight/cryo lock, 3-tier release ECDSA token 0x5349) | Automated Subsystem PBIT Telemetry & 3-Tier Multi-Disciplinary Digital Logbook Inspection | `/// OperationalAllocation: [MET-01]` | NATO STANAG 4586 Annex B §4.1 |
 | `MET-02` | AutonomousIngressTransit | En-route corridor navigation under active flight plan | Lateral cross-track error e_xtrack <= 2.0 m, vertical error e_z <= 1.0 m, motor RPM in [4500, 7200 RPM], ESC temp <= 75.0 C, pitot lag tau <= 50.0 ms, IMU vibration rejection <= 0.01 g^2/Hz | Flight Navigation Log Review & Multi-Subsystem Telemetry Audit | `/// OperationalAllocation: [MET-02]` | RTCA DO-365B §2.2.3 |
-| `MET-03` | AreaSurveillanceOrbit | On-station target tracking within designated geographic boundary | Orbit radius R_orbit = 300.0 m +/- 5.0 m, gimbal servo temp <= 65.0 C, MWIR NUC interval <= 300.0 s, optical boresight jitter <= 0.02 deg RMS under wind shear | Telemetry & Video Frame Analysis | `/// OperationalAllocation: [MET-03]` | NATO STANAG 4586 Annex B §3.2 |
+| `MET-03` | AreaSurveillanceOrbit | On-station target tracking, search pattern execution (Expanding Square, Creeping Line, Sector Scan), and multi-spectral surveillance within designated geographic boundary | Orbit radius R_orbit = 300.0 m +/- 5.0 m, search coverage rate >= 50.0 km^2/hr, multi-spectral sensor fusion (MWIR 3-5 um, LWIR 8-12 um, SWIR), gimbal servo temp <= 65.0 C, MWIR NUC interval <= 300.0 s, optical boresight jitter <= 0.02 deg RMS under wind shear | Telemetry, Search Coverage Mapping, & Video Frame Analysis | `/// OperationalAllocation: [MET-03]` | NATO STANAG 4586 Annex B §3.2 / NATO STANAG 3733 |
 | `MET-04` | DynamicAirspaceDeconfliction | Traffic conflict geometry detected by onboard DAA sensors | Maintain Well-Clear separation (D_horizontal >= 1200.0 m, H_vertical >= 137.0 m), 77 GHz radar rate f >= 20.0 Hz, ADS-B decode latency <= 100.0 ms, vertical rate resolution dz/dt <= 0.2 m/s | DAA Collision Event Log Review & HIL Encounter Audit | `/// OperationalAllocation: [MET-04]` | RTCA DO-365B §2.2.4 |
 | `MET-05` | ElectronicCounterCountermeasures | Jamming or intentional RF / navigation spoofing detected | Seamless PACE switch t_switch <= 1.0 s, GNSS J/S anti-jam >= 35.0 dB, CRPA nulling depth >= 25.0 dB, dead-reckoning drift <= 0.5% distance over 60 s GNSS outage | RF Signal Log & Navigation Resiliency Test | `/// OperationalAllocation: [MET-05]` | MIL-STD-461G RS103 §4.3 |
-| `MET-06` | PrecisionTargetMensuration | Target identified within optical/infrared payload field of view | TLE_CEP90 <= 2.5 m at 3.0 km, laser rangefinder PRF = 10.0 Hz, range accuracy <= 0.5 m at 3.0 km, EO/IR pixel pitch 12 um, atmospheric extinction correction | Optical Mensuration Calibration Log & Flight Telemetry Audit | `/// OperationalAllocation: [MET-06]` | NATO STANAG 4586 Annex B §3.5 |
+| `MET-06` | PrecisionTargetMensuration | Target acquired across taxonomy classes (Fixed Infrastructure, Moving Vehicle, HVT, Pop-up Threat) within optical/infrared payload field of view | TLE_CEP90 <= 2.5 m at 3.0 km, STANAG 3733 Band I/II laser PRF coding (1111-1788), beam divergence <= 0.3 mrad, boresight alignment <= 0.05 deg, BDA offload <= 30.0 s with structural/thermal kill verification | Optical Mensuration Calibration Log, Laser PRF Telemetry, & BDA Audit | `/// OperationalAllocation: [MET-06]` | NATO STANAG 4586 Annex B §3.5 / NATO STANAG 3733 / CJCSI 3121.01B |
 | `MET-07` | AutonomousBingoReturnDivert | Energy monitoring detects current energy E_current <= E_bingo threshold | Autonomous RTB/divert trigger t_resp <= 200.0 ms, dynamic R_i(T) compensation, headwind gradient vector integration, touchdown reserve E_reserve >= 216.0 kJ | BMS Telemetry & Flight Recording Audit | `/// OperationalAllocation: [MET-07]` | JARUS SORA v2.5 Annex E §2.1 |
 | `MET-08` | PostMissionDataOffloadShutdown | Post-landing stationary touchdown on recovery pad | Zeroization time <= 10.0 s (NIST SP 800-88r1), DC bus discharge time <= 5.0 s (V_bus < 5.0 V), post-flight motor thermal soak T_motor <= 60.0 C, offload <= 60.0 s | Security Audit Log & Safe Electrical Isolation Verification | `/// OperationalAllocation: [MET-08]` | NIST SP 800-88r1 §2.4 |
 
@@ -137,23 +137,28 @@ Formal specification for autonomous waypoint sequencing, 4D trajectory tracking,
 
 ### 2.3 MET-03: AreaSurveillanceOrbit
 
-Formal specification for closed-loop target area loitering, direct-drive gimbal servo thermal regulation, continuous MWIR Non-Uniformity Correction (NUC) recalibration, optical boresight stabilization under dynamic wind shear, multi-spectral video encoding, and circular orbit tracking precision.
+Formal specification for closed-loop target area loitering, autonomous search pattern execution (Expanding Square, Creeping Line, Sector Scan), multi-spectral sensor collection modes (Wide-FOV Area Search, Narrow-FOV Kinetic Tracking, MWIR 3–5 µm, LWIR 8–12 µm, SWIR fusion), direct-drive gimbal servo thermal regulation, continuous MWIR Non-Uniformity Correction (NUC) recalibration, optical boresight stabilization under dynamic wind shear, high-throughput search coverage rate ($\ge 50.0\text{ km}^2/\text{hr}$), target classification tracking across doctrinal classes (Fixed Hardened Infrastructure, Moving Surface Vehicle, HVT, Pop-up Threat), and post-strike Battle Damage Assessment (BDA) loiter support.
 
 #### Condition Specification
 | Parameter | Condition Value / State | Engineering Unit | Validation Rule |
 | :--- | :--- | :--- | :--- |
-| Operational State | On-Station Loiter / Orbit | State Enum | Flight mode `LOITER_ORBIT` |
+| Operational State | On-Station Loiter / Area Search / BDA Loiter | State Enum | Flight modes `LOITER_ORBIT`, `AREA_SEARCH`, `BDA_LOITER` |
+| Target Classification Scope | Taxonomy Classes 1-4 | Taxonomy Enum | Fixed Infrastructure, Moving Vehicle, HVT, Pop-up Threat |
+| Search Pattern Algorithms | Expanding Square, Creeping Line, Sector Scan | Algorithm Enum | Autonomous geometric track generator active |
+| Minimum Search Area Coverage Rate | >= 50.0 | km^2/hr | Minimum operational search sweep throughput |
 | Designated Orbit Centerpoint | Geodetic (Lat, Lon, Alt) | Coordinates | Target Area of Interest (TAI) |
 | Nominal Orbit Radius (R_orbit) | 300.0 | m | Commanded circular orbit radius |
-| Target Standoff Slant Range | 300.0 to 1500.0 | m | Payload optical tracking range |
-| Sensor Payload State | Active EO/IR Multi-Spectral | State Enum | MWIR + 4K Electro-Optical Gimbal |
+| Target Standoff Slant Range | 300.0 to 1500.0 | m | Payload optical/infrared tracking range |
+| Sensor Payload Collection State | Active Multi-Spectral Fusion | State Enum | Fused 4K EO + MWIR + LWIR + SWIR |
 | Ambient Wind Shear Envelope | Gusts up to 12.0 m/s with 3.0 m/s/s shear | Vector Gradient | Dynamic wind turbulence field |
 | Gimbal Actuator Thermal Baseline | <= 65.0 | °C | Direct-drive brushless servo motor limit |
-| MWIR Sensor Operating Mode | Cryocooled 640x512 Detector | State Enum | Cryocooler locked at T <= 77.0 K |
+| MWIR Sensor Operating Mode | Cryocooled 640x512 Detector (3.0-5.0 um) | State Enum | Cryocooler locked at T <= 77.0 K |
+| LWIR Sensor Operating Mode | Uncooled 640x512 Microbolometer (8.0-12.0 um) | State Enum | Operational 8-12 um thermal channel |
+| SWIR Sensor Operating Mode | InGaAs Detector Array (0.9-1.7 um) | State Enum | Multi-spectral laser spot tracking active |
 
 #### Standard Specification
 | Metric ID | Subsystem Domain | Metric Name / Description | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | MET-03-S01 | Payload & Gimbal | Optical Boresight Jitter Under Wind Shear (RMS) | <= 0.02 | <= 0.008 | deg RMS | RS-422 / CAN Gimbal Bus | Continuous @ 100 Hz |
 | MET-03-S02 | Payload & Gimbal | Gimbal Servo Actuator Temperature (T_servo) | <= 65.0 | <= 50.0 | °C | CAN 2.0B / Digital Thermistor | Continuous @ 20 Hz |
 | MET-03-S03 | Payload & Gimbal | MWIR NUC Shutter Calibration Interval | <= 300.0 | <= 180.0 | s | Payload Serial Control Link | t_nuc <= 300.0 s |
@@ -161,20 +166,22 @@ Formal specification for closed-loop target area loitering, direct-drive gimbal 
 | MET-03-S05 | Payload & Gimbal | Gimbal Dynamic Pan/Tilt Slew Rate | >= 60.0 | >= 120.0 | deg/s | RS-422 Serial Driver | t_slew <= 500.0 ms |
 | MET-03-S06 | Flight Guidance & Aerodynamics | Loiter Orbit Radius Deviation (abs(R - 300.0)) | <= 5.0 | <= 1.0 | m | Autopilot CAN / Mavlink v2 | Continuous @ 250 Hz |
 | MET-03-S07 | Flight Guidance & Aerodynamics | Coordinated Turn Bank Angle Stability | <= 35.0 | <= 25.0 | deg | Autopilot Attitude Loop | Continuous @ 250 Hz |
-| MET-03-S08 | Vision & Mission Computer | Optical Target Centering Error | <= 15.0 | <= 3.0 | pixels | GigE Vision / RTSP | <= 33.3 ms (30 FPS) |
-| MET-03-S09 | Vision & Mission Computer | Video Stream H.265 Frame Rate | >= 30 | >= 60 | FPS | 1000BASE-T Ethernet | Frame interval <= 33.3 ms |
-| MET-03-S10 | Vision & Mission Computer | Video Telemetry Timestamp Synchronization Skew | <= 10.0 | <= 2.0 | ms | Precision Time Protocol (PTP) | Skew <= 10.0 ms |
-| MET-03-S11 | Vision & Mission Computer | Edge Neural Object Detector Inference Latency | <= 33.3 | <= 15.0 | ms | Onboard NPU / Tensor Core | Continuous @ 30 FPS |
-| MET-03-S12 | C2 & Datalink | Downlink Video Payload Data Rate | >= 8.0 | >= 15.0 | Mbps | 5.8 GHz COFDM Modem | Continuous @ 30 FPS |
+| MET-03-S08 | Search & Surveillance | Autonomous Search Pattern Area Coverage Rate (A_dot_cov) | >= 50.0 | >= 75.0 | km^2/hr | Flight Mission Computer | Continuous @ 1 Hz |
+| MET-03-S09 | Search & Surveillance | Multi-Spectral Sensor Fusion Processing Latency | <= 33.3 | <= 15.0 | ms | Onboard Vision DSP Pipeline | Continuous @ 30 FPS |
+| MET-03-S10 | Vision & Mission Computer | Optical Target Centering Error | <= 15.0 | <= 3.0 | pixels | GigE Vision / RTSP | <= 33.3 ms (30 FPS) |
+| MET-03-S11 | Vision & Mission Computer | Video Stream H.265 Frame Rate | >= 30 | >= 60 | FPS | 1000BASE-T Ethernet | Frame interval <= 33.3 ms |
+| MET-03-S12 | Vision & Mission Computer | Video Telemetry Timestamp Synchronization Skew | <= 10.0 | <= 2.0 | ms | Precision Time Protocol (PTP) | Skew <= 10.0 ms |
+| MET-03-S13 | Vision & Mission Computer | Edge Neural Object Detector Inference Latency | <= 33.3 | <= 15.0 | ms | Onboard NPU / Tensor Core | Continuous @ 30 FPS |
+| MET-03-S14 | C2 & Datalink | Downlink Video Payload Data Rate | >= 8.0 | >= 15.0 | Mbps | 5.8 GHz COFDM Modem | Continuous @ 30 FPS |
 
 #### Verification Specification
 | Verification Attribute | Detail Specification |
 | :--- | :--- |
-| Verification Method | Telemetry, High-Resolution Video Frame Analysis, and Gimbal Thermal Telemetry Audit |
-| Evidence Artifact | `tests/surveillance_orbit_test.py` -> `logs/gimbal_pointing_metrics.json` and `logs/mwir_calibration_log.json` |
-| Acceptance Criteria | Multi-subsystem conjunction during on-station orbit:<br>1. **Payload & Gimbal:** Optical boresight jitter <= 0.02 deg RMS under dynamic wind shear <= 12.0 m/s; gimbal servo actuator temperature <= 65.0 °C; MWIR NUC calibration executed at interval <= 300.0 s without video frame dropping; cryocooler maintained at T <= 77.0 K; dynamic slew rate >= 60.0 deg/s.<br>2. **Flight Guidance & Aerodynamics:** Vehicle maintains circular orbit within 300.0 m +/- 5.0 m with coordinated turn bank angle <= 35.0 deg.<br>3. **Vision & Mission Computer:** Optical target centering error <= 15.0 pixels; video stream encoded at >= 30 FPS; telemetry sync skew <= 10.0 ms; edge NPU inference latency <= 33.3 ms.<br>4. **C2 & Datalink:** Downlink payload video stream >= 8.0 Mbps with packet error rate <= 10^-4. |
-| Pass / Fail Threshold | `abs(R_actual - 300.0) <= 5.0 m`, `jitter_RMS <= 0.02 deg`, `T_servo <= 65.0 °C`, and `t_nuc <= 300.0 s`. |
-| Traceability | `/// OperationalAllocation: [MET-03]` \| NATO STANAG 4586 Annex B §3.2 \| INCOSE SEH v5.0 §3.2 \| MIL-STD-810H Method 501.7 |
+| Verification Method | Telemetry, High-Resolution Video Frame Analysis, Area Search Coverage Mapping, and Gimbal Thermal Telemetry Audit |
+| Evidence Artifact | `tests/surveillance_orbit_test.py` -> `logs/gimbal_pointing_metrics.json`, `logs/mwir_calibration_log.json`, and `logs/search_coverage_report.json` |
+| Acceptance Criteria | Multi-subsystem conjunction during on-station orbit and area search execution:<br>1. **Payload & Gimbal:** Optical boresight jitter <= 0.02 deg RMS under dynamic wind shear <= 12.0 m/s; gimbal servo actuator temperature <= 65.0 °C; MWIR NUC calibration executed at interval <= 300.0 s without video frame dropping; cryocooler maintained at T <= 77.0 K; dynamic slew rate >= 60.0 deg/s.<br>2. **Search Patterns & Coverage:** Expanding Square, Creeping Line, and Sector Scan patterns achieve cumulative area coverage rate A_dot_cov >= 50.0 km^2/hr with zero unmapped gaps.<br>3. **Multi-Spectral Fusion & Vision:** Multi-spectral fusion (4K EO + MWIR 3-5 um + LWIR 8-12 um + SWIR 0.9-1.7 um) processed with latency <= 33.3 ms at >= 30 FPS; optical target centering error <= 15.0 pixels; video telemetry sync skew <= 10.0 ms; edge NPU inference latency <= 33.3 ms.<br>4. **Flight Guidance & Aerodynamics:** Vehicle maintains circular orbit within 300.0 m +/- 5.0 m with coordinated turn bank angle <= 35.0 deg.<br>5. **C2 & Datalink:** Downlink payload video stream >= 8.0 Mbps with packet error rate <= 10^-4. |
+| Pass / Fail Threshold | `abs(R_actual - 300.0) <= 5.0 m`, `A_dot_cov >= 50.0 km^2/hr`, `jitter_RMS <= 0.02 deg`, `T_servo <= 65.0 °C`, and `t_nuc <= 300.0 s`. |
+| Traceability | `/// OperationalAllocation: [MET-03]` \| NATO STANAG 4586 Annex B §3.2 \| NATO STANAG 3733 Edition 2 \| INCOSE SEH v5.0 §3.2 \| MIL-STD-810H Method 501.7 |
 
 ---
 
@@ -258,45 +265,52 @@ Formal specification for electronic counter-countermeasures (ECCM), multi-band G
 | Pass / Fail Threshold | `J_S_margin >= 35.0 dB`, `null_depth >= 25.0 dB`, `drift_rate <= 0.005 * distance_traveled` over 60 s outage, and `t_switch <= 1.0 s`. |
 | Traceability | `/// OperationalAllocation: [MET-05]` \| MIL-STD-461G RS103 §4.3 \| RTCA DO-362A §3.4 \| NATO STANAG 4586 Annex B §3.4 |
 
----
-
 ### 2.6 MET-06: PrecisionTargetMensuration
 
-Formal specification for geo-spatial target coordinate mensuration, pulsed laser rangefinding, high-density EO/IR focal plane array metrology, real-time atmospheric extinction compensation, line-of-sight vector kinematics, digital elevation model mapping, and Target Location Error (TLE) bounding.
+Formal specification for geo-spatial target coordinate mensuration, NATO STANAG 3733 Band I/II laser PRF coding (codes 1111–1788), laser beam divergence ($\le 0.3\text{ mrad}$), boresight collimation alignment ($\le 0.05^\circ$), high-density EO/IR/SWIR focal plane array metrology (12.0 µm pixel pitch), real-time atmospheric extinction compensation, line-of-sight vector kinematics, digital elevation model mapping, Target Location Error (TLE CEP90 $\le 2.5\text{ m}$) bounding across the Target Classification Taxonomy (Fixed Hardened Infrastructure, Moving Surface Vehicle, HVT, Pop-up Threat), and rapid Battle Damage Assessment (BDA) verification with telemetry offload within $\tau_{\mathrm{BDA}} \le 30.0\text{ s}$.
 
 #### Condition Specification
 | Parameter | Condition Value / State | Engineering Unit | Validation Rule |
 | :--- | :--- | :--- | :--- |
-| Operational State | Target Acquisition & Mensuration | State Enum | Gimbal locked in `TRACK_TARGET` |
-| Slant Range to Target (Range_target) | 1000.0 to 3000.0 | m | Laser rangefinder operational envelope |
+| Operational State | Target Acquisition, Laser Designation & BDA | State Enum | Gimbal in `TRACK_TARGET`, `LASER_DESIGNATE`, `BDA_VERIFY` |
+| Target Taxonomy Scope | Classes 1 to 4 | Taxonomy Enum | Fixed Infrastructure, Moving Vehicle, HVT, Pop-up Threat |
+| Slant Range to Target (Range_target) | 1000.0 to 3000.0 | m | Laser rangefinder / designator operational envelope |
 | Digital Terrain Elevation Data (DTED) | Level 3 (1.0 m grid resolution) | Resolution | Onboard high-resolution DEM loaded |
-| Laser Rangefinder Subsystem | Eye-Safe 1535 nm Pulsed Diode | Hardware State | Operational firing state |
-| EO/IR Detector Specifications | 12.0 um Pixel Pitch Focal Plane Array | Hardware State | Uncooled LWIR / Cryo MWIR sensor |
+| Laser Designation & Ranging Subsystem | STANAG 3733 Band I (1064 nm) / Band II Pulsed Diode | Hardware State | Operational firing state |
+| NATO Laser PRF Coding Allocation | STANAG 3733 Band I/II Codes (1111 to 1788) | Code Enum | Mission-assigned 3-digit / 4-digit PRF code locked |
+| Laser Beam Optical Divergence | <= 0.30 | mrad | Tight spot containment (d_spot <= 0.90 m at 3.0 km) |
+| Laser to EO/IR Boresight Collimation | <= 0.05 | deg | Mechanical/optical alignment error bound |
+| EO/IR/SWIR Detector Specifications | 12.0 um Pixel Pitch Focal Plane Array | Hardware State | Fused MWIR / LWIR / SWIR sensor suite |
 | Atmospheric Visibility Condition | Meteorological Optical Range >= 5.0 km | Visibility | Real-time extinction correction active |
+| BDA Assessment Mode | Pre/Post-Strike Mensuration & Radiometric Dissipation | State Enum | Active BDA physical/thermal/functional verification |
 | Vehicle Navigation Covariance Norm | <= 0.50 | m | EKF state position uncertainty |
 
 #### Standard Specification
 | Metric ID | Subsystem Domain | Metric Name / Description | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| MET-06-S01 | Laser Rangefinder | Laser Rangefinder Pulse Repetition Frequency (PRF) | 10.0 | 20.0 | Hz | RS-422 / High-Speed Serial | Continuous @ 10 Hz |
-| MET-06-S02 | Laser Rangefinder | Laser Range Measurement Accuracy at 3.0 km | <= 0.50 | <= 0.15 | m | LRF Serial Interface | Range = 3.0 km |
-| MET-06-S03 | EO/IR Metrology | EO/IR Focal Plane Array Pixel Pitch | 12.0 | 10.0 | um | Sensor Core Specification | Hardware Architecture |
-| MET-06-S04 | EO/IR Metrology | Atmospheric Extinction Coefficient Correction Rate | >= 10.0 | >= 25.0 | Hz | Radiometric DSP Pipeline | dt <= 100.0 ms |
-| MET-06-S05 | Target Mensuration | Target Location Error (TLE CEP90) at 3.0 km Slant Range | <= 2.50 | <= 1.00 | m | STANAG 4586 DLI / RS-422 | Range = 3.0 km |
-| MET-06-S06 | Target Mensuration | Line-of-Sight Kinematic Coordinate Transform Rate | >= 50.0 | >= 100.0 | Hz | Real-Time Vector Math Unit | dt <= 20.0 ms |
-| MET-06-S07 | Target Mensuration | Mensuration Solution Convergence Time | <= 500.0 | <= 100.0 | ms | Mission Computer Bus | t_mens <= 500.0 ms |
-| MET-06-S08 | Target Mensuration | Target Geodetic Telemetry Transmission Latency | <= 50.0 | <= 10.0 | ms | Ethernet / STANAG DLI | t_tx <= 50.0 ms |
-| MET-06-S09 | Payload & Gimbal | Gimbal Line-of-Sight Collimation Error | <= 0.05 | <= 0.01 | deg | Optical Boresight Register | Continuous @ 100 Hz |
-| MET-06-S10 | AI & Computer Vision | Multi-Spectral Target Classification Confidence | >= 0.95 | >= 0.99 | Dimensionless | Edge Neural Classifier | Inference <= 33.3 ms |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| MET-06-S01 | Laser Designation | STANAG 3733 Laser PRF Code Modulation & Timing Jitter | <= 10.0 | <= 2.0 | ns | High-Speed Pulse Driver Bus | Continuous @ PRF |
+| MET-06-S02 | Laser Designation | Laser Rangefinder / Designator Pulse Repetition Frequency | 10.0 | 20.0 | Hz | RS-422 / High-Speed Serial | Continuous @ 10 Hz |
+| MET-06-S03 | Laser Designation | Laser Optical Beam Divergence (theta_div) | <= 0.30 | <= 0.15 | mrad | Optical Boresight Assembly | Beam quality metric |
+| MET-06-S04 | Laser Designation | Laser Transmitter to EO/IR Boresight Collimation Alignment | <= 0.05 | <= 0.01 | deg | Optical Boresight Register | Continuous @ 100 Hz |
+| MET-06-S05 | Laser Designation | Laser Range Measurement Accuracy at 3.0 km Slant Range | <= 0.50 | <= 0.15 | m | LRF Serial Interface | Range = 3.0 km |
+| MET-06-S06 | EO/IR/SWIR Metrology | EO/IR/SWIR Focal Plane Array Pixel Pitch | 12.0 | 10.0 | um | Sensor Core Specification | Hardware Architecture |
+| MET-06-S07 | EO/IR/SWIR Metrology | Atmospheric Extinction Coefficient Correction Rate | >= 10.0 | >= 25.0 | Hz | Radiometric DSP Pipeline | dt <= 100.0 ms |
+| MET-06-S08 | Target Mensuration | Target Location Error (TLE CEP90) at 3.0 km Slant Range | <= 2.50 | <= 1.00 | m | STANAG 4586 DLI / RS-422 | Range = 3.0 km |
+| MET-06-S09 | Target Mensuration | Line-of-Sight Kinematic Coordinate Transform Rate | >= 50.0 | >= 100.0 | Hz | Real-Time Vector Math Unit | dt <= 20.0 ms |
+| MET-06-S10 | Target Mensuration | Mensuration Solution Convergence Time | <= 500.0 | <= 100.0 | ms | Mission Computer Bus | t_mens <= 500.0 ms |
+| MET-06-S11 | AI & Computer Vision | Multi-Spectral Target Classification Confidence (C_PID) | >= 0.95 | >= 0.99 | Dimensionless | Edge Neural Classifier | Inference <= 33.3 ms |
+| MET-06-S12 | Battle Damage Assessment | BDA Physical Structural Displacement Mensuration Resolution | <= 0.20 | <= 0.05 | m | Stereoscopic 3D Mensuration | Post-strike scan |
+| MET-06-S13 | Battle Damage Assessment | BDA Thermal Heat Bloom Dissipation Radiometric Sampling Rate | >= 10.0 | >= 30.0 | Hz | MWIR/LWIR Radiometric Core | Continuous post-strike |
+| MET-06-S14 | Battle Damage Assessment | BDA Post-Strike Telemetry & Imagery Offload Time (tau_BDA) | <= 30.0 | <= 10.0 | s | 5.8 GHz / 915 MHz C2 Datalink | tau_BDA <= 30.0 s |
 
 #### Verification Specification
 | Verification Attribute | Detail Specification |
 | :--- | :--- |
-| Verification Method | Surveyed DGPS Ground Target Calibration, Atmospheric Extinction Chamber Model, and Flight Telemetry Audit |
-| Evidence Artifact | `tests/target_mensuration_test.py` -> `logs/mensuration_accuracy_log.json` and `logs/lrf_ranging_samples.csv` |
-| Acceptance Criteria | Multi-subsystem conjunction for precision target mensuration:<br>1. **Laser Rangefinder:** LRF operates at PRF = 10.0 Hz; range accuracy <= 0.50 m at 3.0 km slant range.<br>2. **EO/IR Metrology & Atmosphere:** EO/IR sensor array pixel pitch = 12.0 um; dynamic atmospheric extinction correction applied at >= 10.0 Hz.<br>3. **Mensuration Precision:** Target Location Error TLE CEP90 <= 2.50 m at 3.0 km standoff range; solution convergence time <= 500.0 ms; LOS kinematic transform rate >= 50.0 Hz.<br>4. **Payload & Telemetry:** Gimbal collimation error <= 0.05 deg; target telemetry latency <= 50.0 ms; target classification confidence >= 0.95. |
-| Pass / Fail Threshold | `TLE_CEP90 <= 2.5 m` at `Range_target == 3000.0 m`, with `PRF == 10.0 Hz`, `delta_range <= 0.5 m`, `pixel_pitch == 12.0 um`, and active extinction correction. |
-| Traceability | `/// OperationalAllocation: [MET-06]` \| NATO STANAG 4586 Annex B §3.5 \| INCOSE SEH v5.0 §3.2 \| MIL-STD-810H Method 505.7 |
+| Verification Method | Surveyed DGPS Ground Target Calibration, STANAG 3733 Laser Receiver Energy / PRF Validation, Atmospheric Extinction Chamber Model, BDA Multi-Spectral Imaging Audit, and Flight Telemetry Review |
+| Evidence Artifact | `tests/target_mensuration_test.py` -> `logs/mensuration_accuracy_log.json`, `logs/stanag3733_prf_validation.json`, and `logs/bda_assessment_report.json` |
+| Acceptance Criteria | Exhaustive multi-subsystem conjunction for precision target mensuration, laser designation, and BDA verification:<br>1. **Laser Designation & STANAG 3733:** Laser PRF code modulation compliant with NATO STANAG 3733 Band I/II (codes 1111..1788) with pulse timing jitter <= 10.0 ns; beam divergence <= 0.30 mrad; boresight collimation alignment <= 0.05 deg; range measurement accuracy <= 0.50 m at 3.0 km slant range.<br>2. **Target Classification & PID:** Multi-spectral classification confidence C_PID >= 0.95 across Fixed Hardened Infrastructure, Moving Surface Vehicle, High-Value Target (HVT), and Pop-up Threat categories; EO/IR/SWIR pixel pitch <= 12.0 um; atmospheric extinction compensation active at >= 10.0 Hz.<br>3. **Precision Mensuration:** Target Location Error TLE CEP90 <= 2.50 m at 3.0 km standoff range; solution convergence time <= 500.0 ms; LOS kinematic transform rate >= 50.0 Hz.<br>4. **Battle Damage Assessment (BDA):** Structural displacement detection resolution <= 0.20 m (confirming physical displacement Delta_S >= 0.50 m); thermal heat bloom dissipation monitored at >= 10.0 Hz with verified negative temperature gradient; functional kill verification (M-kill, F-kill, K-kill) completed; complete BDA telemetry and imagery report offloaded over C2 link within tau_BDA <= 30.0 s post-strike. |
+| Pass / Fail Threshold | `TLE_CEP90 <= 2.5 m` at `Range_target == 3000.0 m`, `theta_div <= 0.3 mrad`, `boresight_alignment <= 0.05 deg`, `STANAG_3733_PRF in [1111, 1788]`, `C_PID >= 0.95`, and `tau_BDA <= 30.0 s`. |
+| Traceability | `/// OperationalAllocation: [MET-06]` \| NATO STANAG 3733 Edition 2 \| NATO STANAG 4586 Annex B §3.5 \| CJCSI 3121.01B Enc A §4.b \| MIL-STD-882E §4.3 \| ISO/IEC/IEEE 29148:2018 §6.4.2 |
 
 ---
 

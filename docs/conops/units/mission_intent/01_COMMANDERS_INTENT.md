@@ -115,9 +115,91 @@ Where and Operational Parameters:
 
 ---
 
-### 1.4 Normative Baseline & Doctrinal Authority
+### 1.4 Target Classification Taxonomy & Effects Delivery Plan
+In accordance with NATO STANAG 4586 Edition 3 Annex B §3.5, NATO STANAG 3733 Edition 2, CJCSI 3121.01B, and MIL-STD-882E §4.3, tactical payload tasking, sensor collection modes, autonomous search patterns, laser target designation, and post-strike Battle Damage Assessment (BDA) are formally governed by the Target Classification Taxonomy and Effects Delivery Plan:
+
+$$
+\begin{aligned}
+\dot{A}_{\mathrm{search}} &= W_{\mathrm{swath}} \cdot v_{\mathrm{ground}} \cdot (1 - \eta_{\mathrm{overlap}}) \\
+d_{\mathrm{laser\_spot}} &= R_{\mathrm{slant}} \cdot \theta_{\mathrm{divergence}} \\
+\Delta\theta_{\mathrm{LOS}} &= \sqrt{\Delta\theta_{\mathrm{azimuth}}^2 + \Delta\theta_{\mathrm{elevation}}^2} \le \Delta\theta_{\mathrm{boresight,max}}
+\end{aligned}
+$$
+
+Where and Operational Parameters:
+
+| Parameter | Symbol | Nominal Value | Units | Constraint Rule | Description | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| Search Area Coverage Rate | A_dot_search | >= 50.0 | km^2/hr | A_dot_search >= 50.0 km^2/hr | Minimum operational ground area search rate across search patterns | NATO STANAG 4586 Annex B §3.2 |
+| Sensor Swath Footprint Width | W_swath | 1000.0 | m | W_swath >= 750.0 m | Cross-track optical/infrared ground swath width at nominal altitude | NATO STANAG 4586 Annex B §3.5 |
+| Cruising Ground Velocity | v_ground | 20.0 (72.0 km/h) | m/s | 15.0 <= v_ground <= 28.0 m/s | Operational transit and search ground speed | RTCA DO-365B §2.2.3 |
+| Search Swath Overlap Factor | eta_overlap | 0.20 | Dimensionless | 0.15 <= eta_overlap <= 0.30 | Overlap fraction to eliminate surveillance blind spots | INCOSE SEH v5.0 §3.2 |
+| Target Standoff Slant Range | R_slant | 3000.0 | m | 1000.0 <= R_slant <= 3000.0 m | Standoff slant range from aircraft to target datum | NATO STANAG 4586 Annex B §3.5 |
+| Laser Beam Divergence | theta_divergence | <= 0.30 | mrad | theta_divergence <= 0.30 mrad | Maximum optical laser beam angular divergence | NATO STANAG 3733 Ed 2 §3.1 |
+| Laser Spot Diameter on Target | d_laser_spot | <= 0.90 | m | d_laser_spot <= 0.90 m at 3.0 km | Maximum illuminated spot diameter on target surface | NATO STANAG 3733 Ed 2 §3.2 |
+| Boresight Collimation Alignment | Delta_theta_boresight | <= 0.05 | deg | Delta_theta_boresight <= 0.05 deg | Co-alignment error between laser beam axis and EO/IR LOS | NATO STANAG 3733 Ed 2 §3.3 |
+| BDA Telemetry Offload Latency | tau_BDA | <= 30.0 | s | tau_BDA <= 30.0 s | Max elapsed time from strike event to complete BDA offload | CJCSI 3121.01B Enc A §4.b |
+
+#### 1.4.1 Target Classification Taxonomy
+The tactical system identifies, catalogs, tracks, and prosecutes surface targets categorized across four doctrinal target classes:
+
+| Target Class ID | Target Class Name | Physical & Operational Characteristics | Signature Profile | Target Priority & Engagement Rules | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `TGT-CLS-01` | Fixed Hardened Infrastructure | Reinforced concrete bunkers, command shelters, radar towers, power substations, bridges, and fuel storage facilities; high structural durability; stationary coordinates. | High optical permanence, fixed geometric boundary, predictable thermal inertia and emissivity signature across diurnal cycle. | Priority Level 2: Requires precise mensuration (TLE <= 2.5 m), structural penetration assessment, and collateral damage avoidance buffer. | CJCSI 3121.01B Enc A §4.b / NATO STANAG 4586 Annex B §3.5 |
+| `TGT-CLS-02` | Moving Surface Vehicle | Tactical wheeled transport, armored combat vehicles, air defense mobile launchers, and supply convoys; dynamic velocity vector up to 30.0 m/s (108 km/h). | Internal combustion / turbine thermal exhaust bloom, distinct tire/track radar Doppler modulation, dynamic aspect angle changes. | Priority Level 2: Continuous lead-angle kinetic tracking, micro-gimbal rate-stabilized following, and dynamic collision hazard assessment. | NATO STANAG 4586 Annex B §3.5 / CJCSI 3121.01B |
+| `TGT-CLS-03` | High-Value Target (HVT) | Command and control leadership nodes, mobile electronic warfare emitter stations, ballistic/cruise missile launchers, and critical air defense radars. | Multi-spectral signature, transient operational presence, active electronic countermeasure shielding, optical camouflage netting. | Priority Level 1 (Critical): Mandatory multi-spectral Positive Identification (C_PID >= 0.95), dual-consent cryptographic authorization (Key A + Key B), and persistent loiter. | DoD Directive 3000.09 §3.1 / CJCSI 3121.01B Enc A §4.b |
+| `TGT-CLS-04` | Pop-up Threat | Fleeting MANPADS fire teams, dynamic RPG/ATGM ambushes, tactical RF jamming nodes, and concealed counter-UAS interceptor sites. | Sudden onset RF/thermal ignition transient, fleeting exposure window (t_window <= 60.0 s), high lethality to friendly assets. | Priority Level 1 (Emergency): Rapid automated sensor retasking, instantaneous threat alert broadcast to GCS in <= 250 ms, and defensive maneuver initiation. | MIL-STD-882E §4.3 / NATO STANAG 4586 Annex B §4.1 |
+
+#### 1.4.2 Multi-Spectral Sensor Collection Modes
+The onboard sensor payload operates across five synchronized collection modes to guarantee all-weather, day/night target detection, tracking, and designation:
+
+| Sensor Mode ID | Collection Mode Name | Spectral Band & Sensor Architecture | Operational Application & FoV | Spatial / Radiometric Performance Standard | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `SENS-MOD-01` | Wide-FOV Area Search | Visible Electro-Optical (EO) 4K sensor + Wide-angle MWIR optics; horizontal FoV = 45.0 deg. | Broad-area systematic ground surveillance, automated anomaly detection, cueing for narrow-band tracking. | Area coverage rate >= 50.0 km^2/hr; Ground Sample Distance GSD <= 0.15 m at 120.0 m AGL; frame rate >= 30 FPS. | NATO STANAG 4586 Annex B §3.2 |
+| `SENS-MOD-02` | Narrow-FOV Kinetic Tracking | Narrow-angle 4K EO zoom optics + High-magnification MWIR channel; horizontal FoV = 3.5 deg. | Continuous high-resolution target tracking, micro-gimbal centroid locking, and precision laser spot placement. | GSD <= 0.02 m at 3.0 km slant range; boresight pointing jitter <= 0.02 deg RMS under wind shear gusts <= 12.0 m/s. | NATO STANAG 4586 Annex B §3.5 |
+| `SENS-MOD-03` | Mid-Wave Infrared (MWIR) Mode | Cryocooled Indium Antimonide (InSb) / MCT focal plane array (3.0 to 5.0 um); active Stirling cooler (T <= 77.0 K). | Thermal contrast surveillance, vehicle engine and exhaust thermal bloom detection, day/night operations through diurnal thermal crossover. | Noise Equivalent Temperature Difference NETD < 20 mK; 640x512 detector matrix; NUC recalibration interval <= 300.0 s. | MIL-STD-810H Method 501.7 / NATO STANAG 4586 Annex B §3.5 |
+| `SENS-MOD-04` | Long-Wave Infrared (LWIR) Mode | Uncooled Vanadium Oxide (VOx) microbolometer array (8.0 to 12.0 um); continuous thermal imaging. | Wide thermal emissivity profiling, penetration of dust, smoke, battlefield obscurants, and ambient ground temperature mapping. | NETD < 40 mK; 640x512 detector matrix; spectral response 8-12 um; startup readiness <= 5.0 s. | MIL-STD-810H Method 506.6 / NATO STANAG 4586 Annex B §3.5 |
+| `SENS-MOD-05` | SWIR Multi-Spectral Fusion | Short-Wave Infrared (0.9 to 1.7 um) InGaAs sensor fused with visible EO and cryogenic MWIR channels. | Atmospheric haze penetration, laser designation spot tracking (1064 nm / 1550 nm), camouflage netting discrimination, and fused display. | Real-time pixel-level fusion latency <= 33.3 ms (30 FPS); multi-spectral Positive Identification confidence C_PID >= 0.95. | NATO STANAG 3733 Ed 2 §3.4 / NATO STANAG 4586 Annex B §3.5 |
+
+#### 1.4.3 Tactical Search Patterns & Area Coverage Dynamics
+Autonomous area search execution utilizes three deterministic geometric flight search patterns to achieve guaranteed ground coverage rate $\dot{A}_{\mathrm{search}} \ge 50.0\text{ km}^2/\text{hr}$:
+
+| Pattern ID | Search Pattern Name | Flight Geometry & Track Kinematics | Tactical Application & Scenario Trigger | Guaranteed Coverage Metric | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `SRCH-PAT-01` | Expanding Square Search | Outward square spiral starting from high-probability target datum point with step increments S_k = k * W_swath * (1 - eta_overlap). | Localized lost-target re-acquisition, datum search following fleeting Pop-up Threat detection, point-target hunting. | Coverage rate >= 50.0 km^2/hr; datum track radius expansion up to 5.0 km; turn rate <= 3.0 deg/s coordinated. | NATO STANAG 4586 Annex B §3.2 |
+| `SRCH-PAT-02` | Creeping Line Search | Parallel linear sweep legs oriented perpendicular to major search corridor axis, advancing along track by delta_x = W_swath * (1 - eta_overlap). | Elongated rectangular surveillance zones, road network and convoy route reconnaissance, border/perimeter clearing. | Coverage rate >= 50.0 km^2/hr; cross-track deviation <= 2.0 m; 100% swath coverage with zero unmapped gaps. | NATO STANAG 4586 Annex B §3.2 / INCOSE SEH v5.0 §3.2 |
+| `SRCH-PAT-03` | Sector Scan | Pie-shaped angular sector sweeps radiating from central geodetic reference point across commanded azimuth arc (theta_arc in [30, 180] deg). | Fixed infrastructure perimeter defense, high-value choke point monitoring, river crossing / valley approach surveillance. | Coverage rate >= 50.0 km^2/hr; sector revisit period <= 120.0 s; gimbal angular slewing rate >= 60.0 deg/s. | NATO STANAG 4586 Annex B §3.2 |
+
+#### 1.4.4 NATO STANAG 3733 Laser Designation Parameters
+Laser target designation, rangefinding, and seeker illumination strictly comply with NATO STANAG 3733 Edition 2 requirements:
+
+| Parameter ID | Parameter Name | Doctrinal Baseline / Standard | Operational Limit / Value | Engineering Unit | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `LSR-PAR-01` | NATO Band I / Band II PRF Code Allocation | STANAG 3733 Edition 2 Annex A | Band I (1064 nm) / Band II compatible codes: 1111 through 1788 | Code Enum (3-digit / 4-digit PRF) | NATO STANAG 3733 Ed 2 §3.1 |
+| `LSR-PAR-02` | Laser Optical Beam Divergence (theta_div) | STANAG 3733 Optical Beam Quality | <= 0.30 (Objective: <= 0.15) | mrad | NATO STANAG 3733 Ed 2 §3.1 |
+| `LSR-PAR-03` | Laser to EO/IR Boresight Collimation Alignment | STANAG 3733 Mechanical/Optical Co-alignment | <= 0.05 (Objective: <= 0.01) | deg | NATO STANAG 3733 Ed 2 §3.3 |
+| `LSR-PAR-04` | Maximum Illuminated Spot Diameter on Target (d_spot) | STANAG 3733 Target Energy Containment | <= 0.90 at 3.0 km slant range | m | NATO STANAG 3733 Ed 2 §3.2 |
+| `LSR-PAR-05` | Laser Pulse Repetition Frequency (PRF) Rate | STANAG 3733 Seeker Interoperability | 10.0 to 20.0 (PRF pulse jitter <= 10.0 ns) | Hz | NATO STANAG 3733 Ed 2 §3.1 |
+| `LSR-PAR-06` | Laser Output Pulse Energy at 1064 nm | STANAG 3733 Radiant Intensity | >= 50.0 (Objective: >= 80.0) | mJ/pulse | NATO STANAG 3733 Ed 2 §3.2 |
+| `LSR-PAR-07` | Laser Pulse Width (FWHM) | STANAG 3733 Pulse Shape Standards | 15.0 to 25.0 | ns | NATO STANAG 3733 Ed 2 §3.1 |
+| `LSR-PAR-08` | Laser Arming Hardware Dual-Consent Interlock | CJCSI 3121.01B / DoD Directive 3000.09 | Hardware relay interlock requiring dual cryptographic key validation (Key A + Key B) | Discrete State Enum | CJCSI 3121.01B Enc A §4.b |
+
+#### 1.4.5 Battle Damage Assessment (BDA) & Verification Criteria
+Following kinetic strike execution or laser-guided weapons delivery, the system transitions to autonomous BDA loiter mode to evaluate and offload target effects against four mandatory verification criteria:
+
+| Criterion ID | BDA Assessment Metric | Verification Mechanism & Sensor Baseline | Quantitative Acceptance Threshold | Operational Decision Output | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `BDA-CRT-01` | Physical Structural Displacement | High-resolution 4K EO stereoscopic photogrammetry, narrow-FOV edge detection, and DEM difference mensuration. | Detected structural displacement / cratering Delta_S >= 0.50 m or total geometric collapse of designated structure. | Confirms physical structural defeat; updates target state to NEUTRALIZED. | CJCSI 3121.01B Enc A §4.b / NATO STANAG 4586 Annex B §3.5 |
+| `BDA-CRT-02` | Thermal Heat Bloom Dissipation | Calibrated MWIR / LWIR radiometric temperature monitoring; time-series thermal plume decay analysis. | Continuous negative thermal gradient (dT_target/dt < 0) following detonation flash extinction; ambient thermal normalization rate >= 2.0 °C/s. | Confirms warhead detonation, secondary combustion, and lack of active powerplant operation. | NATO STANAG 4586 Annex B §3.5 |
+| `BDA-CRT-03` | Functional Kill Verification | Multi-spectral kinematic velocity tracking (v_target < 0.2 m/s over 60 s loiter) and RF / optical emission silence. | 100% verification of Mobility Kill (M-Kill), Firepower Kill (F-Kill), or Catastrophic Kill (K-Kill). | Authorizes mission continuation or initiates re-attack recommendation to Mission Commander. | CJCSI 3121.01B Enc A §4.b / DoD Directive 3000.09 §3.1 |
+| `BDA-CRT-04` | BDA Telemetry & Imagery Offload Latency | Encrypted high-speed C2 datalink (Primary 5.8 GHz COFDM / Alternate 915 MHz FHSS) telemetry stream. | Complete multi-spectral BDA report (pre/post-strike images + thermal thermograms + mensuration log) offloaded in tau_BDA <= 30.0 s. | Provides actionable strike intelligence to theater command and updates Common Operational Picture (COP). | NATO STANAG 4586 Annex B §4.1 / CJCSI 3121.01B |
+
+---
+
+### 1.5 Normative Baseline & Doctrinal Authority
 This Tactical Mission Intent specification tree is authored in strict compliance with:
 - **NATO STANAG 4586 Edition 3**: Standard Interfaces of UAV Control System (UCS) for NATO UAV Interoperability (Annex B §4.1).
+- **NATO STANAG 3733 Edition 2**: Laser Pulse Repetition Frequency (PRF) Codes for Target Designators and Weapon Seekers (Band I & Band II §3.1–§3.4).
 - **INCOSE Systems Engineering Handbook v5.0**: Technical Planning, System Requirements Definition, and Mission Analysis Processes (§3.2, §3.3).
 - **ISO/IEC/IEEE 29148:2018**: Systems and Software Engineering — Life Cycle Processes — Requirements Engineering (§6.4.2 Concept of Operations).
 - **MIL-HDBK-470A**: Designing and Developing Maintainable Systems (§4.2 O-Level Verification).
