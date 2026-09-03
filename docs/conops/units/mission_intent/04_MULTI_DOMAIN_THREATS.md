@@ -4,9 +4,9 @@
 | **Version** | 1.0.0 |
 | **Date** | 2026-09-02 |
 
-## 4. Threat & Electronic Warfare (EW) / Cyber Environment Matrix
+## 4. Multi-Domain Threat Environment Matrix (Kinetic, Mechanical, Power/Thermal, Environmental, Optical, Signature, Human Factors, EW & Cyber)
 
-In accordance with MIL-STD-882E (§4.3), NATO STANAG 4586, and JARUS SORA v2.5, the Tactical UAS operates across contested, multi-domain operating environments. The threat matrix establishes deterministic autonomous mitigation rules spanning all operational threat domains: Kinetic, Mechanical, Propulsion / Power / Thermal, Environmental, Electronic Warfare, and Cybersecurity / OT.
+In accordance with MIL-STD-882E (§4.3), NATO STANAG 4586, and JARUS SORA v2.5, the Tactical UAS operates across contested, multi-domain operating environments. The threat matrix establishes deterministic autonomous mitigation rules spanning all operational threat domains: Kinetic, Mechanical, Propulsion / Power / Thermal, Environmental, Electronic Warfare, Cybersecurity / OT, Optical / Directed Energy, Acoustic / Signature, Human Factors / CRM, and Hazardous Chemical / CBRN Environments.
 
 | Threat ID | Domain | Threat Vector | Technical Description | Severity | Detection Mechanism | Autonomous Mitigation Rule | Public Clause Citation |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -32,6 +32,10 @@ In accordance with MIL-STD-882E (§4.3), NATO STANAG 4586, and JARUS SORA v2.5, 
 | `THR-CYB-02` | Cybersecurity | C2 Replay Attack | Intercepting valid legacy command packets and retransmitting during unauthorized operational phase | Critical | Monotonically increasing 64-bit sequence counters + timestamp epoch skew checking (latency <= 5 ms) | Reject stale/replayed packets; increment replay counter; isolate transmitting node if replay burst persists | MITRE D3FEND §D3-MCR |
 | `THR-CYB-03` | Cybersecurity | GCS Lateral Compromise | Malware pivot from external internet network to internal GCS flight control bridge and telemetry stream | Critical | Unidirectional data diode flow monitor + zero-trust microsegmentation policy engine (latency <= 50 ms) | Hardware-enforced optical data diode isolates internal C2 bridge; revokes compromised GCS authorization token | NIST SP 800-82r3 §5.3 |
 | `THR-CYB-04` | Cybersecurity | Firmware & Bus Tamper | Flashing unauthorized autopilot bootloader or injecting anomalous frame IDs onto internal CAN/Ethernet bus | Catastrophic | Hardware Root of Trust (TPM 2.0 / Secure Boot) + CAN ID message frequency / payload rate anomaly monitor (latency <= 10 ms) | Secure Boot halts execution on hash mismatch; CAN bus firewall isolates compromised transceiver node | ISO/SAE 21434 §9.4 |
+| `THR-OPT-01` | Optical / Directed Energy | Laser Dazzler / Sensor Saturation | Ground-based high-power laser illuminating EO/IR aperture causing focal plane array saturation | Critical | Focal plane pixel saturation & bloom detector (latency <= 5 ms) | Automated fast optical shutter engagement, gimbal slew-away (+/- 30 deg in <= 50 ms), failover to synthetic vision | MIL-STD-882E Task 205 §4.2 |
+| `THR-SIG-01` | Acoustic / Signature | Counter-UAS Acoustic / Thermal Detection | Vehicle acoustic noise and IR signature exceeding stealth threshold, enabling counter-UAS triangulation | Moderate | Onboard acoustic microphone array & thermal envelope monitor (latency <= 1.0 s) | Dynamic motor RPM phase synchronization to destructively interfere acoustic harmonics, low-power loiter profile, altitude step-up >= 150 m AGL | STANAG 4586 Annex B §3.2 |
+| `THR-HUM-01` | Human Factors / CRM | Operator Alert Fatigue & Cognitive Overload | High-rate warning chimes and complex multi-modal telemetry during critical phases causing delayed operator consent | Critical | GCS operator input cadence monitor and alarm queue depth analyzer (latency <= 100 ms) | Intelligent alarm triage suppressing secondary informational alerts, GCS mandatory handover prompt if continuous pilot duty time t_duty >= 120 min | ISO 9241-210 §5.2 / MIL-STD-1472H §5.1 |
+| `THR-CBRN-01` | Hazardous Environment | Toxic / Corrosive Chemical Plume | Ingress through industrial chemical gas cloud or corrosive acid particulate damaging airframe and sensors | Moderate | Air quality optical particulate sensor & electrochemical gas detector (latency <= 500 ms) | Positive-pressure avionics bay seal activation, command immediate vertical climb out of boundary layer and route diversion | MIL-STD-810H Method 518.3 §4.2 |
 
 ---
 
@@ -276,3 +280,59 @@ In accordance with MIL-STD-882E (§4.3), NATO STANAG 4586, and JARUS SORA v2.5, 
   - **Step 3 (Hardware Write-Lock):** Hardware write-protect lines assert on all internal flash banks during airborne operations.
   - **Verification:** Bootloader verifies running firmware matches cryptographic golden hash manifest; CAN bus error passive count is 0.
 - **Public Clause Citation:** ISO/SAE 21434 §9.4
+
+---
+
+### 4.7 Optical & Directed Energy Threat Domain Formulations & Mitigation Profiles
+
+#### 4.7.1 THR-OPT-01: Laser Dazzler / Sensor Saturation
+- **Detection Threshold:** Focal plane array pixel saturation ratio $R_{\mathrm{sat}} = N_{\mathrm{saturated}} / N_{\mathrm{total}} \ge 0.15$ with peak pixel intensity $I_{\mathrm{px}} \ge 250\text{ DN}$ (8-bit scale) or optical irradiance $E_e \ge 1.0\times 10^{-3}\text{ W/cm}^2$ sustained for $\Delta t \ge 5.0\text{ ms}$
+- **Primary Sensing Hardware & Algorithm:** High-speed CMOS/InGaAs focal plane array bloom sensor coupled with hardware-level pixel intensity histogram analyzer and localized spatial gradient edge-saturation detector (latency $\le 5.0\text{ ms}$).
+- **Deterministic Autonomous Mitigation Sequence:**
+  - **Step 1 (Optical Shutter Engagement):** Trigger high-speed electro-mechanical or liquid crystal optical shutter closure in front of the EO/IR optical aperture within $\le 5.0\text{ ms}$ to prevent permanent photodiode array degradation.
+  - **Step 2 (Gimbal Slew-Away):** Command primary payload gimbal stabilization loop to execute rapid slew-away ($\Delta\theta_{\mathrm{gimbal}} = \pm 30.0^\circ$ at $\ge 600^\circ/\text{s}$ within $\le 50.0\text{ ms}$) off the threat laser line-of-sight vector.
+  - **Step 3 (Synthetic Vision Failover):** Instantly switch primary flight navigation and obstacle detection pipelines from raw EO/IR optical feed to onboard Synthetic Vision System (SVS) using fused LiDAR, DEM terrain elevation map, and radar point clouds.
+  - **Verification:** Optical sensor irradiance telemetry returns to safe threshold ($E_e < 1.0\times 10^{-5}\text{ W/cm}^2$) and SVS navigation state estimation maintains continuous 3D track confidence score $\ge 0.95$.
+- **Public Clause Citation:** MIL-STD-882E Task 205 §4.2
+
+---
+
+### 4.8 Acoustic & Signature Threat Domain Formulations & Mitigation Profiles
+
+#### 4.8.1 THR-SIG-01: Counter-UAS Acoustic / Thermal Detection
+- **Detection Threshold:** Far-field radiated acoustic sound pressure level $L_p \ge 65.0\text{ dBA}$ at reference ground distance $d = 100.0\text{ m}$ or exhaust/motor housing temperature differential $\Delta T_{\mathrm{skin}} \ge 25.0^\circ\text{C}$ above ambient air temperature
+- **Primary Sensing Hardware & Algorithm:** Onboard conformal acoustic microphone array monitoring blade-pass frequency (BPF) acoustic emissions paired with calibrated IR skin thermopile sensors and radiated thermal signature estimator (latency $\le 1.0\text{ s}$).
+- **Deterministic Autonomous Mitigation Sequence:**
+  - **Step 1 (Motor Phase Sync):** Engage dynamic Field Oriented Control (FOC) motor RPM phase synchronization across opposing motor pairs ($\Delta\phi_{\mathrm{motor}} = 180.0^\circ$) to achieve destructive acoustic harmonic wave interference in blade-pass frequency bands.
+  - **Step 2 (Low-Power Loiter Profile):** Transition flight executive to low-drag, low-power loiter throttle configuration reducing rotor tip Mach number $M_{\mathrm{tip}} \le 0.35$ and skin thermal emission.
+  - **Step 3 (Altitude Step-Up):** Command autonomous tactical climb step-up $\Delta h \ge +150.0\text{ m AGL}$ to leverage atmospheric acoustic attenuation and ground acoustic shadow zones.
+  - **Verification:** Modeled acoustic ground footprint decreases below threshold ($L_p < 50.0\text{ dBA}$ at ground level) and thermal contrast radiance $\Delta L_{\mathrm{IR}} \le 1.2\text{ W}/(\text{sr}\cdot\text{m}^2)$.
+- **Public Clause Citation:** STANAG 4586 Annex B §3.2
+
+---
+
+### 4.9 Human Factors & Crew Resource Management (CRM) Threat Domain Formulations & Mitigation Profiles
+
+#### 4.9.1 THR-HUM-01: Operator Alert Fatigue & Cognitive Overload
+- **Detection Threshold:** Active unacknowledged alarm queue depth $N_{\mathrm{alarm}} \ge 5$ within rolling window $\Delta t \le 10.0\text{ s}$, or operator input response latency $t_{\mathrm{ack}} \ge 15.0\text{ s}$ during critical flight phases, or continuous operator duty time $t_{\mathrm{duty}} \ge 120.0\text{ min}$
+- **Primary Sensing Hardware & Algorithm:** GCS Human-Machine Interface (HMI) event stream monitor, alarm queue depth analyzer, and keystroke/pointer interaction cadence monitor (latency $\le 100.0\text{ ms}$).
+- **Deterministic Autonomous Mitigation Sequence:**
+  - **Step 1 (Intelligent Alarm Triage):** Flight executive dynamically triages alert pipeline, suppressing Advisory and Informational visual/auditory alerts while promoting singular high-priority Warning/Emergency cues to prevent sensory saturation.
+  - **Step 2 (Simplified Telemetry Mode):** Collapse multi-window synthetic telemetry panels into a unified heads-up situational display highlighting only flight envelope parameters and required tactical decisions.
+  - **Step 3 (Mandatory Operator Handover Prompt):** If $t_{\mathrm{duty}} \ge 120.0\text{ min}$ without rest cycle, assert high-priority GCS shift handover prompt; if unacknowledged, automatically enter autonomous station-keeping loiter.
+  - **Verification:** Alarm queue depth drops to $N_{\mathrm{alarm}} \le 1$ active warning; operator interaction response latency stabilizes at $t_{\mathrm{ack}} \le 3.0\text{ s}$ or designated relief operator token verified.
+- **Public Clause Citation:** ISO 9241-210 §5.2 / MIL-STD-1472H §5.1
+
+---
+
+### 4.10 Hazardous Environment & CBRN Threat Domain Formulations & Mitigation Profiles
+
+#### 4.10.1 THR-CBRN-01: Toxic / Corrosive Chemical Plume
+- **Detection Threshold:** Electrochemical gas sensor volatile organic compound (VOC) / acid concentration $C_{\mathrm{gas}} \ge 25.0\text{ ppm}$ or optical particulate matter density $\mathrm{PM}_{10} \ge 150.0\,\mu\text{g/m}^3$ with rapid rate-of-rise $dC/dt \ge 5.0\text{ ppm/s}$
+- **Primary Sensing Hardware & Algorithm:** Dual-channel electrochemical toxic gas sensor paired with laser-scattering optical particulate detector and air intake differential pressure transducer (latency $\le 500.0\text{ ms}$).
+- **Deterministic Autonomous Mitigation Sequence:**
+  - **Step 1 (Avionics Bay Positive Pressure Seal):** Close exterior ram-air cooling dampers and activate positive-pressure inert nitrogen/filtered air purge across internal avionics and payload compartments within $\le 200.0\text{ ms}$.
+  - **Step 2 (Vertical Boundary Layer Escape):** Command full-power vertical climb ($\dot{z} \ge +3.5\text{ m/s}$) to break through atmospheric temperature inversion boundary layer and escape low-altitude chemical plume entrapment.
+  - **Step 3 (Crosswind Route Diversion):** Calculate upwind/crosswind diversion trajectory vector ($\mathbf{v}_{\mathrm{escape}} \perp \mathbf{v}_{\mathrm{wind}}$) and route aircraft to designated clean contingency landing waypoint.
+  - **Verification:** Chemical sensor reading drops below hazardous threshold ($C_{\mathrm{gas}} < 2.0\text{ ppm}$) and positive pressure margin in avionics enclosure maintains $\Delta P \ge 50.0\text{ Pa}$.
+- **Public Clause Citation:** MIL-STD-810H Method 518.3 §4.2
