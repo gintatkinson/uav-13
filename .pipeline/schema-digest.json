@@ -1,0 +1,13 @@
+{
+  "sha256": "2f7acd0ca1b95fb6ed81399663888e291497660857bd895b10da7663d380921c",
+  "total_lines": 831,
+  "node_counts": {
+    "containers": 0,
+    "lists": 0,
+    "leaves": 0,
+    "typedefs": 0,
+    "identities": 0,
+    "groupings": 0
+  },
+  "schema_nodes": []
+}

@@ -1,10 +1,10 @@
 | Attribute | Value |
 | :--- | :--- |
-| **Title** | Concept of Operations (ConOps): AutonomousCyberPhysicalSystem |
+| **Title** | Concept of Operations (ConOps): SYS-UAS-INFRA-01 |
 | **Version** | 1.0.0 |
 | **Date** | 2026-09-02 |
 
-# Concept of Operations (ConOps): AutonomousCyberPhysicalSystem
+# Concept of Operations (ConOps): SYS-UAS-INFRA-01
 
 ## Table of Contents
 
@@ -24,22 +24,22 @@
 ## 1. Scope, System Identification & Normative Baseline
 
 ### 1.1 Document Metadata & Formal Governance
-This Concept of Operations (ConOps) defines the operational architecture, coordinate reference systems, physical mass and resource limits, stakeholder interactions, operational environments, operational state space containment boundaries, and deterministic contingency protocols for AutonomousCyberPhysicalSystem. This specification is authored in strict accordance with ISO/IEC/IEEE 29148:2018 §5.2.4 & §6.4.2, OMG Unified Architecture Framework (UAF) v2.0, INCOSE Systems Engineering Handbook v5.0, RTCA DO-178C DAL-A / DO-254, and MIL-STD-882E (Fixes #117, #123, #128, #121).
+This Concept of Operations (ConOps) defines the operational architecture, coordinate reference systems, physical mass and resource limits, stakeholder interactions, operational environments, operational state space containment boundaries, and deterministic contingency protocols for SYS-UAS-INFRA-01. This specification is authored in strict accordance with ISO/IEC/IEEE 29148:2018 §5.2.4 & §6.4.2, OMG Unified Architecture Framework (UAF) v2.0, INCOSE Systems Engineering Handbook v5.0, RTCA DO-178C DAL-A / DO-254, and MIL-STD-882E (Fixes #117, #123, #128, #121).
 
 | Attribute | Specification Value |
 | :--- | :--- |
-| **System Identifier** | AutonomousCyberPhysicalSystem |
+| **System Identifier** | SYS-UAS-INFRA-01 |
 | **Document Version** | 1.0.0 |
 | **Publication Date** | 2026-09-03 |
-| **Security Classification** | UNCLASSIFIED // PUBLIC RELEASE |
-| **Target System Realization** | Cyber-Physical System (Hardware / Software / MBD) |
-| **Authoring Organization** | Systems Engineering Directorate |
+| **Security Classification** | UNCLASSIFIED / COMMERCIAL AIRWORTHINESS STANDARD |
+| **Target System Realization** | Autonomous Quad-Rotor Fixed-Coaxial Hybrid UAS (DO-178C DAL-A / SORA SAIL IV) |
+| **Authoring Organization** | Autonomous Aviation Infrastructure Safety Directorate |
 | **Issue Tracking Baseline** | Fixes #117, #123, #128, #121 |
 | **Metamodel Baseline** | ISO/IEC/IEEE 29148:2018 / OMG UAF v2.0 / INCOSE SEH v5.0 |
 
 ### 1.2 System Classification & Operational Purpose
-- **System Identifier:** `AutonomousCyberPhysicalSystem`
-- **Operational Domain:** `Cyber-Physical Autonomous Systems`
+- **System Identifier:** `SYS-UAS-INFRA-01`
+- **Operational Domain:** `Aviation Infrastructure & Critical Asset Inspection`
 - **Primary Operational Mission:** The system is engineered to execute autonomous closed-loop state trajectory execution, multi-modal sensor data acquisition, real-time telemetry processing, edge state inference, and deterministic boundary containment within complex, high-reliability cyber-physical operational environments.
 - **Core Mission Capabilities:**
   1. Autonomous closed-loop state trajectory tracking, corridor execution, and stationary state holding within parameterized performance envelopes.
@@ -132,31 +132,31 @@ The system architecture decomposes into six canonical Abstract System Topology (
 
 | Structural Group (AST Partition) | Allocated Subsystems & Components | Mass Fraction (% MTOW) | Mass Budget (kg) | Nominal Power Budget (W) | Peak Power Budget (W) |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Airframe Structure** | Fuselage primary structure, aerodynamic surfaces, structural spars, mounting bulkheads, chassis/gear | 30.0% | 15.0 | 0.0 | 0.0 |
-| **Avionics & Processing** | Flight control computer, redundant IMU/GNSS, air data computer, C2 transceiver, safety watchdog | 15.0% | 7.5 | 50.0 | 120.0 |
-| **Propulsion & Power Distribution** | Actuators, electric motors, electronic speed controllers (ESCs), power distribution unit (PDU) | 25.0% | 12.5 | 1200.0 | 2500.0 |
-| **Energy Storage Subsystem** | Smart battery module / fuel cell stack, Battery Management System (BMS), safety disconnect contactors | 20.0% | 10.0 | 0.0 | 0.0 |
-| **Primary Mission Payload** | Multi-modal mission sensor suite, edge neural processing accelerator, payload gimbal, local storage | 7.0% | 3.5 | 80.0 | 150.0 |
-| **Autonomous Failsafe Containment** | Independent safety watchdog, ballistic parachute recovery / containment actuator, flight termination interlocks | 3.0% | 1.5 | 5.0 | 50.0 |
-| **Total System Integration** | **Integrated Cyber-Physical Platform (6 AST Structural Groups)** | **100.0% MTOW** | **50.0** | **1335.0** | **2820.0** |
+| **Airframe Structure** | Fuselage primary structure, aerodynamic surfaces, structural spars, mounting bulkheads, chassis/gear | 32.5% | 6.5 | 0.0 | 0.0 |
+| **Avionics & Processing** | Flight control computer, redundant IMU/GNSS, air data computer, C2 transceiver, safety watchdog | 12.0% | 2.4 | 48.0 | 85.0 |
+| **Propulsion & Power Distribution** | Actuators, electric motors, electronic speed controllers (ESCs), power distribution unit (PDU) | 22.5% | 4.5 | 450.0 | 1100.0 |
+| **Energy Storage Subsystem** | Smart battery module / fuel cell stack, Battery Management System (BMS), safety disconnect contactors | 24.0% | 4.8 | 8.0 | 20.0 |
+| **Primary Mission Payload** | Multi-modal mission sensor suite, edge neural processing accelerator, payload gimbal, local storage | 17.5% | 3.5 | 65.0 | 120.0 |
+| **Autonomous Failsafe Containment** | Independent safety watchdog, ballistic parachute recovery / containment actuator, flight termination interlocks | 4.0% | 0.8 | 2.0 | 45.0 |
+| **Total System Integration** | **Integrated Cyber-Physical Platform (6 AST Structural Groups)** | **100.0% MTOW** | **20.0** | **573.0** | **1370.0** |
 
 ### 1.3.3 Master Physical Limits Table
 The cyber-physical vehicle operates under bounding physical, aerodynamic/kinematic, and environmental limits:
 
 | Parameter ID | Bounding Parameter Name | Parametric Symbol | Threshold (Boundary Limit) | Objective (Nominal Target) | Engineering Unit | Normative / Safety Basis |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **PL-01** | Maximum Takeoff Weight (MTOW) | m_MTOW | <= 55.0 | 50.0 | kg | Certified maximum structural takeoff mass limit |
-| **PL-02** | Maximum Payload Mass Capacity | m_payload_max | >= 5.0 | 3.5 | kg | Usable mission payload mass reserve |
-| **PL-03** | Physical Dimensions (Length x Width x Height) | L_x, L_y, L_z | <= 2.5 x 3.0 x 0.8 | 2.2 x 2.8 x 0.6 | m | Spatial transport and operational clearance envelope |
-| **PL-04** | Nominal Cruise Velocity | V_cruise | 18.0 - 32.0 | 25.0 | m/s | Optimum aerodynamic / dynamic transit speed |
-| **PL-05** | Maximum Permissible Operating Velocity | V_max | <= 40.0 | 35.0 | m/s | Never-exceed boundary limit (V_ne) |
-| **PL-06** | Minimum Controllable / Stall Velocity | V_stall | <= 14.0 | 12.0 | m/s | Minimum steady state controllable velocity limit |
-| **PL-07** | Maximum Operating Ceiling | h_max | <= 5000.0 | 3000.0 | m AGL | Maximum certified operational altitude |
-| **PL-08** | Command & Control (C2) Datalink Range | Range_C2 | >= 25.0 | 50.0 | km | Beyond-Line-of-Sight / Line-of-Sight C2 range margin |
-| **PL-09** | Mission Operational Endurance | t_endurance | >= 90.0 | 120.0 | min | Continuous nominal execution duration |
-| **PL-10** | Environmental Operating Temperature Envelope | T_env | -20.0 to +55.0 | 25.0 | °C | MIL-STD-810H Methods 501.7 / 502.7 climatic envelope |
-| **PL-11** | Maximum Operating Wind / Gust Envelope | v_wind_max | <= 15.0 | 10.0 | m/s | SORA ground risk and dynamic stability boundary |
-| **PL-12** | Environmental Ingress Protection Envelope | IP_rating | >= IP67 | IP67 | IP Code | Hermetic enclosure sealing per ISO 20653 / IEC 60529 |
+| **PL-01** | Maximum Takeoff Weight (MTOW) | m_MTOW | <= 20.0 | 20.0 | kg | Certified maximum structural takeoff mass limit |
+| **PL-02** | Maximum Payload Mass Capacity | m_payload_max | >= 3.5 | 3.5 | kg | Usable mission payload mass reserve |
+| **PL-03** | Physical Dimensions (Length x Width x Height) | L_x, L_y, L_z | <= 1.25 x 1.25 x 0.48 | 1.25 x 1.25 x 0.48 | m | Spatial transport and operational clearance envelope |
+| **PL-04** | Nominal Cruise Velocity | V_cruise | 18.0 - 18.0 | 18.0 | m/s | Optimum aerodynamic / dynamic transit speed |
+| **PL-05** | Maximum Permissible Operating Velocity | V_max | <= 28.0 | 28.0 | m/s | Never-exceed boundary limit (V_ne) |
+| **PL-06** | Minimum Controllable / Stall Velocity | V_stall | <= 0.0 | 0.0 | m/s | Minimum steady state controllable velocity limit |
+| **PL-07** | Maximum Operating Ceiling | h_max | <= 150.0 | 150.0 | m AGL | Maximum certified operational altitude |
+| **PL-08** | Command & Control (C2) Datalink Range | Range_C2 | >= 20000.0 | 20000.0 | km | Beyond-Line-of-Sight / Line-of-Sight C2 range margin |
+| **PL-09** | Mission Operational Endurance | t_endurance | >= 1.0 | 1.0 | min | Continuous nominal execution duration |
+| **PL-10** | Environmental Operating Temperature Envelope | T_env | -20.0 to 50.0 | 22.0 | °C | MIL-STD-810H Methods 501.7 / 502.7 climatic envelope |
+| **PL-11** | Maximum Operating Wind / Gust Envelope | v_wind_max | <= 16.0 | 16.0 | m/s | SORA ground risk and dynamic stability boundary |
+| **PL-12** | Environmental Ingress Protection Envelope | IP_rating | >= IP55 | IP55 | IP Code | Hermetic enclosure sealing per ISO 20653 / IEC 60529 |
 
 ### 1.4 Abstract UAF Context Diagram
 The following Unified Architecture Framework (UAF) operational context diagram defines the external interfaces, performer nodes, and primary interaction channels across the Space, Cyber-Physical Vehicle, Control/Infrastructure, Support/GSE, Operational Roles, and External Authorities segments:
@@ -883,132 +883,132 @@ The following master qualification table establishes the formal verification bas
 
 | Method ID | Environmental Stress Method Name | Procedure Numbers | Operational Limits | Storage / Transit Limits | Verification Standards |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **M-500.6** | Low Pressure (Altitude) | Procedure I (Storage), Procedure II (Operation) | 57.2 kPa (4,572 m / 15,000 ft altitude) | 18.8 kPa (12,192 m / 40,000 ft cargo altitude) | MIL-STD-810H Method 500.6 §4.2 |
-| **M-501.7** | High Temperature | Procedure I (Storage), Procedure II (Operation) | +55.0°C ambient (+71.0°C induced solar) | +71.0°C constant storage | MIL-STD-810H Method 501.7 §4.2 |
-| **M-502.7** | Low Temperature | Procedure I (Storage), Procedure II (Operation) | -20.0°C ambient operation | -33.0°C non-operational storage | MIL-STD-810H Method 502.7 §4.2 |
-| **M-503.7** | Temperature Shock | Procedure I-B (Multi-cycle shock) | -20.0°C to +55.0°C rapid transfer | -33.0°C to +71.0°C thermal shock | MIL-STD-810H Method 503.7 §4.2 |
-| **M-505.7** | Solar Radiation (Sunshine) | Procedure I (Cycling / Diurnal) | 1120 W/m² spectral irradiance | A1 Worldwide High Temperature Solar | MIL-STD-810H Method 505.7 §4.2 |
-| **M-506.6** | Rain / Blowing Rain | Procedure I (Blowing Rain), Procedure III (Drip) | 10 cm/hr precipitation, 18 m/s wind | Water ingress containment | MIL-STD-810H Method 506.6 §4.2 |
-| **M-507.6** | Humidity | Procedure II (Aggravated Cycle) | 95% RH non-condensing at +30°C to +60°C | 10 cycles (240 hours) aggravated | MIL-STD-810H Method 507.6 §4.2 |
-| **M-509.7** | Salt Fog | Procedure I (48h fog / 48h drying) | 5% NaCl salt solution mist | Corrosion resistance across 4 cycles (192 hr) | MIL-STD-810H Method 509.7 §4.2 |
-| **M-510.7** | Sand and Dust | Procedure I (Blowing Dust), Procedure II (Blowing Sand) | 10.6 g/m³ dust, 1.1 g/m³ sand, 18 m/s wind | Sealed bearing and optical port containment | MIL-STD-810H Method 510.7 §4.2 |
-| **M-514.8** | Vibration | Procedure I (General Vibration), Category 24 | 0.04 g²/Hz random vibration (20-2000 Hz) | Annex C Transportation Vibration Profile | MIL-STD-810H Method 514.8 §4.2 |
-| **M-516.8** | Mechanical Shock | Procedure I (Functional Shock), Procedure IV (Transit Drop) | 20g, 11 ms terminal peak sawtooth shock | 40g crash hazard, 1.22 m transit drop | MIL-STD-810H Method 516.8 §4.2 |
-| **M-521.4** | Icing / Freezing Rain | Procedure I (Ice Accretion / De-Ice) | 13 mm glaze ice accretion, de-ice functional | 37 mm structural ice accumulation | MIL-STD-810H Method 521.4 §4.2 |
+| **M-500.6** | Low Pressure (Altitude) | Procedure I (Storage) / Procedure II (Operational) | Operational altitude up to 150 m AGL | Cargo hold transport up to 4,572 m MSL | MIL-STD-810H Method 500.6 §4.5.2 |
+| **M-501.7** | High Temperature | Procedure I (Storage/Diurnal) / Procedure II (Operational) | Continuous operation up to +50 °C | Induced diurnal storage up to +65 °C | MIL-STD-810H Method 501.7 Table 501.7-II |
+| **M-502.7** | Low Temperature | Procedure I (Storage) / Procedure II (Operational) | Operational down to -20 °C | Induced cold storage down to -30 °C | MIL-STD-810H Method 502.7 Table 502.7-II |
+| **M-503.7** | Temperature Shock | Procedure I-D (Multi-Cycle Shock between Thermal Extremes) | Rapid transit between -20 °C and +50 °C | Non-operational thermal shock gradient 10 °C/min | MIL-STD-810H Method 503.7 §4.4 |
+| **M-505.7** | Solar Radiation (Sunshine) | Procedure I (Cycling / Diurnal Solar Radiation A1) | Direct solar exposure under peak 1,120 W/m² irradiance | Solar heating storage exposure up to +70 °C skin temp | MIL-STD-810H Method 505.7 Table 505.7-I |
+| **M-506.6** | Rain / Blowing Rain | Procedure I (Blowing Rain) / Procedure III (Drip) | Precipitation up to 100 mm/h with 18 m/s crosswind | IP55 sealed enclosure transit & outdoor mooring | MIL-STD-810H Method 506.6 §4.4.1 |
+| **M-507.6** | Humidity | Procedure II (Aggravated Dynamic Humidity Cycles) | Relative humidity 95% non-condensing during flight | Tropical storage at 95% RH with diurnal thermal cycling | MIL-STD-810H Method 507.6 Table 507.6-I |
+| **M-509.7** | Salt Fog | Procedure I (Continuous 5% NaCl Aerosol Fog) | Coastal marine salt atmosphere with conformal-coated electronics | Marine container transport with 5% salt fog exposure | MIL-STD-810H Method 509.7 §4.5 |
+| **M-510.7** | Sand and Dust | Procedure I (Blowing Dust) / Procedure II (Blowing Sand) | Operating in blowing dust up to 10.6 g/m³ | Sealed transport in abrasive silica sand environments | MIL-STD-810H Method 510.7 §4.4 |
+| **M-514.8** | Vibration | Procedure I (General Vibration - Prop Profiles) | Airframe vibration profile up to 7.7 g_rms across 10-2000 Hz | Ground transport loose cargo vibration up to 11.2 g_rms | MIL-STD-810H Method 514.8 Category 24 |
+| **M-516.8** | Mechanical Shock | Procedure I (Functional Shock) / Procedure IV (Transit Drop) | Operational pulse 20 g sawtooth (11 ms duration) | Packaged transit drop from 1.2 m onto reinforced concrete | MIL-STD-810H Method 516.8 Table 516.8-IV |
+| **M-521.4** | Icing / Freezing Rain | Procedure I (Icing/Freezing Rain Accretion) | Light icing accretion with electrothermal leading-edge deice | Glaze ice buildup up to 13 mm thickness in moor state | MIL-STD-810H Method 521.4 §4.4 |
 
 ---
 
 ### 8.2 Granular Test Method Breakdowns
 
 #### 8.2.1 Method M-500.6 — Low Pressure (Altitude)
-- **Applicable Procedures:** Procedure I (Storage/Air Transport), Procedure II (Operation/Air Carriage), and Procedure III (Rapid Decompression) per Procedure I (Storage), Procedure II (Operation).
-- **Environmental Envelope:** Operating ambient atmospheric pressure down to $P_{\mathrm{op\_min}}$ (`57.2` kPa, equivalent to an operational altitude ceiling $h_{\mathrm{alt\_max}}$ of `4572.0` m above sea level); unpowered storage/transit pressure down to $P_{\mathrm{store\_min}}$ (`18.8` kPa, equivalent to a cargo hold ceiling $h_{\mathrm{store\_max}}$ of `12192.0` m). Rapid decompression rate $\Delta P / \Delta t \le \dot{P}_{\mathrm{decomp\_max}}$ (`2.56` kPa/s).
-- **Exposure Duration:** Minimum chamber dwell duration $t_{\mathrm{dwell}} \ge \tau_{\mathrm{alt\_dwell\_min}}$ (`4.0` hr) following chamber pressure stabilization; rapid decompression transition execution time $\Delta t \le \tau_{\mathrm{decomp\_time}}$ (`15.0` s).
+- **Applicable Procedures:** Procedure I (Storage/Air Transport), Procedure II (Operation/Air Carriage), and Procedure III (Rapid Decompression) per Procedure I (Storage) / Procedure II (Operational).
+- **Environmental Envelope:** Operating ambient atmospheric pressure down to $P_{\mathrm{op\_min}}$ (`88.2` kPa, equivalent to an operational altitude ceiling $h_{\mathrm{alt\_max}}$ of `1150.0` m above sea level); unpowered storage/transit pressure down to $P_{\mathrm{store\_min}}$ (`57.2` kPa, equivalent to a cargo hold ceiling $h_{\mathrm{store\_max}}$ of `4572.0` m). Rapid decompression rate $\Delta P / \Delta t \le \dot{P}_{\mathrm{decomp\_max}}$ (`2.18` kPa/s).
+- **Exposure Duration:** Minimum chamber dwell duration $t_{\mathrm{dwell}} \ge \tau_{\mathrm{alt\_dwell\_min}}$ (`2.0` hr) following chamber pressure stabilization; rapid decompression transition execution time $\Delta t \le \tau_{\mathrm{decomp\_time}}$ (`15.0` s).
 - **Operational Functional Checks:** Continuous execution of Power-On Built-In-Test (PBIT) and Periodic BIT (CBIT), real-time bus telemetry verification, power converter voltage regulation under low-pressure dielectric conditions, and structural seal differential pressure monitoring.
-- **Acceptance Criteria:** Zero structural deformation or elastomeric seal rupture (`Zero structural deformation, hermetic seal delta-P retention`); no dielectric breakdown, corona discharge, or electrical arcing across high-voltage power distribution buses; zero outgassing damage to optical sensor covers or conformal-coated electronics; nominal state estimation execution throughout low-pressure dwell.
+- **Acceptance Criteria:** Zero structural deformation or elastomeric seal rupture (`Zero seal rupture, zero capacitor dielectric outgassing`); no dielectric breakdown, corona discharge, or electrical arcing across high-voltage power distribution buses; zero outgassing damage to optical sensor covers or conformal-coated electronics; nominal state estimation execution throughout low-pressure dwell.
 
 #### 8.2.2 Method M-501.7 — High Temperature
-- **Applicable Procedures:** Procedure I (Storage / High Temperature Cyclic), Procedure II (Operation / Constant & Cyclic High Temperature), and Procedure III (Tactical-Standby to Operational) per Procedure I (Storage), Procedure II (Operation).
-- **Environmental Envelope:** Continuous operational exposure up to $T_{\mathrm{op\_high\_max}}$ (`55.0` °C) under induced solar/ambient thermal loads; unpowered storage temperature up to $T_{\mathrm{store\_high\_max}}$ (`71.0` °C) under Hot Dry ($A_1$) and Basic Hot ($A_2$) climatic cycles. Maximum rate of temperature rise $\dot{T}_{\mathrm{rise}} \le \dot{T}_{\mathrm{rise\_max}}$ (`1.0` °C/min).
+- **Applicable Procedures:** Procedure I (Storage / High Temperature Cyclic), Procedure II (Operation / Constant & Cyclic High Temperature), and Procedure III (Tactical-Standby to Operational) per Procedure I (Storage/Diurnal) / Procedure II (Operational).
+- **Environmental Envelope:** Continuous operational exposure up to $T_{\mathrm{op\_high\_max}}$ (`50.0` °C) under induced solar/ambient thermal loads; unpowered storage temperature up to $T_{\mathrm{store\_high\_max}}$ (`65.0` °C) under Hot Dry ($A_1$) and Basic Hot ($A_2$) climatic cycles. Maximum rate of temperature rise $\dot{T}_{\mathrm{rise}} \le \dot{T}_{\mathrm{rise\_max}}$ (`1.5` °C/min).
 - **Exposure Duration:** Storage: continuous exposure across $N_{\mathrm{store\_cycles}}$ (`7` 24-hr diurnal cycles, minimum `168.0` hr); Operational: continuous exposure for $t_{\mathrm{op\_high\_duration}}$ (`8.0` hr) post core thermal stabilization.
 - **Operational Functional Checks:** Continuous processor junction temperature monitoring ($T_{\mathrm{junction}} \le T_{\mathrm{junction\_max}}$), control loop execution rate tracking ($f_{\mathrm{control}} \ge f_{\mathrm{control\_nominal}}$), power converter efficiency logging, actuator torque output measurement under peak thermal loading, and communications transceiver packet error rate monitoring.
 - **Acceptance Criteria:** Semiconductor junction temperatures remain strictly within derated operational margins (`15.0` °C margin); zero thermal throttling or controller task deadline overruns; no mechanical binding in actuator geartrains due to differential thermal expansion; zero degradation of structural bonding adhesives or potting compounds.
 
 #### 8.2.3 Method M-502.7 — Low Temperature
-- **Applicable Procedures:** Procedure I (Storage), Procedure II (Operation), and Procedure III (Cold Start & Manipulation) per Procedure I (Storage), Procedure II (Operation).
-- **Environmental Envelope:** Continuous operational exposure down to $T_{\mathrm{op\_low\_min}}$ (`-20.0` °C); unpowered storage temperature down to $T_{\mathrm{store\_low\_min}}$ (`-33.0` °C) under Cold ($C_1$) and Severe Cold ($C_2$) climatic classifications.
-- **Exposure Duration:** Storage soak duration $t_{\mathrm{cold\_soak}} \ge \tau_{\mathrm{cold\_soak\_min}}$ (`24.0` hr); Operational cold soak $t_{\mathrm{cold\_op}} \ge \tau_{\mathrm{cold\_op\_min}}$ (`4.0` hr) post temperature equilibrium.
-- **Operational Functional Checks:** Cold-start Built-In-Test (BIT) initiation within $t_{\mathrm{start}} \le \tau_{\mathrm{cold\_start\_max}}$ (`60.0` s) at $T_{\mathrm{op\_low\_min}}$; dynamic actuator break-away torque and slew rate verification; energy storage internal impedance and discharge curve validation; sensor bias drift and oscillator frequency stability logging.
+- **Applicable Procedures:** Procedure I (Storage), Procedure II (Operation), and Procedure III (Cold Start & Manipulation) per Procedure I (Storage) / Procedure II (Operational).
+- **Environmental Envelope:** Continuous operational exposure down to $T_{\mathrm{op\_low\_min}}$ (`-20.0` °C); unpowered storage temperature down to $T_{\mathrm{store\_low\_min}}$ (`-30.0` °C) under Cold ($C_1$) and Severe Cold ($C_2$) climatic classifications.
+- **Exposure Duration:** Storage soak duration $t_{\mathrm{cold\_soak}} \ge \tau_{\mathrm{cold\_soak\_min}}$ (`72.0` hr); Operational cold soak $t_{\mathrm{cold\_op}} \ge \tau_{\mathrm{cold\_op\_min}}$ (`4.0` hr) post temperature equilibrium.
+- **Operational Functional Checks:** Cold-start Built-In-Test (BIT) initiation within $t_{\mathrm{start}} \le \tau_{\mathrm{cold\_start\_max}}$ (`45.0` s) at $T_{\mathrm{op\_low\_min}}$; dynamic actuator break-away torque and slew rate verification; energy storage internal impedance and discharge curve validation; sensor bias drift and oscillator frequency stability logging.
 - **Acceptance Criteria:** Full cold-start initialization and transition to nominal execution without external preheating; clock oscillator frequency drift within timing budget ($\Delta f / f_0 \le \epsilon_{\mathrm{clk\_max}}$); zero cracking, embrittlement, or loss of resilience in elastomeric seals, cabling jackets, and structural mounts; nominal lubricant viscosity and actuator response without overcurrent fault trips.
 
 #### 8.2.4 Method M-503.7 — Temperature Shock
-- **Applicable Procedures:** Procedure I-A (One-way shock from constant temperature), Procedure I-C (Multi-cycle shock from constant temperature), and Procedure I-D (Shock to/from controlled temperature cycles) per Procedure I-B (Multi-cycle shock).
-- **Environmental Envelope:** Rapid extreme temperature transition across the thermal shock gradient $[\mathbf{T}_{\mathrm{shock\_low}}, \mathbf{T}_{\mathrm{shock\_high}}]$ (`[-20.0 °C, 55.0 °C]`), with maximum physical chamber transfer duration $t_{\mathrm{transfer}} \le \tau_{\mathrm{transfer\_max}}$ (`60.0` s).
+- **Applicable Procedures:** Procedure I-A (One-way shock from constant temperature), Procedure I-C (Multi-cycle shock from constant temperature), and Procedure I-D (Shock to/from controlled temperature cycles) per Procedure I-D (Multi-Cycle Shock between Thermal Extremes).
+- **Environmental Envelope:** Rapid extreme temperature transition across the thermal shock gradient $[\mathbf{T}_{\mathrm{shock\_low}}, \mathbf{T}_{\mathrm{shock\_high}}]$ (`[-20.0 °C, 50.0 °C]`), with maximum physical chamber transfer duration $t_{\mathrm{transfer}} \le \tau_{\mathrm{transfer\_max}}$ (`60.0` s).
 - **Exposure Duration:** Minimum $N_{\mathrm{shock\_cycles}}$ (`3` complete shock cycles); dwell time at each extreme plateau $t_{\mathrm{dwell}} \ge \tau_{\mathrm{shock\_dwell}}$ (`2.0` hr) to ensure complete thermal stabilization of internal structural core mass.
 - **Operational Functional Checks:** Post-transfer visual structural inspection, full operational BIT verification following each complete shock cycle, high-voltage bus insulation resistance measurement, and optical alignment check across multi-modal sensor suites.
 - **Acceptance Criteria:** Zero micro-cracking, delamination, or void formation across printed circuit boards, multi-layer ceramic capacitors, and solder joints; zero hermetic seal failure or internal enclosure moisture condensation; dimensional stability of optical and mechanical sensor mounting alignments within tolerance ($\Delta \theta_{\mathrm{align}} \le \theta_{\mathrm{tol\_max}}$).
 
 #### 8.2.5 Method M-505.7 — Solar Radiation (Sunshine)
-- **Applicable Procedures:** Procedure I (Cycling / Diurnal Heating Simulation) and Procedure II (Steady State / Actinic Photodegradation Effects) per Procedure I (Cycling / Diurnal).
+- **Applicable Procedures:** Procedure I (Cycling / Diurnal Heating Simulation) and Procedure II (Steady State / Actinic Photodegradation Effects) per Procedure I (Cycling / Diurnal Solar Radiation A1).
 - **Environmental Envelope:** Peak simulated solar spectral irradiance $I_{\mathrm{solar\_peak}} \le I_{\mathrm{solar\_max}}$ (`1120.0` W/m², spectral distribution encompassing UV-A, UV-B, visible, and infrared wavelengths per MIL-STD-810H Table 505.7-I) under continuous chamber ambient air temperature up to $T_{\mathrm{solar\_amb}}$ (`49.0` °C).
-- **Exposure Duration:** Procedure I: minimum $N_{\mathrm{solar\_cycles}}$ (`3` continuous 24-hr diurnal heating cycles); Procedure II: continuous actinic exposure for $t_{\mathrm{actinic}} \ge \tau_{\mathrm{actinic\_min}}$ (`56.0` hr).
+- **Exposure Duration:** Procedure I: minimum $N_{\mathrm{solar\_cycles}}$ (`10` continuous 24-hr diurnal heating cycles); Procedure II: continuous actinic exposure for $t_{\mathrm{actinic}} \ge \tau_{\mathrm{actinic\_min}}$ (`240.0` hr).
 - **Operational Functional Checks:** Continuous monitoring of internal enclosure internal thermal rise ($\Delta T_{\mathrm{internal}} \le \Delta T_{\mathrm{internal\_max}}$), optical perception window transmissivity measurement, surface coating reflectance evaluation, and telemetry health stream verification during peak irradiance.
-- **Acceptance Criteria:** Internal compartment temperature rise constrained within thermal design margins (`18.0` °C); zero chalking, blistering, peeling, or photolytic embrittlement of exterior polymers, radomes, and seal materials; optical transmissivity degradation across sensor covers $\Delta \text{Trans} \le \Delta \text{Trans}_{\mathrm{max}}$ (`5.0`%).
+- **Acceptance Criteria:** Internal compartment temperature rise constrained within thermal design margins (`18.5` °C); zero chalking, blistering, peeling, or photolytic embrittlement of exterior polymers, radomes, and seal materials; optical transmissivity degradation across sensor covers $\Delta \text{Trans} \le \Delta \text{Trans}_{\mathrm{max}}$ (`2.0`%).
 
 #### 8.2.6 Method M-506.6 — Rain / Blowing Rain
-- **Applicable Procedures:** Procedure I (Blowing Rain), Procedure II (Exaggerated Rain / Watertightness), and Procedure III (Drip / Condensation Ingress) per Procedure I (Blowing Rain), Procedure III (Drip).
+- **Applicable Procedures:** Procedure I (Blowing Rain), Procedure II (Exaggerated Rain / Watertightness), and Procedure III (Drip / Condensation Ingress) per Procedure I (Blowing Rain) / Procedure III (Drip).
 - **Environmental Envelope:** Precipitation rate $R_{\mathrm{precip}} \ge R_{\mathrm{precip\_req}}$ (`100.0` mm/hr / `4.0` in/hr) with accompanying horizontal wind velocity $v_{\mathrm{wind}} \ge v_{\mathrm{wind\_req}}$ (`18.0` m/s / `40.0` mph); water droplet diameter distribution $d_{\mathrm{droplet}} \in [0.5\text{ mm}, 4.5\text{ mm}]$ under nozzle water pressure $P_{\mathrm{nozzle}}$ (`276.0` kPa).
 - **Exposure Duration:** Minimum exposure duration $t_{\mathrm{exposure}} \ge \tau_{\mathrm{rain\_face\_duration}}$ (`30.0` min per exposed face across all orthogonal axes, total exposure $t_{\mathrm{total}} \ge \tau_{\mathrm{rain\_total\_min}}$ of `120.0` min).
 - **Operational Functional Checks:** Continuous operational execution and state tracking during blowing rain exposure; dynamic seal differential pressure monitoring; post-exposure insulation resistance measurement; internal moisture detector telemetry monitoring.
 - **Acceptance Criteria:** Zero liquid water penetration into IP-rated internal electronics bays ($\text{IP}_{xy}$ certified per IEC 60529); insulation resistance across power distribution circuits $R_{\mathrm{ins}} \ge R_{\mathrm{ins\_min}}$ (`100.0` MΩ); zero optical occlusion on perception lenses; zero corrosion or moisture pooling within connector backshells.
 
 #### 8.2.7 Method M-507.6 — Humidity
-- **Applicable Procedures:** Procedure I (Induced / Storage and Transit Cycles) and Procedure II (Aggravated Dynamic Humidity Cycles) per Procedure II (Aggravated Cycle).
+- **Applicable Procedures:** Procedure I (Induced / Storage and Transit Cycles) and Procedure II (Aggravated Dynamic Humidity Cycles) per Procedure II (Aggravated Dynamic Humidity Cycles).
 - **Environmental Envelope:** Relative humidity $\text{RH} \ge \text{RH}_{\mathrm{aggravated}}$ (`95.0`% ± 4% RH) across cyclic thermal profile $[T_{\mathrm{hum\_low}}, T_{\mathrm{hum\_high}}]$ (`[30.0 °C, 60.0 °C]`).
 - **Exposure Duration:** Aggravated cyclic exposure spanning $N_{\mathrm{humid\_cycles}}$ (`10` continuous 24-hr cycles, total exposure duration $t_{\mathrm{humid\_total}} \ge \tau_{\mathrm{humid\_total\_min}}$ of `240.0` hr).
 - **Operational Functional Checks:** Operational checkouts conducted at high-temperature / high-humidity plateau during alternating cycles (e.g., cycles 2, 5, 8, and 10); high-voltage dielectric breakdown test; post-exposure operational baseline verification within $t_{\mathrm{post}} \le \tau_{\mathrm{post\_humid\_check}}$ (`24.0` hr) of chamber egress.
 - **Acceptance Criteria:** Zero electrical short circuits, dielectric breakdown, or insulation leakage ($R_{\mathrm{ins}} \ge R_{\mathrm{ins\_min}}$); zero micro-corrosion on gold/nickel-plated connector pins; zero delamination or dendritic conductive growth on conformal-coated printed circuit assemblies; zero fungal growth or degradation of potting materials per MIL-STD-810H Method 508.8.
 
 #### 8.2.8 Method M-509.7 — Salt Fog
-- **Applicable Procedures:** Procedure I (Aggravated Marine / Atmospheric Corrosion Cycling) per Procedure I (48h fog / 48h drying).
+- **Applicable Procedures:** Procedure I (Aggravated Marine / Atmospheric Corrosion Cycling) per Procedure I (Continuous 5% NaCl Aerosol Fog).
 - **Environmental Envelope:** Saline atomization solution concentration $C_{\mathrm{salt}}$ (`5.0`% ± 1% NaCl by weight); chamber exposure temperature $T_{\mathrm{chamber}}$ (`35.0` °C ± 2 °C); fallout collection rate $1.0\text{ to }3.0\text{ ml}/80\text{ cm}^2/\text{hr}$; solution pH maintained within $6.5 \le \text{pH} \le 7.2$.
-- **Exposure Duration:** Standard accelerated 48-hour continuous salt spray exposure followed by 48-hour controlled drying cycle at $+35\text{ °C}$ with relative humidity $\text{RH} \le 50\%$, repeated for $N_{\mathrm{salt\_cycles}}$ (`4` complete 96-hr cycles, total exposure $t_{\mathrm{salt\_total}} \ge \tau_{\mathrm{salt\_total\_min}}$ of `192.0` hr).
+- **Exposure Duration:** Standard accelerated 48-hour continuous salt spray exposure followed by 48-hour controlled drying cycle at $+35\text{ °C}$ with relative humidity $\text{RH} \le 50\%$, repeated for $N_{\mathrm{salt\_cycles}}$ (`2` complete 96-hr cycles, total exposure $t_{\mathrm{salt\_total}} \ge \tau_{\mathrm{salt\_total\_min}}$ of `48.0` hr).
 - **Operational Functional Checks:** Pre-test baseline functional pass, post-drying operational checkout following each 48-hr drying cycle, electrical bonding and grounding path resistance measurement ($R_{\mathrm{bond}} \le R_{\mathrm{bond\_max}}$), and mechanical latch/fastener operation check.
 - **Acceptance Criteria:** Zero pitting or galvanic corrosion penetrating protective base metal coatings (hardcoat anodization, passivated stainless steel, electroless nickel); zero binding of exposed rotating joints, hinges, or bearing seals; electrical bonding resistance across structural chassis elements remains $R_{\mathrm{bond}} \le R_{\mathrm{bond\_limit}}$ (`2.5` mΩ); full functional test pass.
 
 #### 8.2.9 Method M-510.7 — Sand and Dust
-- **Applicable Procedures:** Procedure I (Blowing Dust) and Procedure II (Blowing Sand) per Procedure I (Blowing Dust), Procedure II (Blowing Sand).
+- **Applicable Procedures:** Procedure I (Blowing Dust) and Procedure II (Blowing Sand) per Procedure I (Blowing Dust) / Procedure II (Blowing Sand).
 - **Environmental Envelope:**
   - *Blowing Dust:* Particulate concentration $C_{\mathrm{dust}}$ (`10.6` g/m³ ± 7 g/m³, Red China Clay / ISO 12103-1 A2 fine test dust) at air velocity $v_{\mathrm{dust}}$ (`8.9` m/s) across ambient (+23 °C) and high-temperature (+60 °C) plateaus.
-  - *Blowing Sand:* Particulate concentration $C_{\mathrm{sand}}$ (`1.1` g/m³, silica sand grain distribution $150\ \mu\text{m} \le d_{\mathrm{grain}} \le 850\ \mu\text{m}$) at air velocity $v_{\mathrm{sand}}$ (`18.0` m/s).
-- **Exposure Duration:** Blowing Dust: $t_{\mathrm{dust}} \ge \tau_{\mathrm{dust\_duration}}$ (`6.0` hr at $+23\text{ °C}$ plus `6.0` hr at $+60\text{ °C}$ per face orientation); Blowing Sand: $t_{\mathrm{sand}} \ge \tau_{\mathrm{sand\_duration}}$ (`90.0` min per exposed face).
+  - *Blowing Sand:* Particulate concentration $C_{\mathrm{sand}}$ (`2.2` g/m³, silica sand grain distribution $150\ \mu\text{m} \le d_{\mathrm{grain}} \le 850\ \mu\text{m}$) at air velocity $v_{\mathrm{sand}}$ (`18.0` m/s).
+- **Exposure Duration:** Blowing Dust: $t_{\mathrm{dust}} \ge \tau_{\mathrm{dust\_duration}}$ (`12.0` hr at $+23\text{ °C}$ plus `6.0` hr at $+60\text{ °C}$ per face orientation); Blowing Sand: $t_{\mathrm{sand}} \ge \tau_{\mathrm{sand\_duration}}$ (`90.0` min per exposed face).
 - **Operational Functional Checks:** Operational execution during dust exposure, actuator full-stroke deflection torque test, optical window scratch/abrasion evaluation, and cooling channel differential pressure check.
-- **Acceptance Criteria:** Zero particulate ingress through IP6x certified labyrinth seals, connector gaskets, and hydrophobic vents; zero jamming, binding, or abrasive seizure of dynamic mechanical linkages; optical window transmission degradation $\Delta \text{Trans} \le \Delta \text{Trans}_{\mathrm{sand\_max}}$ (`10.0`%); nominal sensor SNR and motor RPM tracking.
+- **Acceptance Criteria:** Zero particulate ingress through IP6x certified labyrinth seals, connector gaskets, and hydrophobic vents; zero jamming, binding, or abrasive seizure of dynamic mechanical linkages; optical window transmission degradation $\Delta \text{Trans} \le \Delta \text{Trans}_{\mathrm{sand\_max}}$ (`5.0`%); nominal sensor SNR and motor RPM tracking.
 
 #### 8.2.10 Method M-514.8 — Vibration
-- **Applicable Procedures:** Procedure I (General Broadband Random & Dynamic Vibration) and Procedure IV (Assembled Platform Vibration) per Procedure I (General Vibration), Category 24.
-- **Environmental Envelope:** Power Spectral Density (PSD) broadband random vibration profile $S_{\mathrm{vib}}(f)$ across frequency spectrum $f \in [20\text{ Hz}, 2000\text{ Hz}]$ with overall root-mean-square acceleration $G_{\mathrm{rms\_op}}$ (`4.2` G_rms) for operational qualification and $G_{\mathrm{rms\_endurance}}$ (`7.8` G_rms) for structural endurance across three orthogonal axes ($X, Y, Z$).
-- **Exposure Duration:** Operational test: $t_{\mathrm{vib\_op}} \ge \tau_{\mathrm{vib\_op\_axis}}$ (`1.0` hr per axis); Structural endurance test: $t_{\mathrm{vib\_endurance}} \ge \tau_{\mathrm{vib\_endurance\_axis}}$ (`2.0` hr per axis, total duration across 3 axes $t_{\mathrm{total}} \ge \tau_{\mathrm{vib\_total\_min}}$ of `9.0` hr).
+- **Applicable Procedures:** Procedure I (General Broadband Random & Dynamic Vibration) and Procedure IV (Assembled Platform Vibration) per Procedure I (General Vibration - Prop Profiles).
+- **Environmental Envelope:** Power Spectral Density (PSD) broadband random vibration profile $S_{\mathrm{vib}}(f)$ across frequency spectrum $f \in [20\text{ Hz}, 2000\text{ Hz}]$ with overall root-mean-square acceleration $G_{\mathrm{rms\_op}}$ (`7.7` G_rms) for operational qualification and $G_{\mathrm{rms\_endurance}}$ (`11.2` G_rms) for structural endurance across three orthogonal axes ($X, Y, Z$).
+- **Exposure Duration:** Operational test: $t_{\mathrm{vib\_op}} \ge \tau_{\mathrm{vib\_op\_axis}}$ (`2.0` hr per axis); Structural endurance test: $t_{\mathrm{vib\_endurance}} \ge \tau_{\mathrm{vib\_endurance\_axis}}$ (`1.0` hr per axis, total duration across 3 axes $t_{\mathrm{total}} \ge \tau_{\mathrm{vib\_total\_min}}$ of `9.0` hr).
 - **Operational Functional Checks:** Continuous closed-loop guidance and control state estimation execution during multi-axis vibration; IMU and rate sensor noise floor spectral density analysis; high-speed serial bus bit error rate monitoring; fastener torque retention verification.
 - **Acceptance Criteria:** Structural integrity maintained with zero resonant fatigue cracking, loose hardware, or structural plastic deformation; fastener torque retention $\ge \tau_{\mathrm{torque\_retention\_min}}$ (`90.0`%); state estimation error bounded by $e_{\mathrm{state}} \le \epsilon_{\mathrm{vib\_max}}$ (`2.0` mm / `0.5` deg); zero intermittent signal dropouts or contact chatter exceeding $\tau_{\mathrm{chatter\_max}}$ (`10.0` µs).
 
 #### 8.2.11 Method M-516.8 — Mechanical Shock
-- **Applicable Procedures:** Procedure I (Functional Shock), Procedure IV (Transit Drop Shock), Procedure V (Crash Hazard Shock), and Procedure VI (Bench Handling Shock) per Procedure I (Functional Shock), Procedure IV (Transit Drop).
+- **Applicable Procedures:** Procedure I (Functional Shock), Procedure IV (Transit Drop Shock), Procedure V (Crash Hazard Shock), and Procedure VI (Bench Handling Shock) per Procedure I (Functional Shock) / Procedure IV (Transit Drop).
 - **Environmental Envelope:**
-  - *Functional Shock:* Terminal-peak sawtooth or half-sine acceleration pulse with peak amplitude $a_{\mathrm{shock\_peak}}$ (`20.0` g) across pulse duration $\Delta t_{\mathrm{shock}}$ (`11.0` ms, velocity change $\Delta v_{\mathrm{shock}} \ge \Delta v_{\mathrm{req}}$ of `1.8` m/s).
+  - *Functional Shock:* Terminal-peak sawtooth or half-sine acceleration pulse with peak amplitude $a_{\mathrm{shock\_peak}}$ (`20.0` g) across pulse duration $\Delta t_{\mathrm{shock}}$ (`11.0` ms, velocity change $\Delta v_{\mathrm{shock}} \ge \Delta v_{\mathrm{req}}$ of `1.4` m/s).
   - *Crash Hazard Shock:* Peak amplitude $a_{\mathrm{crash\_peak}}$ (`40.0` g) across pulse duration $\Delta t$ (`6.0` ms).
-  - *Transit Drop:* Free-fall drop height $h_{\mathrm{drop}}$ (`1.22` m / `48.0` inches) onto high-density plywood backed by concrete across all corners, edges, and faces.
+  - *Transit Drop:* Free-fall drop height $h_{\mathrm{drop}}$ (`1.2` m / `48.0` inches) onto high-density plywood backed by concrete across all corners, edges, and faces.
 - **Exposure Duration:** Functional Shock: 3 shocks per direction along 3 orthogonal axes in both positive and negative directions (total 18 shock pulses); Transit Drop: 26 total drop impacts across packaged operational configurations.
 - **Operational Functional Checks:** Operational checkout executed immediately following each shock pulse; structural latch and locking pin alignment check; non-volatile flash integrity check; accelerometer calibration zero-bias shift verification.
 - **Acceptance Criteria:** Zero structural failure, mounting bracket deformation, or dislodging of internal modular electronics; zero false triggering of emergency termination circuits; sensor bias drift remaining within calibrated limits ($\Delta \mathbf{b} \le \mathbf{b}_{\mathrm{tol}}$); full functional operational verification following transit drop sequence.
 
 #### 8.2.12 Method M-521.4 — Icing / Freezing Rain
-- **Applicable Procedures:** Procedure I (De-icing & Anti-icing Evaluation) and Procedure II (Icing Accumulation / Operational Capability) per Procedure I (Ice Accretion / De-Ice).
+- **Applicable Procedures:** Procedure I (De-icing & Anti-icing Evaluation) and Procedure II (Icing Accumulation / Operational Capability) per Procedure I (Icing/Freezing Rain Accretion).
 - **Environmental Envelope:** Water droplet atomization spray at water temperature $T_{\mathrm{water}} \approx 0\text{ °C}$ under chamber air temperature $T_{\mathrm{ice\_amb}} \in [-10\text{ °C}, -2\text{ °C}]$ (`[-10.0 °C, 2.0 °C]`); glaze or rime ice accretion thickness $\delta_{\mathrm{ice}} \ge \delta_{\mathrm{ice\_req}}$ (`13.0` mm / `0.5` inches).
 - **Exposure Duration:** Water spray exposure duration until declared ice accretion thickness is achieved, followed by cold soak stabilization duration $t_{\mathrm{soak}} \ge \tau_{\mathrm{ice\_soak\_min}}$ (`4.0` hr) at $-10\text{ °C}$.
 - **Operational Functional Checks:** Activation of active electro-thermal de-icing / anti-icing elements; dynamic actuation breakaway torque check under glaze ice accretion; barometric pressure port heater verification; perception sensor optical cover clearing check.
-- **Acceptance Criteria:** Active/passive de-icing systems clear ice from critical sensor windows and dynamic actuation gaps within $t_{\mathrm{clear}} \le \tau_{\mathrm{clear\_max}}$ (`120.0` s); actuators deliver full operational stroke authority without over-torque thermal faults; zero water ingress into electronics enclosures during subsequent post-test thaw cycle.
+- **Acceptance Criteria:** Active/passive de-icing systems clear ice from critical sensor windows and dynamic actuation gaps within $t_{\mathrm{clear}} \le \tau_{\mathrm{clear\_max}}$ (`60.0` s); actuators deliver full operational stroke authority without over-torque thermal faults; zero water ingress into electronics enclosures during subsequent post-test thaw cycle.
 
 ---
 
 ### 8.3 Ingress Protection (IEC 60529) & Environmental Sealing Architecture
-- **Enclosure Ingress Rating:** Certified to environmental ingress protection rating $\text{IP}_{xy}$ (`IP67`) in accordance with IEC 60529 (where $x \ge 6$ guarantees total protection against solid particulate ingress, and $y \ge 7$ guarantees protection against water immersion up to $1\text{ m}$ depth).
+- **Enclosure Ingress Rating:** Certified to environmental ingress protection rating $\text{IP}_{xy}$ (`IP55`) in accordance with IEC 60529 (where $x \ge 6$ guarantees total protection against solid particulate ingress, and $y \ge 7$ guarantees protection against water immersion up to $1\text{ m}$ depth).
 - **Elastomeric Bulkhead & Gasket Barriers:** Dual continuous elastomeric silicone/fluorosilicone compression gaskets along all chassis parting lines, modular disconnect bulkheads, and battery compartment interfaces.
 - **Pressure Equalization & Breather Vents:** Hydrophobic and oleophobic ePTFE membrane breather vents permitting bidirectional air equalization during rapid altitude/temperature changes while maintaining liquid water and dust barrier integrity.
 
 ---
 
 ### 8.4 Electromagnetic Compatibility (EMC/EMI) & RF Environments
-- **Radiated Susceptibility (RS103):** Withstands High-Intensity Radiated Fields (HIRF) up to $E_{\mathrm{field}}$ (`50.0` V/m) across frequency spectrum $f \in [2\text{ MHz}, 40\text{ GHz}]$ per MIL-STD-461G Method RS103 without processor resets or telemetry corruption.
+- **Radiated Susceptibility (RS103):** Withstands High-Intensity Radiated Fields (HIRF) up to $E_{\mathrm{field}}$ (`200.0` V/m) across frequency spectrum $f \in [2\text{ MHz}, 40\text{ GHz}]$ per MIL-STD-461G Method RS103 without processor resets or telemetry corruption.
 - **Conducted Susceptibility (CS114 / CS115 / CS116):** Power and signal interconnects withstand bulk cable injection and damped sinusoidal transients up to declared MIL-STD-461G Curve 5 limits.
 - **Radiated & Conducted Emissions (RE102 / CE102):** Narrowband and broadband radiated emissions suppressed below MIL-STD-461G RE102 limits to prevent self-interference with integrated RF communications and reference receivers.
-- **External Reference Signal Denial Resilience:** Capable of maintaining autonomous closed-loop state estimation and boundary containment for up to $t_{\mathrm{denied}} \ge \tau_{\mathrm{denied\_max}}$ (`30.0` s) of continuous external positioning signal loss via dead reckoning and kinematic state observers with spatial drift rate bounded by $\text{Drift} \le \text{Drift}_{\mathrm{max}}$ (`1.5` m/s).
+- **External Reference Signal Denial Resilience:** Capable of maintaining autonomous closed-loop state estimation and boundary containment for up to $t_{\mathrm{denied}} \ge \tau_{\mathrm{denied\_max}}$ (`30.0` s) of continuous external positioning signal loss via dead reckoning and kinematic state observers with spatial drift rate bounded by $\text{Drift} \le \text{Drift}_{\mathrm{max}}$ (`0.25` m/s).
 
 ---
 
 ### 8.5 Physical Spatial Constraints & Deployment Envelopes
 - **Operational Staging Footprint:** Nominal cleared deployment and staging zone area bounded by $A_{\mathrm{staging}} \ge A_{\mathrm{staging\_min}}$ (`25.0` m²).
-- **Transit & Packaged Packaging:** Entire cyber-physical platform, operator station, telemetry mast, and Ground Support Equipment (GSE) packaged into modular ruggedized containers with total combined volume $V_{\mathrm{packaged}} \le V_{\mathrm{packaged\_max}}$ (`2.0` m³) and single container mass $m_{\mathrm{container}} \le m_{\mathrm{container\_max}}$ (`40.0` kg) compliant with MIL-STD-1472H two-person lift constraints.
+- **Transit & Packaged Packaging:** Entire cyber-physical platform, operator station, telemetry mast, and Ground Support Equipment (GSE) packaged into modular ruggedized containers with total combined volume $V_{\mathrm{packaged}} \le V_{\mathrm{packaged\_max}}$ (`0.85` m³) and single container mass $m_{\mathrm{container}} \le m_{\mathrm{container\_max}}$ (`35.0` kg) compliant with MIL-STD-1472H two-person lift constraints.
 
 ## 9. Multi-Threaded Operational Scenarios & System Timelines
 
@@ -1215,8 +1215,8 @@ In accordance with ISO/IEC/IEEE 29148:2018 §5.2.4 and MIL-STD-882E §4.3, all l
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **MTC-01** | Pre-Sortie / Pre-Operation Inspection | O-Level (Organizational) | Prior to each operational sortie launch (T0 - Delta_t_pre) | t_insp <= 10 min | Certified Maintenance Technician (UC-04); Field Tool Kit (FTK-01) | Maintenance Technician sign-off on SE-02; PBIT 100% PASS verification | ISO/IEC/IEEE 29148:2018 §5.2.4 |
 | **MTC-01A** | Rapid Sortie Turnaround (15-min SLA) | O-Level (Organizational) | Consecutive operational sorties during active deployment | t_turnaround <= 15.0 min | Maintenance Technician (UC-04); Resource Hub (SE-01); Terminal (SE-02) | Dual-Technician sign-off; BMS state-of-charge check; Sortie Release Token | INCOSE SEH v5.0 §3.2 |
-| **MTC-02** | Scheduled 50-Hour Phase Check | I-Level (Intermediate) | Cumulative runtime reaching 100.0 operating hours (+/- 5 hr) | t_phase <= 120 min | Senior Maintenance Specialist; Test Box (SE-04); Alignment Rig (SE-05) | Intermediate Maintenance Certificate; Diagnostic calibration record | ISO/IEC/IEEE 29148:2018 §6.4.2 |
-| **MTC-03** | 100-Hour Major Overhaul | D-Level (Depot / Factory) | Cumulative runtime reaching 500.0 operating hours (+/- 10 hr) | t_overhaul <= 24 hr | Factory Depot Engineering Team; Phased-Array NDI; ESS Test Chamber | Factory Recertification Certificate; NDI structural inspection dossier | MIL-STD-1629A Method 101 |
+| **MTC-02** | Scheduled 50-Hour Phase Check | I-Level (Intermediate) | Cumulative runtime reaching 50.0 operating hours (+/- 5 hr) | t_phase <= 120 min | Senior Maintenance Specialist; Test Box (SE-04); Alignment Rig (SE-05) | Intermediate Maintenance Certificate; Diagnostic calibration record | ISO/IEC/IEEE 29148:2018 §6.4.2 |
+| **MTC-03** | 100-Hour Major Overhaul | D-Level (Depot / Factory) | Cumulative runtime reaching 100.0 operating hours (+/- 10 hr) | t_overhaul <= 24 hr | Factory Depot Engineering Team; Phased-Array NDI; ESS Test Chamber | Factory Recertification Certificate; NDI structural inspection dossier | MIL-STD-1629A Method 101 |
 | **MTC-04** | Unscheduled Field LRU Swap | I-Level / O-Level Workshop | On-condition upon diagnostic BIT failure or anomaly alert | t_swap <= tau_swap_LRU (2 to 10 min) | Field Maintenance Technician; Field Spares Kit (FSK-01); Test Box (SE-04) | Automated bus discovery PASS; Configuration hash verification log | MIL-HDBK-470A §4.3 |
 | **MTC-05** | Post-Incident Blackbox Quarantine | I-Level / Safety Authority | Mandatory after any emergency containment state (EMG-01..07) | t_quarantine <= 30.0 min | System Safety Officer; Data Terminal (SE-02); Tamper-Sealed Kit | Safety Officer Incident Audit Record; Non-volatile cryptographic dump | MIL-STD-882E Task 205 |
 
@@ -1247,7 +1247,7 @@ flowchart TD
 3. **Step 3: Rapid Tool-less Energy / Battery Module Hot-Swap ($T_0 + 4\text{ min}$ to $T_0 + 6\text{ min}$):**
    - Maintenance Technician disengages the primary quick-release retention latches.
    - Depleted smart energy module is withdrawn and transferred to the Multi-Bay Charging Hub (`SE-01`).
-   - Fully charged, balanced smart energy module ($\text{SoC} \ge 95\%$) is inserted along keyed guide rails until positive mechanical latch engagement is confirmed ($t_{\mathrm{swap}} \le \tau_{\mathrm{swap\_battery}} = 5.0\text{ min}$).
+   - Fully charged, balanced smart energy module ($\text{SoC} \ge 95\%$) is inserted along keyed guide rails until positive mechanical latch engagement is confirmed ($t_{\mathrm{swap}} \le \tau_{\mathrm{swap\_battery}} = 2.0\text{ min}$).
 4. **Step 4: Rapid Visual Inspection & Mechanical Check ($T_0 + 6\text{ min}$ to $T_0 + 9\text{ min}$):**
    - 360-degree walkaround visual inspection verifying enclosure integrity, lens cleanliness, seal compression, and fastener tightness.
    - Actuator control linkages and mechanical interfaces checked for zero foreign object debris (FOD) and nominal play.
@@ -1268,27 +1268,27 @@ To guarantee rapid unscheduled field repair capability (`MTC-04`), primary subsy
 
 | LRU Designation | Subsystem Nomenclature | Modular Interface & Latching Type | Max Swap Time | Tooling Requirement | Post-Swap Verification Protocol |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **LRU-01: Core Guidance Computer** | Core Processing & Guidance Module | Ruggedized ZIF Cam-Lock Backplane | t_swap <= 15.0 min | Tool-less (Manual Cam Lever) | Automated Firmware Hash & PBIT |
-| **LRU-02: Battery / Energy Module** | Smart Modular Energy Pack | Polarized Keyed Blind-Mate Rail | t_swap <= 5.0 min | Tool-less (Spring Detent Latch) | BMS Bus Handshake & SoC Telemetry |
-| **LRU-03: Primary Sensor Payload** | Multi-Modal Sensor Subsystem | Kinematic Mount with Bayonet Collar | t_swap <= 10.0 min | Tool-less (Quick-Disconnect Ring) | Bus Enumeration & Boresight Check |
-| **LRU-04: Actuator / Motor Assembly** | Dynamic Actuator Module | Precision Index Dowel & Bayonet Ring | t_swap <= 20.0 min | Tool-less (Positive-Stop Clamp) | Actuator Sweep & Dynamic Response |
+| **LRU-01: Core Guidance Computer** | Core Processing & Guidance Module | Ruggedized ZIF Cam-Lock Backplane | t_swap <= 5.0 min | Tool-less (Manual Cam Lever) | Automated Firmware Hash & PBIT |
+| **LRU-02: Battery / Energy Module** | Smart Modular Energy Pack | Polarized Keyed Blind-Mate Rail | t_swap <= 2.0 min | Tool-less (Spring Detent Latch) | BMS Bus Handshake & SoC Telemetry |
+| **LRU-03: Primary Sensor Payload** | Multi-Modal Sensor Subsystem | Kinematic Mount with Bayonet Collar | t_swap <= 8.0 min | Tool-less (Quick-Disconnect Ring) | Bus Enumeration & Boresight Check |
+| **LRU-04: Actuator / Motor Assembly** | Dynamic Actuator Module | Precision Index Dowel & Bayonet Ring | t_swap <= 10.0 min | Tool-less (Positive-Stop Clamp) | Actuator Sweep & Dynamic Response |
 
-1. **Core Guidance Computer Module Replacement ($t_{\mathrm{swap}} \le \tau_{\mathrm{swap\_FC}} = 15.0\text{ min}$):**
+1. **Core Guidance Computer Module Replacement ($t_{\mathrm{swap}} \le \tau_{\mathrm{swap\_FC}} = 5.0\text{ min}$):**
    - **Step 1 (De-Energize & Access):** Verify system de-energization; rotate quarter-turn captive quick-release avionics bay fasteners to open access hatch.
    - **Step 2 (Ejection):** Actuate the zero-insertion-force (ZIF) cam-lock lever to decouple the guidance computer module from the ruggedized backplane connector.
    - **Step 3 (Insertion & Latching):** Slide the replacement guidance computer module into keyed card guide rails; depress ZIF cam-lock lever until fully seated and mechanical retention locks engage.
    - **Step 4 (Verification):** Close avionics bay hatch; energize system; confirm automated firmware cryptographic hash match and backplane bus discovery in $t \le 60\text{ s}$.
-2. **Battery / Energy Module Replacement ($t_{\mathrm{swap}} \le \tau_{\mathrm{swap\_battery}} = 5.0\text{ min}$):**
+2. **Battery / Energy Module Replacement ($t_{\mathrm{swap}} \le \tau_{\mathrm{swap\_battery}} = 2.0\text{ min}$):**
    - **Step 1 (Release):** Depress dual spring-loaded mechanical retention latch tabs on the energy compartment bulkhead.
    - **Step 2 (Extraction):** Slide the depleted module along low-friction guide rails; blind-mate high-current power connector disconnects with arc-suppression.
    - **Step 3 (Insertion):** Insert replacement smart energy module along polarized keyways until blind-mate connectors engage and spring latches click into locked detents.
    - **Step 4 (Verification):** BMS digital bus handshakes automatically with Core Controller; verify state-of-charge ($\text{SoC} \ge 95\%$) and cell balance on terminal display.
-3. **Primary Sensor Payload Replacement ($t_{\mathrm{swap}} \le \tau_{\mathrm{swap\_payload}} = 10.0\text{ min}$):**
+3. **Primary Sensor Payload Replacement ($t_{\mathrm{swap}} \le \tau_{\mathrm{swap\_payload}} = 8.0\text{ min}$):**
    - **Step 1 (Unlock):** Rotate quick-disconnect mechanical payload locking collar counter-clockwise by $45^\circ$; release blind-mate high-speed data umbilical.
    - **Step 2 (Demount):** Disengage payload chassis from kinematic mounting pins and withdraw unit.
    - **Step 3 (Mount Replacement):** Seat replacement sensor payload onto precision kinematic locating dowels; rotate locking collar clockwise by $45^\circ$ until primary detent clicks.
    - **Step 4 (Verification):** Re-engage blind-mate umbilical; execute automated sensor enumeration test and optical/inertial boresight calibration check via `SE-05` in $t \le 180\text{ s}$.
-4. **Actuator / Motor Assembly Replacement ($t_{\mathrm{swap}} \le \tau_{\mathrm{swap\_actuator}} = 20.0\text{ min}$):**
+4. **Actuator / Motor Assembly Replacement ($t_{\mathrm{swap}} \le \tau_{\mathrm{swap\_actuator}} = 10.0\text{ min}$):**
    - **Step 1 (Interface Release):** Release quick-release mechanical clamp ring securing the actuator housing to structural mounting interface.
    - **Step 2 (Harness Disconnect):** Disconnect hermetic circular blind-mate power and feedback harness using single-twist quick-break coupling.
    - **Step 3 (Extraction & Insertion):** Withdraw faulted actuator module; align replacement matched actuator module with structural alignment keyway; seat into place.
@@ -1301,10 +1301,10 @@ The Support Equipment (SE) suite provides all electrical, mechanical, diagnostic
 | SE Identifier | SE Nomenclature | Functional Purpose & Capabilities | Operating Constraints & Ratings | Public Standard Baseline |
 | :--- | :--- | :--- | :--- | :--- |
 | **SE-01** | Multi-Bay Intelligent Resource Management Hub | Simultaneously balances, conditions, and charges multiple smart resource modules at charge rate C_rate; incorporates fire-suppressed containment chamber, thermal runaway isolation, and CAN/SMBus state-of-health logging. | Input: Multi-source 100-240 VAC / 12-28 VDC; Charge Time: t_charge; Rating: IP_xy; Operating Temp: [T_op_min, T_op_max] | IEC 62133-2 / UN 38.3 |
-| **SE-02** | Ruggedized Field Control Terminal | Dual-screen daylight-readable (>= 1000.0 nits) field terminal executing supervisory control, telemetry display, diagnostic PBIT execution, and cryptographic mission plan injection. | Operating Temp: [T_op_min, T_op_max]; Battery Life: t_battery_SE; Rating: IP_xy; MIL-STD-810H Shock/Vibration | MIL-STD-810H / NIST SP 800-82r3 |
-| **SE-03** | Telescoping Antenna Transceiver Mast | Deployable pneumatic/mechanical mast with multi-axis motorized tracking positioner for high-gain directional PACE communication links and mesh relay nodes. | Mast Height: 5.0 m; Deployment Time: t_deploy; Disturbance Limit: v_dist_mast; Azimuth: 360 deg Continuous Span | MIL-STD-810H / IEEE Std 1558-2020 |
+| **SE-02** | Ruggedized Field Control Terminal | Dual-screen daylight-readable (>= 1500 nits) field terminal executing supervisory control, telemetry display, diagnostic PBIT execution, and cryptographic mission plan injection. | Operating Temp: [T_op_min, T_op_max]; Battery Life: t_battery_SE; Rating: IP_xy; MIL-STD-810H Shock/Vibration | MIL-STD-810H / NIST SP 800-82r3 |
+| **SE-03** | Telescoping Antenna Transceiver Mast | Deployable pneumatic/mechanical mast with multi-axis motorized tracking positioner for high-gain directional PACE communication links and mesh relay nodes. | Mast Height: 6.0 m; Deployment Time: t_deploy; Disturbance Limit: v_dist_mast; Azimuth: 360 deg Continuous Span | MIL-STD-810H / IEEE Std 1558-2020 |
 | **SE-04** | Environmental Diagnostic Test Unit | Precision diagnostic pressure, temperature, and environmental sensor test unit used to verify sensor calibration, telemetry bus ports, and enclosure seal integrity. | Accuracy: +/- epsilon_diag; Operating Range: [p_min, p_max]; Portable ruggedized chassis; Battery powered | ISO/IEC 17025 / MIL-STD-810H |
-| **SE-05** | Precision Sensor Alignment Rig | Optical collimator and reference alignment fixture for zeroing payload sensor axes and optical boresights against the physical reference frame. | Angular Precision: epsilon_align (<= 2.0 mrad); Field-portable kinematic mounting frame | ISO/IEC 17025 §7.6 / IEEE Std 1558-2020 |
+| **SE-05** | Precision Sensor Alignment Rig | Optical collimator and reference alignment fixture for zeroing payload sensor axes and optical boresights against the physical reference frame. | Angular Precision: epsilon_align (<= 0.1 mrad); Field-portable kinematic mounting frame | ISO/IEC 17025 §7.6 / IEEE Std 1558-2020 |
 | **SE-06** | Automated Calibration & Metrology Bench | Stationary/shelter calibration standard for dynamic actuator torque calibration, multi-axis inertial sensor turntable characterization, and RF spectrum validation. | Metrology Standard Traceability: ISO/IEC 17025; Torque Accuracy: +/- epsilon_torque; Inertial Slew Precision: epsilon_slew | ISO/IEC 17025:2017 / NIST Traceable |
 
 #### 10.2.1 ISO/IEC 17025 Support Equipment Calibration Matrix
@@ -1344,9 +1344,9 @@ In accordance with ISO/IEC 17025:2017 §6.5 (Metrological Traceability) and ISO/
 ### 11.1 Operational Workflow & Deployment Impacts
 The transition from legacy manual systems to the Abstract Cyber-Physical System Archetype introduces substantial positive impacts across operational workflows:
 1. **Reduced Crew Staging Footprint:** The operational crew footprint required to maintain continuous operations is minimized through supervisory automation (1 System Operator and 1 Payload / Data Specialist).
-2. **Automated Pre-Operation Staging:** Preparation time is compressed to $t_{\mathrm{prep}} \le \tau_{\mathrm{prep\_target}}$ (nominal $\tau_{\mathrm{prep\_target}} = 300.0$ s) due to automated digital PBIT routines and tool-less modular interfaces.
+2. **Automated Pre-Operation Staging:** Preparation time is compressed to $t_{\mathrm{prep}} \le \tau_{\mathrm{prep\_target}}$ (nominal $\tau_{\mathrm{prep\_target}} = 180.0$ s) due to automated digital PBIT routines and tool-less modular interfaces.
 3. **Automated External Coordination:** Integration with external data services automates operational plan registration, dynamic boundary deconfliction, and electronic conspicuity broadcast.
-4. **Rapid Turnaround Servicing:** Field turnaround time $t_{\mathrm{turnaround}} \le \tau_{\mathrm{turnaround\_target}}$ (nominal $\tau_{\mathrm{turnaround\_target}} = 600.0$ s) enabled by modular energy packs and automated self-calibration diagnostics.
+4. **Rapid Turnaround Servicing:** Field turnaround time $t_{\mathrm{turnaround}} \le \tau_{\mathrm{turnaround\_target}}$ (nominal $\tau_{\mathrm{turnaround\_target}} = 900.0$ s) enabled by modular energy packs and automated self-calibration diagnostics.
 
 ### 11.2 Organizational Roles & Training Impacts
 - **Operator Reskilling:** The primary operator role transitions from continuous manual control to supervisory systems management, state deconfliction, and payload data analysis.
@@ -1355,10 +1355,10 @@ The transition from legacy manual systems to the Abstract Cyber-Physical System 
 
 ### 11.3 System Limitations & Operational Boundaries
 While the system provides robust multi-mission capability, formal operational boundaries and statutory constraints must be observed:
-- **Maximum Operational Boundary:** $x_{\mathrm{operating\_max}} = 3000.0$ m in accordance with operational authorizations.
-- **Operational Endurance:** Operating endurance $t_{\mathrm{endurance\_nominal}} = 2.0$ hr under standard environmental conditions; adjusts to $t_{\mathrm{endurance\_cold}} = 1.5$ hr at the minimum operating temperature limit $T_{\mathrm{op\_min}} = -20.0^\circ\text{C}$.
-- **Maximum Payload Capacity:** Maximum payload mass $m_{\mathrm{payload\_max}} = 5.0$ kg within the maximum total system mass envelope $m_{\mathrm{system\_max}} = 55.0$ kg.
-- **Severe Environmental Constraints:** Operation is prohibited in environmental conditions exceeding maximum dynamic disturbance limits $a_{\mathrm{dist\_limit}} = 15.0\text{ m/s}^2$ or precipitation limits $R_{\mathrm{precip\_max}} = 100.0$ mm/hr.
+- **Maximum Operational Boundary:** $x_{\mathrm{operating\_max}} = 20000.0$ m in accordance with operational authorizations.
+- **Operational Endurance:** Operating endurance $t_{\mathrm{endurance\_nominal}} = 1.0$ hr under standard environmental conditions; adjusts to $t_{\mathrm{endurance\_cold}} = 0.7$ hr at the minimum operating temperature limit $T_{\mathrm{op\_min}} = -20.0^\circ\text{C}$.
+- **Maximum Payload Capacity:** Maximum payload mass $m_{\mathrm{payload\_max}} = 3.5$ kg within the maximum total system mass envelope $m_{\mathrm{system\_max}} = 20.0$ kg.
+- **Severe Environmental Constraints:** Operation is prohibited in environmental conditions exceeding maximum dynamic disturbance limits $a_{\mathrm{dist\_limit}} = 1.5 g\text{ m/s}^2$ or precipitation limits $R_{\mathrm{precip\_max}} = 50.0$ mm/hr.
 
 ### 11.4 Documented Engineering Trade Studies
 In accordance with INCOSE Systems Engineering Handbook v5.0 §4.3 (Decision Analysis) and ISO/IEC/IEEE 29148:2018 §6.4.2, three formal quantitative multi-criteria engineering trade studies were conducted across the energy storage, edge compute / communications, and autonomous safety containment architecture design spaces (Fixes #118, #129, #132):
@@ -1402,10 +1402,10 @@ $$
 | Composite Pugh Decision Score | S_j | S_j in [1.0, 5.0] | Dimensionless | Total weighted score for candidate architecture j |
 | Normalized Criterion Weight | w_i | sum(w_i) = 1.00 | Dimensionless | Importance weighting for evaluation criterion i |
 | Candidate Attribute Score | s_ij | s_ij in {1, 2, 3, 4, 5} | Dimensionless | Unweighted ordinal performance score of option j on criterion i |
-| Cold Temperature Weight | w_cold | w_cold = 0.25 | Dimensionless | Parametric weighting assigned to low-temperature operational performance |
+| Cold Temperature Weight | w_cold | w_cold = 0.2 | Dimensionless | Parametric weighting assigned to low-temperature operational performance |
 | Cold Performance Score | s_cold_j | s_cold_B = 4 | Dimensionless | Performance rating of option j at minimum operating temperature T_op_min |
 | Minimum Operating Temperature | T_op_min | -20.0 | degC | Statutory cold environment operational temperature boundary |
-| Nominal Gravimetric Energy Density | rho_energy | 250.0 | Wh/kg | Nominal gravimetric energy storage density |
+| Nominal Gravimetric Energy Density | rho_energy | 240 Wh/kg | Wh/kg | Nominal gravimetric energy storage density |
 | Required Cycle Lifetime | N_cycles_req | 500 | Cycles | Minimum required charge-discharge cycles to 80% state of health |
 
 #### 11.4.2 Trade Study 2: Edge Neural Compute vs Datalink Compression (Fix #129)
@@ -1448,10 +1448,10 @@ $$
 | Contested RF Criterion Weight | w_jam | w_jam = 0.25 | Dimensionless | Importance weight assigned to operations in contested RF environments |
 | RF Jamming / Denial Probability | P_jam | P_jam in [0.0, 1.0] | Dimensionless | Probability of experiencing intentional or environmental RF denial |
 | Jammed Performance Score Function | s_jam_j | s_jam_B(P_jam) = 5.0 - 0.2 * P_jam | Dimensionless | Architectural score function under variable RF interference probability |
-| Raw Telemetry Downlink Throughput | Throughput_raw | 20.0 | Mbps | Required bandwidth for uncompressed raw sensor streaming |
-| Extracted Feature Downlink Throughput | Throughput_feature | 500.0 | kbps | Reduced bandwidth for onboard extracted semantic state vectors |
-| Maximum Feature Inference Latency | tau_infer_max | 50.0 | ms | Maximum allowable neural edge inference processing delay |
-| Edge Accelerator Power Budget | P_edge_tpu | 35.0 | W | Electrical power allocation for onboard inference coprocessor |
+| Raw Telemetry Downlink Throughput | Throughput_raw | 15.0 | Mbps | Required bandwidth for uncompressed raw sensor streaming |
+| Extracted Feature Downlink Throughput | Throughput_feature | 250.0 | kbps | Reduced bandwidth for onboard extracted semantic state vectors |
+| Maximum Feature Inference Latency | tau_infer_max | 25.0 | ms | Maximum allowable neural edge inference processing delay |
+| Edge Accelerator Power Budget | P_edge_tpu | 25.0 | W | Electrical power allocation for onboard inference coprocessor |
 
 #### 11.4.3 Trade Study 3: Autonomous Failsafe Containment vs Actuator Redundancy (Fix #132)
 - **Objective & Problem Statement:** Determine the optimal safety assurance and containment architecture to achieve certified risk reduction credit (JARUS SORA M2 mitigation / SAE ARP4761 safety objectives) and guarantee that terminal kinetic impact energy is bounded below statutory safety thresholds ($E_k \le E_{\mathrm{threshold}}$) under catastrophic uncommanded actuation, power bus collapse, or structural failure.
@@ -1490,16 +1490,16 @@ $$
 | Parameter | Symbol | Expression / Value | Units | Description |
 | :--- | :--- | :--- | :--- | :--- |
 | Terminal Kinetic Impact Energy | E_k | E_k <= E_threshold | J | Impact kinetic energy at terminal descent velocity |
-| Statutory Kinetic Energy Threshold | E_threshold | 1562.5 | J | Statutory safety boundary threshold separating risk classes |
+| Statutory Kinetic Energy Threshold | E_threshold | 34.0 | J | Statutory safety boundary threshold separating risk classes |
 | Total Operational Mass | m | m <= m_system_max | kg | Total operational mass of the cyber-physical system |
-| Maximum System Operational Mass | m_system_max | 55.0 | kg | Maximum certified operational mass envelope |
+| Maximum System Operational Mass | m_system_max | 20.0 | kg | Maximum certified operational mass envelope |
 | Terminal Descent Velocity | v_term | v_term = sqrt(2 * m * g / (rho * S * C_d)) | m/s | Unmitigated steady-state terminal descent velocity |
-| Safe Controlled Descent Velocity | v_safe | 5.0 | m/s | Maximum controlled descent velocity under active containment |
+| Safe Controlled Descent Velocity | v_safe | 1.65 | m/s | Maximum controlled descent velocity under active containment |
 | Standard Gravitational Acceleration | g | 9.80665 | m/s^2 | Standard acceleration due to gravity |
 | Ambient Atmospheric / Fluid Density | rho | 1.225 | kg/m^3 | Nominal atmospheric fluid density at reference datum |
 | Aerodynamic Reference Drag Area | S | S_containment >= S_min | m^2 | Effective projected frontal / reference drag area |
 | Aerodynamic Drag Coefficient | C_d | C_d_containment >= C_d_min | Dimensionless | Total aerodynamic drag coefficient of deployed containment device |
-| Failsafe Watchdog Activation Time | tau_deploy_max | 2.0 | s | Maximum allowable latency from fault detection to containment trigger |
+| Failsafe Watchdog Activation Time | tau_deploy_max | 0.45 | s | Maximum allowable latency from fault detection to containment trigger |
 
 The quadratic sensitivity of kinetic impact energy to mass ($E_k \propto m^2$) demonstrates why adding redundant actuator mass (Option A) increases unmitigated kinetic hazard severity. In contrast, deploying an active aerodynamic deceleration mechanism (Option B) increases effective drag area product $S C_d$, guaranteeing containment below statutory energy limits:
 
