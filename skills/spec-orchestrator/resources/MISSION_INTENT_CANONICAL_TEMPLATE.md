@@ -23,9 +23,18 @@
 | MoP-01 | MoP | {{MOP_NAME}} | {{MOP_EQUATION}} | {{MOP_THRESHOLD}} | {{MOP_OBJECTIVE}} | {{MOP_UNIT}} |
 
 ## 4. Threat & Electronic Warfare (EW) / Cyber Environment Matrix
-| Threat ID | Threat Vector | Description | Severity | Autonomous Mitigation Rule |
-| :--- | :--- | :--- | :--- | :--- |
-| THR-01 | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| Threat ID | Domain | Threat Vector | Description | Severity | Autonomous Mitigation Rule |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `THR-01` | Kinetic | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-02` | Mechanical | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-03` | Power / Thermal | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-04` | Environmental | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-05` | Electronic Warfare | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-06` | Cybersecurity | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-07` | Optical | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-08` | Signature | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-09` | Human Factors | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-10` | Hazardous Environment | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
 
 ## 5. PACE C2 Link Communications Plan
 | PACE Tier | Link Medium | Frequency Band | Nominal Data Rate | Heartbeat Timeout | Priority / Role |

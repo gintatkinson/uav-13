@@ -750,6 +750,19 @@ class MissionIntentCompletenessValidator(IValidator):
         {"num": 10, "title": "Gate 24 MissionTask Traceability Tags", "aliases": ["gate 24", "missiontask traceability", "traceability tags", "allocation tags", "operationalallocation"]},
     ]
 
+    MANDATORY_THREAT_DOMAINS: List[Dict[str, Any]] = [
+        {"name": "Kinetic", "patterns": [r"\bkinetic\b"]},
+        {"name": "Mechanical", "patterns": [r"\bmechanical\b", r"\bstructural\b"]},
+        {"name": "Power / Thermal", "patterns": [r"\bpower\b", r"\bthermal\b", r"\bpropulsion\b"]},
+        {"name": "Environmental", "patterns": [r"\benvironment(?:al)?\b"]},
+        {"name": "Electronic Warfare", "patterns": [r"\belectronic\s+warfare\b", r"\bew\b"]},
+        {"name": "Cybersecurity", "patterns": [r"\bcyber(?:security)?\b"]},
+        {"name": "Optical", "patterns": [r"\boptical\b", r"\bdirected\s+energy\b"]},
+        {"name": "Signature", "patterns": [r"\bsignature\b", r"\bacoustic\b"]},
+        {"name": "Human Factors", "patterns": [r"\bhuman(?:\s+factors)?\b", r"\bcrm\b"]},
+        {"name": "Hazardous Environment", "patterns": [r"\bhazardous(?:\s+environment)?\b", r"\bcbrn\b", r"\btoxic\b", r"\bchemical\b"]},
+    ]
+
     def __init__(self, strict_bingo_math: bool = True) -> None:
         self.strict_bingo_math = strict_bingo_math
 
@@ -882,6 +895,11 @@ class MissionIntentCompletenessValidator(IValidator):
                     detail={"section_number": sec_num, "section_title": title},
                 ))
 
+        # Section 4: Threat & Electronic Warfare (EW) / Cyber Environment Matrix Validation (Threat Matrix Density)
+        if 4 in matched_sections:
+            _, sec4_line, sec4_content = matched_sections[4]
+            findings.extend(self._validate_threat_matrix_density(content, rel_path, sec4_line, sec4_content))
+
         # Section 2 & 10: METL Roster & Gate 24 Allocation Traceability (Theorem 3)
         if 2 in matched_sections:
             _, sec2_line, sec2_content = matched_sections[2]
@@ -969,6 +987,64 @@ class MissionIntentCompletenessValidator(IValidator):
 
         return findings
 
+    def _validate_threat_matrix_density(
+        self,
+        content: str,
+        rel_path: str = "docs/conops/MISSION_INTENT.md",
+        sec4_line: int = 1,
+        sec4_content: Optional[str] = None,
+    ) -> List[Finding]:
+        """
+        Validates Section 4 Threat Matrix tables for presence of mandatory operational domains:
+        Kinetic, Mechanical, Power / Thermal, Environmental, Electronic Warfare,
+        Cybersecurity, Optical, Signature, Human Factors, and Hazardous Environment.
+        Emits Finding 'mission-threat-domain-missing' if a mandatory operational threat domain
+        is absent from the Domain column.
+        """
+        findings: List[Finding] = []
+        if sec4_content is not None:
+            target_text = sec4_content
+        else:
+            sections = _extract_markdown_sections(content)
+            sec4_match = _find_matching_section(
+                sections,
+                4,
+                "Threat & Electronic Warfare (EW) / Cyber Environment Matrix",
+                ["threat", "electronic warfare", "ew matrix", "cyber environment", "threat matrix"],
+            )
+            if sec4_match:
+                _, sec4_line, target_text = sec4_match
+            else:
+                target_text = content
+
+        tables, _ = _parse_commonmark_tables(target_text)
+
+        present_domains: Set[str] = set()
+        for table in tables:
+            for row in table:
+                domain_val = row.get("domain") or row.get("threat_domain") or row.get("operational_domain")
+                if not domain_val:
+                    continue
+                clean_domain = re.sub(r'[*`_]', '', str(domain_val)).strip()
+                for req_dom in self.MANDATORY_THREAT_DOMAINS:
+                    dom_name = req_dom["name"]
+                    for pat in req_dom["patterns"]:
+                        if re.search(pat, clean_domain, re.IGNORECASE):
+                            present_domains.add(dom_name)
+                            break
+
+        for req_dom in self.MANDATORY_THREAT_DOMAINS:
+            dom_name = req_dom["name"]
+            if dom_name not in present_domains:
+                findings.append(Finding(
+                    "mission-threat-domain-missing",
+                    f"Section 4 Threat Matrix in '{rel_path}' is missing mandatory operational threat domain '{dom_name}'.",
+                    location=f"{rel_path}:{sec4_line}",
+                    detail={"domain": dom_name, "file": rel_path},
+                ))
+
+        return findings
+
     def synthesize_canonical_template(self, output_path: Union[str, Path]) -> bool:
         """Synthesizes domain-neutral MISSION_INTENT_CANONICAL_TEMPLATE.md."""
         res_path = Path(__file__).resolve().parents[4] / "resources" / "MISSION_INTENT_CANONICAL_TEMPLATE.md"
@@ -1000,9 +1076,18 @@ class MissionIntentCompletenessValidator(IValidator):
 | MoP-01 | MoP | {{MOP_NAME}} | {{MOP_EQUATION}} | {{MOP_THRESHOLD}} | {{MOP_OBJECTIVE}} | {{MOP_UNIT}} |
 
 ## 4. Threat & Electronic Warfare (EW) / Cyber Environment Matrix
-| Threat ID | Threat Vector | Description | Severity | Autonomous Mitigation Rule |
-| :--- | :--- | :--- | :--- | :--- |
-| THR-01 | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| Threat ID | Domain | Threat Vector | Description | Severity | Autonomous Mitigation Rule |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| `THR-01` | Kinetic | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-02` | Mechanical | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-03` | Power / Thermal | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-04` | Environmental | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-05` | Electronic Warfare | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-06` | Cybersecurity | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-07` | Optical | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-08` | Signature | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-09` | Human Factors | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
+| `THR-10` | Hazardous Environment | {{THR_VECTOR}} | {{THR_DESCRIPTION}} | {{THR_SEVERITY}} | {{THR_MITIGATION_RULE}} |
 
 ## 5. PACE C2 Link Communications Plan
 | PACE Tier | Link Medium | Frequency Band | Nominal Data Rate | Heartbeat Timeout | Priority / Role |
@@ -1052,7 +1137,8 @@ $$
 
 
 if __name__ == "__main__":
-    repo = WorkspaceRepository()
+    target_dir = sys.argv[1] if len(sys.argv) > 1 else None
+    repo = WorkspaceRepository(workspace_dir=target_dir)
     v1 = ConopsCompletenessValidator()
     v2 = MissionIntentCompletenessValidator()
     errs1 = v1.validate(repo)
@@ -1065,3 +1151,4 @@ if __name__ == "__main__":
     else:
         print("[OK] Gate 26 (ConOps & Mission Intent Completeness): All checks passed.")
         sys.exit(0)
+
