@@ -57,15 +57,133 @@ Where and Operational Parameters:
 
 ---
 
-### 5.3 Failover Hysteresis State Machine & Re-acquisition Dynamics
+### 5.3 Deterministic In-Flight Lost-Link Guidance Protocol & Emergency Routing Ladder
+
+In accordance with NATO STANAG 4586 (§4.5 & Annex B §3.4), RTCA DO-362A (§2.2), JARUS SORA v2.5 (Annex E §E.6), and ICAO Annex 2 (§3.1), complete loss of Command and Control telemetry across all PACE communications tiers initiates a deterministic, four-phase hierarchical lost-link routing ladder with autonomous emergency ditching fallback:
+
+1. **Lost-Link Phase 1 (Re-acquisition Loiter):** Upon expiration of the Emergency tier heartbeat timeout ($\Delta t_{\mathrm{loss}} \ge \tau_{\mathrm{timeout,Emergency}} = 10.0\text{ s}$), the flight guidance executive commands the aircraft to enter a stable right-hand circular orbit centered on its current waypoint coordinate at assigned altitude. The vehicle maintains this loiter pattern for a maximum duration $t_{\mathrm{loiter}} \le 120.0\text{ s}$ while the RF frontend manager sequentially cycles receiver frontends across Primary (5.8 GHz COFDM), Alternate (915 MHz FHSS), and Contingency (LTE/5G VPN) transceivers at 5.0 s intervals to re-establish an authenticated C2 uplink.
+2. **Lost-Link Phase 2 (Reverse Ingress Retrace):** If authenticated C2 heartbeat telemetry is not re-acquired within $t_{\mathrm{loiter}} = 120.0\text{ s}$, the aircraft autonomously exits the loiter orbit, climbs or descends to the published deconfliction corridor floor altitude ($z_{\mathrm{corridor}} = 350.0\text{ m}$ AGL), and initiates deterministic reverse waypoint traversal along the published ingress corridor (`LL-CORRIDOR-01`) at nominal transit airspeed ($v_{\mathrm{transit}} = 18.0\text{ m/s}$).
+3. **Lost-Link Phase 3 (Rally Point Loiter):** Upon completing reverse corridor retrace, the vehicle transitions into a designated holding orbit at Rally Point `RP-01` ($45.1280^\circ\text{ N}, 14.5720^\circ\text{ E}$) at holding altitude $z = 350.0\text{ m}$ AGL. The vehicle orbits at `RP-01` for $t_{\mathrm{rally}} \le 180.0\text{ s}$ awaiting C2 heartbeat recovery or ground base station line-of-sight acquisition.
+4. **Lost-Link Phase 4 (Autonomous Recovery & Approach):** If C2 communications remain unestablished upon expiration of the rally loiter timer ($t_{\mathrm{rally}} = 180.0\text{ s}$), the flight executive autonomously sequences the final approach glide path, aligns with primary recovery runway `Runway-04` ($042^\circ\text{ True}$, $150.0\text{ m}$ MSL), and executes an autonomous flare, touchdown, and motor shutdown sequence.
+5. **Secondary Emergency Ditching Allocation:** If during any lost-link phase the onboard power monitor determines remaining stored energy is insufficient for runway recovery ($E_{\mathrm{avail}}(t) < E_{\mathrm{return}}$) or if lateral airspace containment is compromised by severe meteorological disturbances, the guidance executive executes optimal autonomous emergency ditching site allocation across pre-surveyed unpopulated containment sites (`DITCH-01`, `DITCH-02`, `DITCH-03`) evaluated against aerodynamic glide reachability and SORA ground risk containment.
+
+#### Lost-Link Sequence and Emergency Routing Ladder Interaction Flow
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Pilot as ExternalPilot : RemotePilotInCommand
+    participant C2 as c2_mon : C2LinkMonitor
+    participant Guidance as guidance : GuidanceExecutive
+    participant Nav as nav : NavigationSubsystem
+    participant PACE as pace_mgr : PACELinkManager
+    participant Ditch as ditching : EmergencyDitchingAllocator
+    participant Recov as recovery : AutonomousRecoveryController
+
+    Note over C2,Guidance: Lost-Link Trigger: Heartbeat timeout exceeded (tau_timeout >= 10.0 s)
+    C2->>Guidance: notifyLinkLoss(tier=EMERGENCY, tau_loss=10.0)
+    Guidance->>Guidance: enterLostLinkPhase1()
+
+    rect rgb(240, 248, 255)
+    Note over Guidance,PACE: Phase 1: Re-acquisition Loiter (t_loiter <= 120.0 s)
+    Guidance->>Nav: commandLoiterOrbit(waypoint=WP_CURRENT, t_loiter_max=120.0)
+    loop [t <= 120.0 s]
+        Guidance->>PACE: cycleReceiverFrontends(bands=[5.8GHz, 915MHz, LTE])
+        PACE-->>Guidance: reportLinkStatus(reacquired=false)
+    end
+    end
+
+    rect rgb(255, 250, 240)
+    Note over Guidance,Nav: Phase 2: Reverse Ingress Retrace (t > 120.0 s)
+    Guidance->>Guidance: enterLostLinkPhase2()
+    Guidance->>Nav: commandReverseIngressTraversal(z_corridor=350.0, v_transit=18.0)
+    Nav-->>Guidance: confirmCorridorTracking(status=TRACKING)
+    end
+
+    alt [Energy and Airspace Containment Nominal]
+        rect rgb(240, 255, 240)
+        Note over Guidance,Nav: Phase 3: Rally Point Loiter (t_rally <= 180.0 s)
+        Nav->>Guidance: reportArrivedAtRallyPoint(point=RP-01)
+        Guidance->>Guidance: enterLostLinkPhase3()
+        Guidance->>Nav: commandRallyOrbit(point=RP-01, t_rally_max=180.0)
+        PACE-->>Guidance: reportLinkStatus(reacquired=false)
+
+        Note over Guidance,Recov: Phase 4: Autonomous Recovery & Approach
+        Guidance->>Guidance: enterLostLinkPhase4()
+        Guidance->>Recov: executeAutonomousLanding(runway=Runway-04)
+        Recov->>Nav: initiateGlideSlopeApproach(runway=Runway-04)
+        Recov-->>Guidance: confirmTouchdownAndSecure()
+        end
+    else [Energy or Airspace Containment Compromised]
+        rect rgb(255, 240, 245)
+        Note over Guidance,Ditch: Emergency Ditching Allocation
+        Guidance->>Ditch: evaluateGlideConeReachability(p_current, z_current, E_avail)
+        Ditch->>Ditch: computeOptimalDitchingSite(candidates=[DITCH-01, DITCH-02, DITCH-03])
+        Ditch-->>Guidance: returnSelectedSite(site=DITCH_SELECTED)
+        Guidance->>Nav: divertToDitchingSite(site=DITCH_SELECTED)
+        Nav->>Recov: commandEmergencyContainmentDescent(site=DITCH_SELECTED)
+        Recov-->>Guidance: confirmDitchingExecution()
+        end
+    end
+```
+
+#### KaTeX Emergency Ditching Reachability & Site Selection Mathematics
+
+The unpowered or degraded glide reachability envelope and optimal emergency ditching site selection are governed by 3D glide cone kinematics and SORA Ground Risk Class (GRC) minimization:
+
+$$
+\begin{aligned}
+d_{xy,k}(\mathbf{p}(t)) &= \sqrt{(x(t) - x_{\mathrm{ditch},k})^2 + (y(t) - y_{\mathrm{ditch},k})^2} \\
+R_{\mathrm{reach},k}(z(t)) &= (z(t) - z_{\mathrm{ditch},k}) \cdot \left(\frac{L}{D}\right)_{\mathrm{eff}} \cdot \left(1 - \frac{\mathbf{v}_{\mathrm{wind}} \cdot (\mathbf{p}_{\mathrm{ditch},xy,k} - \mathbf{p}_{xy}(t))}{\|\mathbf{v}_{\mathrm{wind}}\| \cdot \|\mathbf{p}_{\mathrm{ditch},xy,k} - \mathbf{p}_{xy}(t)\|} \cdot \frac{\|\mathbf{v}_{\mathrm{wind}}\|}{v_{\mathrm{glide}}}\right) \\
+\mathcal{K}_{\mathrm{reachable}}(t) &= \left\{ k \in \{1, 2, 3\} \;\middle|\; d_{xy,k}(\mathbf{p}(t)) + R_{\mathrm{GRB},k} \le R_{\mathrm{reach},k}(z(t)) \right\} \\
+J_{\mathrm{ditch}}(k, t) &= w_1 \cdot \frac{d_{xy,k}(\mathbf{p}(t))}{R_{\mathrm{reach},k}(z(t))} + w_2 \cdot \mathrm{GRC}_k + w_3 \cdot \frac{E_{\mathrm{req},k}}{E_{\mathrm{avail}}(t)} \\
+k^*(t) &= \arg\min_{k \in \mathcal{K}_{\mathrm{reachable}}(t)} J_{\mathrm{ditch}}(k, t)
+\end{aligned}
+$$
+
+Where and Operational Parameters:
+- $\mathbf{p}(t) = (x(t), y(t), z(t))$: Instantaneous aircraft 3D position vector in local NED coordinate frame (m).
+- $(x_{\mathrm{ditch},k}, y_{\mathrm{ditch},k}, z_{\mathrm{ditch},k})$: 3D origin and elevation datum of emergency ditching site $k$ (m).
+- $d_{xy,k}(\mathbf{p}(t))$: Planar horizontal range from aircraft to candidate ditching site $k$ (m).
+- $R_{\mathrm{reach},k}(z(t))$: Wind-corrected reachable glide distance from current altitude $z(t)$ to ditching site $k$ (m).
+- $(L/D)_{\mathrm{eff}}$: Effective aerodynamic lift-to-drag glide ratio in unpowered/degraded configuration.
+- $\mathbf{v}_{\mathrm{wind}}$: Estimated horizontal ambient wind velocity vector (m/s).
+- $v_{\mathrm{glide}}$: Nominal best-glide calibrated airspeed ($15.0\text{ m/s}$).
+- $R_{\mathrm{GRB},k}$: SORA Ground Risk Buffer radius around ditching site $k$ (m).
+- $\mathcal{K}_{\mathrm{reachable}}(t)$: Set of kinematically reachable ditching sites satisfying containment margin.
+- $\mathrm{GRC}_k$: SORA Ground Risk Class index for candidate site $k$ ($\mathrm{GRC}_k = 1$ for all unpopulated sites).
+- $E_{\mathrm{req},k}$: Estimated electrical/kinetic energy required for trajectory execution to site $k$ (J).
+- $E_{\mathrm{avail}}(t)$: Instantaneous usable onboard battery stored energy (J).
+- $w_1, w_2, w_3$: Optimization weighting coefficients ($w_1 = 0.40, w_2 = 0.35, w_3 = 0.25$).
+- $k^*(t)$: Optimal selected emergency ditching site index.
+
+#### Lost-Link Guidance Protocol & Ditching Parameters Table
+
+| Parameter / Protocol Element | Symbol | Nominal Value | Units | Operational Constraint | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Phase 1 Loiter Orbit Duration | t_loiter | <= 120.0 | s | Maximum re-acquisition holding time at current waypoint | NATO STANAG 4586 §4.5 |
+| Phase 2 Deconfliction Corridor Floor | z_corridor | 350.0 | m | Altitude floor AGL during reverse ingress transit | JARUS SORA v2.5 Annex C §3.2 |
+| Phase 2 Reverse Transit Airspeed | v_transit | 18.0 | m/s | Best endurance transit speed along ingress track | NATO STANAG 4586 Annex B §3.4 |
+| Phase 3 Rally Point Loiter Duration | t_rally | <= 180.0 | s | Maximum holding pattern duration at Rally Point RP-01 | RTCA DO-362A §2.2 |
+| Phase 4 Primary Recovery Runway | Runway_ID | Runway-04 | Dimensionless | Primary base recovery strip (Heading 042 deg True) | NATO STANAG 4586 §4.5 |
+| Emergency Ditching Allocation Pool | Ditch_Sites | DITCH-01..03 | Dimensionless | Pre-surveyed unpopulated containment zones | JARUS SORA v2.5 Annex B §2.1 |
+| Best Glide Aerodynamic Ratio | L_over_D_eff | 12.0 | Dimensionless | Clean configuration best glide efficiency | NATO STANAG 4586 Annex B §3.4 |
+| Best Glide Airspeed | v_glide | 15.0 | m/s | Calibrated airspeed for minimum descent gradient | NATO STANAG 4586 Annex B §3.4 |
+| Ditching Standoff Weight Factor | w_1 | 0.40 | Dimensionless | Weight factor for normalized distance | MIL-STD-882E §4.3 |
+| SORA Ground Risk Weight Factor | w_2 | 0.35 | Dimensionless | Weight factor for ground risk class (GRC-1) | JARUS SORA v2.5 Annex B §2.1 |
+| Energy Consumption Weight Factor | w_3 | 0.25 | Dimensionless | Weight factor for energy requirement ratio | EASA GM1 UAS.SPEC.050(1)(g) |
+
+---
+
+### 5.4 Failover Hysteresis State Machine & Re-acquisition Dynamics
 
 Link degradation triggers deterministic down-tier failover when the active tier's heartbeat packet stream is interrupted beyond its designated timeout threshold $\tau_{\mathrm{timeout},i}$. Promotion back to a higher-priority tier requires continuous, uninterrupted link stability across the re-acquisition hysteresis time window $\tau_{\mathrm{hysteresis},k}$:
 
 $$
 \begin{aligned}
-\Delta t_{\mathrm{loss},i}(t) &= t - t_{\mathrm{last\_valid\_rx},i} \\
+\Delta t_{\mathrm{loss},i}(t) &= t - t_{\mathrm{last,rx},i} \\
 \mathrm{TriggerFailover}(i \to i+1) &\iff \Delta t_{\mathrm{loss},i}(t) \ge \tau_{\mathrm{timeout},i} \\
-\Delta t_{\mathrm{stable},k}(t) &= t - t_{\mathrm{reacq\_start},k} \\
+\Delta t_{\mathrm{stable},k}(t) &= t - t_{\mathrm{reacq},k} \\
 \mathrm{PromoteTier}(i \to k) &\iff (k < i) \land (\Delta t_{\mathrm{stable},k}(t) \ge \tau_{\mathrm{hysteresis},k}) \land (\mathrm{Margin}_k(t) \ge 12.0)
 \end{aligned}
 $$
@@ -86,6 +204,6 @@ Where and Operational Parameters:
 
 ---
 
-### 5.4 Cryptographic Security & Link Integrity
+### 5.5 Cryptographic Security & Link Integrity
 
 All PACE communication tiers employ authenticated AES-256-GCM encryption with monotonic 64-bit sequence counters and Ed25519 digital signature verification to eliminate eavesdropping, packet tampering, and replay injection in compliance with NIST SP 800-82r3 and DoD Directive 3000.09.

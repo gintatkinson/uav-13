@@ -107,3 +107,54 @@ Where and Operational Parameters:
 | Minimum Obstacle Clearance | h_obs_clear | >= 30.0 | m | Minimum terrain clearance along projected velocity vector | NATO STANAG 4586 Annex B §3.2 |
 | Emergency Escape Climb Angle | gamma_climb | >= 15.0 | deg | Commanded climb gradient under maximum continuous power | MIL-STD-882E §4.4 |
 | CFIT Reaction Latency | t_cfit_resp | <= 100.0 | ms | Latency from hazard detection to pitch-up command | SAE ARP4761 §4.3 |
+
+---
+
+### 7.5 Dedicated Lost-Link Corridors, Rally Points & Emergency Ditching Geozones
+
+In accordance with NATO STANAG 4586 (§4.5 & Annex B §3.2), RTCA DO-365B (§2.2.3), JARUS SORA v2.5 (Annex B §2.1 & Annex C §3.2), and EU Regulation 2021/664 (Art 4), safety containment during lost-link contingency states and forced emergency recovery is guaranteed through dedicated 3D airspace volumes encompassing the published lost-link reverse transit corridor, Rally Point `RP-01`, primary recovery runway `Runway-04`, and pre-surveyed unpopulated emergency ditching sites `DITCH-01` through `DITCH-03`:
+
+$$
+\begin{aligned}
+\mathcal{V}_{\mathrm{corridor}} &= \left\{ \mathbf{p} \in \mathbb{R}^3 \;\middle|\; \min_{\tau \in [0, 1]} \|\mathbf{p}_{xy} - \mathbf{r}_{\mathrm{corridor},xy}(\tau)\|_2 \le w_{\mathrm{corridor}}, \, z_{\mathrm{floor}} \le z \le z_{\mathrm{ceiling}} \right\} \\
+\mathcal{V}_{\mathrm{rally}} &= \left\{ \mathbf{p} \in \mathbb{R}^3 \;\middle|\; \|\mathbf{p}_{xy} - \mathbf{p}_{\mathrm{RP01},xy}\|_2 \le R_{\mathrm{rally}}, \, z_{\mathrm{rally,floor}} \le z \le z_{\mathrm{rally,ceil}} \right\} \\
+\mathcal{V}_{\mathrm{ditch},k} &= \left\{ \mathbf{p} \in \mathbb{R}^3 \;\middle|\; \|\mathbf{p}_{xy} - \mathbf{p}_{\mathrm{ditch},xy,k}\|_2 \le R_{\mathrm{bound},k}, \, 0 \le z \le z_{\mathrm{ditch,floor},k} \right\}
+\end{aligned}
+$$
+
+Where and Operational Parameters:
+- $\mathbf{p} = (x, y, z)$: 3D spatial position coordinate in local cartesian NED frame (m).
+- $\mathbf{r}_{\mathrm{corridor},xy}(\tau)$: Parametric 2D centerline trajectory of the published ingress/egress corridor ($\tau \in [0, 1]$).
+- $w_{\mathrm{corridor}}$: Corridor lateral half-width buffer ($100.0\text{ m}$).
+- $z_{\mathrm{floor}}, z_{\mathrm{ceiling}}$: Corridor deconfliction vertical altitude boundaries ($350.0\text{ m}$ to $400.0\text{ m}$ AGL).
+- $\mathbf{p}_{\mathrm{RP01},xy}$: 2D geodetic center coordinate of Rally Point `RP-01` ($45.1280^\circ\text{ N}, 14.5720^\circ\text{ E}$).
+- $R_{\mathrm{rally}}$: Holding orbit radius bound at `RP-01` ($250.0\text{ m}$).
+- $z_{\mathrm{rally,floor}}, z_{\mathrm{rally,ceil}}$: Holding orbit altitude boundaries ($300.0\text{ m}$ to $350.0\text{ m}$ AGL).
+- $\mathbf{p}_{\mathrm{ditch},xy,k}$: 2D ground center coordinate of candidate emergency ditching site $k$.
+- $R_{\mathrm{bound},k}$: Physical radius boundary of ditching site $k$ (m).
+- $z_{\mathrm{ditch,floor},k}$: Maximum approach entry altitude floor for ditching site $k$ (m).
+
+#### Master Lost-Link Corridors, Waypoints & Holding Geozones Table
+
+| Geozone / Waypoint ID | Geodetic Coordinates | Local Grid Offset (x, y) | Altitude Bounds AGL | Lateral Buffer (w_corridor) | Transit Airspeed (v_transit) | Operational Role | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `LL-CORRIDOR-01` | Waypoint Track WP-04 to RP-01 | Full Ingress Corridor | 350.0 to 400.0 m | +/- 100.0 m | 18.0 m/s | Primary Lost-Link Retrace Corridor | JARUS SORA v2.5 Annex C §3.2 |
+| `WP-04` | 45.1850 N, 14.6400 E | x = +5340.0 m, y = +6840.0 m | 120.0 m | +/- 100.0 m | 18.0 m/s | Operational Area Exit Waypoint | NATO STANAG 4586 Annex B §3.2 |
+| `WP-03` | 45.1620 N, 14.6050 E | x = +2910.0 m, y = +4280.0 m | 250.0 m | +/- 100.0 m | 18.0 m/s | Mid-Corridor Climb Waypoint | NATO STANAG 4586 Annex B §3.2 |
+| `WP-02` | 45.1410 N, 14.5820 E | x = +1110.0 m, y = +1950.0 m | 350.0 m | +/- 100.0 m | 18.0 m/s | Corridor Deconfliction Ingress Waypoint | NATO STANAG 4586 Annex B §3.2 |
+| `RP-01` | 45.1280 N, 14.5720 E | x = +330.0 m, y = +510.0 m | 300.0 to 350.0 m | Radius = 250.0 m | 18.0 m/s | Primary Lost-Link Rally Holding Orbit | RTCA DO-362A §2.2 |
+
+#### Master Recovery Runway & Approach Corridor Table
+
+| Facility ID | Facility Type | Threshold Coordinates | Elevation MSL | Heading / Alignment | Usable Length x Width | Ingress Altitude Floor | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `Runway-04` | Primary Paved Runway | 45.1215 N, 14.5650 E | 150.0 m | 042 deg True | 120.0 m x 20.0 m | 50.0 m AGL | NATO STANAG 4586 §4.5 |
+| `RP-01-APP` | Final Approach Corridor | 45.1280 N, 14.5720 E to Threshold | 150.0 to 350.0 m | 222 deg to 042 deg Intercept | 800.0 m Glide Path | 150.0 m AGL | RTCA DO-365B §2.2.3 |
+
+#### Master Pre-Surveyed Emergency Ditching Geozones Table
+
+| Ditching Site ID | Site Name & Description | Geodetic Coordinates | Elevation MSL | Radius Bound (R_bound) | SORA GRB Radius (R_GRB) | Population Density | Ingress Altitude Floor | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `DITCH-01` | Northern Agricultural Containment Basin | 45.1720 N, 14.6250 E | 135.0 m | 150.0 m | 200.0 m | 0.0 persons/km^2 (GRC-1) | 100.0 m AGL | JARUS SORA v2.5 Annex B §2.1 |
+| `DITCH-02` | Eastern Quarry Buffer Basin | 45.1450 N, 14.6550 E | 120.0 m | 125.0 m | 180.0 m | 0.0 persons/km^2 (GRC-1) | 80.0 m AGL | JARUS SORA v2.5 Annex B §2.1 |
+| `DITCH-03` | Southern Scrubland Emergency Zone | 45.0950 N, 14.5320 E | 170.0 m | 175.0 m | 220.0 m | 0.0 persons/km^2 (GRC-1) | 120.0 m AGL | JARUS SORA v2.5 Annex B §2.1 |
