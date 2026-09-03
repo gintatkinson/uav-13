@@ -3,183 +3,174 @@
 | **Title** | Operational Impacts, System Limitations & Documented Trade Studies |
 | **Version** | 1.0.0 |
 | **Date** | 2026-09-02 |
+| **Traceability References** | Fixes #118, #129, #132 |
 
 ## 11. Operational Impacts, System Limitations & Documented Trade Studies
 
-In accordance with ISO/IEC/IEEE 29148:2018 §5.2.4 & §6.4.2, NATO STANAG 4586 Edition 4, and INCOSE Systems Engineering Handbook v5.0, this section establishes the operational impacts, environmental constraints, statutory boundaries, and formal quantitative Pugh decision matrices governing architectural trade-offs.
-
----
-
 ### 11.1 Operational Workflow & Deployment Impacts
-The introduction of supervisory autonomous flight architectures and tool-less modular field maintenance delivers substantial operational enhancements across tactical deployment workflows:
-1. **Reduced Crew Staging Footprint:** The operational crew footprint required to maintain continuous 24/7 surveillance coverage is compressed to a two-person team (1 Remote Pilot in Command supervisory operator and 1 Payload / Safety Operator), minimizing personnel exposure in high-threat environments.
-2. **Automated Launch & Mission Staging:** Pre-flight preparation time is compressed to $t_{\mathrm{prep}} \le 10.0\text{ min}$ due to automated digital PBIT routines, tool-less modular LRU interfaces, and pre-programmed flight profile generation.
-3. **Automated Airspace Authorization:** Integration with U-space / UTM service providers automates digital flight plan filing, dynamic geo-zone deconfliction, and electronic conspicuity broadcast, reducing airspace authorization lead time from hours to seconds.
-
----
+The transition from legacy manual systems to the Abstract Cyber-Physical System Archetype introduces substantial positive impacts across operational workflows:
+1. **Reduced Crew Staging Footprint:** The operational crew footprint required to maintain continuous operations is minimized through supervisory automation (1 System Operator and 1 Payload / Data Specialist).
+2. **Automated Pre-Operation Staging:** Preparation time is compressed to $t_{\mathrm{prep}} \le \tau_{\mathrm{prep\_target}}$ (nominal $\tau_{\mathrm{prep\_target}} = {{PREP_TIME_TARGET_S}}$ s) due to automated digital PBIT routines and tool-less modular interfaces.
+3. **Automated External Coordination:** Integration with external data services automates operational plan registration, dynamic boundary deconfliction, and electronic conspicuity broadcast.
+4. **Rapid Turnaround Servicing:** Field turnaround time $t_{\mathrm{turnaround}} \le \tau_{\mathrm{turnaround\_target}}$ (nominal $\tau_{\mathrm{turnaround\_target}} = {{TURNAROUND_TIME_TARGET_S}}$ s) enabled by modular energy packs and automated self-calibration diagnostics.
 
 ### 11.2 Organizational Roles & Training Impacts
-- **Operator Reskilling:** The primary operator role transitions from continuous manual stick-and-rudder piloting to supervisory mission management, airspace deconfliction, and tactical payload exploitation.
-- **Formal Training Syllabus:** Personnel complete a certified 40-hour training syllabus covering STANAG 4586 UCS software operations, human-in-the-loop emergency matrix execution, and SORA risk buffer monitoring.
-- **Maintenance Specialization:** Maintenance technicians transition from purely mechanical repairs to digital bus diagnostics (CAN FD analysis, optical boresight alignment, and cryptographic key loading).
-
----
+- **Operator Reskilling:** The primary operator role transitions from continuous manual control to supervisory systems management, state deconfliction, and payload data analysis.
+- **Formal Training Syllabus:** Personnel complete a certified training syllabus covering supervisory software operations, human-in-the-loop emergency matrix execution, and safety buffer monitoring.
+- **Maintenance Specialization:** Maintenance technicians transition from purely mechanical repairs to digital bus diagnostics (bus analysis, sensor alignment, and cryptographic key loading).
 
 ### 11.3 System Limitations & Operational Boundaries
 While the system provides robust multi-mission capability, formal operational boundaries and statutory constraints must be observed:
-- **Maximum Operational Ceiling:** $120.0\text{ m}$ AGL ($h_{\mathrm{operating\_ceiling}} = 120.0\text{ m}$) in accordance with civil and tactical airspace authorizations.
-- **Operational C2 Radius:** $15.0\text{ km}$ ($R_{\mathrm{C2}} = 15.0\text{ km}$) line-of-sight communications range from the primary GCS antenna mast.
-- **Flight Endurance:** Flight endurance of $90.0\text{ min}$ ($t_{\mathrm{endurance\_nominal}} = 90.0\text{ min}$) under standard atmospheric conditions; adjusts to $70.0\text{ min}$ at the minimum operating temperature limit $-40^\circ\text{C}$.
-- **Maximum Takeoff Weight:** Maximum Takeoff Weight of $25.0\text{ kg}$ ($m_{\mathrm{MTOW}} = 25.0\text{ kg}$) with a dedicated mission payload capacity of $5.0\text{ kg}$ ($m_{\mathrm{payload}} = 5.0\text{ kg}$).
-- **Severe Weather Constraints:** Flight is prohibited in atmospheric icing conditions exceeding liquid water content $\text{LWC} = 0.5\text{ g/m}^3$ or convective weather exceeding maximum steady wind limits of $15.0\text{ m/s}$ ($20.0\text{ m/s}$ gusts).
-
----
+- **Maximum Operational Boundary:** $x_{\mathrm{operating\_max}} = {{OPERATIONAL_BOUNDARY_MAX_M}}$ m in accordance with operational authorizations.
+- **Operational Endurance:** Operating endurance $t_{\mathrm{endurance\_nominal}} = {{NOMINAL_ENDURANCE_HOURS}}$ hr under standard environmental conditions; adjusts to $t_{\mathrm{endurance\_cold}} = {{COLD_ENDURANCE_HOURS}}$ hr at the minimum operating temperature limit $T_{\mathrm{op\_min}} = {{OPERATING_TEMP_MIN_C}}^\circ\text{C}$.
+- **Maximum Payload Capacity:** Maximum payload mass $m_{\mathrm{payload\_max}} = {{PAYLOAD_MASS_MAX_KG}}$ kg within the maximum total system mass envelope $m_{\mathrm{system\_max}} = {{SYSTEM_MASS_MAX_KG}}$ kg.
+- **Severe Environmental Constraints:** Operation is prohibited in environmental conditions exceeding maximum dynamic disturbance limits $a_{\mathrm{dist\_limit}} = {{DISTURBANCE_LIMIT_ACCEL}}\text{ m/s}^2$ or precipitation limits $R_{\mathrm{precip\_max}} = {{PRECIPITATION_LIMIT_MM_HR}}$ mm/hr.
 
 ### 11.4 Documented Engineering Trade Studies
-To establish the optimal architectural configuration, three formal quantitative engineering trade studies were conducted across the physical, computational, and safety recovery design spaces.
+In accordance with INCOSE Systems Engineering Handbook v5.0 §4.3 (Decision Analysis) and ISO/IEC/IEEE 29148:2018 §6.4.2, three formal quantitative multi-criteria engineering trade studies were conducted across the energy storage, edge compute / communications, and autonomous safety containment architecture design spaces (Fixes #118, #129, #132):
 
-Architectural alternatives are scored using multi-attribute Pugh decision matrices. The composite weighted score $S_j$ for alternative $j$ is calculated via:
-
-$$
-\begin{aligned}
-S_j &= \sum_{i=1}^{m} w_i \cdot s_{ij} \\
-\sum_{i=1}^{m} w_i &= 1.00 \quad (100\%)
-\end{aligned}
-$$
-
-Where and Operational Parameters:
-- $S_j$: Composite weighted decision score for architectural alternative $j$.
-- $w_i$: Normalized importance weight assigned to evaluation criterion $i$, satisfying $\sum_{i=1}^m w_i = 1.00$ ($100\%$).
-- $s_{ij}$: Normalized performance rating score of alternative $j$ under criterion $i$ on a discrete scale from $1$ (Unacceptable / Severely Deficient) to $5$ (Superior / Optimal Benchmark).
-- $m$: Total number of evaluation criteria in the decision matrix.
-
----
-
-#### 11.4.1 Trade Study 1: Propulsion & Energy Storage Architecture
-- **Objective:** Select the primary energy storage chemistry balancing cold-weather performance at $-40^\circ\text{C}$, gravimetric energy density, cycle lifetime, thermal runaway safety, and pack acquisition cost.
+#### 11.4.1 Trade Study 1: Energy & Power Storage Architecture (Fix #118)
+- **Objective & Problem Statement:** Select the optimal energy storage chemistry and thermal management architecture balancing low-temperature operational performance at $T_{\mathrm{op\_min}}$, gravimetric energy density $\rho_{\mathrm{energy}}$, cycle lifetime $N_{\mathrm{cycles}}$, safety containment, and pack unit acquisition cost.
+- **Normative Standards Baseline:** INCOSE SEH v5.0 §4.3 (Decision Management), ISO/IEC/IEEE 29148:2018 §6.4.2, MIL-STD-810H Method 502.7 (Low Temperature).
 - **Options Evaluated:**
-  - *Option A:* High-Discharge Lithium Polymer (LiPo) Chemistry Cells ($180\text{ Wh/kg}$).
-  - *Option B (Selected Baseline):* High-Capacity Cylindrical 21700 Lithium-Ion (NMC) Cells with Integrated PTC Heating Jackets ($250\text{ Wh/kg}$).
-  - *Option C:* Solid-State Lithium Metal Cells ($350\text{ Wh/kg}$, Developmental TRL-4).
+  - **Option A (Baseline):** High-Discharge Chemistry Cells (High peak discharge capability, lower gravimetric energy density, severe capacity degradation below $0^\circ\text{C}$).
+  - **Option B (Selected Architecture):** High-Capacity Cylindrical Chemistry Cells with Integrated Thermal Heating (Optimal gravimetric energy density, active internal thermal heating maintaining nominal discharge capacity down to $T_{\mathrm{op\_min}}$, and verified cycle durability).
+  - **Option C:** Solid-State Storage Cells (High theoretical gravimetric energy density and non-flammable solid core, but low ionic conductivity at low temperatures, developmental TRL, and high unit acquisition cost).
+- **Decision:** **Option B (High-Capacity Cylindrical Chemistry with Integrated Thermal Heating)** was selected as the optimal architecture.
 
-##### Quantitative Pugh Decision Matrix: Energy Storage Architecture
+##### Multi-Criteria Pugh Decision Matrix (Trade Study 1)
+The quantitative INCOSE Pugh Decision Matrix evaluates the candidate energy storage architectures against weighted operational criteria (scale 1 to 5, where 1 = Unacceptable, 3 = Compliant Baseline, 5 = Optimal):
 
-| Criterion ID | Evaluation Criterion | Weight (w_i) | Option A: High-Discharge LiPo (Raw / Wtd) | Option B: 21700 Li-ion + Heat (Selected) (Raw / Wtd) | Option C: Solid-State Cells (Raw / Wtd) | Evaluation Rationale & Scoring Metric |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **C1** | Gravimetric Energy Density | 30% (0.30) | 2 / 0.60 | 4 / 1.20 | 5 / 1.50 | Option C provides highest density (350 Wh/kg); Option B delivers 250 Wh/kg (exceeds 90-min requirement); Option A delivers only 180 Wh/kg |
-| **C2** | Cold Temp Discharge (-40 °C) | 25% (0.25) | 1 / 0.25 | 5 / 1.25 | 2 / 0.50 | Option B active PTC heating jacket maintains nominal cell core temp (>= +15 °C) yielding >= 85% capacity at -40 °C; Option A loses > 55% capacity |
-| **C3** | Cycle Lifetime (>= 500 cycles) | 20% (0.20) | 2 / 0.40 | 5 / 1.00 | 1 / 0.20 | Option B verified 500+ cycles to 80% DoD; Option A degrades rapidly after 200 cycles; Option C limited to < 150 cycles due to dendrite formation |
-| **C4** | Fire Safety & Thermal Runaway | 15% (0.15) | 2 / 0.30 | 4 / 0.60 | 5 / 0.75 | Option C ceramic electrolyte is non-flammable; Option B cylindrical steel canisters with CID/PTC mitigate propagation; Option A pouch cells prone to swelling |
-| **C5** | Pack Acquisition Cost & Supply | 10% (0.10) | 5 / 0.50 | 4 / 0.40 | 1 / 0.10 | Option A lowest acquisition cost; Option B highly mature automotive supply chain (+15% pack cost); Option C prohibitive developmental unit cost (+300%) |
-| **TOTAL** | **Weighted Composite Score (S_j)** | **100% (1.00)** | **2.05** | **4.45 (Rank 1 - Selected)** | **3.05 (Rank 2)** | **Option B selected: Highest overall composite score and superior cold-weather endurance** |
+| Evaluation Criterion | Criterion ID | Weight (w_i) | Option A: High-Discharge Cells (s_i1) | Option A: Weighted (w_i * s_i1) | Option B: High-Capacity with Heating (s_i2) [Selected] | Option B: Weighted (w_i * s_i2) | Option C: Solid-State Cells (s_i3) | Option C: Weighted (w_i * s_i3) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| Gravimetric Energy Density (rho_energy) | C_1 | 0.25 | 2 (180 Wh/kg) | 0.50 | 4 (260 Wh/kg) | 1.00 | 5 (350 Wh/kg) | 1.25 |
+| Low-Temp Discharge at T_op_min (s_cold) | C_2 | 0.25 | 1 (Capacity Drop < 40%) | 0.25 | 4 (Thermal Heated > 85%) | 1.00 | 2 (High Impedance < 50%) | 0.50 |
+| Cycle Lifetime & Durability (N_cycles) | C_3 | 0.15 | 2 (300 cycles) | 0.30 | 5 (1000+ cycles) | 0.75 | 2 (350 cycles) | 0.30 |
+| Thermal Runaway Safety & Containment | C_4 | 0.15 | 2 (High Risk / Pouch Swell) | 0.30 | 4 (CID / PTC / Metal Can) | 0.60 | 5 (Solid Core Safe) | 0.75 |
+| Technology Readiness Level (TRL / Maturity) | C_5 | 0.10 | 5 (TRL 9 - Production) | 0.50 | 5 (TRL 9 - Commercial) | 0.50 | 2 (TRL 4 - Lab Prototype) | 0.20 |
+| Unit Acquisition & Pack Integration Cost | C_6 | 0.10 | 4 (Low Cost Baseline) | 0.40 | 3 (Moderate Heating Cost) | 0.30 | 1 (Very High Unit Cost) | 0.10 |
+| Total Composite Score (S_j = sum(w_i * s_ij)) | Total | 1.00 | Baseline Total: 2.25 | 2.25 | Selected Total: 4.15 | 4.15 | Developmental Total: 3.10 | 3.10 |
+| Pugh Ranking & Selection Decision | Rank | — | Rank 3 (Rejected) | — | Rank 1 (Selected Preferred) | — | Rank 2 (Deferred - Low TRL) | — |
 
-##### Mathematical Sensitivity Analysis & Curve Justification
-The sensitivity of the composite score $S_j$ as a function of the cold-temperature operational importance weight $w_{\mathrm{cold}} \in [0.00, 0.50]$ is modeled via:
+##### Mathematical Sensitivity Analysis Formulation (Trade Study 1)
+To verify decision robustness across varying environmental requirements, the sensitivity of the composite decision score $S_j$ to the cold-temperature performance weight $w_{\mathrm{cold}}$ is formulated as:
 
 $$
 \begin{aligned}
-S_j(w_{\mathrm{cold}}) &= w_{\mathrm{cold}} \cdot s_{\mathrm{cold},j} + (1 - w_{\mathrm{cold}}) \cdot \bar{S}_{\mathrm{other},j} \\
-S_{\mathrm{OptionB}}(w_{\mathrm{cold}}) &= w_{\mathrm{cold}} \cdot 5.0 + (1 - w_{\mathrm{cold}}) \cdot 4.27 \\
-S_{\mathrm{OptionC}}(w_{\mathrm{cold}}) &= w_{\mathrm{cold}} \cdot 2.0 + (1 - w_{\mathrm{cold}}) \cdot 3.40 \\
-S_{\mathrm{OptionA}}(w_{\mathrm{cold}}) &= w_{\mathrm{cold}} \cdot 1.0 + (1 - w_{\mathrm{cold}}) \cdot 2.40
+S_j(w_{\mathrm{cold}}) &= \sum_{i \neq \mathrm{cold}} w_i s_{ij} + w_{\mathrm{cold}} s_{\mathrm{cold}, j}
 \end{aligned}
 $$
 
-Where and Operational Parameters:
-- $w_{\mathrm{cold}}$: Sensitivity weight parameter assigned to sub-zero temperature discharge capability.
-- $s_{\mathrm{cold},j}$: Discrete rating score for low-temperature performance ($s_{\mathrm{cold,A}} = 1$, $s_{\mathrm{cold,B}} = 5$, $s_{\mathrm{cold,C}} = 2$).
-- $\bar{S}_{\mathrm{other},j}$: Normalized composite rating score across all non-thermal criteria.
+- Parameter Definitions & Engineering Units:
 
-**Sensitivity Curve Findings:**
-- At $w_{\mathrm{cold}} = 0.00$ (benign temperate environment), Option B ($S = 4.27$) already dominates Option C ($S = 3.40$) and Option A ($S = 2.40$) due to superior cycle lifetime and industrial production maturity.
-- As $w_{\mathrm{cold}}$ scales from $0.00$ to $0.50$, Option B's composite score rises monotonically to $S = 4.63$, while Option C declines to $S = 2.70$ and Option A collapses to $S = 1.70$.
-- Option B represents the robust Pareto-optimal configuration across all climate regimes.
+| Parameter | Symbol | Expression / Value | Units | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| Composite Pugh Decision Score | S_j | S_j in [1.0, 5.0] | Dimensionless | Total weighted score for candidate architecture j |
+| Normalized Criterion Weight | w_i | sum(w_i) = 1.00 | Dimensionless | Importance weighting for evaluation criterion i |
+| Candidate Attribute Score | s_ij | s_ij in {1, 2, 3, 4, 5} | Dimensionless | Unweighted ordinal performance score of option j on criterion i |
+| Cold Temperature Weight | w_cold | w_cold = {{COLD_CRITERION_WEIGHT}} | Dimensionless | Parametric weighting assigned to low-temperature operational performance |
+| Cold Performance Score | s_cold_j | s_cold_B = 4 | Dimensionless | Performance rating of option j at minimum operating temperature T_op_min |
+| Minimum Operating Temperature | T_op_min | {{OPERATING_TEMP_MIN_C}} | degC | Statutory cold environment operational temperature boundary |
+| Nominal Gravimetric Energy Density | rho_energy | {{BATTERY_ENERGY_DENSITY_NOMINAL}} | Wh/kg | Nominal gravimetric energy storage density |
+| Required Cycle Lifetime | N_cycles_req | {{BATTERY_CYCLE_LIFE_REQ}} | Cycles | Minimum required charge-discharge cycles to 80% state of health |
 
----
-
-#### 11.4.2 Trade Study 2: Edge Neural Compute vs High-Bandwidth Datalink Compression
-- **Objective:** Determine the optimal balance between onboard edge neural inference processing versus raw sensor streaming with centralized ground station AI processing.
+#### 11.4.2 Trade Study 2: Edge Neural Compute vs Datalink Compression (Fix #129)
+- **Objective & Problem Statement:** Determine the optimal balance between onboard edge neural inference compute and high-bandwidth telemetry downlink transmission under contested, degraded, or jammed RF communications environments.
+- **Normative Standards Baseline:** INCOSE SEH v5.0 §4.3, ISO/IEC/IEEE 29148:2018 §6.4.2, STANAG 4586 Annex B §3.2, NIST SP 800-82r3 §5.2.
 - **Options Evaluated:**
-  - *Option A:* Raw High-Definition Video Downlink Streaming with Ground Station AI Server Processing (Requires $1.2\text{ Gbps}$ throughput, high RF transmission power).
-  - *Option B (Selected Baseline):* Onboard Edge Neural Inference Accelerator (NVIDIA Jetson Orin NX) with Dynamic H.265 Stream Compression (Downlink: $8.0\text{ Mbps}$, $15.0\text{ W}$ AI power envelope).
-  - *Option C:* Hybrid Cloud Inference via High-Bandwidth SATCOM Relay ($50\text{ Mbps}$ SATCOM uplink, high latency).
+  - **Option A (Baseline):** Raw Telemetry Streaming with Centralized Operator Station AI Processing (Transmits raw uncompressed high-rate sensor streams to the supervisory station; minimal onboard compute SWaP-C, but high RF bandwidth demand and catastrophic operational failure during RF link denial).
+  - **Option B (Selected Architecture):** Onboard Edge Neural Inference Accelerator with Dynamic Context Compression (Executes real-time feature extraction and boundary detection locally; transmits compact semantic state vectors and compressed telemetry at $\text{Throughput}_{\mathrm{feature}} \ll \text{Throughput}_{\mathrm{raw}}$, guaranteeing autonomous mission execution during communications loss).
+  - **Option C:** Hybrid Dynamic Adaptive Splitting (Dynamically shifts inference tasks between onboard edge and operator console based on estimated link margin; high software complexity, synchronization overhead, and non-deterministic latency spikes during link transitions).
+- **Decision:** **Option B (Onboard Edge Neural Inference Accelerator with Dynamic Compression)** was selected as the optimal architecture.
 
-##### Quantitative Pugh Decision Matrix: Edge Compute vs Datalink Compression
+##### Multi-Criteria Pugh Decision Matrix (Trade Study 2)
+The quantitative Pugh Decision Matrix evaluates compute and communications architectures across operational criteria (scale 1 to 5):
 
-| Criterion ID | Evaluation Criterion | Weight (w_i) | Option A: Raw Downlink + Ground AI (Raw / Wtd) | Option B: Edge Orin NX + H.265 (Selected) (Raw / Wtd) | Option C: SATCOM Hybrid Cloud (Raw / Wtd) | Evaluation Rationale & Scoring Metric |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **C1** | Downlink Bandwidth & Spectrum | 30% (0.30) | 1 / 0.30 | 5 / 1.50 | 3 / 0.90 | Option B compresses video to 8.0 Mbps H.265 with KLV metadata, minimizing RF spectrum footprint; Option A requires 1.2 Gbps (prohibitive in contested RF) |
-| **C2** | Tracking & Designation Latency | 20% (0.20) | 3 / 0.60 | 5 / 1.00 | 1 / 0.20 | Option B executes local target tracking loop at 60 fps (latency <= 15 ms); Option A introduces 120 ms RF round-trip delay; Option C introduces > 600 ms SATCOM latency |
-| **C3** | EW & RF Jamming Resilience | 20% (0.20) | 1 / 0.20 | 5 / 1.00 | 3 / 0.60 | Option B continues autonomous object tracking, PID, and geofence containment during total RF link loss; Option A completely ceases tracking during EW jamming |
-| **C4** | Onboard SWaP-C Impact | 20% (0.20) | 4 / 0.80 | 4 / 0.80 | 2 / 0.40 | Option B consumes 15W AI power and adds 220g mass; Option A saves 15W onboard compute but requires heavy 45W RF power amplifier; Option C requires heavy phased-array antenna |
-| **C5** | Unit Production Cost | 10% (0.10) | 4 / 0.40 | 4 / 0.40 | 2 / 0.20 | Option B adds modest SOM hardware cost; Option A requires high-cost military microwave datalink transceivers; Option C requires high recurring satellite airtime fees |
-| **TOTAL** | **Weighted Composite Score (S_j)** | **100% (1.00)** | **2.30** | **4.70 (Rank 1 - Selected)** | **2.30 (Rank 2)** | **Option B selected: Unmatched EW resilience, deterministic low tracking latency, and compact RF footprint** |
+| Evaluation Criterion | Criterion ID | Weight (w_i) | Option A: Centralized Streaming (s_i1) | Option A: Weighted (w_i * s_i1) | Option B: Edge Compute + Compression (s_i2) [Selected] | Option B: Weighted (w_i * s_i2) | Option C: Hybrid Adaptive Splitting (s_i3) | Option C: Weighted (w_i * s_i3) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| Contested / Jammed RF Resilience (s_jam) | C_1 | 0.30 | 1 (Mission Failure on Loss) | 0.30 | 5 (Autonomous Full Capability) | 1.50 | 3 (Degraded Dynamic Fallback) | 0.90 |
+| Telemetry Bandwidth Consumption | C_2 | 0.20 | 1 (High > 10 Mbps raw) | 0.20 | 5 (Low < 250 kbps semantic) | 1.00 | 3 (Moderate ~ 2 Mbps) | 0.60 |
+| Real-Time Inference Latency (tau_infer) | C_3 | 0.20 | 2 (Transport + Station: 80 ms) | 0.40 | 4 (Local Edge: < 15 ms) | 0.80 | 3 (Variable 20-100 ms) | 0.60 |
+| Onboard SWaP-C Impact (Power & Thermal) | C_4 | 0.15 | 5 (Low Power: 5 W) | 0.75 | 3 (Moderate Power: 25 W TPU) | 0.45 | 3 (Moderate Power: 20 W) | 0.45 |
+| Autonomous Lost-Link Execution Authority | C_5 | 0.10 | 1 (Blind Reversion / Abort) | 0.10 | 5 (Continuous State Extraction) | 0.50 | 3 (Partial State Buffering) | 0.30 |
+| Software & Verification Complexity | C_6 | 0.05 | 4 (Standard Pipeline) | 0.20 | 3 (Embedded Neural Runtime) | 0.15 | 1 (Complex Distributed Sync) | 0.05 |
+| Total Composite Score (S_j = sum(w_i * s_ij)) | Total | 1.00 | Baseline Total: 1.95 | 1.95 | Selected Total: 4.40 | 4.40 | Hybrid Total: 2.90 | 2.90 |
+| Pugh Ranking & Selection Decision | Rank | — | Rank 3 (Rejected) | — | Rank 1 (Selected Preferred) | — | Rank 2 (Rejected - Complexity) | — |
 
-##### Mathematical Sensitivity Analysis & Curve Justification
-The operational effectiveness under Electronic Warfare (EW) jamming is modeled as a function of the RF link jamming probability $P_{\mathrm{jam}} \in [0.00, 1.00]$:
+##### Mathematical Sensitivity Analysis Formulation (Trade Study 2)
+The sensitivity of the composite decision score $S_j$ to the operational jamming and RF interference probability $P_{\mathrm{jam}} \in [0, 1]$ is formulated as:
 
 $$
 \begin{aligned}
-S_j(P_{\mathrm{jam}}) &= (1 - P_{\mathrm{jam}}) \cdot S_{j,\mathrm{nominal}} + P_{\mathrm{jam}} \cdot S_{j,\mathrm{jammed}} \\
-S_{\mathrm{OptionB}}(P_{\mathrm{jam}}) &= (1 - P_{\mathrm{jam}}) \cdot 4.70 + P_{\mathrm{jam}} \cdot 4.30 \\
-S_{\mathrm{OptionA}}(P_{\mathrm{jam}}) &= (1 - P_{\mathrm{jam}}) \cdot 2.30 + P_{\mathrm{jam}} \cdot 0.50 \\
-S_{\mathrm{OptionC}}(P_{\mathrm{jam}}) &= (1 - P_{\mathrm{jam}}) \cdot 2.30 + P_{\mathrm{jam}} \cdot 1.10
+S_j(P_{\mathrm{jam}}) &= \sum_{i \neq \mathrm{jam}} w_i s_{ij} + w_{\mathrm{jam}} s_{\mathrm{jam}, j}(P_{\mathrm{jam}})
 \end{aligned}
 $$
 
-Where and Operational Parameters:
-- $P_{\mathrm{jam}}$: Hostile RF spectrum jamming probability or intensity index ($P_{\mathrm{jam}} = 0.0$: unjammed clear spectrum; $P_{\mathrm{jam}} = 1.0$: total wideband C2/datalink denial).
-- $S_{j,\mathrm{nominal}}$: Baseline composite score under clear RF spectrum conditions.
-- $S_{j,\mathrm{jammed}}$: Degraded composite score during active wideband RF denial.
+- Parameter Definitions & Engineering Units:
 
-**Sensitivity Curve Findings:**
-- Under unjammed conditions ($P_{\mathrm{jam}} = 0.0$), Option B holds a substantial 2.40-point lead ($S = 4.70$) over Option A and Option C ($S = 2.30$).
-- As jamming intensity approaches complete RF denial ($P_{\mathrm{jam}} \rightarrow 1.0$), Option A suffers total operational failure ($S \rightarrow 0.50$) because centralized ground processing cannot receive sensor pixels. Option B retains autonomous target identification, tracking, and failsafe navigation capabilities on edge hardware ($S = 4.30$), proving edge neural compute is mandatory for mission survivability.
+| Parameter | Symbol | Expression / Value | Units | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| Composite Pugh Decision Score | S_j | S_j in [1.0, 5.0] | Dimensionless | Total weighted score for candidate compute architecture j |
+| Contested RF Criterion Weight | w_jam | w_jam = {{JAMMING_CRITERION_WEIGHT}} | Dimensionless | Importance weight assigned to operations in contested RF environments |
+| RF Jamming / Denial Probability | P_jam | P_jam in [0.0, 1.0] | Dimensionless | Probability of experiencing intentional or environmental RF denial |
+| Jammed Performance Score Function | s_jam_j | s_jam_B(P_jam) = 5.0 - 0.2 * P_jam | Dimensionless | Architectural score function under variable RF interference probability |
+| Raw Telemetry Downlink Throughput | Throughput_raw | {{RAW_STREAM_BANDWIDTH_MBPS}} | Mbps | Required bandwidth for uncompressed raw sensor streaming |
+| Extracted Feature Downlink Throughput | Throughput_feature | {{FEATURE_STREAM_BANDWIDTH_KBPS}} | kbps | Reduced bandwidth for onboard extracted semantic state vectors |
+| Maximum Feature Inference Latency | tau_infer_max | {{MAX_INFERENCE_LATENCY_MS}} | ms | Maximum allowable neural edge inference processing delay |
+| Edge Accelerator Power Budget | P_edge_tpu | {{EDGE_COMPUTE_POWER_WATTS}} | W | Electrical power allocation for onboard inference coprocessor |
 
----
-
-#### 11.4.3 Trade Study 3: Autonomous Parachute Recovery vs Airframe Propulsion Redundancy
-- **Objective:** Select the primary ground impact risk mitigation architecture to achieve certified JARUS SORA v2.5 Mitigation M2 High-Integrity compliance (reducing ground impact kinetic energy to $E_k \le 34.0\text{ J}$).
+#### 11.4.3 Trade Study 3: Autonomous Failsafe Containment vs Actuator Redundancy (Fix #132)
+- **Objective & Problem Statement:** Determine the optimal safety assurance and containment architecture to achieve certified risk reduction credit (JARUS SORA M2 mitigation / SAE ARP4761 safety objectives) and guarantee that terminal kinetic impact energy is bounded below statutory safety thresholds ($E_k \le E_{\mathrm{threshold}}$) under catastrophic uncommanded actuation, power bus collapse, or structural failure.
+- **Normative Standards Baseline:** INCOSE SEH v5.0 §4.3, ISO/IEC/IEEE 29148:2018 §6.4.2, JARUS SORA v2.5 Annex B (Ground Risk Mitigation M2), MIL-STD-882E §4.3 & Task 202, SAE ARP4761 §3.
 - **Options Evaluated:**
-  - *Option A:* Hexarotor / Octocopter Multi-Motor Propulsion Redundancy (Provides single-motor-out capability; no containment during total power or structural failure).
-  - *Option B (Selected Baseline):* Integrated Autonomous Ballistic Parachute Recovery Subsystem with Pyrotechnic Fast Ejection and Motor Cutoff Interlock (Terminal velocity $v_{\mathrm{impact}} \le 1.65\text{ m/s}$, $E_k \le 34.0\text{ J}$).
-  - *Option C:* Dual-Redundant Control Surface Actuators with Unpowered Controlled Emergency Glide Profile.
+  - **Option A (Baseline):** Multi-Channel Control Actuator Redundancy (Dual or triple-redundant control channels; provides single-point actuator fail-operational capability, but cannot arrest unpowered descent, provides zero protection against full high-voltage power rail collapse or major structural failure, and adds significant parasitic mass).
+  - **Option B (Selected Architecture):** Integrated Autonomous Failsafe Containment Subsystem with Independent Safety Watchdog and Power Cutoff Interlock (Dedicated independent microcontroller `SafetyWatchdog` with isolated power supply, autonomous deployment trigger $t_{\mathrm{deploy}} \le \tau_{\mathrm{deploy\_max}}$, high-speed actuator power cutoff interlock, and deployable aerodynamic drag / energy dissipation mechanism reducing terminal descent velocity to $v_{\mathrm{safe}}$ and kinetic impact energy to $E_k \le E_{\mathrm{threshold}}$).
+  - **Option C:** Passive Impact Structural Energy Absorption / Crushable Structure (Passive crumple structures and energy-absorbing chassis; zero active deployment complexity, but provides no terminal descent deceleration, adds heavy structural deadweight, and fails to prevent boundary containment excursions).
+- **Decision:** **Option B (Integrated Autonomous Failsafe Containment Subsystem)** was selected as the optimal architecture.
 
-##### Quantitative Pugh Decision Matrix: Emergency Recovery Architecture
+##### Multi-Criteria Pugh Decision Matrix (Trade Study 3)
+The quantitative Pugh Decision Matrix evaluates safety containment architectures across operational criteria (scale 1 to 5):
 
-| Criterion ID | Evaluation Criterion | Weight (w_i) | Option A: Propulsion Redundancy (Raw / Wtd) | Option B: Ballistic Parachute (Selected) (Raw / Wtd) | Option C: Emergency Glide (Raw / Wtd) | Evaluation Rationale & Scoring Metric |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **C1** | Kinetic Energy Reduction (E_k <= 34 J) | 35% (0.35) | 2 / 0.70 | 5 / 1.75 | 1 / 0.35 | Option B limits touchdown velocity to 1.62 m/s, yielding E_k = 32.8 J <= 34.0 J; Option A and Option C free-fall at > 24 m/s (E_k > 7200 J) during power loss |
-| **C2** | SORA v2.5 M2 Containment Credit | 25% (0.25) | 2 / 0.50 | 5 / 1.25 | 2 / 0.50 | Option B qualifies for certified SORA M2 High-Integrity (-2 GRC reduction); Option A qualifies only for Medium-Integrity M1 (-1 GRC) |
-| **C3** | System Mass & SWaP Penalty | 15% (0.15) | 3 / 0.45 | 4 / 0.60 | 5 / 0.75 | Option B adds 650g parachute module mass; Option A requires 2 additional motor/ESC arms adding 1450g; Option C adds zero mass penalty |
-| **C4** | Catastrophic Failure Coverage | 15% (0.15) | 2 / 0.30 | 5 / 0.75 | 2 / 0.30 | Option B protects against complete battery disconnect, mid-air collision, and structural break-up; Option A and Option C fail completely during total electrical bus loss |
-| **C5** | Maintenance & Inspection Overhead | 10% (0.10) | 4 / 0.40 | 3 / 0.30 | 4 / 0.40 | Option B requires periodic pyrotechnic squib inspection and 1-year replacement; Option A requires maintaining 8 motors/ESCs; Option C uses standard airframe rigging |
-| **TOTAL** | **Weighted Composite Score (S_j)** | **100% (1.00)** | **2.35** | **4.65 (Rank 1 - Selected)** | **2.30 (Rank 2)** | **Option B selected: Direct compliance with SORA M2 (< 34 J) and universal failure mode coverage** |
+| Evaluation Criterion | Criterion ID | Weight (w_i) | Option A: Actuator Redundancy (s_i1) | Option A: Weighted (w_i * s_i1) | Option B: Failsafe Containment (s_i2) [Selected] | Option B: Weighted (w_i * s_i2) | Option C: Passive Crushable Structure (s_i3) | Option C: Weighted (w_i * s_i3) |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| Terminal Kinetic Energy Reduction (E_k <= E_thresh) | C_1 | 0.30 | 1 (Unmitigated Terminal v_term) | 0.30 | 5 (Decelerated to v_safe <= 5 m/s) | 1.50 | 2 (Marginal Impact Absorption) | 0.60 |
+| Catastrophic Bus & Structural Failure Mitigation | C_2 | 0.20 | 1 (Zero Protection on Bus Loss) | 0.20 | 5 (Independent Battery & Watchdog) | 1.00 | 2 (Structural Dissipation Only) | 0.40 |
+| SORA M2 / ARP4761 Certification Credit | C_3 | 0.20 | 2 (Partial Actuator Integrity) | 0.40 | 5 (Full High-Integrity M2 Credit) | 1.00 | 1 (No Standard Regulatory Credit) | 0.20 |
+| Mass Envelope Impact & Payload Penalty | C_4 | 0.15 | 2 (High Multi-Actuator Mass) | 0.30 | 4 (Low Subsystem Mass Envelope) | 0.60 | 1 (Heavy Structural Deadweight) | 0.15 |
+| Common-Cause Failure Mode Immunity | C_5 | 0.10 | 2 (Susceptible to Main Bus Failure) | 0.20 | 5 (Isolated Microcontroller & Power) | 0.50 | 4 (Passive Mechanical Simplicity) | 0.40 |
+| Pre-Operation Verification & Inspection Simplicity | C_6 | 0.05 | 3 (Complex Multi-Channel Rig) | 0.15 | 4 (Automated PBIT Continuity Check) | 0.20 | 5 (Visual Inspection Only) | 0.25 |
+| Total Composite Score (S_j = sum(w_i * s_ij)) | Total | 1.00 | Baseline Total: 1.55 | 1.55 | Selected Total: 4.80 | 4.80 | Passive Total: 2.00 | 2.00 |
+| Pugh Ranking & Selection Decision | Rank | — | Rank 3 (Rejected) | — | Rank 1 (Selected Preferred) | — | Rank 2 (Rejected - Insufficient) | — |
 
-##### Mathematical Sensitivity Analysis & Curve Justification
-Terminal impact kinetic energy $E_k(m)$ as a function of total vehicle operating mass $m \in [15.0, 25.0]\text{ kg}$ is governed by aerodynamic descent equilibrium:
+##### Mathematical Sensitivity Analysis Formulation (Trade Study 3)
+In an unconstrained terminal descent scenario, steady-state terminal velocity is reached when gravitational force equals aerodynamic drag force ($m g = \frac{1}{2} \rho v_{\mathrm{term}}^2 S C_d$), yielding $v_{\mathrm{term}}^2(m) = \frac{2 m g}{\rho S C_d}$. The kinetic impact energy sensitivity equation expresses terminal kinetic energy $E_k(m)$ as a function of system mass $m$:
 
 $$
 \begin{aligned}
-v_{\mathrm{impact,chute}} &= \sqrt{\frac{2 \cdot m \cdot g}{\rho \cdot C_D \cdot A_{\mathrm{canopy}}}} \\
-E_k(m) &= \frac{1}{2} \cdot m \cdot v_{\mathrm{impact}}^2 \\
-E_{k,\mathrm{chute}}(m) &= \frac{m^2 \cdot g}{\rho \cdot C_D \cdot A_{\mathrm{canopy}}}
+E_k(m) &= \frac{1}{2} m v_{\mathrm{term}}^2(m) = \frac{m^2 g}{\rho S C_d}
 \end{aligned}
 $$
 
-Where and Operational Parameters:
-- $E_k(m)$: Terminal kinetic energy upon ground impact.
-- $m$: Vehicle total operational mass, varied across $m \in [15.0, 25.0]\text{ kg}$ (MTOW).
-- $v_{\mathrm{impact}}$: Vertical touchdown impact velocity.
-- $g$: Standard gravitational acceleration constant ($9.80665\text{ m/s}^2$).
-- $\rho$: Standard sea-level atmospheric density ($1.225\text{ kg/m}^3$).
-- $C_D$: Parachute canopy aerodynamic drag coefficient ($C_D = 1.75$ for cruciform canopy).
-- $A_{\mathrm{canopy}}$: Deployed parachute canopy surface area ($A_{\mathrm{canopy}} = 12.8\text{ m}^2$).
+- Parameter Definitions & Engineering Units:
 
-**Sensitivity Curve Findings:**
-- For Option B (Ballistic Parachute), across the entire operational mass envelope from minimum flying weight ($m = 15.0\text{ kg}$) to MTOW ($m = 25.0\text{ kg}$), the terminal descent velocity ranges between $1.25\text{ m/s}$ and $1.62\text{ m/s}$, producing ground impact energies of:
-  - At $m = 15.0\text{ kg}$: $E_k = 11.8\text{ J} \le 34.0\text{ J}$
-  - At $m = 20.0\text{ kg}$: $E_k = 21.0\text{ J} \le 34.0\text{ J}$
-  - At $m = 25.0\text{ kg}$ (MTOW): $E_k = 32.8\text{ J} \le 34.0\text{ J}$
-- In contrast, for Option A (Propulsion Redundancy) or Option C (Emergency Glide), a catastrophic electrical disconnect or structural damage results in uncontrolled free-fall terminal velocity $v_{\mathrm{impact}} \ge 24.0\text{ m/s}$, generating an impact energy $E_k \ge 7200\text{ J}$ (exceeding the SORA M2 safety threshold by more than $210\times$).
-- Sensitivity analysis conclusively establishes Option B as the sole architectural solution capable of delivering deterministic SORA M2 High-Integrity containment credit under all failure conditions.
+| Parameter | Symbol | Expression / Value | Units | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| Terminal Kinetic Impact Energy | E_k | E_k <= E_threshold | J | Impact kinetic energy at terminal descent velocity |
+| Statutory Kinetic Energy Threshold | E_threshold | {{TERMINAL_ENERGY_THRESHOLD_J}} | J | Statutory safety boundary threshold separating risk classes |
+| Total Operational Mass | m | m <= m_system_max | kg | Total operational mass of the cyber-physical system |
+| Maximum System Operational Mass | m_system_max | {{SYSTEM_MASS_MAX_KG}} | kg | Maximum certified operational mass envelope |
+| Terminal Descent Velocity | v_term | v_term = sqrt(2 * m * g / (rho * S * C_d)) | m/s | Unmitigated steady-state terminal descent velocity |
+| Safe Controlled Descent Velocity | v_safe | {{SAFE_CONTAINMENT_VELOCITY_MS}} | m/s | Maximum controlled descent velocity under active containment |
+| Standard Gravitational Acceleration | g | 9.80665 | m/s^2 | Standard acceleration due to gravity |
+| Ambient Atmospheric / Fluid Density | rho | 1.225 | kg/m^3 | Nominal atmospheric fluid density at reference datum |
+| Aerodynamic Reference Drag Area | S | S_containment >= S_min | m^2 | Effective projected frontal / reference drag area |
+| Aerodynamic Drag Coefficient | C_d | C_d_containment >= C_d_min | Dimensionless | Total aerodynamic drag coefficient of deployed containment device |
+| Failsafe Watchdog Activation Time | tau_deploy_max | {{CONTAINMENT_DEPLOY_TIME_MAX_S}} | s | Maximum allowable latency from fault detection to containment trigger |
+
+The quadratic sensitivity of kinetic impact energy to mass ($E_k \propto m^2$) demonstrates why adding redundant actuator mass (Option A) increases unmitigated kinetic hazard severity. In contrast, deploying an active aerodynamic deceleration mechanism (Option B) increases effective drag area product $S C_d$, guaranteeing containment below statutory energy limits:
+
+$$
+\begin{aligned}
+E_{k,\mathrm{mitigated}} &= \frac{m^2 g}{\rho (S C_d)_{\mathrm{containment}}} \le E_{\mathrm{threshold}}
+\end{aligned}
+$$

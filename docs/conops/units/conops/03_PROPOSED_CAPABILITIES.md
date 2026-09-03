@@ -7,23 +7,39 @@
 ## 3. Proposed Capabilities & Operational Justification (Trade-Offs)
 
 ### 3.1 Justification for Proposed Architectural Changes
-To resolve the critical deficiencies of predecessor systems and meet statutory SORA v2.5 regulatory requirements, the Tactical UAS transitions the operational paradigm from manual line-of-sight piloting to certified supervisory autonomous execution. This architectural evolution is justified by:
-1. **Autonomous Multi-Sensor Navigation:** Integration of multi-constellation GNSS (GPS, GLONASS, Galileo, BeiDou), dual-redundant tactical IMUs, barometric altimeters, and optical flow visual-inertial odometry (VIO) ensuring unbroken state estimation even in GNSS-denied environments.
-2. **SORA Risk Containment:** Implementation of mathematically verified 4D geofencing, Ground Risk Buffer containment ($R_{\mathrm{GRB}} = 200.0\text{ m}$), and an autonomous ballistic parachute recovery system reducing ground impact kinetic energy to $E_k \le 34.0\text{ J}$.
-3. **Multi-Tiered PACE C2 Link Architecture:** Deployment of a 4-tier communication plan (Primary 5.8 GHz COFDM, Alternate 915 MHz FHSS, Contingency LTE/5G Cellular VPN, and Emergency Autonomous RTH with Satellite Relay) ensuring resilient, un-jammable command and control integrity.
-4. **Edge Video Classification & Tracking:** High-efficiency edge neural accelerator (NVIDIA Jetson Orin NX class) executing real-time object detection, multi-spectral feature correlation, automated target classification ($C_{\mathrm{PID}} \ge 0.95$), and KLV metadata injection without saturating narrow-band downlinks.
-5. **Sub-200 ms Deterministic Failsafe:** Integration of an independent hardware safety watchdog executing continuous health checks at 1000 Hz and triggering deterministic containment actions within $t_{\mathrm{resp}} \le 200.0\text{ ms}$ upon contingency detection.
+To resolve the critical deficiencies of predecessor systems and meet statutory safety requirements, the Abstract Cyber-Physical System Archetype transitions the operational paradigm from manual direct control to certified supervisory autonomous execution. This architectural evolution is justified by:
+1. **Deterministic RTOS Safety-Critical Core:** Implementation of a deterministic safety-critical core architecture executing on a fault-tolerant multi-core processor with memory protection unit (MPU) isolation.
+2. **Multi-Tiered PACE Communications Architecture:** Deployment of a 4-tier communication plan (Primary Point-to-Point link, Alternate high-bandwidth network channel, Contingency robust narrowband link, and Emergency resilient channel) ensuring unbroken command and control integrity.
+3. **Sub-Second Failsafe Containment:** Integration of an independent hardware safety watchdog capable of detecting cross-channel sensor disparities, loss of communication, or state boundary breaches, and triggering deterministic containment actions within $t_{\mathrm{resp}} \le \tau_{\mathrm{containment\_req}}$.
+4. **Edge Neural Telemetry Processing:** High-efficiency edge computing accelerator executing real-time state classification, multi-sensor odometry, and automated feature tracking without saturating low-bandwidth telemetry downlinks.
 
 ### 3.2 Functional Superiority & Operational Value Proposition
-The Tactical UAS provides quantifiable functional superiority over the legacy baseline across endurance, reliability, situational awareness, and operational tempo:
+The proposed archetype provides quantifiable functional superiority over the legacy baseline across operational endurance, turnaround tempo, containment response, environmental robustness, and operator cognitive workload:
 
-| Operational Dimension | Legacy Baseline (Predecessor) | Proposed Tactical UAS | Operational Value Delivered | Quantified Improvement |
-| :--- | :--- | :--- | :--- | :--- |
-| **Operational Range** | 1.5 km (Visual Line-of-Sight) | 15.0 km (Certified BVLOS Corridor) | 10x expansion in tactical surveillance radius per GCS station. | Delta_Range = +13.5 km |
-| **Sortie Turnaround Time** | 45.0 min (Manual Disassembly) | 10.0 min (Tool-less Hot-Swap & Automated PBIT) | Rapid sortie relaunch enables continuous on-station perimeter coverage. | Delta_t_turnaround = -35.0 min |
-| **Anomaly Response Time** | 2.5 s (Human Pilot Reaction) | <= 200.0 ms (Autonomous Safety Watchdog) | Instantaneous containment prevents kinetic breaches outside the Ground Risk Buffer. | Delta_tau_response = -2.3 s |
-| **Adverse Weather Capability** | 8.0 m/s wind, Non-sealed | 15.0 m/s steady, 20.0 m/s gusts, IP67 Sealing | Mission execution during adverse storm and freezing rain events. | +7.0 m/s wind limit, IP67 sealed |
-| **Operator Workload (NASA-TLX)** | 78 / 100 (High Fatigue) | <= 35 / 100 (Supervisory Automation) | Eliminates pilot fatigue errors during long-duration monitoring. | Delta_TLX = -43 points |
+$$
+\begin{aligned}
+\Delta \text{Range} &= \text{Range}_{\mathrm{proposed}} - \text{Range}_{\mathrm{legacy}} > 0 \\
+\Delta t_{\mathrm{turnaround}} &= t_{\mathrm{turnaround,proposed}} - t_{\mathrm{turnaround,legacy}} < 0 \\
+\Delta \tau_{\mathrm{response}} &= \tau_{\mathrm{response,proposed}} - \tau_{\mathrm{response,legacy}} < 0 \\
+\Delta \text{Disturbance} &= \text{Disturbance}_{\mathrm{proposed}} - \text{Disturbance}_{\mathrm{legacy}} > 0 \\
+\Delta \text{TLX} &= \text{TLX}_{\mathrm{proposed}} - \text{TLX}_{\mathrm{legacy}} < 0
+\end{aligned}
+$$
+
+- Parameter Definitions & Engineering Units:
+- $\Delta \text{Range}$: Operational range expansion margin over legacy baseline ($\text{Range}_{\mathrm{proposed}} \ge \text{Range}_{\mathrm{threshold}}$).
+- $\Delta t_{\mathrm{turnaround}}$: Operational turnaround and servicing time reduction ($t_{\mathrm{turnaround,proposed}} \le t_{\mathrm{turnaround,target}}$).
+- $\Delta \tau_{\mathrm{response}}$: Containment and emergency response latency reduction ($\tau_{\mathrm{response,proposed}} \le \tau_{\mathrm{containment\_req}}$).
+- $\Delta \text{Disturbance}$: Dynamic disturbance tolerance and environmental resistance expansion ($\text{IP}_{xy} \ge \text{IP}_{\mathrm{req}}$).
+- $\Delta \text{TLX}$: NASA Task Load Index cognitive workload reduction ($\text{TLX}_{\mathrm{proposed}} \le \text{TLX}_{\mathrm{nominal\_max}}$).
+
+| Operational Pillar | Legacy Baseline (Predecessor) | Proposed Autonomous Archetype | Superiority Delta Formula | Threshold Improvement Bound | Operational Value Delivered |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Operational Range & Coverage** | Range_legacy (Direct Line-of-Sight R_manual) | Range_proposed (Certified Autonomous Corridor Range_max(Link_C2)) | ΔRange = Range_proposed - Range_legacy | ΔRange > 0 (Range_proposed >= Range_threshold) | Enables wide-area state space coverage without requiring local human operator proximity. |
+| **Turnaround & Relaunch Tempo** | t_turnaround_legacy (Manual Inspection & Servicing) | t_turnaround_proposed (Modular Hot-Swap & Automated PBIT) | Δt_turnaround = t_turnaround_proposed - t_turnaround_legacy | Δt_turnaround < 0 (t_turnaround_proposed <= t_turnaround_target) | Minimizes ground servicing intervals, enabling sustained high-cadence operational sortie cycles. |
+| **Anomaly & Containment Response** | τ_response_legacy (Human Reaction Delay τ_human) | τ_response_proposed (Autonomous Hardware Watchdog t_resp) | Δτ_response = τ_response_proposed - τ_response_legacy | Δτ_response < 0 (τ_response_proposed <= tau_containment_req) | Delivers deterministic sub-second containment preventing state excursions outside safety buffers. |
+| **Environmental Robustness** | Disturbance_legacy, IP_legacy (Benign Operating Limits) | Disturbance_proposed, IP_xy (MIL-STD-810H Hardening) | ΔDisturbance = Disturbance_proposed - Disturbance_legacy | ΔDisturbance > 0 (IP_xy >= IP_req, Disturbance_proposed >= Disturbance_limit) | Guarantees operational execution across severe climatic, acoustic, and dynamic disturbance profiles. |
+| **Operator Workload (NASA-TLX)** | TLX_legacy (Continuous Direct Manual Control) | TLX_proposed (Supervisory Management by Exception) | ΔTLX = TLX_proposed - TLX_legacy | ΔTLX < 0 (TLX_proposed <= TLX_nominal_max) | Eliminates operator task saturation and fatigue-induced error during extended monitoring shifts. |
 
 ### 3.3 System Capability Hierarchy
 The system architecture decomposes into a five-level operational capability hierarchy aligned with OMG UAF Operational Performer views:
@@ -32,36 +48,56 @@ The system architecture decomposes into a five-level operational capability hier
 ===================================================================================
                        SYSTEM CAPABILITY HIERARCHY (CAP-01..05)
 ===================================================================================
-[CAP-01: Autonomous Flight Guidance & 4D Navigation]
-   ├── CAP-01.1: Multi-Constellation Satellite Navigation / INS Sensor Fusion
-   ├── CAP-01.2: 4D Waypoint & Curved Corridor Trajectory Generation
-   └── CAP-01.3: Visual-Inertial Odometry & Dead-Reckoning Navigation Fallback
+[CAP-01: Autonomous Mission Execution]
+   ├── CAP-01.1: Autonomous Mission Lifecycle & State Transition Control
+   ├── CAP-01.2: Dynamic State Trajectory & Corridor Generation
+   └── CAP-01.3: Pre-Operation Health Verification & Built-In-Test (PBIT)
 
-[CAP-02: Multi-Spectral Sensor Acquisition & Edge Inference]
-   ├── CAP-02.1: Stabilized Multi-Spectral Optical & Thermal Sensor Gimbal Control
-   ├── CAP-02.2: Real-Time Edge Object Detection & Telemetry Geo-Tagging (C_PID >= 0.95)
-   └── CAP-02.3: Adaptive Hardware Video Compression & Dynamic Bitrate Allocation
+[CAP-02: Deterministic Navigation & Guidance]
+   ├── CAP-02.1: Multi-Sensor State Estimation & Sensor Fusion
+   ├── CAP-02.2: Real-Time Closed-Loop Guidance & State Tracking
+   └── CAP-02.3: Dead-Reckoning Navigation & Reference Signal Fallback
 
-[CAP-03: Resilient Multi-Tier PACE Communications]
-   ├── CAP-03.1: Primary 5.8 GHz COFDM Point-to-Point High-Bandwidth Datalink
-   ├── CAP-03.2: Alternate 915 MHz FHSS Encrypted Mesh Datalink
-   ├── CAP-03.3: Contingency Encrypted LTE/5G Cellular VPN Tunnel
-   └── CAP-03.4: Emergency Autonomous RTH & Satellite Geo-Beacon (406 MHz / Iridium)
+[CAP-03: Resilient Multi-Tier C2 Comms]
+   ├── CAP-03.1: Primary Point-to-Point High-Bandwidth Datalink
+   ├── CAP-03.2: Alternate Encrypted Network / Infrastructure Channel
+   └── CAP-03.3: Contingency Robust Narrowband Command Channel
 
-[CAP-04: SORA 4D Containment & Deterministic Failsafe Management]
-   ├── CAP-04.1: Continuous 4D Geofence Boundary Proximity Monitoring (R_GRB = 200.0 m)
-   ├── CAP-04.2: Dynamic Closed-Loop Bingo Energy Monitoring & Secondary Divert Routing
-   └── CAP-04.3: Hardware Safety Watchdog & Autonomous Containment Actuation (t_resp <= 200 ms)
+[CAP-04: Multi-Modal Sensor Payload Processing]
+   ├── CAP-04.1: Multi-Axis Actuated Sensor Stabilization & Target Tracking
+   ├── CAP-04.2: Real-Time Edge Feature Extraction & Telemetry Tagging
+   └── CAP-04.3: Adaptive Telemetry Compression & Dynamic Bandwidth Allocation
 
-[CAP-05: Rapid Turnaround & Modular Support Logistics]
-   ├── CAP-05.1: Tool-Less Modular Quick-Release Payload Interface
-   ├── CAP-05.2: Hot-Swappable Smart Energy Module with Integrated BMS
-   └── CAP-05.3: Automated Pre-Flight Built-In-Test (PBIT) Diagnostic Logging
+[CAP-05: Autonomous Failsafe & Containment]
+   ├── CAP-05.1: Real-Time Operational Boundary Proximity & Geofence Monitoring
+   ├── CAP-05.2: Dynamic Resource Reserve (Bingo) Monitoring & Secondary Divert Routing
+   └── CAP-05.3: Independent Hardware Safety Watchdog & Autonomous Containment Actuation
 ===================================================================================
 ```
 
+#### 3.3.1 5-Tier Capability Hierarchy Table
+In accordance with OMG UAF v2.0 and INCOSE Systems Engineering Handbook v5.0, each capability decomposes into verified sub-capabilities bound to Gate 24 allocation tags:
+
+| Capability ID | Sub-Capability ID | Sub-Capability Name | Functional Description | Allocated Performer Node | Gate 24 Allocation Tag | Target Performance Bound |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **CAP-01** | `CAP-01.1` | Autonomous Mission Lifecycle & State Transition Control | Manages deterministic state machine transitions across startup, nominal execution, degraded operation, failsafe containment, and secure shutdown. | Core Controller Subsystem | `/// OperationalAllocation: [CAP-01.1]` | Transition latency <= tau_transition_max |
+| **CAP-01** | `CAP-01.2` | Dynamic State Trajectory & Corridor Generation | Calculates and executes multi-dimensional trajectory corridors bounded within defined state-space limits. | Guidance & Control Subsystem | `/// OperationalAllocation: [CAP-01.2]` | Cross-track error e_track <= epsilon_track_max |
+| **CAP-01** | `CAP-01.3` | Pre-Operation Health Verification & Built-In-Test (PBIT) | Performs automated self-tests, sensor bias validation, actuator calibration checks, and security initialization. | Core Controller / Safety Watchdog | `/// OperationalAllocation: [CAP-01.3]` | PBIT duration t_PBIT <= tau_PBIT_max |
+| **CAP-02** | `CAP-02.1` | Multi-Sensor State Estimation & Sensor Fusion | Fuses inertial measurements, external reference signals, and kinematic state observers into consolidated state vectors. | State Estimation Subsystem | `/// OperationalAllocation: [CAP-02.1]` | State error e_state <= epsilon_state_max |
+| **CAP-02** | `CAP-02.2` | Real-Time Closed-Loop Guidance & State Tracking | Executes deterministic feedback control loops generating dynamic actuator setpoints to track reference trajectories. | Guidance & Control Subsystem | `/// OperationalAllocation: [CAP-02.2]` | Control loop rate f_control >= f_control_min |
+| **CAP-02** | `CAP-02.3` | Dead-Reckoning Navigation & Reference Signal Fallback | Autonomous reversion to dead-reckoning state estimation upon reference signal loss or degradation. | State Estimation Subsystem | `/// OperationalAllocation: [CAP-02.3]` | Drift rate <= Drift_state_max |
+| **CAP-03** | `CAP-03.1` | Primary Point-to-Point High-Bandwidth Datalink | Delivers high-throughput primary bidirectional command and telemetry transport. | PACE Transceiver Node | `/// OperationalAllocation: [CAP-03.1]` | Link latency tau_link <= tau_primary_max |
+| **CAP-03** | `CAP-03.2` | Alternate Encrypted Network / Infrastructure Channel | Provides secure routed network transport fallback during primary link degradation. | PACE Transceiver Node | `/// OperationalAllocation: [CAP-03.2]` | Failover latency <= tau_switch_max |
+| **CAP-03** | `CAP-03.3` | Contingency Robust Narrowband Command Channel | Maintains essential safety-critical command connectivity in high-attenuation or contested RF environments. | PACE Transceiver Node | `/// OperationalAllocation: [CAP-03.3]` | Heartbeat timeout t_hb <= tau_hb_timeout |
+| **CAP-04** | `CAP-04.1` | Multi-Axis Actuated Sensor Stabilization & Target Tracking | Controls actuated sensor orientation to stabilize field of view and track dynamic target coordinates. | Sensor Payload Subsystem | `/// OperationalAllocation: [CAP-04.1]` | Pointing jitter <= epsilon_jitter_max |
+| **CAP-04** | `CAP-04.2` | Real-Time Edge Feature Extraction & Telemetry Tagging | Executes neural network state classification, spatial feature extraction, and geo-referenced telemetry tagging. | Edge Neural Processing Node | `/// OperationalAllocation: [CAP-04.2]` | Inference rate f_inference >= f_inference_min |
+| **CAP-04** | `CAP-04.3` | Adaptive Telemetry Compression & Dynamic Bandwidth Allocation | Dynamically compresses telemetry streams to match channel bandwidth without dropping safety telemetry frames. | Edge Processing Node | `/// OperationalAllocation: [CAP-04.3]` | Compression ratio >= Ratio_compress |
+| **CAP-05** | `CAP-05.1` | Real-Time Operational Boundary Proximity & Geofence Monitoring | Evaluates continuous distance to declared boundaries and triggers containment maneuvers prior to buffer breach. | Boundary Deconfliction Subsystem | `/// OperationalAllocation: [CAP-05.1]` | Boundary check rate f_monitor >= f_boundary_min |
+| **CAP-05** | `CAP-05.2` | Dynamic Resource Reserve (Bingo) Monitoring & Secondary Divert Routing | Computes dynamic energy return thresholds and commands divert trajectories maintaining statutory reserves. | Resource Management Subsystem | `/// OperationalAllocation: [CAP-05.2]` | Reserve ratio E_reserve / E_capacity >= 0.20 |
+| **CAP-05** | `CAP-05.3` | Independent Hardware Safety Watchdog & Autonomous Containment Actuation | Hardware watchdog executing autonomous failsafe containment upon critical trigger detection within bounded response time. | Independent Safety Watchdog | `/// OperationalAllocation: [CAP-05.3]` | Response time t_resp <= tau_containment_req |
+
 ### 3.4 Operational Benefits Summary
-1. **Full Statutory Compliance:** Certified compliance with JARUS SORA v2.5 Annex B and NATO STANAG 4586 Level 3/4 UCS interoperability.
-2. **Persistent Perimeter Security:** Continuous presence over critical facilities with zero visual blind spots across a $15.0\text{ km}$ operational radius.
-3. **Deterministic Airspace Safety:** Guaranteed ground and air risk containment with mathematically verified Ground Risk Buffers ($R_{\mathrm{GRB}} = 200.0\text{ m}$) and ballistic parachute impact energy $E_k \le 34.0\text{ J}$.
-4. **Total Lifecycle Cost Reduction:** Significant reduction in ground crew workload and extended mean time between maintenance actions ($\text{MTBM} \ge 150.0\text{ hr}$).
+1. **Full Metamodel Compliance:** Certified compliance with ISO/IEC/IEEE 29148:2018 and OMG UAF v2.0 operational architectures.
+2. **Persistent State Monitoring:** Continuous operational presence over designated domains with zero monitoring blind spots.
+3. **Deterministic System Safety:** Guaranteed physical and state risk containment with mathematically verified containment buffers ($R_{\mathrm{buffer}}$).
+4. **Total Lifecycle Cost Reduction:** Significant reduction in operator workload and extended mean time between maintenance actions ($\text{MTBMA} \ge \text{MTBMA}_{\mathrm{target}}$).

@@ -6,17 +6,17 @@
 
 ## 12. 7-Row Emergency Decision & Contingency Matrix
 
-In accordance with MIL-STD-882E §4.3, JARUS SORA v2.5 Annex B, and RTCA DO-178C DAL-A safety requirements, the Tactical UAS incorporates a 7-Row Emergency Decision & Contingency Matrix. The deterministic failsafe state machine provides autonomous containment timing guarantees ($t_{\mathrm{resp}} \le 200.0\text{ ms}$) across all seven canonical contingency triggers.
+In accordance with MIL-STD-882E §4.3 and safety-critical deterministic control requirements, the system incorporates a 7-Row Emergency Decision & Contingency Matrix. The deterministic failsafe state machine provides autonomous containment timing guarantees ($t_{\mathrm{resp}} \le \tau_{\mathrm{deadline}}$) across all canonical contingency triggers.
 
 | Trigger ID | Contingency Trigger Event | Anomaly Detection Mechanism | Automated Containment Action | Primary Failsafe State | Max Response Time | HITL Authority Role |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| `EMG-01` | Lost C2 Link | Heartbeat loss duration Delta_t_loss > 5.0 s across all active PACE communications tiers | Switches to autonomous lost-link loiter pattern (30.0 s); if link unrecovered, initiates climb to clearance altitude 100.0 m AGL and Return-to-Home (RTH) trajectory | `Contingency_LostLinkReturn` | t_resp <= 200.0 ms | Supervisory / Manual Override via Emergency Link |
-| `EMG-02` | GNSS Navigation Loss | Figure of Merit FOM > 2.0, loss of carrier lock, or Receiver Autonomous Integrity Monitoring (RAIM) alert | Disengages GNSS position updates; switches seamlessly to onboard visual-inertial odometry and dead reckoning; sets speed to 12.0 m/s | `Contingency_DeadReckoning` | t_resp <= 100.0 ms | Supervisory / Command Loiter or Divert |
-| `EMG-03` | Propulsion Failure | Inverter telemetry over-current I > 45.0 A, motor RPM drop Delta_RPM > 1500 RPM, or phase cutout | Re-distributes thrust across remaining propulsion units; levels attitude; executes optimal unpowered glide profile to nearest cleared secondary recovery site | `Contingency_EmergencyGlide` | t_resp <= 50.0 ms | Informed / Automated Advisory |
-| `EMG-04` | Critical Sensor Fault | Cross-channel disparity Delta_s > 10% across redundant IMUs or barometers lasting Delta_t > 50 ms | Isolates faulty sensor channel via 2-of-3 voting logic; transitions flight control to simplex sensor failsafe mode; logs fault signature | `Degraded_SensorFailsafe` | t_resp <= 100.0 ms | Supervisory / Precautionary Recovery Order |
-| `EMG-05` | Geofence Breach Alert | Navigation filter indicates vehicle proximity d_boundary <= 50.0 m to hard geofence containment boundary | Commands immediate autonomous maximum-rate coordinated turnaround maneuver (180 deg turn); applies reverse thrust if boundary breached | `Contingency_GeofenceContainment` | t_resp <= 50.0 ms | Supervisory / Manual Override Authority |
-| `EMG-06` | Structural Anomaly | Multi-axis accelerometer detects vibration a_vib > 4.5 g (RMS) or control surface actuator stall | Reduces forward throttle to minimum maneuvering speed 10.0 m/s; initiates immediate controlled precautionary descent | `Contingency_PrecautionaryLand` | t_resp <= 100.0 ms | Supervisory / Override to Divert |
-| `EMG-07` | Flight Termination Cmd | Dedicated encrypted manual abort discrete signal received or unrecoverable aerodynamic tumbling (omega_rate > 300 deg/s) | Instantly cuts motor power; deploys autonomous ballistic recovery parachute; activates emergency locator beacon | `Emergency_FlightTermination` | t_resp <= 20.0 ms | Initiator (Dual-Consent Authenticated Command) |
+| EMG-01 | Communications Timeout | Heartbeat loss duration Delta_t_loss > tau_heartbeat_timeout across active communication tiers | Switches to autonomous lost-link hold pattern (tau_hold); if link unrecovered, initiates autonomous Return-to-Base (RTB) trajectory | `Contingency_LostLinkFallback` | t_resp <= tau_deadline_C2 | Supervisory / Manual Override via Emergency Link |
+| EMG-02 | Sensor Integrity Fault | State estimation error / cross-channel disparity Delta_s > Delta_s_threshold lasting Delta_t > tau_fault_persist | Isolates faulty sensor channel via voting logic; switches to dead-reckoning state estimation; sets speed to v_degraded | `Contingency_SensorFallback` | t_resp <= tau_deadline_sensor | Supervisory / Command Hold or Divert |
+| EMG-03 | Critical Resource Depletion | Measured energy/resource level R(t) <= R_threshold(t) | Re-distributes power bus; throttles non-essential payloads; executes optimal resource-conserving transit to nearest divert site | `Contingency_ResourceDivert` | t_resp <= tau_deadline_resource | Informed / Automated Advisory |
+| EMG-04 | Controller Processing Fault | Hardware watchdog timeout or control loop task deadline breach exceeding tau_deadline_task | Triggers failover to redundant backup controller; isolates faulted software partition; logs diagnostic fault signature | `Degraded_ControllerFailsafe` | t_resp <= tau_deadline_controller | Supervisory / Precautionary Recovery Order |
+| EMG-05 | Operational Boundary Excursion | State estimator indicates vehicle proximity d_boundary <= d_containment_margin to hard state containment boundary | Commands immediate autonomous maximum-rate boundary reversal maneuver (180 deg turnaround); applies emergency deceleration | `Contingency_BoundaryContainment` | t_resp <= tau_deadline_boundary | Supervisory / Manual Override Authority |
+| EMG-06 | Collision/Interference Hazard | Proximity sensor detects external entity or hazard breaching separation envelope (D_hazard <= D_margin) | Executes immediate autonomous multi-axis evasive trajectory away from hazard vector; maintains separation minima | `Contingency_EvasiveManeuver` | t_resp <= tau_deadline_hazard | Supervisory / Override to Divert |
+| EMG-07 | Structural/Actuator Failure | Multi-axis vibration a_vib > a_vib_limit, actuator stall, or dedicated encrypted abort discrete signal received | Instantly isolates actuator power; deploys autonomous containment mechanism; activates emergency locator beacon | `Emergency_SafeStateTermination` | t_resp <= tau_deadline_abort | Initiator (Dual-Consent Authenticated Command) |
 
 ### 12.1 Failsafe State Transition Semantics & Timing Guarantees
 The emergency decision logic executes within a dedicated, hard real-time safety watchdog running on an isolated hardware partition. The state machine operates under the following deterministic transition invariants:
@@ -28,79 +28,48 @@ P_{\mathrm{EMG-07}} > P_{\mathrm{EMG-03}} > P_{\mathrm{EMG-05}} > P_{\mathrm{EMG
 \end{aligned}
 $$
 
-2. **Deterministic Response Timing ($t_{\mathrm{resp}} \le 200.0\text{ ms}$):** From initial sensor anomaly threshold crossing to containment command issuance on the actuator bus, the maximum propagation latency is guaranteed to remain strictly bounded by $t_{\mathrm{resp}} \le 200.0\text{ ms}$ across all seven canonical triggers (with flight termination executing within $t_{\mathrm{resp}} \le 20.0\text{ ms}$).
-3. **Fail-Safe Retention:** Once a critical emergency state (`Emergency_FlightTermination` or `Contingency_EmergencyGlide`) is triggered, the state machine is non-reentrant and locks until a physical post-flight ground reset and authorized Maintenance Technician clearance are performed.
+2. **Deterministic Response Timing ($t_{\mathrm{resp}} \le \tau_{\mathrm{deadline}}$):** From initial sensor anomaly threshold crossing to containment command issuance on the actuator bus, the maximum propagation latency is guaranteed to remain strictly bounded by $t_{\mathrm{resp}} \le \tau_{\mathrm{deadline}}$ across all seven canonical triggers (with emergency termination executing within $t_{\mathrm{resp}} \le \tau_{\mathrm{deadline\_abort}}$).
+3. **Fail-Safe Retention:** Once a critical emergency state (`Emergency_SafeStateTermination` or `Contingency_ResourceDivert`) is triggered, the state machine is non-reentrant and locks until a physical post-operation ground reset and authorized Maintenance Technician clearance are performed.
 
-### 12.2 Failsafe State Machine Architecture & Statechart Diagram
-The operational state machine partitions autonomous failsafe behavior into deterministic state spaces governed by synchronous clock cycles on the primary Flight Management Unit (FMU) and safety coprocessor:
-
+### 12.2 Deterministic Emergency Statechart & State Machine
 ```mermaid
 stateDiagram-v2
-    [*] --> Phase_NominalExecution : System BIT Passed / Launch Complete
-
-    state Phase_NominalExecution {
-        [*] --> WaypointNavigation
-        WaypointNavigation --> SensorPayloadCapture : On Target
-        SensorPayloadCapture --> WaypointNavigation : Task Completed
-    }
-
-    Phase_NominalExecution --> Degraded_SensorFailsafe : EMG-04 (Sensor Disparity Delta_s > 10%)
-    Phase_NominalExecution --> Contingency_DeadReckoning : EMG-02 (GNSS Loss FOM > 2.0)
-    Phase_NominalExecution --> Contingency_LostLinkReturn : EMG-01 (C2 Heartbeat Loss > 5.0 s)
-    Phase_NominalExecution --> Contingency_GeofenceContainment : EMG-05 (Geofence Margin <= 50 m)
-    Phase_NominalExecution --> Contingency_PrecautionaryLand : EMG-06 (Vibration a_vib > 4.5 g)
-    Phase_NominalExecution --> Contingency_EmergencyGlide : EMG-03 (Propulsion Failure / Inverter Fault)
-    Phase_NominalExecution --> Emergency_FlightTermination : EMG-07 (Encrypted Abort Cmd / Tumbling)
-
-    Degraded_SensorFailsafe --> Contingency_PrecautionaryLand : Secondary Channel Fault
-    Contingency_DeadReckoning --> Contingency_LostLinkReturn : C2 Timeout in Dead Reckoning
-    Contingency_LostLinkReturn --> Emergency_FlightTermination : Outer Geofence Violation
-    Contingency_GeofenceContainment --> Phase_NominalExecution : Corridor Re-established
-    Contingency_EmergencyGlide --> Phase_SecureShutdown : Unpowered Touchdown at Divert Site
-    Contingency_PrecautionaryLand --> Phase_SecureShutdown : Safe Landing Confirmed
-    Emergency_FlightTermination --> Phase_SecureShutdown : Parachute Descent & Ground Quarantine
-
-    state Phase_SecureShutdown {
-        [*] --> PowerGalvanicCutoff
-        PowerGalvanicCutoff --> TelemetryBlackboxLock
-        TelemetryBlackboxLock --> EmergencyBeaconActive
-    }
+    [*] --> Phase_Startup
+    Phase_Startup --> Phase_NominalExecution : BIT_Pass
+    Phase_NominalExecution --> Degraded_SensorFailsafe : EMG_04_SensorFault
+    Phase_NominalExecution --> Contingency_LostLinkReturn : EMG_01_LostC2
+    Phase_NominalExecution --> Contingency_DeadReckoning : EMG_02_GNSSLoss
+    Phase_NominalExecution --> Contingency_ResourceDivert : EMG_03_PowerDepletion
+    Phase_NominalExecution --> Contingency_GeofenceContainment : EMG_05_GeofenceBreach
+    Phase_NominalExecution --> Contingency_PrecautionaryLand : EMG_06_StructuralAnomaly
+    Phase_NominalExecution --> Emergency_FlightTermination : EMG_07_AbortCommand
+    Degraded_SensorFailsafe --> Contingency_LostLinkReturn : LinkTimeout
+    Contingency_LostLinkReturn --> Phase_SecureShutdown : SafeTouchdown
+    Contingency_DeadReckoning --> Phase_SecureShutdown : SafeTouchdown
+    Contingency_ResourceDivert --> Phase_SecureShutdown : SafeTouchdown
+    Contingency_GeofenceContainment --> Contingency_ResourceDivert : ContainmentHold
+    Contingency_PrecautionaryLand --> Phase_SecureShutdown : Touchdown
+    Emergency_FlightTermination --> Phase_SecureShutdown : ImpactSafe
+    Phase_SecureShutdown --> [*]
 ```
 
-### 12.3 Contingency Flight Maneuvers & Aerodynamic Descent Profiles
-Autonomous contingency containment maneuvers execute under strict aerodynamic load factor envelopes ($n \le 2.5\text{ g}$) to ensure structural integrity and predictable containment boundary dynamics:
-1. **Coordinated Turnaround Maneuver (EMG-05):** Upon detecting geofence buffer penetration, the flight controller commands a maximum bank angle $\phi_{\mathrm{max}} = 45.0^\circ$ at calibrated airspeed $v_{\mathrm{turn}} = 14.0\text{ m/s}$, establishing a minimum turning radius:
+### 12.3 Degraded Modes & Fallback Hierarchy
+- **Tier 1 (Nominal Execution):** Full multi-sensor fusion, dual-channel C2 links, and nominal envelope margins.
+- **Tier 2 (Degraded Sensor Mode):** Single-sensor failure activates secondary observer and dead reckoning.
+- **Tier 3 (Contingency Link Mode):** Loss of primary C2 link triggers autonomous hold and return-to-base sequence.
+- **Tier 4 (Emergency Containment Mode):** Unrecoverable fault triggers ballistic parachute deploy or instant motor cutoff.
 
-$$
-\begin{aligned}
-R_{\mathrm{turn}} = \frac{v_{\mathrm{turn}}^2}{g \cdot \tan(\phi_{\mathrm{max}})}
-\end{aligned}
-$$
+### 12.4 Human-in-the-Loop (HITL) Authority & Override Protocols
+- **Supervisory Authority:** Operator retains positive manual override capability via independent emergency link.
+- **Dual-Consent Authentication:** Critical flight termination (`EMG-07`) requires two-operator verified consent keys.
+- **Interlock Inhibit:** Flight computer rejects manual commands that violate dynamic geofence containment limits.
 
-| Parameter | Symbol | Value | Units | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| Turn Maneuver Airspeed | v_turn | 14.0 | m/s | Calibrated containment turnaround speed |
-| Maximum Bank Angle | phi_max | 45.0 | deg | Maximum commanded bank angle limit |
-| Gravitational Acceleration | g | 9.80665 | m/s^2 | Standard gravitational acceleration constant |
-| Containment Turn Radius | R_turn | 19.98 | m | Minimum radius for 180 deg reversal maneuver |
+### 12.5 Autonomous Divert & Secondary Recovery Protocols
+- **Primary Recovery:** Designated nominal landing site or recovery zone.
+- **Secondary Divert Sites:** Pre-surveyed alternate recovery coordinates evaluated dynamically against Bingo energy.
+- **Terrain Clearance:** All emergency divert trajectories maintain minimum statutory altitude separation.
 
-2. **Optimal L/D Glide Descent Profile (EMG-03):** Following propulsion cut or total inverter failure, pitch attitude is trimmed to $(L/D)_{\mathrm{max}} = 10.5$ at glide velocity $v_{\mathrm{glide}} = 13.5\text{ m/s}$, yielding a steady sink rate $v_z = 1.28\text{ m/s}$ toward the surveyed emergency divert coordinates.
-3. **Precautionary Flare & Touchdown Maneuver (EMG-06):** At altitude $h = 3.0\text{ m}$ AGL, the system initiates an autonomous aerodynamic flare maneuver reducing sink rate to $v_z \le 0.50\text{ m/s}$ prior to ground contact.
-
-### 12.4 Flight Termination Subsystem (FTS) & Safe-Arm Circuitry
-The Flight Termination Subsystem (FTS) is engineered as an independent, hardware-isolated failsafe chain compliant with JARUS SORA MOC 2511 and STANAG 4586 Level 4 safety integrity:
-1. **Galvanic Isolation & Power Cutoff:** A high-side solid-state power distribution switch physically decouples high-voltage battery bus power from electronic speed controllers (ESCs) in $t_{\mathrm{cut}} \le 5.0\text{ ms}$.
-2. **Pyrotechnic & Ballistic Parachute Deployment:** The emergency parachute canister is actuated by a dual-redundant thermal initiator circuit with independent capacitors ensuring trigger actuation even under total main bus collapse.
-3. **Safe-Arm Interlocks:** Physical remove-before-flight safe-arm pins and redundant cryptographic authorization tokens prevent uncommanded ground termination deployment.
-
-### 12.5 Human-in-the-Loop Override & Veto Timers
-Safety-critical autonomous transitions incorporate deterministic Human-in-the-Loop (HITL) oversight mechanisms balanced with automatic failsafe execution:
-1. **Supervisory Veto Timer Window ($\tau_{\mathrm{veto}} = 5.0\text{ s}$):** For non-immediate contingency states (`EMG-01`, `EMG-02`, `EMG-06`), the system displays a visual/audible countdown to the Ground Control Station (GCS) operator, permitting manual flight vector override before automated Return-to-Home or Precautionary Landing initiates.
-2. **Dual-Consent Flight Termination:** Initiation of manual FTS (`EMG-07`) from the GCS requires simultaneous, two-operator cryptographic authorization (Mission Commander + Range Safety Officer).
-3. **Emergency Frequency Preemption:** Manual commands transmitted over the satellite emergency C2 tier immediately preempt all autonomous loiter sequences.
-
-### 12.6 Post-Emergency Ground Recovery, Telemetry Quarantine & Investigation
-Following any contingency landing or flight termination sequence, the system deterministically executes standardized post-emergency ground handling protocols per MIL-STD-882E §4.4:
-1. **Telemetry Black-Box Quarantine:** All non-volatile solid-state storage partitions containing high-rate flight recorder telemetry (1 kHz IMU, actuator feedback, battery cell voltages, and C2 message frames) are mounted read-only and cryptographically hashed (SHA-256) to prevent evidence tampering.
-2. **Emergency Localization Beacon Activation:** The dedicated $406.040\text{ MHz}$ COSPAS-SARSAT search-and-rescue beacon and $121.5\text{ MHz}$ homing transponder activate with autonomous GPS coordinates broadcast every 50.0 s for at least 24.0 hours.
-3. **Ground Safety & Ordnance Clearance:** Authorized ground recovery personnel follow strict de-arming checklists (disarming unspent parachute pyrotechnics, verifying zero-voltage bus state, and executing battery thermal stabilization verification).
+### 12.6 Post-Emergency Containment, Latching & Reset Procedures
+- **Safety Lockout:** Emergency shutdown latches all actuators and high-voltage buses in de-energized safe states.
+- **Non-Volatile Blackbox Offload:** Diagnostic fault logs, sensor telemetry, and watchdog stack traces are securely written to non-volatile flash.
+- **Authorized Ground Clearance:** Physical inspection and signed maintenance clearance required before clearing failsafe lock.
