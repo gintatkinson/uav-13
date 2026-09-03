@@ -237,6 +237,7 @@ The Mission Essential Task List (METL) establishes the doctrinally grounded, qua
 | `MET-06` | PrecisionTargetMensuration | Target acquired across taxonomy classes (Fixed Infrastructure, Moving Vehicle, HVT, Pop-up Threat) within optical/infrared payload field of view | TLE_CEP90 <= 2.5 m at 3.0 km, STANAG 3733 Band I/II laser PRF coding (1111-1788), beam divergence <= 0.3 mrad, boresight alignment <= 0.05 deg, BDA offload <= 30.0 s with structural/thermal kill verification | Optical Mensuration Calibration Log, Laser PRF Telemetry, & BDA Audit | `/// OperationalAllocation: [MET-06]` | NATO STANAG 4586 Annex B §3.5 / NATO STANAG 3733 / CJCSI 3121.01B |
 | `MET-07` | AutonomousBingoReturnDivert | Energy monitoring detects current energy E_current <= E_bingo threshold | Autonomous RTB/divert trigger t_resp <= 200.0 ms, dynamic R_i(T) compensation, headwind gradient vector integration, touchdown reserve E_reserve >= 216.0 kJ | BMS Telemetry & Flight Recording Audit | `/// OperationalAllocation: [MET-07]` | JARUS SORA v2.5 Annex E §2.1 |
 | `MET-08` | PostMissionDataOffloadShutdown | Post-landing stationary touchdown on recovery pad | Zeroization time <= 10.0 s (NIST SP 800-88r1), DC bus discharge time <= 5.0 s (V_bus < 5.0 V), post-flight motor thermal soak T_motor <= 60.0 C, offload <= 60.0 s | Security Audit Log & Safe Electrical Isolation Verification | `/// OperationalAllocation: [MET-08]` | NIST SP 800-88r1 §2.4 |
+| `MET-09` | DownedVehicleContainment | High-G kinetic impact (a_impact > 10.0g across any axis for t >= 5.0 ms), fuselage chassis breach, uncommanded ground strike, or tamper switch actuation | NIST SP 800-88r1 / FIPS 140-3 Level 3 zeroization tau_zeroize <= 50.0 ms, secure SRAM scrub t <= 100.0 ms, DC bus/payload eFuse isolation tau_iso <= 50.0 ms, 406/121.5 MHz ELT beacon active t <= 500.0 ms with GNSS fix, squib initiator lines grounded/shunted t <= 10.0 ms, BMS cell series string isolation | Dynamic High-G Impact Test, Forensic Memory Dump, Bus Oscilloscope eFuse Audit, & ELT Signal Verification | `/// OperationalAllocation: [MET-09]` | NIST SP 800-88r1 §2.4 / FIPS 140-3 Level 3 / MIL-STD-882E §4.4 / RTCA DO-204B |
 
 ---
 
@@ -613,10 +614,46 @@ Formal specification for post-touchdown stationary state validation, NIST SP 800
 
 ---
 
-### 2.9 METL Execution Invariants
-1. **Deterministic State Progression:** Progression from `MET-01` through `MET-08` is governed by discrete finite-state transitions in the flight executive.
+### 2.9 MET-09: Downed Vehicle Containment, Emergency Anti-Tamper & Zeroization
+
+Formal specification for immediate emergency post-crash containment, automated tamper detection, FIPS 140-3 Level 3 / NIST SP 800-88r1 emergency zeroization, secure enclave SRAM and hardware register pseudorandom scrubbing, high-voltage DC power bus solid-state eFuse isolation, 406 MHz COSPAS-SARSAT / 121.5 MHz emergency locator transmitter (ELT) beacon activation transmitting last-known GNSS coordinates on the PACE Emergency tier, pyrotechnic squib initiator line grounding and shunting to safe state, and BMS individual cell series string isolation to prevent thermal cascade upon high-G kinetic impact, fuselage breach, uncommanded ground strike, or physical tamper switch trip.
+
+#### Condition Specification
+| Parameter | Condition Value / State | Engineering Unit | Validation Rule |
+| :--- | :--- | :--- | :--- |
+| Operational State | Downed Vehicle / Emergency Containment | State Enum | Kinetic impact, chassis breach, ground strike, or tamper actuation |
+| Impact Kinetic Acceleration Envelope | a_impact > 10.0 across any axis for t >= 5.0 | g / ms | Tri-axial high-G impact accelerometer trip threshold |
+| Fuselage Chassis Integrity State | Physical Enclosure Rupture / Chassis Breach | State Enum | Continuous conductive loop / optical tamper grid status |
+| Ground Strike State | Uncommanded Terrain / Ground Strike | State Enum | High-rate IMU & air data discontinuity monitor |
+| Physical Tamper Switch Status | Actuated (Contact Open / Loop Broken) | State Enum | Microswitch / optical interlock circuit trip |
+| Cryptographic Module State | Active Session Keys & Encrypted Enclave | Crypto State | Volatile key vault armed and operational |
+| Emergency Beacon Subsystem State | Standby / Emergency Power Available | Hardware State | Dedicated reserve battery rail operational |
+
+#### Standard Specification
+| Metric ID | Subsystem Domain | Metric Name / Description | Threshold Value | Objective Value | Unit | Bus Protocol / Interface | Timeout Bound |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| MET-09-S01 | Security & Cryptography | FIPS 140-3 Level 3 / NIST SP 800-88r1 Cryptographic Key Zeroization Time (tau_zeroize) | <= 50.0 | <= 10.0 | ms | Hardware Cryptographic Core / Direct Shunt | tau_zeroize <= 50.0 ms |
+| MET-09-S02 | Security & Cryptography | Secure Enclave SRAM & Hardware Register Pseudorandom Scrub Duration | <= 100.0 | <= 25.0 | ms | Secure Enclave DMA Scrub Controller | t <= 100.0 ms |
+| MET-09-S03 | Electrical Power & DC Bus | High-Voltage DC Power Bus & Payload Rail Solid-State eFuse Isolation Time (tau_iso) | <= 50.0 | <= 10.0 | ms | Solid-State eFuse / Power Distribution Controller | tau_iso <= 50.0 ms |
+| MET-09-S04 | C2 & Emergency Beacon | 406 MHz COSPAS-SARSAT / 121.5 MHz ELT Beacon Broadcast Activation Latency with Last-Known GNSS Coordinates | <= 500.0 | <= 150.0 | ms | PACE Emergency Tier / C2 RF Beacon | t <= 500.0 ms |
+| MET-09-S05 | Flight Termination (FTS) | Pyrotechnic Squib Initiator Line Grounding & Shunting to Safe State Latency | <= 10.0 | <= 2.0 | ms | Hardwired Relay / Depletion MOSFET Shunt | t <= 10.0 ms |
+| MET-09-S06 | Propulsion & BMS | Battery Management System Individual Cell Series String Isolation | Active Isolation | Full Isolation | String State | Smart BMS Solid-State Contactor Matrix | t_bms <= 50.0 ms |
+
+#### Verification Specification
+| Verification Attribute | Detail Specification |
+| :--- | :--- |
+| Verification Method | Dynamic High-G Impact Drop Test, Forensic Cryptographic Enclave Memory Extraction, High-Speed Bus Oscilloscope eFuse Audit, RF Spectrum ELT Beacon Reception, and BMS Cell String Contactor State Review |
+| Evidence Artifact | `tests/downed_vehicle_containment_test.py` -> `logs/anti_tamper_zeroize_audit.json` and `logs/downed_asset_containment_report.json` |
+| Acceptance Criteria | Multi-subsystem conjunction for emergency downed asset containment and anti-tamper:<br>1. **Security & Cryptography:** NIST SP 800-88r1 / FIPS 140-3 Level 3 cryptographic key zeroization executed in tau_zeroize <= 50.0 ms; secure enclave SRAM and hardware registers overwritten with pseudorandom scrub pattern in t <= 100.0 ms with zero residual readable plaintext or keys.<br>2. **Electrical Power & DC Bus:** High-voltage DC power bus and payload rails completely isolated via solid-state eFuses within tau_iso <= 50.0 ms, eliminating electrical ignition hazard.<br>3. **C2 & Emergency Beacon:** 406 MHz COSPAS-SARSAT / 121.5 MHz emergency locator transmitter (ELT) beacon activated on PACE Emergency tier within t <= 500.0 ms, transmitting GNSS last-known coordinates.<br>4. **Flight Termination:** Pyrotechnic squib initiator lines grounded and shunted to safe state within t <= 10.0 ms, preventing uncommanded ignition.<br>5. **Propulsion & BMS:** BMS isolates individual series cell strings to prevent thermal runaway cascade across battery pack. |
+| Pass / Fail Threshold | `tau_zeroize <= 50.0 ms`, `t_scrub <= 100.0 ms`, `tau_iso <= 50.0 ms`, `t_elt <= 500.0 ms`, `t_shunt <= 10.0 ms`, and confirmed BMS cell string isolation with zero volatile cryptographic remnants. |
+| Traceability | `/// OperationalAllocation: [MET-09]` \| NIST SP 800-88r1 §2.4 \| FIPS 140-3 Level 3 §4.7 \| MIL-STD-882E §4.4 \| RTCA DO-204B §2.2 \| ISO/IEC/IEEE 29148:2018 §6.4.2 |
+
+---
+
+### 2.10 METL Execution Invariants
+1. **Deterministic State Progression:** Progression from `MET-01` through `MET-09` is governed by discrete finite-state transitions in the flight executive.
 2. **Allocation Tag Integrity:** Every task defined in the METL table carries an inviolable Gate 24 allocation tag (`/// OperationalAllocation: [MET-XX]`) mapped downstream to SysML v2 architectural activity blocks.
-3. **Safety Interlock Coupling:** Non-compliance with standard metrics in tasks `MET-01` through `MET-07` initiates deterministic degraded mode failsafes in accordance with Section 8 (Go/No-Go Decision Matrix).
+3. **Safety Interlock Coupling:** Non-compliance with standard metrics in tasks `MET-01` through `MET-07` initiates deterministic degraded mode failsafes in accordance with Section 8 (Go/No-Go Decision Matrix), transitioning to `MET-09` upon terminal impact, chassis breach, uncommanded ground strike, or tamper switch actuation.
 
 ## 3. Measures of Effectiveness (MoE) & Measures of Performance (MoP) Metrics
 
@@ -1958,7 +1995,7 @@ In accordance with NATO STANAG 4586 Annex B (§4.1), RTCA DO-365B, and MIL-STD-8
 | `GNG-12` | In-Flight | DAA Well-Clear Separation Assurance | DMOD >= 1200.0 m and ZTHR >= 137.0 m (450 ft) and tau_mod >= 35.0 s | Multi-Sensor DAA Fusion Engine (Radar + ADS-B In) | Autonomous heading turn >= 15 deg or vertical climb/descent >= 500 ft/min | RTCA DO-365B §2.2.4 |
 | `GNG-13` | In-Flight | Bingo Energy Dynamics & Statutory Reserve Margin | Usable energy E_usable(t) >= E_return(t) + E_divert + E_reserve, with statutory reserve E_reserve >= 0.20 * E_capacity | Continuous Path Energy Integrator & Smart BMS | Trigger mandatory Bingo Return-to-Home (RTH) or divert to secondary recovery site | JARUS SORA v2.5 Annex E §2.1 |
 | `GNG-14` | In-Flight | C2 PACE Datalink Continuity & Heartbeat Timeout | Uplink heartbeat loss Delta_t_loss <= 5.0 s and Packet Error Rate PER <= 0.05 across active PACE tier | PACE Datalink Manager & Watchdog Timer | Trigger automatic PACE tier failover (Primary -> Alternate -> Contingency); if lost > 5.0 s, engage Lost-Link RTH (EMG-01) | NATO STANAG 4586 §4.5 |
-| `GNG-15` | In-Flight / Abort | Flight Termination & Critical Stability Interlock | Zero manual abort command received and angular rate omega_rate <= 300.0 deg/s and pitch/roll <= 60.0 deg | Dedicated Dual-Consent FTS Receiver & High-Rate IMU Watchdog | Autonomous flight termination trigger: immediate motor cutoff, deploy ballistic parachute (ASTM F3322-18), activate locator beacon (EMG-07) | MIL-STD-882E §4.4 |
+| `GNG-15` | In-Flight / Abort | Terminal Impact & Downed Asset Containment | Zero manual abort command received and angular rate omega_rate <= 300.0 deg/s and pitch/roll <= 60.0 deg and a_impact <= 10.0g and zero chassis breach / tamper actuation | Dedicated Dual-Consent FTS Receiver, High-Rate IMU Watchdog & Crash/Tamper Sensors | Autonomous flight termination trigger: immediate motor cutoff, deploy ballistic parachute (ASTM F3322-18), activate locator beacon (EMG-07), and mandate immediate transition to MET-09 (Downed Vehicle Containment, Emergency Anti-Tamper & Zeroization) | MIL-STD-882E §4.4 / NIST SP 800-88r1 |
 
 ### 8.1 Conjunction Logic and Override Policy
 - **Pre-Launch Conjunction:** $\mathrm{Launch\_Go} \iff \bigwedge_{i=1}^{8} \mathrm{GNG}_{i} = \mathrm{TRUE}$. A failure of any single pre-launch gate automatically places the system into a hardware-locked `Hold` state.
@@ -2052,6 +2089,7 @@ In accordance with INCOSE Systems Engineering Handbook v5.0 and the DEAP Gate 24
 - `/// OperationalAllocation: [MET-06]`
 - `/// OperationalAllocation: [MET-07]`
 - `/// OperationalAllocation: [MET-08]`
+- `/// OperationalAllocation: [MET-09]`
 
 ---
 
@@ -2067,3 +2105,4 @@ In accordance with INCOSE Systems Engineering Handbook v5.0 and the DEAP Gate 24
 | `MET-06` | PrecisionTargetMensuration | MissionProcessingSubsystem | `SysML::Blocks::TargetMensurationEngine` | DAL-C | Level 4 (Payload Control) | `tests/target_mensuration_test.py` |
 | `MET-07` | AutonomousBingoReturnDivert | PowerManagementSubsystem | `SysML::Blocks::BingoEnergyMonitor` | DAL-A | Level 3 (Flight Control) | `tests/bingo_energy_math_test.py` |
 | `MET-08` | PostMissionDataOffloadShutdown | SecurityManagementSubsystem | `SysML::Blocks::CryptoZeroizationUnit` | DAL-B | Level 1 (Data Receipt) | `tests/crypto_zeroization_test.py` |
+| `MET-09` | DownedVehicleContainment | SecurityManagementSubsystem | `SysML::Blocks::DownedVehicleContainmentUnit` | DAL-A | Level 1 (Data Receipt) | `tests/crypto_zeroization_test.py` |

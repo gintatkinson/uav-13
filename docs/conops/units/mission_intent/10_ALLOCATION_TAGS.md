@@ -17,6 +17,7 @@ In accordance with INCOSE Systems Engineering Handbook v5.0 and the DEAP Gate 24
 - `/// OperationalAllocation: [MET-06]`
 - `/// OperationalAllocation: [MET-07]`
 - `/// OperationalAllocation: [MET-08]`
+- `/// OperationalAllocation: [MET-09]`
 
 ---
 
@@ -32,3 +33,4 @@ In accordance with INCOSE Systems Engineering Handbook v5.0 and the DEAP Gate 24
 | `MET-06` | PrecisionTargetMensuration | MissionProcessingSubsystem | `SysML::Blocks::TargetMensurationEngine` | DAL-C | Level 4 (Payload Control) | `tests/target_mensuration_test.py` |
 | `MET-07` | AutonomousBingoReturnDivert | PowerManagementSubsystem | `SysML::Blocks::BingoEnergyMonitor` | DAL-A | Level 3 (Flight Control) | `tests/bingo_energy_math_test.py` |
 | `MET-08` | PostMissionDataOffloadShutdown | SecurityManagementSubsystem | `SysML::Blocks::CryptoZeroizationUnit` | DAL-B | Level 1 (Data Receipt) | `tests/crypto_zeroization_test.py` |
+| `MET-09` | DownedVehicleContainment | SecurityManagementSubsystem | `SysML::Blocks::DownedVehicleContainmentUnit` | DAL-A | Level 1 (Data Receipt) | `tests/crypto_zeroization_test.py` |
