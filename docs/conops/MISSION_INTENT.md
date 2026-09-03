@@ -32,6 +32,8 @@ $$
 \end{aligned}
 $$
 
+Where and Operational Parameters:
+
 | Conjunction Component | Formal Predicate | Mandatory Validation Criteria | Verification Authority / Mechanism | Public Clause Citation |
 | :--- | :--- | :--- | :--- | :--- |
 | Electronic PBIT | Electronic_PBIT | 100% automated Built-In-Test pass (t_PBIT <= 10.0 s), IMU accelerometer/gyro bias convergence, CAN 2.0B / SPI bus integrity, BMS state-of-charge SoC >= 95.0%, cell delta V <= 20 mV, and TPM 2.0 cryptographic binding | Autonomous Flight Control Computer (FCC) & BMS | NATO STANAG 4586 Annex B §4.1 |
@@ -58,7 +60,75 @@ $$
   - **Autonomous Recovery & Data Zeroization:** Perform precision autonomous recovery and post-flight cryptographic data zeroization and diagnostic offload.
 - **End State:** All assigned surveillance and strike corridor waypoints fully traversed and verified; zero unauthorized geofence boundary excursions; zero unmitigated collision hazards; all target tracks positively identified through multi-spectral fusion ($C_{\mathrm{PID}} \ge 0.95$); signed physical technician airworthiness release logged and archived; and successful recovery at the primary base or designated secondary divert landing site with residual energy strictly satisfying $E_{\mathrm{reserve}} \ge 0.20 \cdot E_{\mathrm{capacity}}$ ($E_{\mathrm{reserve}} \ge 216.0\text{ kJ}$).
 
-### 1.2 Normative Baseline & Doctrinal Authority
+### 1.2 Operational Role & Responsibility Roster
+In accordance with ISO/IEC/IEEE 29148:2018 §5.2.4, NATO STANAG 4586 Edition 3 Annex B, CJCSI 3121.01B, and MIL-STD-882E §4.3, operational command, flight execution, payload management, range safety governance, and technical airworthiness are formally partitioned across five doctrinal operational roles:
+
+| Role ID | Role Title | Operational Tier | Explicit Operational Authority | Mandatory Certification & Credential Baseline | Core Operational Responsibilities | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **ROLE-MC** | Mission Commander (MC) | Tactical Command & Strategy | Tactical sortie authorization, mission profile approval, rules of engagement (ROE) tasking, target engagement authorization (Dual-Consent Key A), and inter-agency coordination. | Senior Operational Commander Certification, CJCSI 3121.01B ROE Certification, MIL-STD-882E System Safety Management Qualification, STANAG 4586 Level 4/5 UCS Command Qualification. | Formulates tactical objectives, authorizes mission launch, validates target engagement solutions, provides primary cryptographic strike consent (Key A), coordinates airspace access with theater command, and enforces rules of engagement. | CJCSI 3121.01B Enc A §4.b / DoD Directive 3000.09 §3.1 |
+| **ROLE-RPIC** | Remote Pilot in Command (RPIC) | Flight Operations & Navigation | Direct legal and operational command of air vehicle flight path, supervisory flight guidance oversight, manual flight mode transition, dynamic collision avoidance execution, and immediate flight abort veto authority over MC. | FAA Part 107 / EASA Specific Category Remote Pilot License, STANAG 4586 Level 3/4 UCS Pilot Qualification, Class 2 Aviation Medical Certificate, Emergency Procedures & FTS Qualification. | Oversees automated flight profile execution, manages flight trim and trajectory tracking, performs real-time airspace deconfliction, co-signs pre-flight airworthiness release, executes contingency procedures (EMG-01..07), and exercises immediate flight abort veto when flight safety is compromised. | ISO/IEC/IEEE 29148:2018 §5.2.4 / JARUS SORA v2.5 Annex E |
+| **ROLE-SO** | Sensor Operator (SO) | Payload Operations & ISR | Tasking and manipulation of multi-spectral EO/IR optical payloads, laser rangefinder/designator firing control, target tracking gate lock, and real-time Positive Target Identification (PID) validation. | Certified Tactical Sensor Specialist, STANAG 4586 Level 2 Payload Operator Qualification, Multi-Spectral Target Recognition Certification, Laser Safety Officer (LSO) Training. | Controls sensor gimbal pan/tilt/zoom, conducts optical/thermal target classification and mensuration (C_PID >= 0.95), manages target tracking gates, operates laser designation in compliance with safety envelopes, and verifies collateral damage exclusion zones. | NATO STANAG 4586 Annex B §3.5 / CJCSI 3121.01B Enc A §4.b |
+| **ROLE-RSO** | Range Safety Officer (RSO) | Safety Governance & Containment | Containment volume enforcement, launch clearance safety veto, Flight Termination System (FTS) arming and initiation authority, secondary strike authorization (Dual-Consent Key B), and immediate flight abort veto authority over MC. | Range Safety Officer Certification (RCC 319-19 / AFSPCMAN 91-710 / MIL-STD-882E), Pyrotechnic FTS Command & Control Certification, SORA Safety Case Assessor Qualification. | Monitors 4D containment volume (V_4D) and Ground Risk Buffer (R_GRB), validates geofence integrity, provides secondary cryptographic consent for kinetic arming (Key B), enforces population exclusion zones, and executes immediate flight abort or flight termination upon boundary breach. | MIL-STD-882E §4.3 / JARUS SORA v2.5 Annex B / RCC 319-19 |
+| **ROLE-MCH** | Maintenance Chief (MC) | Technical Airworthiness & Sustainment | Technical airworthiness sign-off, Physical Maintenance Task Card (MTC-01) release authority, Return-to-Service authorization, modular LRU swap approval, and GSE calibration compliance. | Certified Aviation Maintenance Technician (Airframe & Powerplant / Military MOS equivalent), MIL-HDBK-470A Maintainability Specialist, Pyrotechnic Squib Handling Certification, High-Voltage BMS Safety Qualification. | Conducts physical pre-flight inspections (torque, acoustic delamination, pneumatic leak, linkage backlash, FTS continuity), manages GSE diagnostics, executes battery pack servicing, certifies airframe airworthiness release (Token 0x5349), and directs O-Level maintenance. | MIL-HDBK-470A §4.2 / ISO/IEC/IEEE 29148:2018 §5.2.4 |
+
+#### 1.2.1 Detailed Role Profiles & Credential Requirements
+
+1. **Mission Commander (MC):**
+   - *Authority:* Exercises supreme tactical authority over the mission lifecycle, including launch committal, target prosecution, mission reassignment, and recovery site selection.
+   - *Dual-Consent Role:* Holds primary cryptographic signing key ($\mathrm{Key}_A$) for weapon and active designator arming.
+   - *Doctrinal Limitations:* Does NOT have flight control authority and CANNOT override safety aborts or flight termination commands initiated by the RPIC or RSO.
+
+2. **Remote Pilot in Command (RPIC):**
+   - *Authority:* Holds statutory and legal authority for the safe operation of the aircraft pursuant to 14 CFR Part 107 / EASA Specific Category regulations and STANAG 4586 Level 3/4 UCS standards.
+   - *Flight Intervention:* Exercises unilateral authority to command trajectory alterations, activate loiter holding patterns, initiate emergency return-to-home (RTH), or transition flight modes to manual supervisory control.
+   - *Safety Veto Authority:* Holds immediate, un-overridable safety abort veto authority over any tactical mission directive from the MC.
+
+3. **Sensor Operator (SO):**
+   - *Authority:* Directs electro-optical and infrared (EO/IR) sensor pointing, line-of-sight stabilization, cryogenic cooler management, and laser emission within authorized designation zones.
+   - *Target Identification:* Evaluates and confirms composite Positive Identification confidence ($C_{\mathrm{PID}} \ge 0.95$) before passing target lock coordinates to the mission computer.
+
+4. **Range Safety Officer (RSO):**
+   - *Authority:* Independent safety authority reporting directly to the Range Commander / Regulatory Authority. Governs 4D containment envelope compliance, dynamic geofence integrity, and ground risk buffer preservation.
+   - *Dual-Consent Role:* Holds secondary cryptographic signing key ($\mathrm{Key}_B$) for kinetic release and high-energy laser arming.
+   - *Flight Termination Authority:* Holds sole and immediate authority to command Flight Termination System (FTS) deployment or emergency squib activation upon unmitigated containment breach.
+
+5. **Maintenance Chief (MC):**
+   - *Authority:* Sole authority for issuing the formal physical airworthiness release certification ($\mathrm{Physical}_{\mathrm{MTC\text{-}01}}$) and digitally signing the pre-flight dispatch manifest with ECDSA token `0x5349`.
+   - *Ground Safety Governance:* Enforces mechanical safety pin management, squib continuity verification, ground grounding/bonding, and battery thermal charging safety protocols.
+
+---
+
+### 1.3 Safety Veto Hierarchy & Emergency Flight Abort Authority
+In accordance with MIL-STD-882E §4.3, NATO STANAG 4586 Annex B §3.8, and DoD Directive 3000.09 §3.1, the operational authority hierarchy strictly enforces the principle that **flight safety, range containment, and regulatory airspace compliance supersede tactical operational intent**.
+
+$$
+\begin{aligned}
+\mathrm{EmergencyFlightAbort}(t) &\iff \mathrm{Veto}_{\mathrm{RSO}}(t) \lor \mathrm{Veto}_{\mathrm{RPIC}}(t) \lor \mathrm{Trigger}_{\mathrm{AutonomousFailsafe}}(t) \\
+\mathrm{CommandPrecedence} &: (\mathrm{Veto}_{\mathrm{RSO}} \equiv \mathrm{Veto}_{\mathrm{RPIC}} \equiv \mathrm{Trigger}_{\mathrm{AutonomousFailsafe}}) \succ \mathrm{Command}_{\mathrm{MC}}
+\end{aligned}
+$$
+
+Where and Operational Parameters:
+
+| Parameter | Symbol | Nominal Value | Units | Validation Rule | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| RSO Safety Veto Signal | Veto_RSO | FALSE (Nominal) / TRUE (Abort) | Boolean | Immediate un-overridable flight abort command issued by Range Safety Officer | MIL-STD-882E §4.3 |
+| RPIC Safety Veto Signal | Veto_RPIC | FALSE (Nominal) / TRUE (Abort) | Boolean | Immediate un-overridable flight abort command issued by Remote Pilot in Command | ISO/IEC/IEEE 29148:2018 §5.2.4 |
+| Autonomous Failsafe Trigger | Trigger_AutonomousFailsafe | FALSE (Nominal) / TRUE (Failsafe) | Boolean | Automated containment trigger from FCC health executive (EMG-01..07) | NATO STANAG 4586 Annex B §4.1 |
+| Commander Tactical Command | Command_MC | Operational Directive | Command Enum | Tactical mission command issued by Mission Commander | DoD Directive 3000.09 §3.1 |
+| Safety Veto Response Latency | tau_veto | <= 1.0 | s | Maximum elapsed time from veto discrete assertion to FCC abort execution | NATO STANAG 4586 Annex B §3.8 |
+| Payload Disarm Latency | tau_disarm | <= 50.0 | ms | Hardware relay firing bus de-energization time upon abort assertion | MIL-STD-882E §4.4 |
+
+#### 1.3.1 Safety Veto Operational Governance Rules
+
+1. **Unilateral Abort Authority:** The Range Safety Officer (RSO) and Remote Pilot in Command (RPIC) each possess independent, unilateral authority to abort any flight phase, cancel any kinetic engagement, or command immediate emergency landing / return-to-base (RTB).
+2. **Zero Commander Override Capability:** The Mission Commander (MC) has **ZERO technical or procedural authority** to override, cancel, countermand, or delay an emergency abort or flight termination commanded by the RSO, RPIC, or autonomous failsafe health executive.
+3. **Automated Payload Safing on Abort:** Assertion of any abort discrete ($\mathrm{Veto}_{\mathrm{RSO}} = \mathrm{TRUE}$ or $\mathrm{Veto}_{\mathrm{RPIC}} = \mathrm{TRUE}$) immediately isolates weapon firing circuits ($\tau_{\mathrm{disarm}} \le 50.0\text{ ms}$), disables laser designator emitters, stows optical gimbals, and commands the Flight Control Computer to transition to the appropriate failsafe state (`Contingency_LostLinkReturn`, `Contingency_GeofenceContainment`, or `Emergency_FlightTermination`).
+4. **Audit Logging & Non-Repudiation:** All safety veto assertions, abort commands, and health monitor triggers are immutably logged with microsecond hardware timestamps into TPM-sealed persistent memory for post-sortie regulatory audit.
+
+---
+
+### 1.4 Normative Baseline & Doctrinal Authority
 This Tactical Mission Intent specification tree is authored in strict compliance with:
 - **NATO STANAG 4586 Edition 3**: Standard Interfaces of UAV Control System (UCS) for NATO UAV Interoperability (Annex B §4.1).
 - **INCOSE Systems Engineering Handbook v5.0**: Technical Planning, System Requirements Definition, and Mission Analysis Processes (§3.2, §3.3).
@@ -69,6 +139,7 @@ This Tactical Mission Intent specification tree is authored in strict compliance
 - **JARUS SORA v2.5**: Specific Operations Risk Assessment (Annex B, Containment and Risk Buffers; Annex E, OSO Assurance).
 - **RTCA DO-365B**: Minimum Operational Performance Standards (MOPS) for Detect and Avoid (DAA) Systems (§2.2.4).
 - **DoD Directive 3000.09**: Autonomy in Weapon Systems (§3.1, §3.1.a-c).
+- **RCC 319-19**: Flight Termination Systems Common Practice (Range Commanders Council).
 
 ## 2. Mission Essential Task List (METL)
 
@@ -1197,6 +1268,165 @@ Where and Operational Parameters:
 | Commanded Payload State | PayloadState | SAFE | Enum | Electrical firing bus isolated via physical relay | MIL-STD-882E §4.4 |
 | Designator Emitter Power | EmitterPower | 0.0 | W | Laser diode drive current shunt to ground | MIL-STD-882E §4.4 |
 | Sensor Gimbal Mechanism | GimbalState | STOWED | Enum | Optical payload locked in aerodynamically protected park | NATO STANAG 4586 Annex B §3.2 |
+
+---
+
+### 6.3 Positive Transfer-of-Control Handshake Protocol
+
+In accordance with NATO STANAG 4586 Edition 3 (§3.8 & Annex B §4.5), ISO/IEC/IEEE 29148:2018 §5.2.4, and NIST SP 800-88r1, control transfer between distinct Ground Control Stations (GCS Primary to GCS Secondary) or between pilot seats (Seat 1 Pilot in Command to Seat 2 Copilot) enforces an authenticated, positive transfer-of-control handshake protocol.
+
+The protocol utilizes cryptographic challenge-response authentication with pseudo-random 256-bit nonce exchange, flight trim dynamic stability gating, and state buffer checksum validation to prevent command contention, spoofing, control hijacking, and flight path transients.
+
+#### 6.3.1 Mathematical Formulation of Transfer-of-Control Predicate
+
+$$
+\begin{aligned}
+\mathrm{TransferAuthorized}(t) \iff &\mathrm{VerifySig}_{\mathrm{Ed25519}}(\mathrm{Resp}_{\mathrm{Target}}, \mathrm{Key}_{\mathrm{Target}}, \mathcal{H}(N_{\mathrm{chal}} \mathbin{\Vert} N_{\mathrm{req}} \mathbin{\Vert} \mathrm{StateHash}(t))) \\
+&\land (t_{\mathrm{resp}} - t_{\mathrm{chal}} \le \tau_{\mathrm{handshake\_timeout}}) \\
+&\land (\|\Delta \mathbf{v}_{\mathrm{trim}}(t)\|_2 \le 0.5) \land (\|\Delta \boldsymbol{\omega}_{\mathrm{trim}}(t)\|_2 \le 2.0) \\
+&\land (\mathrm{CRC}_{\mathrm{Buffer}}(\mathrm{Origin}) = \mathrm{CRC}_{\mathrm{Buffer}}(\mathrm{Target})) \land \neg \mathrm{VetoActive}(t)
+\end{aligned}
+$$
+
+Where and Operational Parameters:
+
+| Parameter | Symbol | Nominal Value | Units | Validation Rule | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Target Seat / Station Signature | VerifySig(Key_Target) | TRUE | Boolean | Valid Ed25519 digital signature of target control station / seat | NIST SP 800-88r1 §2.4 |
+| Target Nonce Token | N_req | 256-bit Nonce | Hex String | Ephemeral cryptographic nonce generated by target receiving station | NIST SP 800-90A §8.6 |
+| Challenge Nonce Token | N_chal | 256-bit Nonce | Hex String | Challenge nonce generated by active primary station / FCC | NIST SP 800-90A §8.6 |
+| Handshake Round-Trip Delta | t_resp - t_chal | <= 5.0 | s | Elapsed time between challenge issuance and signed response receipt | NATO STANAG 4586 §4.5 |
+| Handshake Timeout Limit | tau_handshake_timeout | <= 5.0 | s | Maximum allowable execution window for complete 4-step handshake | NATO STANAG 4586 §4.5 |
+| Velocity Trim Residual Norm | \|\|Delta v_trim\|\|_2 | <= 0.5 | m/s | Dynamic velocity stability gate during flight control handoff | RTCA DO-365B §2.2.3 |
+| Angular Rate Trim Residual Norm | \|\|Delta omega_trim\|\|_2 | <= 2.0 | deg/s | Rotational angular rate stability gate during flight control handoff | RTCA DO-365B §2.2.3 |
+| Mission Buffer Checksum Match | CRC_Buffer(Origin) == CRC_Buffer(Target) | TRUE | Boolean | 32-bit CRC equality of active waypoint and geofence buffers | NATO STANAG 4586 Annex B §3.2 |
+| Safety Veto Inactive | !VetoActive | TRUE | Boolean | No active abort or veto condition asserted by RPIC or RSO | MIL-STD-882E §4.3 |
+
+#### 6.3.2 Positive Transfer-of-Control Handshake Sequence
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant Seat1 as "Primary Seat / GCS Alpha (Active C2)"
+    participant FCC as "Flight Control Computer"
+    participant Seat2 as "Secondary Seat / GCS Bravo (Standby C2)"
+    participant RSO as "Range Safety Officer"
+
+    Note over Seat1,Seat2: Initiation Phase
+    Seat2->>FCC: Control_Request(Token_Req, Nonce_B)
+    FCC->>Seat1: Query Handshake Intent & Generate Challenge(Nonce_FCC, Nonce_B)
+    Seat1->>FCC: Authorize_Handoff_Intent(Sign_Seat1)
+    
+    Note over FCC,Seat2: Challenge-Response Nonce Exchange
+    FCC->>Seat2: Issue Challenge_Payload(Nonce_FCC, StateHash, TimeStamp)
+    Seat2->>FCC: Transmit Challenge_Response(Sign_Seat2(Nonce_FCC || Nonce_B || StateHash))
+    
+    Note over FCC: Validation & Flight Stability Gate
+    FCC->>FCC: Verify Ed25519 Signature & Nonce Freshness
+    FCC->>FCC: Check Flight Trim (|Δv| <= 0.5 m/s, |Δω| <= 2.0 deg/s)
+    FCC->>FCC: Verify Waypoint & Geofence CRC32 Buffer Alignment
+    
+    alt Verification & Stability Gate PASSED
+        FCC->>Seat2: Grant Master C2 Authority (Active C2 Seat)
+        FCC->>Seat1: Relegate to Monitor / Shadow Mode
+        FCC->>RSO: Broadcast Handoff_Success_Telemetry(New_Active=Seat2)
+    else Timeout (> 5.0 s), Verification Failure, or Safety Veto
+        FCC->>Seat2: Reject Handoff (ERR_HANDOFF_REJECTED)
+        FCC->>Seat1: Retain Master C2 Authority (Active C2 Retained)
+        FCC->>RSO: Broadcast Handoff_Abort_Telemetry(Active=Seat1)
+    end
+```
+
+#### 6.3.3 Protocol Handshake Execution Steps & Fail-Safe Invariants
+
+1. **Step 1 - Control Transfer Request:** The requesting station or secondary seat (GCS Bravo / Seat 2) generates an ephemeral 256-bit nonce ($N_{\mathrm{req}}$) and transmits an authenticated `Control_Transfer_Request(Token, N_req)` packet to the Flight Control Computer (FCC).
+2. **Step 2 - Cryptographic Challenge Issuance:** The FCC generates an independent 256-bit challenge nonce ($N_{\mathrm{chal}}$), queries the current active primary seat (Seat 1) for transfer concurrence, and returns a cryptographic challenge containing the composite payload hash $\mathcal{H}(N_{\mathrm{chal}} \mathbin{\Vert} N_{\mathrm{req}} \mathbin{\Vert} \mathrm{StateHash})$.
+3. **Step 3 - Challenge-Response & Cryptographic Verification:** The requesting station computes the Ed25519 signature over the challenge payload using its hardware-bound private key and returns the signed response within the round-trip timeout window ($t_{\mathrm{resp}} - t_{\mathrm{chal}} \le \tau_{\mathrm{handshake\_timeout}}$).
+4. **Step 4 - Flight Trim Stability Gate & Authority Committal:** Prior to committing authority transfer, the FCC verifies that:
+   - Aircraft kinematic velocity perturbation satisfies $\|\Delta \mathbf{v}_{\mathrm{trim}}\|_2 \le 0.5\text{ m/s}$.
+   - Aircraft angular rotation rates satisfy $\|\Delta \boldsymbol{\omega}_{\mathrm{trim}}\|_2 \le 2.0^\circ\text{/s}$.
+   - Active waypoint list and geofence polygons CRC32 checksums match identically across both control seats.
+   - Upon complete verification, the FCC atomically assigns active C2 to the target seat and relegates the originating station to monitor-only status.
+5. **Fail-Safe Timeout & Abort Invariant:** If any stage of the handshake fails to validate within $\tau_{\mathrm{handshake\_timeout}} \le 5.0\text{ s}$, or if an anomalous telemetry state is detected, the transaction is immediately terminated, primary flight control authority remains uninterrupted with the originating station, and an `ERR_HANDOFF_ABORT` audit event is logged.
+
+---
+
+### 6.4 Dual-Consent Arming & Kinetic/Sensor Interlock State Machine
+
+In accordance with DoD Directive 3000.09 §3.1, CJCSI 3121.01B, and MIL-STD-882E §4.4, high-consequence weapon release, kinetic mechanism deployment, and active laser target designation operate under a formal 5-state deterministic Finite State Machine (FSM).
+
+Arming requires positive, concurrent, and distinct cryptographic dual consent from the Mission Commander ($\mathrm{Key}_A$) and the Range Safety Officer ($\mathrm{Key}_B$) within a sliding temporal window of $|t_A - t_B| \le 10.0\text{ s}$.
+
+#### 6.4.1 Mathematical State Formulation & Transition Logic
+
+$$
+\begin{aligned}
+\mathcal{S}(t) &\in \{\mathrm{STATE\_01\_SAFE\_DISARMED}, \mathrm{STATE\_02\_CONSENT\_A\_PENDING}, \mathrm{STATE\_03\_CONSENT\_B\_PENDING}, \\
+&\qquad \mathrm{STATE\_04\_DUAL\_CONSENT\_ARMED}, \mathrm{STATE\_05\_EMERGENCY\_DISARMED}\} \\
+\mathcal{T}_{\mathrm{Arm}}(\mathcal{S}(t), \mathrm{Cmd}_A, \mathrm{Cmd}_B) &= \begin{cases}
+\mathrm{STATE\_04\_DUAL\_CONSENT\_ARMED} & \text{if } \mathrm{SystemArmed}(t) = \mathrm{TRUE} \\
+\mathrm{STATE\_02\_CONSENT\_A\_PENDING} & \text{if } \mathrm{ValidSig}_A \land \neg \mathrm{ValidSig}_B \land \Delta t \le 10.0 \\
+\mathrm{STATE\_03\_CONSENT\_B\_PENDING} & \text{if } \mathrm{ValidSig}_B \land \neg \mathrm{ValidSig}_A \land \Delta t \le 10.0 \\
+\mathrm{STATE\_05\_EMERGENCY\_DISARMED} & \text{if } \mathrm{VetoActive}(t) \lor \tau_{\mathrm{heartbeat}} > 2.0 \lor \mathrm{GeofenceStatus} = \mathrm{WARN} \\
+\mathrm{STATE\_01\_SAFE\_DISARMED} & \text{otherwise / on timeout}
+\end{cases}
+\end{aligned}
+$$
+
+Where and Operational Parameters:
+
+| Parameter | Symbol | Nominal Value | Units | Validation Rule | Public Clause Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Discrete Arming States | S(t) | 5-State Enum | State Enum | Formal FSM state occupancy | MIL-STD-882E §4.4 |
+| Commander Key Signature | ValidSig_A | TRUE | Boolean | Cryptographically valid Ed25519 signature from Mission Commander (Key_A) | DoD Directive 3000.09 §3.1.c |
+| Safety Officer Key Signature | ValidSig_B | TRUE | Boolean | Cryptographically valid Ed25519 signature from Range Safety Officer (Key_B) | DoD Directive 3000.09 §3.1.c |
+| Dual-Consent Concurrence Window | Delta t_consent | <= 10.0 | s | Maximum allowable temporal disparity between Key_A and Key_B submission | DoD Directive 3000.09 §3.1.c |
+| Operator Heartbeat Timeout | tau_heartbeat | <= 2.0 | s | Continuous HOTL supervisory heartbeat timeout threshold | NATO STANAG 4586 §4.5 |
+| Hardware Disarm Transition Time | tau_disarm_hw | <= 50.0 | ms | Physical relay bus power dump time upon transition to STATE_05 | MIL-STD-882E §4.4 |
+
+#### 6.4.2 Dual-Consent Arming State Transition Diagram
+
+```mermaid
+stateDiagram-v2
+    [*] --> STATE_01_SAFE_DISARMED: System Boot / Default State
+
+    STATE_01_SAFE_DISARMED --> STATE_02_CONSENT_A_PENDING: Cmd_A Received (Key_A Valid)
+    STATE_01_SAFE_DISARMED --> STATE_03_CONSENT_B_PENDING: Cmd_B Received (Key_B Valid)
+    
+    STATE_02_CONSENT_A_PENDING --> STATE_04_DUAL_CONSENT_ARMED: Cmd_B Received (Key_B Valid, |t_A - t_B| <= 10s, PID >= 0.95, Geofence INSIDE)
+    STATE_02_CONSENT_A_PENDING --> STATE_01_SAFE_DISARMED: Concurrence Timeout (> 10.0s) / Cancel_Cmd
+    
+    STATE_03_CONSENT_B_PENDING --> STATE_04_DUAL_CONSENT_ARMED: Cmd_A Received (Key_A Valid, |t_A - t_B| <= 10s, PID >= 0.95, Geofence INSIDE)
+    STATE_03_CONSENT_B_PENDING --> STATE_01_SAFE_DISARMED: Concurrence Timeout (> 10.0s) / Cancel_Cmd
+
+    STATE_04_DUAL_CONSENT_ARMED --> STATE_01_SAFE_DISARMED: Normal Mission Completion / Intentional Disarm Cmd
+    STATE_04_DUAL_CONSENT_ARMED --> STATE_05_EMERGENCY_DISARMED: Safety Veto (RPIC/RSO) OR Heartbeat Loss (> 2.0s) OR Geofence WARN OR Lost C2
+
+    STATE_02_CONSENT_A_PENDING --> STATE_05_EMERGENCY_DISARMED: Safety Veto (RPIC/RSO) / Geofence WARN
+    STATE_03_CONSENT_B_PENDING --> STATE_05_EMERGENCY_DISARMED: Safety Veto (RPIC/RSO) / Geofence WARN
+
+    STATE_05_EMERGENCY_DISARMED --> STATE_01_SAFE_DISARMED: Physical Ground Reset / Authenticated Maintenance Clear
+```
+
+#### 6.4.3 State Descriptions & Hardware Interlock Invariants
+
+1. **STATE_01_SAFE_DISARMED (Nominal Safe):**
+   - Physical weapon firing bus is de-energized through optoisolated solid-state safety switches.
+   - Laser rangefinder/designator diode power supply is shunted to ground.
+   - Optical gimbal is stowed in aerodynamically protected park position unless actively commanding reconnaissance scan.
+2. **STATE_02_CONSENT_A_PENDING / STATE_03_CONSENT_B_PENDING (Single Consent Active):**
+   - Single operator digital signature verified and logged in volatile memory.
+   - Rolling countdown timer initialized ($\Delta t_{\mathrm{consent}} \le 10.0\text{ s}$).
+   - Hardware firing bus remains completely de-energized.
+   - If timer expires before the complementary distinct key signature is validated, the state machine resets automatically to `STATE_01_SAFE_DISARMED`.
+3. **STATE_04_DUAL_CONSENT_ARMED (Operational Arming):**
+   - Both distinct signatures ($\mathrm{Key}_A \neq \mathrm{Key}_B$) verified within $|t_A - t_B| \le 10.0\text{ s}$.
+   - Positive Target Identification verified ($C_{\mathrm{PID}} \ge 0.95$).
+   - Current vehicle coordinate confirmed inside authorized geofence boundary ($\mathrm{GeofenceStatus} = \mathrm{INSIDE}$) and non-combatant standoff verified ($d \ge 250.0\text{ m}$).
+   - Solid-state firing bus relay is energized with continuous status monitoring.
+4. **STATE_05_EMERGENCY_DISARMED (Emergency Lockout):**
+   - Triggered instantaneously ($\tau_{\mathrm{disarm\_hw}} \le 50.0\text{ ms}$) upon assertion of any safety abort discrete by RSO or RPIC, lost C2 link across all PACE tiers, operator heartbeat timeout ($\tau > 2.0\text{ s}$), or geofence proximity warning.
+   - Firing bus hardware isolation switch latches open. Re-arming is strictly prohibited until a full cryptographic reset and ground clearance cycle are executed.
 
 ## 7. Airspace Deconfliction & U-space Dynamic Geo-Zones
 
