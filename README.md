@@ -1,10 +1,12 @@
-# Digital Engineering Agent Platform (DEAP) — Core Specification Compiler
+# Digital Engineering Agent Platform (DEAP) — Tactical UAS & Infrastructure Safety Platform
 
-> **Repository Identifier:** `DEAP01-spec-core`  
-> **Repository Role:** `UPSTREAM_SPEC_CORE_COMPILER` (Digital Engineering Agent Platform Core Specification Compiler)  
-> **Classification:** `Abstract Model-Based Systems Engineering (MBSE) Compiler & Multi-Agent Verification Platform`  
+> **Repository Identifier:** `DEAP-uas-infrastructure-safety`  
+> **Repository Role:** `DOMAIN_TEMPLATE_CHILD` (Child UAS Infrastructure Safety Specification Template)  
+> **Parent Template:** `gintatkinson/DEAP-avionic-flight-safety`  
+> **Classification:** `Domain-Specific Safety-Critical Cyber-Physical Platform (Tactical UAS & Infrastructure Inspection)`  
 > **Status:** `PRODUCTION-GRADE / ACTIVE`  
 > **Primary Commercial Toolchain Integration:** `MATLAB / Simulink / Stateflow / Embedded Coder`  
+> **Regulatory Baselines:** `JARUS SORA v2.5 (SAIL IV)` | `ASTM F3269-17 RTA` | `RTCA DO-365B DAA` | `STANAG 4586` | `MIL-STD-882E`  
 > **Supported Schema Standards:** `SysML v2 (OMG)` | `OMG IDL` | `AUTOSAR ARXML` | `YANG (Network Topology)` | `OpenAPI v3` | `Protobuf v3`  
 > **Multi-Provider Issue Tracking:** `GitHub Issues` | `GitLab Issues` | `Atlassian Jira (Cloud & Data Center)`  
 
@@ -12,35 +14,35 @@
 
 ## 1. System Overview
 
-The **Digital Engineering Agent Platform Core Specification Compiler (`DEAP01-spec-core`)** is the upstream abstract systems engineering compiler and multi-agent verification framework for DEAP. It provides deterministic translation, model-based validation, bidirectional synchronization, and quality gate enforcement bridging formal engineering models (SysML v2, YANG, IDL, ARXML, OpenAPI, Protobuf) with downstream Agile specification backlogs and autonomous code generation.
+The **Digital Engineering Agent Platform (DEAP) — Tactical UAS & Infrastructure Safety Platform (`DEAP-uas-infrastructure-safety`)** is the specialized downstream cyber-physical domain child template (`DOMAIN_TEMPLATE_CHILD`) derived from the canonical parent template `gintatkinson/DEAP-avionic-flight-safety` and upstream compiler `gintatkinson/DEAP01-spec-core`.
 
-Operating purely on Abstract Syntax Tree (AST) tokens without hardcoding domain concepts, `DEAP01-spec-core` serves as the upstream parent compiler (`UPSTREAM_SPEC_CORE_COMPILER`) from which domain-specific distribution templates across 6 canonical cyber-physical sectors (Aerospace & Defense, Medical & Healthcare, Space & Satellites, Industrial Robotics, Subsea & Maritime, Rail & Transportation) and downstream customer projects are derived via `scripts/install_pipeline.sh` or Direct Copy.
+The platform provides end-to-end model-based systems engineering (MBSE), formal safety engineering, bidirectional SysML v2 compilation, and automated test-driven feature synthesis for tactical unmanned aerial systems (UAS) operating in critical infrastructure inspection envelopes (e.g. power transmission corridors, hydrocarbon pipeline monitoring, and high-risk civil infrastructure BVLOS flights).
 
-### 1.2 Upstream Compiler vs. Downstream Application Workspace Boundary
+### 1.1 Primary Commercial Toolchain Integration
 
-The DEAP framework strictly delineates the boundary between the upstream specification compiler and downstream application workspaces:
-- **Upstream Spec Core Compiler (`DEAP01-spec-core`):** Abstract, domain-agnostic specification compiler and multi-agent verification platform. Operates with the sentinel `.pipeline/upstream/` directory present. All upstream landing zones (`docs/conops/`, `docs/safety/`, `docs/epics/`, `docs/features/`, `docs/user-stories/`, `docs/use-cases/`, `schema/`) remain pristine with zero concrete domain specifications or domain-specific `.sysml` files.
-- **Pure Schema-Driven Compiler Invariant:** `DEAP01-spec-core` is an abstract Model-Based Systems Engineering (MBSE) compiler; all domain semantics, safety statecharts, and specifications derive deterministically from user-provided schemas in `schema/`.
-- **Downstream Application Workspaces (Multi-Domain Cyber-Physical Exemplars):** Concrete domain application repositories derived from `DEAP01-spec-core`. Turnkey installation or manual setup removes `.pipeline/upstream/`, transitioning the project into `DOWNSTREAM_CUSTOMER_PROJECT` mode to enable concrete domain statecharts, safety-critical controllers, middleware bindings, and domain test suites across 6 canonical domains:
-  1. **Aerospace & Defense:** `DEAP-uas-infrastructure-safety` (SORA, ASTM F3269, DO-365B)
-  2. **Medical & Healthcare:** `DEAP-surgical-robotics-console` (IEC 62304 Class C, ISO 14971, FDA Class III)
-  3. **Space & Satellites:** `DEAP-space-cubesat-constellation` (ECSS-E-ST-40C, NASA-STD-8739.8)
-  4. **Industrial Robotics:** `DEAP-industrial-warehouse-agv` (ISO 3691-4, IEC 61508, VDA 5050)
-  5. **Subsea & Maritime:** `DEAP-subsea-oceanographic-auv` (DNV-GL-ST-E403, IMO MASS)
-  6. **Rail & Transportation:** `DEAP-rail-autonomous-locomotive` (EN 50126, EN 50128 SIL 4)
-- **Illustrative Schema Payloads:** Any concrete flight controller, robotic surgical console, satellite bus, AGV guidance, subsea vehicle, rail locomotive controller, STPA hazard analysis, or domain safety examples presented throughout this README and documentation are strictly **illustrative schema payloads** demonstrating compiler ingestion, AST synthesis, projection, and verification capabilities.
+This platform explicitly declares **MATLAB / Simulink / Stateflow / Embedded Coder** as the Primary Tier-1 Commercial Toolchain Integration Context:
+- **Model-Based Design & Flight Dynamics:** Simulink hierarchical subsystem modeling and 6-DOF UAS aero-propulsive equations of motion.
+- **Run-Time Assurance & Stateflow Statecharts:** Stateflow discrete event charts implementing ASTM F3269-17 simplex Run-Time Assurance (RTA) monitors, contingency switching, and fail-safe Return-to-Launch (RTL) logic.
+- **Formal Invariant Proving:** Simulink Design Verifier (SLDV) property proving for deadlock-free flight state transitions and geofence boundary containment.
+- **Qualified Code Synthesis:** Embedded Coder automatic generation of MISRA C / DO-178C compliant C and formal SPARK Ada flight software kernels targeted for Pixhawk/PX4 autopilots and ROS2 real-time companion compute.
 
----
+### 1.2 Domain Template Architecture & Parent Lineage Boundary
 
-## 1.1 Primary Commercial Toolchain Integration
-
-This platform explicitly declares **MATLAB / Simulink / Stateflow / Embedded Coder** as the Primary Tier-1 Commercial Toolchain Integration (Model-Based Design, Control Law Synthesis, DO-178C C/SPARK Ada Code Generation).
+The platform operates as a concrete downstream domain template workspace without the `.pipeline/upstream/` sentinel:
+- **Parent Template Derivation (`DEAP-avionic-flight-safety`):** Inherits core aviation governance rules, STPA 8-pillar taxonomies, SORA SAIL I–VI assurance frameworks, and SysML v2 projection capabilities.
+- **Child UAS Infrastructure Safety Scope (`DEAP-uas-infrastructure-safety`):** Contains concrete operational mission profiles (`docs/conops/MISSION_INTENT.md`), infrastructure inspection Concept of Operations (`docs/conops/CONOPS.md`), 8-pillar STPA & SORA SAIL IV hazard analyses (`docs/safety/STPA_MATRIX.md`), domain SysML v2 architecture models (`schema/DEAP_MODEL.sysml`), projected agile backlogs (`docs/epics/`, `docs/features/`, `docs/user-stories/`, `docs/use-cases/`, `docs/icd/`), and automated compliance test suites (`tests/`).
+- **Regulatory Compliance Stack:**
+  - **JARUS SORA v2.5 (SAIL IV):** Ground Risk Class (GRC) and Air Risk Class (ARC) mitigations covering all 24 Operational Safety Objectives (OSO-01 through OSO-24).
+  - **ASTM F3269-17:** Simplex Run-Time Assurance (RTA) monitor architecture isolating complex untrusted autonomy with a deterministic, certified safety net backup.
+  - **RTCA DO-365B:** Minimum Operational Performance Standards (MOPS) for Detect and Avoid (DAA) and cooperative/non-cooperative traffic alerting.
+  - **NATO STANAG 4586:** Standardized Command and Control (C2) interface architecture for UAS Ground Control Station (GCS) interoperability.
+  - **MIL-STD-882E:** System safety standard practice for hazard tracking, severity/probability scoring, and residual risk verification.
 
 ---
 
 ## 2. Supported Schema & Modeling Standards
 
-The `schema/` directory accepts only supported formal schema formats (`.sysml`, `.idl`, `.arxml`/`.xml`, `.proto`, and `.json`/`.yaml`/`.yml`). Ingestion and compilation fail closed with an explicit error on unsupported file extensions or unrecognized payloads (e.g. `.pdf`, `.docx`, `.exe`), preventing silent format misclassification.
+The `schema/` directory accepts only supported formal schema formats (`.sysml`, `.idl`, `.arxml`/`.xml`, `.proto`, and `.json`/`.yaml`/`.yml`). Ingestion and compilation fail closed with an explicit error on unsupported file extensions or unrecognized payloads, preventing silent format misclassification.
 
 | Standard / Format | Modeling Scope | AST Mapping Primitives | Compiler Ingestion & Validation |
 | :--- | :--- | :--- | :--- |
@@ -66,7 +68,7 @@ DEAP supports decoupled downstream implementation profiles residing under `.pipe
 
 ## 4. Repository Structure & Canonical Specifications
 
-All architecture blueprints, concept papers, SysML v2 models, and specifications for DEAP are hosted centrally in the Single Source of Truth repository: **[DEAP01-spec-core](https://github.com/gintatkinson/DEAP01-spec-core)** and in repository blueprints.
+All architecture blueprints, concept papers, SysML v2 models, and specifications for DEAP are hosted centrally in the Single Source of Truth repository: **[DEAP01-spec-core](https://github.com/gintatkinson/DEAP01-spec-core)** and repository blueprints.
 
 ### Canonical Specifications & Architecture Blueprints:
 - **Deterministic Safety Specification Compiler Blueprint**: [DEAP_DETERMINISTIC_SAFETY_SPECIFICATION_COMPILER_BLUEPRINT.md](docs/architecture/blueprints/DEAP_DETERMINISTIC_SAFETY_SPECIFICATION_COMPILER_BLUEPRINT.md) (`DEAP-BLUEPRINT-SAFETY-004`)
@@ -82,65 +84,35 @@ All architecture blueprints, concept papers, SysML v2 models, and specifications
 - **Local Air-Gapped DeepSeek Workstation Blueprint**: [DEAP_LOCAL_AIRGAPPED_DEEPSEEK_WORKSTATION_BLUEPRINT.md](docs/architecture/blueprints/DEAP_LOCAL_AIRGAPPED_DEEPSEEK_WORKSTATION_BLUEPRINT.md)
 - **DeepSeek Harness Integration Blueprint**: [DEAP_DEEPSEEK_HARNESS_INTEGRATION_BLUEPRINT.md](docs/architecture/blueprints/DEAP_DEEPSEEK_HARNESS_INTEGRATION_BLUEPRINT.md)
 
-### Repository Trees:
+### Repository Tree:
 
-#### Upstream Spec Core Compiler (`DEAP01-spec-core`):
 ```
-DEAP01-spec-core/
+DEAP-uas-infrastructure-safety/
 ├── .agents/
 │   ├── AGENTS.md                  # Project-scoped agentic governance rules & delegation gates
 │   └── skills -> ../skills        # Project skills symlink
 ├── .pipeline/
-│   ├── upstream/                  # Sentinel directory marking UPSTREAM_SPEC_CORE_COMPILER role
 │   ├── constitution.md            # Platform-independent functional safety governance tier
-│   └── profiles/                  # Multi-platform execution profiles (ros2_cpp, px4_module, etc.)
+│   ├── contracts/                 # Pipeline handoff contracts (e.g. pipeline0_handoff_contract.json)
+│   ├── schema.sysml               # Synchronized canonical SysML v2 safety architecture model
+│   └── profiles/                  # Platform execution profiles (ros2_cpp.md, px4_module.md, etc.)
 ├── docs/
+│   ├── conops/                    # UAS Tactical Mission Intent & Concept of Operations (CONOPS.md, MISSION_INTENT.md)
+│   ├── safety/                    # 8-Pillar STPA Matrix, FMECA Criticality & SORA SAIL IV Assurance (STPA_MATRIX.md)
 │   ├── architecture/
-│   │   └── blueprints/            # Canonical architecture specifications & multi-provider blueprints
-│   ├── conops/                    # Abstract landing zone (.gitkeep)
-│   ├── safety/                    # Abstract landing zone (.gitkeep)
-│   ├── epics/                     # Abstract landing zone (.gitkeep)
-│   ├── features/                  # Abstract landing zone (.gitkeep)
-│   ├── user-stories/              # Abstract landing zone (.gitkeep)
-│   └── use-cases/                 # Abstract landing zone (.gitkeep)
-├── rules/                         # Abstract verification & governance rules
-├── schema/                        # Abstract landing zone (.gitkeep)
-├── scripts/                       # Turnkey installer, compiler, and parity verification scripts
+│   │   └── blueprints/            # Canonical architecture specifications & safety net blueprints
+│   ├── icd/                       # Interface Control Documents, Signal Dictionary & Port Matrices
+│   ├── epics/                     # Structural System Capabilities (Mermaid Class Diagrams)
+│   ├── features/                  # Behavioral Subsystem Specifications (Statecharts & Flowcharts)
+│   ├── user-stories/              # BDD Gherkin Interaction Specifications & Verification Lifelines
+│   └── use-cases/                 # Operational Scenario Execution Sequences
+├── schema/                        # Domain SysML v2 Models (DEAP_MODEL.sysml) & Interface Schemas
+├── scripts/                       # Reconciler, SysML compiler, and baseline verification scripts
 ├── skills/                        # Multi-agent orchestrator & implementation skills
-├── tests/                         # Baseline, AST parser, and compiler verification test suites
+├── tests/                         # Application tests & UAS domain safety compliance test suite
 ├── pyproject.toml                 # Pytest & toolchain configuration
-└── README.md                      # Upstream compiler master specification & usage guide
+└── README.md                      # Tactical UAS & Infrastructure Safety master specification & operator guide
 ```
-
-#### Downstream Customer Project Workspace (Multi-Domain Cyber-Physical Exemplar):
-```
-downstream-workspace/ (e.g. DEAP-uas-infrastructure-safety, DEAP-surgical-robotics-console, ...)
-├── .agents/
-│   ├── AGENTS.md                  # Project-scoped agentic governance rules & delegation gates
-│   └── skills -> ../skills        # Project skills symlink
-├── .pipeline/
-│   ├── constitution.md            # Platform-independent functional safety governance tier
-│   └── profiles/
-│       ├── ros2_cpp.md            # ROS2 C++ Real-Time Nodes platform execution profile
-│       └── px4_module.md          # PX4 Autopilot / Embedded platform execution profile
-├── docs/
-│   ├── conops/                    # Customer mission intent & Concept of Operations landing zone
-│   ├── safety/                    # STPA hazard analysis, FMECA & domain safety landing zone
-│   └── architecture/
-│       └── blueprints/            # Canonical architecture specifications & multi-provider blueprints
-├── schema/                        # Domain-specific structural schemas & SysML v2 models
-├── tests/                         # Application tests & domain safety compliance test suite
-├── pyproject.toml                 # Pytest & verification configuration
-└── README.md                      # Downstream project master specification & usage guide
-```
-
-Supported Downstream Domain Exemplars (Pure Schema-Driven):
-1. **Aerospace & Defense:** `DEAP-uas-infrastructure-safety` (SORA, ASTM F3269, DO-365B)
-2. **Medical & Healthcare:** `DEAP-surgical-robotics-console` (IEC 62304 Class C, ISO 14971, FDA Class III)
-3. **Space & Satellites:** `DEAP-space-cubesat-constellation` (ECSS-E-ST-40C, NASA-STD-8739.8)
-4. **Industrial Robotics:** `DEAP-industrial-warehouse-agv` (ISO 3691-4, IEC 61508, VDA 5050)
-5. **Subsea & Maritime:** `DEAP-subsea-oceanographic-auv` (DNV-GL-ST-E403, IMO MASS)
-6. **Rail & Transportation:** `DEAP-rail-autonomous-locomotive` (EN 50126, EN 50128 SIL 4)
 
 ---
 
@@ -172,45 +144,22 @@ Run the turnkey automated installer script directly from your project root direc
 
 #### Option 1: GitHub Installation
 ```bash
-# Turnkey install for GitHub-backed downstream repositories
+# Turnkey install for GitHub-backed repositories
 bash scripts/install_pipeline.sh <target_dir> -p github
 ```
 
 #### Option 2: GitLab Installation (SaaS, Self-Hosted, or Air-Gapped)
 ```bash
-# Turnkey install for GitLab-backed downstream repositories
+# Turnkey install for GitLab-backed repositories
 bash scripts/install_pipeline.sh <target_dir> -p gitlab --gitlab-group <group>
 
 # For custom self-hosted or air-gapped GitLab instances:
 bash scripts/install_pipeline.sh <target_dir> -p gitlab --gitlab-url https://gitlab.internal.defense.gov --gitlab-group <group>
 ```
 
-#### Single-Command Remote Bootstrap (from Upstream Compiler)
-```bash
-# GitHub Remote Bootstrap
-git clone https://github.com/gintatkinson/DEAP01-spec-core.git /tmp/deap_installer && bash /tmp/deap_installer/scripts/install_pipeline.sh . -p github && rm -rf /tmp/deap_installer
-
-# GitLab SaaS Remote Bootstrap
-git clone https://github.com/gintatkinson/DEAP01-spec-core.git /tmp/deap_installer && bash /tmp/deap_installer/scripts/install_pipeline.sh . -p gitlab --gitlab-group <group> && rm -rf /tmp/deap_installer
-
-# GitLab Self-Hosted / Air-Gapped Remote Bootstrap
-git clone https://github.com/gintatkinson/DEAP01-spec-core.git /tmp/deap_installer && bash /tmp/deap_installer/scripts/install_pipeline.sh . -p gitlab --gitlab-url https://gitlab.internal.defense.gov --gitlab-group <group> && rm -rf /tmp/deap_installer
-```
-
-### Supported Cyber-Physical Domain Exemplars (Pure Schema-Driven)
-The upstream compiler compiles AST models across six canonical domains based purely on input schemas:
-1. **Aerospace & Defense:** `DEAP-uas-infrastructure-safety` (SORA, ASTM F3269, DO-365B)
-2. **Medical & Healthcare:** `DEAP-surgical-robotics-console` (IEC 62304 Class C, ISO 14971, FDA Class III)
-3. **Space & Satellites:** `DEAP-space-cubesat-constellation` (ECSS-E-ST-40C, NASA-STD-8739.8)
-4. **Industrial Robotics:** `DEAP-industrial-warehouse-agv` (ISO 3691-4, IEC 61508, VDA 5050)
-5. **Subsea & Maritime:** `DEAP-subsea-oceanographic-auv` (DNV-GL-ST-E403, IMO MASS)
-6. **Rail & Transportation:** `DEAP-rail-autonomous-locomotive` (EN 50126, EN 50128 SIL 4)
-
-> **Note**: `install_pipeline.sh` automatically copies `skills`, `rules`, `schema`, `.pipeline`, `.agents`, and `scripts`, updates `.gitignore`, and sets up git hooks directly into your project root in a single automated turnkey step.
-
 ### 5.3 Direct Copy / Manual Setup
 
-Alternatively, copy the pipeline directories and templates from the canonical upstream compiler into your project repository manually:
+Alternatively, copy the pipeline directories and templates into your project repository manually:
 
 ```bash
 git clone https://github.com/gintatkinson/DEAP01-spec-core.git ./.tmp-pipeline
@@ -228,7 +177,7 @@ if [ ! -f ./README.md ]; then
     cp ./.tmp-pipeline/README.md ./
   fi
 fi
-# For GitLab Customer Projects:
+# For GitLab Projects:
 if [ -f ./.tmp-pipeline/.pipeline/templates/.gitlab-ci.yml ]; then
   cp ./.tmp-pipeline/.pipeline/templates/.gitlab-ci.yml ./.gitlab-ci.yml
 fi
@@ -239,7 +188,7 @@ else
 fi
 rm -rf ./.tmp-pipeline
 find . -name ".DS_Store" -delete 2>/dev/null || true
-mkdir -p ./docs/conops ./docs/safety ./docs/architecture/blueprints ./docs/epics ./docs/features ./docs/user-stories ./docs/use-cases ./.pipeline/contracts ./.pipeline/domain_specs ./.pipeline/profiles
+mkdir -p ./docs/conops ./docs/safety ./docs/architecture/blueprints ./docs/icd ./docs/epics ./docs/features ./docs/user-stories ./docs/use-cases ./.pipeline/contracts ./.pipeline/profiles
 
 # Verify pipeline directories, agent configuration, and skills
 test -d ./.pipeline && test -d ./skills && test -d ./.agents/skills && echo "Pipeline directories (.pipeline, skills, .agents/skills) verified successfully."
@@ -262,20 +211,19 @@ python3 skills/spec-orchestrator/scripts/bootstrap_tracker_labels.py
 
 ### 5.4 Setup for Google Antigravity / Gemini CLI
 
-After copying the pipeline, configure Gemini / Antigravity to load the skills and rules:
+After configuring the pipeline, configure Gemini / Antigravity to load the skills and rules:
 
 1. **Point Gemini / Antigravity at the skills directory**:
    ```
    Read the files in ./skills/, ./.agents/skills/, and ./rules/ directories.
    ```
 2. **Mandatory Post-Install Agent Initialization Sequence**:
-   Immediately following turnkey installation, any AI agent (Antigravity, Claude Code, Gemini CLI, Cursor) initializing in this repository MUST execute the following sequence before accepting user directives or executing task implementations:
+   Immediately following initialization, any AI agent (Antigravity, Claude Code, Gemini CLI, Cursor) initializing in this repository MUST execute the following sequence before accepting user directives or executing task implementations:
    0. **Detect Repository Role & Scope**:
-      - Inspect whether `.pipeline/upstream/` exists on disk.
-      - If present -> **Template Distribution Mode**: The active repository is the upstream distribution template. Customer application artifacts are prohibited; work is restricted to pipeline governance, tooling, and generic safety models.
-      - If absent -> **Downstream Customer Project Mode**: The active repository is an installed customer workspace. Authorized for customer feature implementation and domain codebase delivery.
+      - Inspect `.agents/AGENTS.md` and repository classification.
+      - Classified as `DOMAIN_TEMPLATE_CHILD` (Tactical UAS & Infrastructure Safety Platform) for concrete UAS safety engineering and feature implementation.
    1. **Read Governance Constitution**: Execute `view_file` on `.pipeline/constitution.md` to ingest the platform-independent functional governance layer and zero-mocking persistence mandates.
-   2. **Load Project Skills**: Execute `view_file` on `skills/feature-driven-implementation/SKILL.md` (and any active skills under `skills/` or `.agents/skills/`) to initialize feature-driven implementation protocols and review gates.
+   2. **Load Project Skills**: Execute `view_file` on `skills/feature-driven-implementation/SKILL.md` (and active skills under `skills/` or `.agents/skills/`) to initialize feature-driven implementation protocols and review gates.
    3. **Load Governance Rules**: Ingest `AGENTS.md` (or `.agents/AGENTS.md`) and `rules/` to enforce project-scoped agentic rules, context-isolated subagent dispatch loops, and role boundary locks.
    4. **Load Platform Profile**: Read the target platform execution profile (`.pipeline/profiles/ros2_cpp.md` for ROS2 C++ Real-Time Nodes or `.pipeline/profiles/px4_module.md` for PX4 Autopilot Flight Modules) to establish platform-specific build, test, and lifecycle constraints.
    5. **Bootstrap Tracker Labels**: Verify that repository issue tracker labels are synchronized and operational by running `python3 skills/spec-orchestrator/scripts/bootstrap_tracker_labels.py --dry-run` or verifying label bootstrapping status.
@@ -288,9 +236,9 @@ Ensure `.agents/AGENTS.md` exists in your project root to instruct initializing 
 # Agent Instructions
 
 ## Repository Role & Scope Classification
-- **Repository Classification:** `DOWNSTREAM_CUSTOMER_PROJECT` (Domain-Specific Safety-Critical Engineering Project)
-- **Sentinel Indicator:** The absence of `.pipeline/upstream/` denotes that this repository is an active **Downstream Customer Project Workspace**, authorized for concrete application code implementation and domain feature delivery.
-- **Customer Application Scope:** Customer-specific application code, domain nodes/modules, domain tests, mission envelopes, and proprietary safety models are developed, tested, and maintained directly within this project workspace across any target domain (Aerospace, Medical, Space, Industrial AGV, Subsea, Rail).
+- **Repository Classification:** `DOMAIN_TEMPLATE_CHILD` (Tactical UAS & Infrastructure Safety Platform)
+- **Parent Template:** `gintatkinson/DEAP-avionic-flight-safety`
+- **Customer Application Scope:** Tactical UAS infrastructure inspection, SORA SAIL IV mitigations, ASTM F3269-17 RTA safety monitors, DO-365B DAA sensors, ROS2 companion nodes, and PX4 flight modules are developed, tested, and maintained directly within this project workspace.
 
 ## Pipeline Skills & Rules
 This project uses the Digital Engineering Agent Platform (DEAP).
@@ -311,13 +259,13 @@ echo "Read all SKILL.md files in skills/ and .agents/skills/ and all rule files 
 
 Create `.cursor/rules/pipeline.mdc` or `.windsurf/rules/pipeline.md` referencing `.agents/skills/`, `skills/`, `.agents/AGENTS.md`, and `.pipeline/`.
 
-### 5.8 Downstream Baseline Verification Gate
+### 5.8 Baseline Verification Gate
 
 The verification gate acts as a post-installation and post-implementation compliance check:
 
 ```bash
-python3 -m pytest tests/
-python3 scripts/verify_downstream_baseline.py --no-domain
+python3 -m unittest discover tests
+python3 scripts/verify_downstream_baseline.py
 ```
 
 ### 5.9 Supported Runtimes Table
@@ -350,7 +298,7 @@ The DEAP platform features a unified, zero-dependency **Tracker Abstraction Arch
 #### Authentication Resolution Hierarchy:
 1. **GitLab**: Checks `GITLAB_TOKEN` $\rightarrow$ `GL_TOKEN` $\rightarrow$ `CI_JOB_TOKEN`. If connecting to a self-hosted or private air-gapped instance, specify `GITLAB_URL` (e.g. `export GITLAB_URL="https://gitlab.internal.defense.gov"`).
 2. **GitHub**: Checks `GITHUB_TOKEN` $\rightarrow$ `GH_TOKEN` $\rightarrow$ `gh auth token`.
-3. **Offline Mode**: Specify `--offline` or run without tokens in air-gapped evaluation environments (add `--upstream` when reconciling the upstream compiler repository itself).
+3. **Offline Mode**: Specify `--offline` or run without tokens in air-gapped evaluation environments.
 
 ### 6.2 Backlog Reconciliation CLI Usage
 
@@ -383,20 +331,22 @@ GitLab native scoped labels enforce state machine mutual exclusivity and map dir
 | `status::draft` | Lifecycle Status | Mutually Exclusive | Initial specification authoring and structural AST draft. |
 | `status::in-progress` | Lifecycle Status | Mutually Exclusive | Active development, control law synthesis, or test implementation. |
 | `status::ready-for-review` | Lifecycle Status | Mutually Exclusive | Implementation complete; queued for multi-stage automated review. |
-| `status::fixed-resolved` | Lifecycle Status | Mutually Exclusive | All 22 mechanical verification gates passed; ready for sign-off. |
+| `status::fixed-resolved` | Lifecycle Status | Mutually Exclusive | All mechanical verification gates passed; ready for sign-off. |
 | `status::closed` | Lifecycle Status | Mutually Exclusive | Final certification authority / Product Owner approval. |
 
 ### 6.4 Standardized 3-Stage GitLab CI/CD Pipeline Matrix
 
 The platform provides a standardized 3-stage `.gitlab-ci.yml` pipeline ensuring continuous safety and MBSE parity:
 
-$$\text{Pipeline} = \text{Stage}_{\text{lint}} \xrightarrow{\text{pass}} \text{Stage}_{\text{test}} \xrightarrow{\text{pass}} \text{Stage}_{\text{verify}}$$
+$$
+\text{Pipeline} = \text{Stage}_{\text{lint}} \xrightarrow{\text{pass}} \text{Stage}_{\text{test}} \xrightarrow{\text{pass}} \text{Stage}_{\text{verify}}
+$$
 
 | Pipeline Stage | Target Job Name | Executed Verification Command | Pass / Fail Criteria |
 | :--- | :--- | :--- | :--- |
-| **Stage 1: `lint`** | `lint:downstream-baseline` | `python3 scripts/verify_downstream_baseline.py --no-domain` | Checks 10–17 (zero .DS_Store, KaTeX math integrity, valid entrypoints, clean landing zones, Safety Integrity & SORA completeness). |
-| **Stage 2: `test`** | `test:unit-and-parity` | `python3 -m pytest tests/` | Automated unit tests, ROS2 node lifecycle tests, and PX4 safety mode tests pass with 0 failures. |
-| **Stage 3: `verify`** | `verify:model-coverage` | `python3 skills/spec-orchestrator/scripts/verify_model_coverage.py --spec-only` | All 22 Parity Verification Gates pass with zero specification-model drift. |
+| **Stage 1: `lint`** | `lint:downstream-baseline` | `python3 scripts/verify_downstream_baseline.py` | Checks 10–19 (zero .DS_Store, KaTeX math integrity, valid entrypoints, Safety Integrity & SORA completeness). |
+| **Stage 2: `test`** | `test:unit-and-parity` | `python3 -m unittest discover tests` | Automated unit tests, ROS2 node lifecycle tests, and PX4 safety mode tests pass with 0 failures. |
+| **Stage 3: `verify`** | `verify:model-coverage` | `PYTHONPATH=skills/spec-orchestrator/parity_auditor/src python3 -m parity_auditor --workspace .` | All 22 Parity Verification Gates pass with zero specification-model drift. |
 
 ---
 
@@ -408,13 +358,13 @@ To eliminate specification-model drift between systems engineering models and ag
 
 ```bash
 # 1. Forward AST Ingestion: Compile SysML v2 formal model into agile specification scaffolding
-python3 skills/spec-orchestrator/scripts/sysmlv2_ingest.py --schema schema/model.sysml
+python3 skills/spec-orchestrator/scripts/sysmlv2_ingest.py --schema schema/DEAP_MODEL.sysml
 
 # 2. Reverse AST Closed-Loop Synchronization: Extract markdown spec deltas back into SysML v2 SSOT
-python3 scripts/compile_sysml.py --reverse-sync --docs docs/ --schema schema/model.sysml --out .pipeline/schema.sysml
+python3 scripts/compile_sysml.py --reverse-sync --docs docs/ --schema schema/DEAP_MODEL.sysml --out .pipeline/schema.sysml
 
 # 3. 22-Gate Mechanical Parity Lock: Verify 100% semantic alignment across all artifacts
-python3 skills/spec-orchestrator/scripts/verify_model_coverage.py --spec-only
+PYTHONPATH=skills/spec-orchestrator/parity_auditor/src python3 -m parity_auditor --workspace .
 ```
 
 ### 7.2 The 6-Layer MBSE Parity Architecture
@@ -423,28 +373,18 @@ The bidirectional compiler maintains mathematical equivalence across 6 distinct 
 
 | Parity Layer | SysML v2 Source Concept | Markdown Backlog Representation | Commercial Toolchain Realization |
 | :--- | :--- | :--- | :--- |
-| **1. Structural** | `package`, `part def`, `item def` | `docs/features/FEAT-*.md` (Class Diagrams) | Simulink Subsystem Hierarchy & Bus Definitions |
-| **2. Behavioral** | `action def`, `state def`, `port` | `docs/features/FEAT-*.md` (Statecharts) | Stateflow Discrete State Transition Charts |
-| **3. Operational** | `use case def`, `interaction` | `docs/use-cases/UC-*.md` (Sequence Diagrams) | Operational Test Scenario Scripts & Mission Harness |
-| **4. Interface** | `port def`, `flow`, `interface` | `docs/user-stories/US-*.md` (Lifelines) | ROS2 Topics / MAVLink Messages / DDS Topics |
+| **1. Structural** | `package`, `part def`, `item def` | `docs/epics/` & `docs/features/` (Class Diagrams) | Simulink Subsystem Hierarchy & Bus Definitions |
+| **2. Behavioral** | `action def`, `state def`, `port` | `docs/features/` (Statecharts & ICDs) | Stateflow Discrete State Transition Charts |
+| **3. Operational** | `use case def`, `interaction` | `docs/use-cases/` (Sequence Diagrams) | Operational Test Scenario Scripts & Mission Harness |
+| **4. Interface** | `port def`, `flow`, `interface` | `docs/user-stories/` & `docs/icd/` (Lifelines) | ROS2 Topics / MAVLink Messages / DDS Topics |
 | **5. Safety / Constraints** | `req`, `constraint def`, `assert` | `docs/safety/STPA_MATRIX.md` (UCAs & SCs) | Simulink Design Verifier (SLDV) Formal Properties |
 | **6. Verification** | `verify`, `satisfy`, `test case` | Acceptance Criteria & BDD Scenarios | Embedded Coder DO-178C C / SPARK Ada Test Suite |
-
-### 7.3 Primary Tier-1 Commercial Toolchain Integration (MATLAB / Simulink / Stateflow / Embedded Coder)
-
-This platform explicitly declares **MATLAB / Simulink / Stateflow / Embedded Coder** as the Primary Tier-1 Commercial Toolchain Integration Context:
-- **Structural Synthesis:** SysML `part def` and port hierarchies synthesize directly into hierarchical Simulink subsystems and typed bus interfaces.
-- **Behavioral Statecharts:** SysML `state def` Run-Time Assurance (RTA) and fail-safe transitions map to Stateflow state machines with deterministic execution semantics.
-- **Formal Invariant Proving:** SysML `assert constraint` formulations translate to Simulink Design Verifier (SLDV) proof objectives for automated reachability and dead-lock free verification.
-- **Safety-Critical Code Synthesis:** Embedded Coder generates MISRA C / DO-178C qualified C code and SPARK Ada kernels for deployment to Pixhawk and ROS2 real-time hardware.
 
 ---
 
 ## 8. Pipeline 0: Pre-Spec Safety Engineering Execution Workflow
 
-Pipeline 0 (**Pre-Spec Safety Engineering Engine**) serves as the front-end systems engineering, hazard identification, and safety modeling pipeline within the Digital Engineering Agent Platform (DEAP) framework. Operating prior to downstream Agile backlog projection (Pipeline 1) and automated code synthesis (Pipeline 2), Pipeline 0 ingests unstructured customer intent, mission flight profiles, and airspace constraints to produce normative safety specifications, STPA/FMECA analysis, SORA SAIL assurance models, and SysML v2 textual AST artifacts.
-
-> **Illustrative Schema Payloads Note:** All flight mission profiles, UAS airframe parameters, and STPA hazard analysis examples referenced in Pipeline 0 workflows below are illustrative domain schema payloads demonstrating front-end AST ingestion, STPA synthesis, and serialized AST contract generation. `DEAP01-spec-core` is the upstream abstract specification compiler.
+Pipeline 0 (**Pre-Spec Safety Engineering Engine**) serves as the front-end systems engineering, hazard identification, and safety modeling pipeline within the DEAP framework. Operating prior to downstream Agile backlog projection (Pipeline 1) and automated code synthesis (Pipeline 2), Pipeline 0 ingests customer intent, mission flight profiles, and airspace constraints to produce normative safety specifications, STPA/FMECA analysis, SORA SAIL IV assurance models, and SysML v2 textual AST artifacts.
 
 ### 8.1 Master-Worker Subagent Topology
 
@@ -471,32 +411,29 @@ flowchart LR
 
 #### 8.2.1 Worker 0A: CONOPS & Mission Scenario Synthesizer
 - **Role Description:** Context-isolated front-end synthesizer responsible for executing Universal Multi-Document & Schema Ingestion across operational intent documents, interface schemas, and architectural blueprints to produce a structured Concept of Operations (`CONOPS.md`) and persisting intent in `MISSION_INTENT.md` when operating from prompt fallback.
-- **Primary Inputs (Universal Multi-Document & Schema Ingestion):**
-  - **Operational Intent Documents (`docs/conops/*.md`):** All customer mission intent specifications and operational scenario markdown files in `docs/conops/` (excluding `README.md`).
-  - **Interface & Model Schemas (`schema/*`):** Pre-existing customer models and interface definitions (`*.sysml`, `*.proto`, `*.arxml`, `*.json`, `*.yaml`, `*.idl`) establishing physical and functional boundaries, port definitions, and telemetry contracts.
-  - **Architectural Blueprints (`docs/architecture/*.md`):** Existing system architectural specifications, network topology blueprints, and safety frameworks in `docs/architecture/` (and `docs/architecture/blueprints/`).
-  - **Prompt-Based Fallback Directives:** Raw natural language prompt parameters, stakeholder objectives, and operational constraints when no intent files exist in `docs/conops/` (triggering auto-persistence of `docs/conops/MISSION_INTENT.md`).
-  - Flight mission envelope parameters (altitude boundaries, ground speed limits, payload type, airspace classification, population density).
-  - Stakeholder role definitions (Remote Pilot, Command Center Operator, Fleet Manager, ATC/UTM interface).
+- **Primary Inputs:**
+  - `docs/conops/MISSION_INTENT.md` / `docs/conops/*.md`: Mission operational profiles, inspection corridor definitions, flight altitudes, max speeds, and airspace constraints.
+  - `schema/*`: Pre-existing subsystem schemas, port definitions, and telemetry contracts.
+  - `docs/architecture/*.md`: Existing architectural frameworks and safety net blueprints.
 - **Deliverables & Outputs:**
-  - `docs/conops/MISSION_INTENT.md`: Ingested or auto-persisted customer mission intent contract under git version control.
-  - `docs/conops/CONOPS.md`: Structured Concept of Operations detailing mission objectives, flight operational phases (Pre-Flight, Launch, Cruise, Mission Execution, Approach, Landing, Contingency RTL), system physical and functional boundaries reconciled with customer schemas and architectural blueprints, environmental envelope constraints, and MATLAB / Simulink / Stateflow control law synthesis hooks.
+  - `docs/conops/MISSION_INTENT.md`: Ingested or auto-persisted mission intent contract under git version control.
+  - `docs/conops/CONOPS.md`: Structured Concept of Operations detailing mission objectives, flight operational phases (Pre-Flight, Launch, Cruise, Infrastructure Inspection, Approach, Landing, Contingency RTL), system boundaries, environmental envelope constraints, and MATLAB / Simulink / Stateflow control law synthesis hooks.
 
 #### 8.2.2 Worker 0B: STPA Hazard Analysis, FMECA & SORA SAIL Assurer
-- **Role Description:** Safety engineering subagent that performs System-Theoretic Process Analysis (STPA), Failure Mode, Effects, and Criticality Analysis (FMECA), and JARUS SORA v2.5 SAIL I–VI risk assessment on the system boundary defined by Worker 0A to produce the authoritative 8-pillar `docs/safety/STPA_MATRIX.md` safety baseline.
+- **Role Description:** Safety engineering subagent that performs System-Theoretic Process Analysis (STPA), Failure Mode, Effects, and Criticality Analysis (FMECA), and JARUS SORA v2.5 SAIL IV risk assessment on the system boundary defined by Worker 0A to produce the authoritative 8-pillar `docs/safety/STPA_MATRIX.md` safety baseline.
 - **Primary Inputs:**
   - `CONOPS.md` generated by Worker 0A.
-  - Regulatory safety mandates (JARUS SORA v2.5 SAIL I–VI, ASTM F3269-17 RTA, RTCA DO-365B DAA).
+  - Regulatory safety mandates (JARUS SORA v2.5 SAIL IV, ASTM F3269-17 RTA, RTCA DO-365B DAA, STANAG 4586, MIL-STD-882E).
 - **Deliverables & Outputs:**
   - `docs/safety/STPA_MATRIX.md`: Complete 8-pillar STPA & SORA assurance specification adhering to:
-    1. **System Losses ($L-1..N$):** High-level unacceptable losses to stakeholders, people, or equipment.
-    2. **System Hazards ($H-1..N$):** Hazardous system states and containment boundaries.
-    3. **Hierarchical Control Structure Topology:** Control loops, controllers, actuators, sensors, and RTA safety monitors.
-    4. **Unsafe Control Actions ($UCA-1..N$):** Comprehensive identification across all 4 failure modes (Not providing, Providing, Too early/too late/out of order, Stopped too soon/applied too long).
-    5. **Loss Scenarios ($LS-1..N$) & Causal Factors:** Failure and loss causal scenarios.
-    6. **Formal Safety Constraints ($SC-1..N$):** Mandatory safety invariants and envelope protections.
-    7. **FMECA Criticality Matrix:** Component failure modes with 15+ rows, Severity ($S$), Occurrence ($O$), Detection ($D$), and Risk Priority Numbers ($\text{RPN} = S \times O \times D$).
-    8. **SORA SAIL Risk Mitigations & OSO Traceability Table:** Final GRC, ARC, SAIL I–VI classification, and complete coverage of all 24 SORA Operational Safety Objectives (OSO-01 through OSO-24).
+    1. **System Losses (L-1..N):** High-level unacceptable losses to stakeholders, people, or equipment.
+    2. **System Hazards (H-1..N):** Hazardous system states and containment boundaries.
+    3. **Hierarchical Control Structure Topology:** Control loops, controllers, actuators, sensors, and ASTM F3269-17 RTA safety monitors.
+    4. **Unsafe Control Actions (UCA-1..N):** Comprehensive identification across all 4 failure modes (Not providing, Providing, Too early/too late/out of order, Stopped too soon/applied too long).
+    5. **Loss Scenarios (LS-1..N) & Causal Factors:** Failure and loss causal scenarios.
+    6. **Formal Safety Constraints (SC-1..N):** Mandatory safety invariants and envelope protections.
+    7. **FMECA Criticality Matrix:** Component failure modes with 15+ rows, Severity (S), Occurrence (O), Detection (D), and Risk Priority Numbers (RPN = S × O × D).
+    8. **SORA SAIL Risk Mitigations & OSO Traceability Table:** Final GRC, ARC, SAIL IV classification, and complete coverage of all 24 SORA Operational Safety Objectives (OSO-01 through OSO-24).
     - **ASTM F3269-17 RTA Architecture & Safety Net:** Certified recovery switching logic and advanced control isolation.
     - **MATLAB / Simulink / Stateflow Hooks:** SLDV proof invariants and Stateflow supervisor statecharts for control law synthesis.
 
@@ -506,212 +443,130 @@ flowchart LR
   - `CONOPS.md` from Worker 0A.
   - `STPA_MATRIX.md` and SORA SAIL risk matrices from Worker 0B.
 - **Deliverables & Outputs:**
-  - `DEAP_MODEL.sysml`: Standard-compliant SysML v2 model containing `package`, `req` (Safety Requirements), `part` (Subsystems & Safety Controllers), `port` (Real-Time Telemetry/Command Interfaces), `state` (Run-Time Assurance & Contingency Statecharts), and `satisfy` / `verify` traceability links.
-  - `pipeline0_handoff_contract.json`: Serialized AST payload for seamless downstream projection into Pipeline 1 (Agile Epics & Features) and Pipeline 2 (ROS2 C++ & PX4 implementation).
-
-### 8.3 Pipeline 0 Command-Line Execution Prompts
-
-To execute Pipeline 0 via context-isolated subagents in your AI agent environment (Antigravity, Claude Code, Gemini CLI, Cursor), copy and execute the following standardized command-line execution prompts in sequence:
-
-#### 8.3.1 Worker 0A: CONOPS & Mission Scenario Synthesis Prompt
-
-```text
-Role: Worker 0A — CONOPS & Mission Scenario Synthesizer
-
-Primary Commercial Toolchain Integration Context:
-This project explicitly declares MATLAB / Simulink / Stateflow / Embedded Coder as the Primary Tier-1 Commercial Toolchain Integration Context (Model-Based Design, Control Law Synthesis, DO-178C C/SPARK Ada code generation).
-
-Directive:
-Execute front-end CONOPS synthesis for the target UAS flight mission profile using Universal Multi-Document & Schema Ingestion:
-
-1. Universal Multi-Document & Schema Discovery:
-   - Operational Intent Discovery: Scan `docs/conops/` for all mission intent markdown files (`*.md`, excluding `README.md`). If present, ingest all as authoritative operational specifications. If `docs/conops/` contains no intent files, ingest prompt directives and auto-persist `docs/conops/MISSION_INTENT.md`.
-   - Interface & Model Schema Ingestion: Scan `schema/` for pre-existing customer models and interface definitions (`*.sysml`, `*.proto`, `*.arxml`, `*.json`, `*.yaml`, `*.idl`). Ingest all port types, message structures, and subsystem definitions into the operational context.
-   - Architectural Blueprint Ingestion: Scan `docs/architecture/` (and `docs/architecture/blueprints/`) for existing architectural specifications, network blueprints, and safety frameworks (`*.md`). Ingest all system boundaries, subsystem mappings, and commercial toolchain hooks.
-   - Reconcile customer interface schemas and architectural blueprints with system boundaries and MATLAB / Simulink / Stateflow control law synthesis hooks.
-
-2. Ingestion & Analysis Scope:
-   - Operational mission envelope (flight altitude boundaries, max ground speed, payload configuration, population density, BVLOS vs VLOS flight operations).
-   - Operational airspace constraints, regulatory classification (e.g., JARUS SORA, FAA Part 107/135, EASA Specific Category), and geographic boundaries.
-   - Stakeholder role definitions (Remote Pilot in Command, Fleet Operations Manager, Command Center Lead, Air Traffic Management / UTM interface).
-   - Flight operational phases (Pre-Flight Checkout, Launch/Takeoff, En-Route Cruise, Mission Execution, Approach & Landing, Fail-Safe Contingency RTL).
-
-3. Output Requirements:
-   - Persist/validate `docs/conops/MISSION_INTENT.md` under `docs/conops/MISSION_INTENT.md` (if operating from prompt fallback or validating canonical format).
-   - Generate `CONOPS.md` under `docs/conops/CONOPS.md` integrating all discovered intent, schema, and architectural constraints.
-   - Ensure clear operational phase boundaries, system physical and functional boundaries, and environmental envelope constraints.
-   - Include MATLAB / Simulink / Stateflow model integration baseline hooks for downstream control law synthesis.
-   - KaTeX / LaTeX Math Formatting Mandate: All multi-line aligned equations MUST be enclosed in `\begin{aligned} ... \end{aligned}` within `$$` delimiters on dedicated lines. Bare alignment tabs `&` outside an alignment environment (`aligned`, `matrix`, `cases`) and `\begin{align*}` environments are strictly forbidden. Markdown Table Math Prohibition Rule: Strictly ban `$ ... $` and `$$ ... $$` LaTeX math delimiters inside table headers, rows, and cells; plain text and Unicode (e.g. `Initial S`, `ΔV`, `λ`, `°C`, `≥`, `≤`, `→`, `10⁻⁶`) must be used instead, with 1:1 column count match between header and delimiter rows.
-
-PROCEED
-```
-
-#### 8.3.2 Worker 0B: STPA Hazard Analysis, FMECA & SORA SAIL Assurer Prompt
-
-```text
-Role: Worker 0B — STPA Hazard Analysis, FMECA & SORA SAIL Assurer
-
-Primary Commercial Toolchain Integration Context:
-This project explicitly declares MATLAB / Simulink / Stateflow / Embedded Coder as the Primary Tier-1 Commercial Toolchain Integration Context (Model-Based Design, Control Law Synthesis, DO-178C C/SPARK Ada code generation).
-
-Directive:
-Perform STPA hazard analysis, FMECA failure mode criticality evaluation, and SORA SAIL I–VI risk assessment based on `docs/conops/CONOPS.md`.
-
-1. Standards Compliance:
-   - JARUS SORA v2.5 (SAIL I through SAIL VI risk mitigations, Ground Risk Class GRC, Air Risk Class ARC, Operational Safety Objectives OSO-01 through OSO-24).
-   - ASTM F3269-17 (Run-Time Assurance Monitor Architecture & Safety Net switching).
-   - RTCA DO-365B (Detect and Avoid DAA MOPS & TCAS II / ACAS sUAS alert & guidance).
-
-2. Output Requirements:
-   - Generate `STPA_MATRIX.md` under `docs/safety/STPA_MATRIX.md` adhering strictly to the 8-pillar schema:
-     1. System Losses ($L-1..N$)
-     2. System Hazards ($H-1..N$)
-     3. Hierarchical Control Structure Topology (defining RPIC, Autopilot, ASTM F3269-17 RTA Monitor, Actuators, Sensors)
-     4. Unsafe Control Actions ($UCA-1..N$) covering all 4 failure modes: (a) Not providing causes hazard, (b) Providing causes hazard, (c) Providing too early, too late, or out of order, (d) Stopped too soon or applied too long
-     5. Loss Scenarios ($LS-1..N$) & Causal Factors
-     6. Formal Safety Constraints ($SC-1..N$)
-     7. FMECA Criticality Matrix: Component failure modes with 15+ rows, Severity ($S$), Occurrence ($O$), Detection ($D$), and Risk Priority Numbers ($\text{RPN} = S \times O \times D$)
-     8. SORA SAIL Risk Mitigations & OSO Traceability Table: Final GRC, ARC, SAIL classification (SAIL I–VI), and comprehensive mapping of all 24 SORA OSOs (OSO-01 through OSO-24)
-   - Include ASTM F3269-17 Run-Time Assurance (RTA) Safety Net monitor architecture.
-   - Include MATLAB / Simulink / Stateflow / Embedded Coder model integration baseline hooks and SLDV formal proof properties.
-   - KaTeX / LaTeX Math Formatting Mandate: All multi-line aligned equations MUST be enclosed in `\begin{aligned} ... \end{aligned}` within `$$` delimiters on dedicated lines. Bare alignment tabs `&` outside an alignment environment (`aligned`, `matrix`, `cases`) and `\begin{align*}` environments are strictly forbidden. Markdown Table Math Prohibition Rule: Strictly ban `$ ... $` and `$$ ... $$` LaTeX math delimiters inside table headers, rows, and cells; plain text and Unicode (e.g. `Initial S`, `ΔV`, `λ`, `°C`, `≥`, `≤`, `→`, `10⁻⁶`) must be used instead, with 1:1 column count match between header and delimiter rows.
-
-PROCEED
-```
-
-#### 8.3.3 Worker 0C: SysML v2 Architectural & Safety Model Author Prompt
-
-```text
-Role: Worker 0C — SysML v2 Architectural & Safety Model Author
-
-Primary Commercial Toolchain Integration Context:
-This project explicitly declares MATLAB / Simulink / Stateflow / Embedded Coder as the Primary Tier-1 Commercial Toolchain Integration Context (Model-Based Design, Control Law Synthesis, DO-178C C/SPARK Ada code generation).
-
-Directive:
-Formalize the CONOPS (`CONOPS.md`), STPA hazard matrices, FMECA ratings, and SORA SAIL requirements (`STPA_MATRIX.md`) into a normative SysML v2 textual model and serialized AST handoff contract.
-
-1. Model Engineering Mandate:
-   - Construct `DEAP_MODEL.sysml` conforming to SysML v2 textual specification standards (`package`, `req`, `part`, `port`, `state`, `satisfy`, `verify`).
-   - Define safety statecharts for Run-Time Assurance (RTA) switching logic, contingency flight modes, and fail-safe Return-to-Launch (RTL) transitions.
-   - Establish MATLAB / Simulink / Stateflow export compatibility for DO-178C C/SPARK Ada code synthesis.
-   - KaTeX / LaTeX Math Formatting Mandate: Ensure any statechart/mathematical transition guards and formal expressions follow standard escaping and valid KaTeX blocks (all multi-line aligned equations MUST be enclosed in `\begin{aligned} ... \end{aligned}` within `$$` delimiters on dedicated lines; bare alignment tabs `&` outside an alignment environment and `\begin{align*}` are strictly forbidden). Markdown Table Math Prohibition Rule: Strictly ban `$ ... $` and `$$ ... $$` LaTeX math delimiters inside table headers, rows, and cells; plain text and Unicode (e.g. `Initial S`, `ΔV`, `λ`, `°C`, `≥`, `≤`, `→`, `10⁻⁶`) must be used instead, with 1:1 column count match between header and delimiter rows.
-
-2. Output Requirements:
-   - Generate `DEAP_MODEL.sysml` under `schema/DEAP_MODEL.sysml` (or `.pipeline/schema.sysml`).
-   - Generate `pipeline0_handoff_contract.json` under `.pipeline/contracts/pipeline0_handoff_contract.json` for downstream Pipeline 1 Agile projection and Pipeline 2 code generation.
-
-PROCEED
-```
-
-### 8.4 Pipeline 0 Execution Steps & Handoff Workflow
-
-```mermaid
-flowchart TD
-    Step1["Step 1: Ingest Mission Profile & Synthesize CONOPS (Worker 0A)"] --> Step2["Step 2: Execute STPA, FMECA & SORA SAIL Assessment (Worker 0B)"]
-    Step2 --> Step3["Step 3: Formalize SysML v2 Safety Model & Statecharts (Worker 0C)"]
-    Step3 --> Step4["Step 4: Compile SysML v2 AST & Generate Handoff JSON Contract"]
-    Step4 --> Downstream["Handoff to Pipeline 1 (Projection) & Pipeline 2 (Code Synthesis)"]
-```
-
-### 8.5 Pipeline 0 Handoff JSON Contract (`pipeline0_handoff_contract.json`)
-
-The interface between Pipeline 0 safety modeling, Pipeline 1 specification engineering, and Pipeline 2 ROS2/PX4 safety implementation is strictly governed by `pipeline0_handoff_contract.json` (synthesized from multi-document operational intent in `docs/conops/` (`MISSION_INTENT.md` or customer intent specifications), customer interface schemas in `schema/`, architectural blueprints in `docs/architecture/`, `docs/conops/CONOPS.md`, and `docs/safety/STPA_MATRIX.md`):
-
-```json
-{
-  "$schema": "https://deap.engine/schemas/pipeline0_handoff_v1.json",
-  "metadata": {
-    "identifier": "DEAP-PIPELINE-0-HANDOFF-001",
-    "timestamp": "2026-08-11T00:00:00Z",
-    "source_model": "DEAP_MODEL.sysml",
-    "governance_status": "APPROVED",
-    "regulatory_target": ["ARP4754A", "ARP4761", "JARUS SORA v2.5", "DO-178C", "DO-254", "ASTM F3269"]
-  },
-  "conops_summary": {
-    "mission_intent_path": "docs/conops/MISSION_INTENT.md",
-    "document_path": "docs/conops/CONOPS.md",
-    "mission_type": "UAS BVLOS Urban Infrastructure Inspection",
-    "operational_phases": ["PRE_FLIGHT", "TAKEOFF", "CRUISE", "INSPECTION", "APPROACH", "LANDING", "RTA_BACKUP"]
-  },
-  "safety_matrix": {
-    "document_path": "docs/safety/STPA_MATRIX.md",
-    "system_losses": [
-      { "id": "L-1", "title": "Loss of Aircraft Control / Uncontrolled Flight Into Terrain (UFIT)" },
-      { "id": "L-2", "title": "Airspace Collision with Manned Aircraft" }
-    ],
-    "hazards": [
-      { "id": "H-1", "loss_refs": ["L-1"], "title": "Flight Controller Command Saturation during High-Wind Turbulence" },
-      { "id": "H-2", "loss_refs": ["L-2"], "title": "Loss of Remote ID & DAA Telemetry Stream" }
-    ],
-    "unsafe_control_actions": [
-      {
-        "id": "UCA-1",
-        "hazard_ref": "H-1",
-        "control_action": "Execute Pitch Command",
-        "failure_mode": "Provided Wrong / Out of Range",
-        "safety_constraint": "SC-1: Pitch command must be rate-limited and bounded by pitch envelope protection safety statechart."
-      }
-    ]
-  },
-  "sysml_ast_export": {
-    "requirements": [
-      {
-        "id": "REQ-SYS-001",
-        "name": "EnvelopeProtectionRequirement",
-        "text": "The flight control system shall enforce pitch angle limits between -15 deg and +25 deg.",
-        "stpa_ref": "SC-1",
-        "dal": "DAL A"
-      }
-    ],
-    "parts": [
-      {
-        "id": "PART-SYS-001",
-        "name": "FlightControlSystem",
-        "ports": ["p_telemetry", "p_actuator_cmd"],
-        "subparts": ["PrimaryController", "RunTimeAssuranceMonitor"]
-      }
-    ],
-    "statecharts": [
-      {
-        "name": "SafetyModeStatechart",
-        "states": ["NORMAL", "DEGRADED", "RTA_BACKUP_ENGAGED", "EMERGENCY_FAILSAFE"]
-      }
-    ]
-  }
-}
-```
+  - `schema/DEAP_MODEL.sysml`: Standard-compliant SysML v2 model containing `package`, `req` (Safety Requirements), `part` (Subsystems & Safety Controllers), `port` (Real-Time Telemetry/Command Interfaces), `state` (Run-Time Assurance & Contingency Statecharts), and `satisfy` / `verify` traceability links.
+  - `.pipeline/contracts/pipeline0_handoff_contract.json`: Serialized AST payload for seamless downstream projection into Pipeline 1 (Agile Epics & Features) and Pipeline 2 (ROS2 C++ & PX4 implementation).
 
 ---
 
-## 9. Next Steps — Developer & Agent Execution Workflows
+## 9. Next Steps — End-to-End Multi-Pipeline Operator Execution Guide
 
-Once turnkey installation is complete, select your target execution workflow:
+The DEAP framework delivers an autonomous, end-to-end multi-pipeline engineering workflow spanning front-end safety engineering, agile specification projection, multi-provider backlog publishing, autonomous TDD feature implementation, and continuous mechanical verification.
 
-### 9.1 Option A: Run Safety Governance Verification
-Verify that all SORA SAIL risk mitigations, ROS2 C++ lifecycle parameters, and PX4 flight mode safety constraints are compliant:
-```bash
-python3 -m pytest tests/
+```mermaid
+flowchart TD
+    subgraph P0["9.1 Pipeline 0: Pre-Spec Safety Engineering & ConOps Synthesis"]
+        P0_In["Inputs: schema/*, docs/conops/MISSION_INTENT.md"] --> W0A["Worker 0A: CONOPS Synthesis"]
+        W0A -->|"docs/conops/CONOPS.md"| W0B["Worker 0B: STPA / FMECA / SORA SAIL IV"]
+        W0B -->|"docs/safety/STPA_MATRIX.md"| W0C["Worker 0C: SysML v2 Model Author"]
+        W0C --> P0_Out["Outputs: schema/DEAP_MODEL.sysml, pipeline0_handoff_contract.json"]
+    end
+
+    subgraph P1["9.2 Pipeline 1: Specification Projection & Backlog Orchestration"]
+        P0_Out --> W1A["Worker 1A: Structural Specs -> docs/epics/"]
+        P0_Out --> W1B["Worker 1B: Behavioral Specs & ICDs -> docs/features/, docs/icd/"]
+        W1A --> W1C["Worker 1C: Parity & Consistency Auditor (22 Gates)"]
+        W1B --> W1C
+        W1C --> W1D["Worker 1D: Interaction Specs & BDD -> docs/user-stories/, docs/use-cases/"]
+    end
+
+    subgraph P_Reconcile["9.3 Multi-Provider Backlog Reconciliation & Issue Publishing"]
+        W1D --> Reconcile["python3 scripts/reconcile_backlog.py (--provider github | gitlab)"]
+        Reconcile --> Tracker["Issue Tracker Synchronization (Scoped Labels, Checklists, Full Bodies)"]
+    end
+
+    subgraph P2["9.4 Pipeline 2: Autonomous TDD Feature Implementation"]
+        Tracker --> W2["Worker 2: TDD Synthesis Driver (3-Layer DoD)"]
+        W2 --> Impl["Layer 1: Domain Model -> Layer 2: Statechart/ViewModel -> Layer 3: ROS2/PX4 Binding + BDD Tests"]
+    end
+
+    subgraph P_Verify["9.5 Continuous Verification & Quality Gates"]
+        Impl --> QG["verify_downstream_baseline.py & unittest discover tests"]
+    end
 ```
 
-### 9.2 Option B: Execute Feature Implementation (Agentic Workflow)
-Prompt your AI Agent (Antigravity, Claude Code, Gemini CLI, Cursor) to implement prioritized backlog features targeting `ros2_cpp` or `px4_module`:
+### 9.1 Pipeline 0: Pre-Spec Safety Engineering & ConOps Synthesis
 
-> **Feature Implementation Prompt:**
->
-> "Adopt the feature-driven-implementation skill by executing view_file on 
-> `.agents/skills/feature-driven-implementation/SKILL.md` as step 1.
->
-> I want to implement Feature [Issue Number, e.g. #1] targeting platform profile [.pipeline/profiles/ros2_cpp.md | .pipeline/profiles/px4_module.md].
->
-> 1. Read `.pipeline/constitution.md` and target profile rules.
-> 2. Enforce 3-Layer Definition of Done (Domain Model -> Safety Statechart/ViewModel -> ROS2/PX4 Interface Binding + BDD Test).
-> 3. Execute TDD RED-GREEN micro-tasks using context-isolated subagents.
-> 4. Verify test suite and deliver walkthrough."
+Pipeline 0 transforms raw mission parameters and stakeholder intent into formal safety architectures. Execute the 3 context-isolated subagent workers sequentially:
 
-### 9.3 Option C: Verify Downstream Baseline Conformance
-Run the post-implementation compliance gate:
+- **Worker 0A (CONOPS Synthesizer):**
+  - **Inputs:** `schema/*`, `docs/conops/MISSION_INTENT.md` (or operator prompt directives).
+  - **Action:** Ingests flight envelope constraints, airspace classes, obstacle environments, and mission flight profiles.
+  - **Output:** `docs/conops/CONOPS.md` establishing operational boundaries and flight phases.
+- **Worker 0B (STPA / FMECA / SORA Assurer):**
+  - **Inputs:** `docs/conops/CONOPS.md`, JARUS SORA v2.5, ASTM F3269-17, RTCA DO-365B.
+  - **Action:** Generates System Losses, Hazards, Hierarchical Control Structures, Unsafe Control Actions (UCAs), Loss Scenarios, Formal Safety Constraints, 15+ row FMECA matrix, and 24 OSO SORA SAIL IV mitigations.
+  - **Output:** `docs/safety/STPA_MATRIX.md`.
+- **Worker 0C (SysML v2 Author):**
+  - **Inputs:** `docs/conops/CONOPS.md`, `docs/safety/STPA_MATRIX.md`.
+  - **Action:** Constructs formal SysML v2 textual models with RTA statecharts and exports serialized AST contracts.
+  - **Outputs:** `schema/DEAP_MODEL.sysml` and `.pipeline/contracts/pipeline0_handoff_contract.json`.
+
+### 9.2 Pipeline 1: Specification Projection & Backlog Orchestration
+
+Pipeline 1 projects formal SysML v2 models and safety contracts into complete Agile backlog specifications with 100% mechanical parity across all 22 verification gates:
+
+- **Worker 1A (Structural Specifications):**
+  - **Mapping:** Ingests SysML `package` and `part def` hierarchies $\rightarrow$ projects structural Epic specifications into `docs/epics/` containing Mermaid Class Diagrams and constituent feature hierarchies.
+- **Worker 1B (Behavioral Specifications & ICDs):**
+  - **Mapping:** Ingests SysML `action def`, `state def`, and `port` bindings $\rightarrow$ projects behavioral Feature specifications into `docs/features/` (with Mermaid Statecharts/Flowcharts) and formal Interface Control Documents into `docs/icd/` (Interface Matrices and Signal Dictionaries).
+- **Worker 1C (Parity & Consistency Auditor):**
+  - **Verification:** Executes the 22-gate Parity Auditor to guarantee 100% model-to-spec parity:
+    ```bash
+    PYTHONPATH=skills/spec-orchestrator/parity_auditor/src python3 -m parity_auditor --workspace .
+    ```
+- **Worker 1D (Interaction Specifications & BDD Stories):**
+  - **Mapping:** Ingests SysML `use case def` $\rightarrow$ projects BDD User Stories into `docs/user-stories/` (with Gherkin `Given/When/Then` acceptance criteria) and operational Use Cases into `docs/use-cases/` (with Mermaid Sequence Diagrams).
+
+### 9.3 Multi-Provider Backlog Reconciliation & Issue Publishing
+
+The backlog reconciler synchronizes local markdown specifications, KaTeX mathematical equations, Mermaid diagrams, and dependency checklists with remote issue trackers:
+
 ```bash
-python3 scripts/verify_downstream_baseline.py --no-domain
+# Publish & reconcile to GitHub Issues
+python3 scripts/reconcile_backlog.py --provider github
+
+# Publish & reconcile to GitLab Issues (SaaS)
+python3 scripts/reconcile_backlog.py --provider gitlab
+
+# Publish & reconcile to Private / Air-Gapped GitLab Instance
+python3 scripts/reconcile_backlog.py --provider gitlab --gitlab-url https://gitlab.internal.defense.gov
+
+# Perform Offline Reconciliation (Local Spec Check & Parity Verification)
+python3 scripts/reconcile_backlog.py --provider gitlab --offline
+```
+
+#### Key Capabilities & Features:
+- **Full Markdown Body Sync:** Uploads full specification bodies without truncation, preserving embedded Mermaid diagrams, KaTeX formulas, and frontmatter metadata tables.
+- **GitLab Scoped Labels:** Automatically manages mutually exclusive scoped labels (`type::epic`, `type::feature`, `type::user-story`, `type::use-case`, `status::fixed-resolved`).
+- **Interactive Dependency Checklists:** Generates cross-referenced markdown checklists (`- [ ] #101`) that automatically update to `- [x]` when dependent issues are resolved.
+- **Unmapped Dependency Gating:** Strictly prevents premature `status::fixed-resolved` labeling if any blocker dependency is open, missing, or unmapped.
+
+### 9.4 Pipeline 2: Autonomous TDD Feature Implementation
+
+Pipeline 2 executes autonomous code generation and test synthesis using context-isolated subagents adhering to Test-Driven Development (RED-GREEN-REFACTOR):
+
+- **Worker 2 (Synthesis Driver):**
+  - Adopts `skills/feature-driven-implementation/SKILL.md`.
+  - Executes micro-tasks in short, context-isolated cycles (2–5 minutes per task) to eliminate context degradation.
+- **3-Layer Definition of Done (DoD):**
+  1. **Layer 1 (Domain Model):** Implement pure, zero-dependency immutable domain entities, value objects, and safety invariants.
+  2. **Layer 2 (Statechart / ViewModel):** Implement deterministic Stateflow-equivalent state machines and business logic.
+  3. **Layer 3 (Interface Binding & BDD Test):** Bind statecharts to platform interfaces (`ros2_cpp` lifecycle nodes or `px4_module` uORB topics) and implement comprehensive BDD unit/integration tests.
+- **TDD RED-GREEN Cycle:**
+  - **RED:** Author failing unit and BDD tests proving the specification requirement.
+  - **GREEN:** Implement minimal functional logic to make all tests pass cleanly.
+  - **REFACTOR:** Optimize for deterministic real-time performance and MISRA / DO-178C guidelines.
+
+### 9.5 Continuous Verification & Quality Gates
+
+Run the automated verification suite before every commit and pull/merge request to guarantee zero regressions:
+
+```bash
+# Execute full unit and integration test suites
+python3 -m unittest discover tests
+
+# Execute downstream baseline conformance gate (Checks 10–19)
+python3 scripts/verify_downstream_baseline.py
 ```
 
 ---
