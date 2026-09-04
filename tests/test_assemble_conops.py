@@ -458,6 +458,49 @@ class TestSysMLParameterBindingEngine(unittest.TestCase):
         self.assertEqual(engine.resolve_token("H_MAX_M"), "3500.0")
         self.assertEqual(engine.resolve_token("TEMP_MIN_DEGC"), "-25.0")
         self.assertEqual(engine.resolve_token("TEMP_MAX_DEGC"), "60.0")
+        self.assertEqual(engine.resolve_token("MASS_BUDGET_AIRFRAME_KG"), "13.5")
+        self.assertEqual(engine.resolve_token("MASS_BUDGET_AVIONICS_KG"), "6.75")
+        self.assertEqual(engine.resolve_token("MASS_BUDGET_PROPULSION_KG"), "11.25")
+        self.assertEqual(engine.resolve_token("MASS_BUDGET_ENERGY_KG"), "9.0")
+        self.assertEqual(engine.resolve_token("MASS_BUDGET_PAYLOAD_KG"), "3.15")
+        self.assertEqual(engine.resolve_token("MASS_BUDGET_CONTAINMENT_KG"), "1.35")
+        self.assertEqual(engine.resolve_token("V_TERMINAL_UNMITIGATED_MPS"), "94.31")
+        self.assertEqual(engine.resolve_token("E_K_UNMITIGATED_JOULES"), "200123.5")
+
+    def test_parameter_engine_markdown_specification_ingestion(self):
+        """Verify Markdown specification text ingestion (Avenger 5 exemplar)."""
+        md_text = """# AVENGER 5
+
+## Technical Specifications
+| Parameter | Value |
+| :--- | :--- |
+| Endurance | 90 min |
+| Cruise speed | 31 m/s |
+| Max horizontal speed | 42 m/s |
+| Stall speed | 24 m/s |
+| Service ceiling | 5000 m |
+
+Carries up to a 5 kg warhead.
+"""
+        engine = SysMLParameterBindingEngine(auto_detect=False)
+        success = engine.ingest_markdown_text(md_text)
+        self.assertTrue(success)
+
+        self.assertEqual(engine.resolve_token("SYSTEM_IDENTIFIER"), "AVENGER 5")
+        self.assertIn(engine.resolve_token("V_CRUISE_NOMINAL_MPS"), ("31", "31.0"))
+        self.assertIn(engine.resolve_token("V_MAX_MPS"), ("42", "42.0"))
+        self.assertIn(engine.resolve_token("V_STALL_MAX_MPS"), ("24", "24.0"))
+        self.assertIn(engine.resolve_token("CEILING_MAX_M"), ("5000", "5000.0"))
+        self.assertIn(engine.resolve_token("ENDURANCE_NOMINAL_MIN"), ("90", "90.0"))
+        self.assertIn(engine.resolve_token("PAYLOAD_MAX_KG"), ("5", "5.0"))
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            md_path = os.path.join(tmpdir, "avenger5.md")
+            with open(md_path, "w", encoding="utf-8") as f:
+                f.write(md_text)
+            file_engine = SysMLParameterBindingEngine(auto_detect=False)
+            self.assertTrue(file_engine.ingest_file(md_path))
+            self.assertEqual(file_engine.resolve_token("SYSTEM_IDENTIFIER"), "AVENGER 5")
 
     def test_parameter_engine_auto_detection_schema_digest(self):
         """Verify auto-detection of .pipeline/schema-digest.json in workspace."""
@@ -631,8 +674,10 @@ class TestSysMLParameterBindingEngine(unittest.TestCase):
     def test_canonical_resource_units_assembly_passes_cleanly(self):
         """Verify end-to-end assembly on actual canonical resource units in skills/spec-conops-engineering/resources/units."""
         res_units_dir = os.path.join(REPO_ROOT, "skills", "spec-conops-engineering", "resources", "units")
-        if not os.path.isdir(res_units_dir):
-            self.skipTest(f"Resource units dir not found at {res_units_dir}")
+        self.assertTrue(
+            os.path.isdir(res_units_dir),
+            f"Canonical resource units directory missing at {res_units_dir}. Required for zero-skip end-to-end assembly testing.",
+        )
 
         with tempfile.TemporaryDirectory() as tmpdir:
             out_dir = os.path.join(tmpdir, "out")
@@ -701,10 +746,12 @@ class TestSysMLParameterBindingEngine(unittest.TestCase):
                 self.assertIn(f"## {sec_num}.", doc)
 
     def test_assemble_conops_toc_contains_all_12_and_10_sections_with_valid_anchors(self):
-        """Verify assembled CONOPS and MISSION_INTENT generate a complete TOC with all sections and valid anchor links (Fixes #148)."""
+        """Verify assembled CONOPS and MISSION_INTENT generate a complete TOC with all sections and valid anchor links (Fixes #148, #191, #193)."""
         res_units_dir = os.path.join(REPO_ROOT, "skills", "spec-conops-engineering", "resources", "units")
-        if not os.path.isdir(res_units_dir):
-            self.skipTest(f"Resource units dir not found at {res_units_dir}")
+        self.assertTrue(
+            os.path.isdir(res_units_dir),
+            f"Canonical resource units directory missing at {res_units_dir}. Required for zero-skip end-to-end assembly testing.",
+        )
 
         with tempfile.TemporaryDirectory() as tmpdir:
             out_dir = os.path.join(tmpdir, "out")
@@ -738,6 +785,13 @@ class TestSysMLParameterBindingEngine(unittest.TestCase):
             toc_mission = toc_match_mission.group(0)
             for i in range(1, 11):
                 self.assertRegex(toc_mission, rf'\[(?:Section\s+)?{i}\.')
+
+            # Check for 0 broken relative internal links in assembled documents (Fixes #191)
+            conops_link_errors = verify_markdown_links(conops_text)
+            self.assertEqual(conops_link_errors, [], f"Broken anchor links in CONOPS.md: {conops_link_errors}")
+
+            mission_link_errors = verify_markdown_links(mission_text)
+            self.assertEqual(mission_link_errors, [], f"Broken anchor links in MISSION_INTENT.md: {mission_link_errors}")
 
     def test_default_conops_params_bindings(self):
         """Verify DEFAULT_CONOPS_PARAMS bindings and resolution in SysMLParameterBindingEngine."""
@@ -980,6 +1034,143 @@ class TestSysMLParameterBindingEngine(unittest.TestCase):
         e_k = float(engine_auto.resolve_token("E_K_MITIGATED_JOULES"))
         self.assertAlmostEqual(v_term, 1.65, places=1)
         self.assertAlmostEqual(e_k, 0.5 * 50.0 * (v_term ** 2), places=1)
+
+    def test_detect_domain_type_airspace_aerospace_collision_avoidance(self):
+        """Verifies domain type detection eliminates substring collisions on airspace/aerospace (Fixes Issue #186)."""
+        # Level 1: explicit DOMAIN_TYPE="Airspace Operations" -> "aviation"
+        engine_airspace = SysMLParameterBindingEngine(
+            parameter_values={"DOMAIN_TYPE": "Airspace Operations"}, auto_detect=False
+        )
+        self.assertEqual(engine_airspace.detected_domain, "aviation")
+        self.assertEqual(engine_airspace._detect_domain_type(), "aviation")
+
+        # Level 1: explicit DOMAIN_TYPE="Aerospace Flight Systems" -> "aviation"
+        engine_aerospace = SysMLParameterBindingEngine(
+            parameter_values={"DOMAIN_TYPE": "Aerospace Flight Systems"}, auto_detect=False
+        )
+        self.assertEqual(engine_aerospace.detected_domain, "aviation")
+        self.assertEqual(engine_aerospace._detect_domain_type(), "aviation")
+
+        # Level 2: OPERATIONAL_DOMAIN="Airspace Infrastructure Safety" -> "aviation"
+        engine_op_domain = SysMLParameterBindingEngine(
+            parameter_values={"OPERATIONAL_DOMAIN": "Airspace Infrastructure Safety"}, auto_detect=False
+        )
+        self.assertEqual(engine_op_domain.detected_domain, "aviation")
+        self.assertEqual(engine_op_domain._detect_domain_type(), "aviation")
+
+        # Level 4: workspace directory path "/opt/workspaces/uas-airspace-inspection" -> "aviation"
+        engine_ws = SysMLParameterBindingEngine(
+            workspace_dir="/opt/workspaces/uas-airspace-inspection", auto_detect=False
+        )
+        self.assertEqual(engine_ws.detected_domain, "aviation")
+        self.assertEqual(engine_ws._detect_domain_type(), "aviation")
+
+        # Space systems with "Deep Space Orbital CubeSat" -> "space"
+        engine_space = SysMLParameterBindingEngine(
+            parameter_values={"DOMAIN_TYPE": "Deep Space Orbital CubeSat"}, auto_detect=False
+        )
+        self.assertEqual(engine_space.detected_domain, "space")
+        self.assertEqual(engine_space._detect_domain_type(), "space")
+
+    def test_detect_domain_type_all_six_domains_no_cross_talk(self):
+        """Verifies all 6 domains classify accurately without cross-talk (Fixes Issue #186)."""
+        domain_cases = [
+            ("aviation", {"DOMAIN_TYPE": "Tactical ISR Aviation Airspace Fixed-Wing"}),
+            ("medical", {"DOMAIN_TYPE": "Medical Surgical Robotic Healthcare Hospital"}),
+            ("rail", {"DOMAIN_TYPE": "Rail Locomotive Shunting Yard Freight Train"}),
+            ("marine", {"DOMAIN_TYPE": "Marine Subsea Maritime Underwater AUV Vessel"}),
+            ("space", {"DOMAIN_TYPE": "Deep Space Orbital CubeSat Satellite Constellation"}),
+            ("industrial", {"DOMAIN_TYPE": "Industrial Warehouse Forklift AGV Logistics AMR"}),
+        ]
+
+        for expected_dom, params in domain_cases:
+            engine = SysMLParameterBindingEngine(parameter_values=params, auto_detect=False)
+            self.assertEqual(
+                engine.detected_domain,
+                expected_dom,
+                f"Domain '{expected_dom}' misclassified with params {params}",
+            )
+            self.assertEqual(
+                engine._detect_domain_type(),
+                expected_dom,
+                f"Domain '{expected_dom}' _detect_domain_type() misclassified with params {params}",
+            )
+
+    def test_detect_domain_type_level3_domain_config(self):
+        """Verifies Level 3 domain_config.json word token matching (Fixes Issue #186)."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            cfg_dir = os.path.join(tmpdir, "schema")
+            os.makedirs(cfg_dir, exist_ok=True)
+            cfg_path = os.path.join(cfg_dir, "domain_config.json")
+
+            # Airspace monitoring -> aviation (not space)
+            with open(cfg_path, "w", encoding="utf-8") as f:
+                json.dump({"domain": "Airspace Monitoring"}, f)
+
+            engine_airspace = SysMLParameterBindingEngine(workspace_dir=tmpdir, auto_detect=False)
+            self.assertEqual(engine_airspace.detected_domain, "aviation")
+
+            # Deep Space Orbit -> space
+            with open(cfg_path, "w", encoding="utf-8") as f:
+                json.dump({"domain": "Deep Space Orbit"}, f)
+
+            engine_space = SysMLParameterBindingEngine(workspace_dir=tmpdir, auto_detect=False)
+            self.assertEqual(engine_space.detected_domain, "space")
+
+    def test_first_law_energy_conservation_and_bingo_thresholds(self):
+        """Verify First-Law Energy Conservation and Bingo threshold arithmetic across parameter configurations (Fixes #179, #182)."""
+        test_configs = [
+            {},  # default params
+            {"TOTAL_POWER_NOMINAL_W": "250.0", "ENDURANCE_HOURS": "2.0"},
+            {"TOTAL_POWER_NOMINAL_W": "500.0", "ENDURANCE_HOURS": "4.5"},
+            {"TOTAL_POWER_NOMINAL_W": "1200.0", "ENDURANCE_HOURS": "8.0"},
+            {"BATTERY_CAPACITY_JOULES": "8000000.0", "ENDURANCE_HOURS": "3.0"},
+            {"TOTAL_MTOW_KG": "45.0", "ENDURANCE_HOURS": "1.5"},
+        ]
+
+        for config in test_configs:
+            engine = SysMLParameterBindingEngine(parameter_values=config, auto_detect=False)
+
+            e_capacity = float(engine.resolve_token("BATTERY_CAPACITY_JOULES"))
+            p_nominal = float(engine.resolve_token("TOTAL_POWER_NOMINAL_W"))
+            t_hours = float(engine.resolve_token("ENDURANCE_HOURS"))
+            t_sec = t_hours * 3600.0
+
+            # 1. First-Law Energy Conservation: E_capacity >= P_nominal * t_endurance_sec
+            self.assertGreaterEqual(
+                e_capacity,
+                p_nominal * t_sec,
+                f"Energy capacity {e_capacity} J is less than nominal power demand {p_nominal * t_sec} J for config {config}",
+            )
+
+            # 2. Statutory reserve ratio: E_reserve >= 0.20 * E_capacity and reserve_ratio >= 0.20
+            e_reserve = float(engine.resolve_token("E_RESERVE_JOULES"))
+            reserve_ratio = e_reserve / e_capacity
+            self.assertGreaterEqual(
+                e_reserve,
+                round(0.20 * e_capacity, 1),
+                f"E_reserve {e_reserve} < 0.20 * E_capacity for config {config}",
+            )
+            self.assertGreaterEqual(
+                reserve_ratio,
+                0.20 - 1e-6,
+                f"reserve_ratio {reserve_ratio} < 0.20 for config {config}",
+            )
+
+            # 3. Bingo threshold arithmetic: E_bingo == round(E_return + E_divert + E_reserve + E_contingency, 1)
+            e_return = float(engine.resolve_token("E_RETURN_JOULES"))
+            e_divert = float(engine.resolve_token("E_DIVERT_JOULES"))
+            e_contingency = float(engine.resolve_token("E_CONTINGENCY_JOULES"))
+            e_bingo = float(engine.resolve_token("E_BINGO_JOULES"))
+            e_bingo_threshold = float(engine.resolve_token("E_BINGO_THRESHOLD_JOULES"))
+
+            expected_bingo = round(e_return + e_divert + e_reserve + e_contingency, 1)
+            self.assertEqual(
+                e_bingo,
+                expected_bingo,
+                f"E_bingo {e_bingo} != sum of partitions {expected_bingo} for config {config}",
+            )
+            self.assertEqual(e_bingo, e_bingo_threshold)
 
 
 if __name__ == "__main__":

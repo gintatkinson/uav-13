@@ -158,7 +158,7 @@ The cyber-physical vehicle operates under bounding physical, aerodynamic/kinemat
 | Parameter ID | Bounding Parameter Name | Parametric Symbol | Threshold (Boundary Limit) | Objective (Nominal Target) | Engineering Unit | Normative / Safety Basis |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **PL-01** | Maximum Takeoff Weight (MTOW) | m_MTOW | <= 20.0 | 20.0 | kg | Certified maximum structural takeoff mass limit |
-| **PL-02** | Maximum Payload Mass Capacity | m_payload_max | >= 3.5 | 3.5 | kg | Usable mission payload mass reserve |
+| **PL-02** | Maximum Payload Mass Capacity | m_payload_max | >= 8.0 | 8.0 | kg | Usable mission payload mass reserve |
 | **PL-03** | Physical Dimensions (Length x Width x Height) | L_x, L_y, L_z | <= 1.25 x 1.25 x 0.48 | 1.25 x 1.25 x 0.48 | m | Spatial transport and operational clearance envelope |
 | **PL-04** | Nominal Cruise Velocity | V_cruise | 18.0 - 18.0 | 18.0 | m/s | Optimum aerodynamic / dynamic transit speed |
 | **PL-05** | Maximum Permissible Operating Velocity | V_max | <= 28.0 | 28.0 | m/s | Never-exceed boundary limit (V_ne) |

@@ -416,7 +416,7 @@ $$
 
 | Energy Parameter | Symbol | Value | Units | Constraint Rule | Public Clause Citation |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| Total Storage Capacity | E_capacity | 2946857.1 | J | E_capacity > 0 (Total nominal energy capacity) | INCOSE SEH v5.0 §3.2 |
+| Total Storage Capacity | E_capacity | 864000.0 | J | E_capacity > 0 (Total nominal energy capacity) | INCOSE SEH v5.0 §3.2 |
 | Return Transit Energy | E_return | 1031400.0 | J | E_return = Integral(P_total dt) | INCOSE SEH v5.0 §3.2 |
 | Secondary Divert Energy | E_divert | 442028.6 | J | E_divert = (Distance / v_nominal) * P_nominal | INCOSE SEH v5.0 §3.2 |
 | Mandatory Statutory Reserve | E_reserve | 589371.5 | J | E_reserve >= Ratio_reserve_min * E_capacity (20.0% statutory reserve threshold) | INCOSE SEH v5.0 §3.2 |

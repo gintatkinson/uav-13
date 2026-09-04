@@ -16,8 +16,44 @@ import json
 import os
 import re
 import sys
+from dataclasses import dataclass, field
+from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple, Union
+
+
+class LifecycleType(str, Enum):
+    """Formal lifecycle archetypes for cyber-physical mission systems."""
+    REUSABLE_RECOVERY = "REUSABLE_RECOVERY"
+    EXPENDABLE_KINETIC_EFFECTOR = "EXPENDABLE_KINETIC_EFFECTOR"
+    CONTINUOUS_STATIONARY = "CONTINUOUS_STATIONARY"
+    PERSISTENT_ORBITAL = "PERSISTENT_ORBITAL"
+    TRACK_BOUND_GUIDED = "TRACK_BOUND_GUIDED"
+
+
+class ContainmentActionType(str, Enum):
+    """Formal containment and terminal action mechanisms."""
+    CONTROLLED_RECOVERY_LANDING = "CONTROLLED_RECOVERY_LANDING"
+    SAFE_IMPACT_ZEROIZATION = "SAFE_IMPACT_ZEROIZATION"
+    ELECTROMECHANICAL_BRAKE_LOCK = "ELECTROMECHANICAL_BRAKE_LOCK"
+    DEORBIT_DISPOSAL_BURN = "DEORBIT_DISPOSAL_BURN"
+    TRACK_SIDING_BRAKE = "TRACK_SIDING_BRAKE"
+
+
+@dataclass
+class LifecycleContract:
+    """Formal MBSE lifecycle and terminal state contract."""
+    lifecycle_type: LifecycleType
+    containment_action: ContainmentActionType
+    bingo_safety_action: str
+    end_state: str
+    failsafe_sequence: str
+    post_op_state: str
+    primary_terminal_target: str
+    secondary_terminal_target: str
+    primary_recovery_facility: str
+    secondary_recovery_facility: str
+    lifecycle_transit_mode: str
 
 
 # Match template placeholders like {{SYSTEM_IDENTIFIER}}, {{TLX_WEIGHT_MD:0.25}}, etc.
@@ -96,6 +132,7 @@ class SysMLParameterBindingEngine:
         self.detected_domain: str = domain or "aviation"
         self.is_non_aircraft: bool = False
         self.is_civilian: bool = False
+        self.lifecycle_contract: Optional[LifecycleContract] = None
 
         if domain:
             self.parameter_bindings["DOMAIN_TYPE"] = domain
@@ -122,6 +159,7 @@ class SysMLParameterBindingEngine:
         self._derive_energy_budgets()
         self._derive_domain_regulatory_standards()
         self._derive_domain_ontology()
+        self._derive_lifecycle_contract()
 
     @property
     def domain(self) -> str:
@@ -134,8 +172,97 @@ class SysMLParameterBindingEngine:
     def _detect_domain_type(self) -> str:
         """
         Detects operational domain type: aviation, medical, rail, marine, space, industrial.
-        Fixes Issue #175.
+        Fixes Issues #175, #186.
         """
+        aviation_tokens = {
+            "aviation",
+            "aircraft",
+            "uav",
+            "uas",
+            "drone",
+            "evtol",
+            "aerial",
+            "flight",
+            "airspace",
+            "aerospace",
+            "sora",
+            "fixed-wing",
+            "rotorcraft",
+            "interceptor",
+        }
+        medical_tokens = {
+            "medical",
+            "surgical",
+            "healthcare",
+            "patient",
+            "clinical",
+            "hospital",
+            "laparoscopic",
+            "trocar",
+        }
+        rail_tokens = {
+            "rail",
+            "locomotive",
+            "train",
+            "shunting",
+            "metro",
+            "tramway",
+            "railway",
+        }
+        marine_tokens = {
+            "marine",
+            "subsea",
+            "maritime",
+            "underwater",
+            "auv",
+            "rov",
+            "usv",
+            "uuv",
+            "vessel",
+            "naval",
+            "ocean",
+            "bathymetric",
+        }
+        space_tokens = {
+            "space",
+            "satellite",
+            "cubesat",
+            "orbital",
+            "spacecraft",
+            "launch",
+            "leo",
+            "geo",
+            "adcs",
+            "orbit",
+            "constellation",
+        }
+        industrial_tokens = {
+            "industrial",
+            "agv",
+            "forklift",
+            "warehouse",
+            "logistics",
+            "amr",
+            "ugv",
+        }
+
+        def _match_tokens(text: str) -> Optional[str]:
+            clean = text.lower()
+            tokens = set(re.findall(r"[a-z0-9]+", clean))
+            if tokens & aviation_tokens or any(p in clean for p in ("fixed wing", "fixed-wing")):
+                return "aviation"
+            if tokens & medical_tokens:
+                return "medical"
+            if tokens & rail_tokens or any(p in clean for p in ("rolling stock", "track circuit")):
+                return "rail"
+            if tokens & marine_tokens or any(p in clean for p in ("surface vessel",)):
+                return "marine"
+            if tokens & space_tokens:
+                return "space"
+            if tokens & industrial_tokens or any(p in clean for p in ("industrial truck", "material handling", "vda 5050", "ground delivery", "ground robot")):
+                return "industrial"
+            return None
+
         # 1. Explicit domain in parameter bindings
         explicit = (
             self.parameter_bindings.get("DOMAIN_TYPE")
@@ -143,10 +270,9 @@ class SysMLParameterBindingEngine:
             or self.parameter_bindings.get("DOMAIN")
         )
         if explicit:
-            exp_clean = str(explicit).lower().strip()
-            for dom in ("medical", "rail", "marine", "space", "industrial", "aviation"):
-                if dom in exp_clean:
-                    return dom
+            dom = _match_tokens(str(explicit))
+            if dom:
+                return dom
 
         # 2. Parameter bindings and inferred identifiers
         domain_str = (
@@ -162,20 +288,9 @@ class SysMLParameterBindingEngine:
         ).lower()
         platform_type = (self.parameter_bindings.get("PLATFORM_TYPE") or "").lower()
         params_combined = f"{domain_str} {sys_str} {platform_type}"
-        words = set(re.findall(r"[a-z0-9]+", params_combined))
-
-        if words & {"medical", "surgical", "healthcare", "patient", "clinical", "hospital", "laparoscopic", "trocar"}:
-            return "medical"
-        if words & {"rail", "locomotive", "train", "shunting", "metro", "tramway", "railway"} or any(p in params_combined for p in ("rolling stock", "track circuit")):
-            return "rail"
-        if words & {"marine", "subsea", "maritime", "underwater", "auv", "rov", "usv", "uuv", "vessel", "naval", "ocean", "bathymetric"}:
-            return "marine"
-        if words & {"industrial", "agv", "forklift", "warehouse", "logistics", "amr", "ugv"} or any(p in params_combined for p in ("industrial truck", "material handling", "vda 5050")):
-            return "industrial"
-        if words & {"space", "satellite", "cubesat", "orbital", "spacecraft", "launch", "leo", "geo", "adcs", "orbit"}:
-            return "space"
-        if words & {"aviation", "uav", "uas", "drone", "evtol", "aircraft", "aerial", "flight", "airspace", "sora", "aerospace"}:
-            return "aviation"
+        dom = _match_tokens(params_combined)
+        if dom:
+            return dom
 
         # 3. Check domain_config.json in workspace
         for cfg_rel in (
@@ -197,10 +312,10 @@ class SysMLParameterBindingEngine:
                             or cfg.get("operational_domain")
                             or cfg.get("system_type")
                             or ""
-                        ).lower()
-                        for dom in ("medical", "space", "rail", "marine", "industrial", "aviation"):
-                            if dom in dom_val:
-                                return dom
+                        )
+                        dom = _match_tokens(str(dom_val))
+                        if dom:
+                            return dom
                     except Exception:
                         pass
                 parent = os.path.dirname(curr)
@@ -209,19 +324,9 @@ class SysMLParameterBindingEngine:
                 curr = parent
 
         # 4. Fallback: inspect workspace directory string
-        ws_str = self.workspace_dir.lower()
-        if any(w in ws_str for w in ("medical", "surgical", "healthcare", "patient", "clinical", "hospital")):
-            return "medical"
-        if any(w in ws_str for w in ("space", "satellite", "cubesat", "orbital", "spacecraft")):
-            return "space"
-        if any(w in ws_str for w in ("rail", "locomotive", "train", "shunting", "metro")):
-            return "rail"
-        if any(w in ws_str for w in ("marine", "subsea", "maritime", "underwater", "auv", "rov")):
-            return "marine"
-        if any(w in ws_str for w in ("industrial", "agv", "forklift", "warehouse", "logistics")):
-            return "industrial"
-        if any(w in ws_str for w in ("aviation", "uav", "uas", "drone", "evtol", "aircraft")):
-            return "aviation"
+        dom = _match_tokens(self.workspace_dir)
+        if dom:
+            return dom
 
         return "aviation"
 
@@ -520,7 +625,17 @@ class SysMLParameterBindingEngine:
         """
         # 1. Determine endurance in hours
         t_hours = None
-        if "ENDURANCE_HOURS" in self.parameter_bindings:
+        if "ENDURANCE_HOURS" in self._explicit_keys:
+            try:
+                t_hours = float(self.parameter_bindings["ENDURANCE_HOURS"])
+            except ValueError:
+                pass
+        elif "ENDURANCE_NOMINAL_MIN" in self._explicit_keys:
+            try:
+                t_hours = float(self.parameter_bindings["ENDURANCE_NOMINAL_MIN"]) / 60.0
+            except ValueError:
+                pass
+        elif "ENDURANCE_HOURS" in self.parameter_bindings:
             try:
                 t_hours = float(self.parameter_bindings["ENDURANCE_HOURS"])
             except ValueError:
@@ -576,14 +691,20 @@ class SysMLParameterBindingEngine:
 
         e_kwh = round(e_joules / 3.6e6, 4)
 
-        self.parameter_bindings["BATTERY_CAPACITY_KWH"] = str(e_kwh)
-        self.parameter_bindings["E_CAPACITY_KWH"] = str(e_kwh)
-        self.parameter_bindings["BATTERY_CAPACITY_JOULES"] = str(e_joules)
-        self.parameter_bindings["E_CAPACITY_JOULES"] = str(e_joules)
-        self.parameter_bindings["ENDURANCE_HOURS"] = str(t_hours)
-        self.parameter_bindings["NOMINAL_ENDURANCE_HOURS"] = str(t_hours)
-        self.parameter_bindings["ENDURANCE_NOMINAL_MIN"] = str(t_min)
-        self.parameter_bindings["ENDURANCE_MIN_MIN"] = str(t_min)
+        if "BATTERY_CAPACITY_KWH" not in self._explicit_keys:
+            self.parameter_bindings["BATTERY_CAPACITY_KWH"] = str(e_kwh)
+        if "E_CAPACITY_KWH" not in self._explicit_keys:
+            self.parameter_bindings["E_CAPACITY_KWH"] = str(e_kwh)
+        if "BATTERY_CAPACITY_JOULES" not in self._explicit_keys:
+            self.parameter_bindings["BATTERY_CAPACITY_JOULES"] = str(e_joules)
+        if "E_CAPACITY_JOULES" not in self._explicit_keys:
+            self.parameter_bindings["E_CAPACITY_JOULES"] = str(e_joules)
+        if "ENDURANCE_HOURS" not in self._explicit_keys:
+            self.parameter_bindings["ENDURANCE_HOURS"] = str(t_hours)
+            self.parameter_bindings["NOMINAL_ENDURANCE_HOURS"] = str(t_hours)
+        if "ENDURANCE_NOMINAL_MIN" not in self._explicit_keys:
+            self.parameter_bindings["ENDURANCE_NOMINAL_MIN"] = str(t_min)
+            self.parameter_bindings["ENDURANCE_MIN_MIN"] = str(t_min)
 
         # 3. Derive sustainable nominal and peak power
         p_sustainable = e_joules / t_sec
@@ -685,6 +806,28 @@ class SysMLParameterBindingEngine:
             self.parameter_bindings["OPTX13_SOURCE"] = "MedicalDeviceIdentification"
             self.parameter_bindings["OPTX13_PROTOCOL_DESC"] = "Digitally Signed Medical Telemetry (DICOM/HL7 per IEC 62304)"
             self.parameter_bindings["ALTITUDE_TELEMETRY"] = "Manipulator Tip Position (X/Y/Z)"
+            if "STATE_SPACE_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["STATE_SPACE_STANDARD"] = "IEC 62304:2006+AMD1:2015 §5.2"
+            if "SAFETY_BOUNDS_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["SAFETY_BOUNDS_STANDARD"] = "IEC 60601-1-8:2020 §6.9"
+            if "STATE_VECTOR_MIN_EXPRESSION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MIN_EXPRESSION"] = "[x_min, y_min, z_min, vx_min, vy_min, vz_min]^T"
+            if "STATE_VECTOR_MAX_EXPRESSION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MAX_EXPRESSION"] = "[x_max, y_max, z_max, vx_max, vy_max, vz_max]^T"
+            if "STATE_VECTOR_MIN_UNITS" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MIN_UNITS"] = "mm, mm, mm, mm/s"
+            if "STATE_VECTOR_MAX_UNITS" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MAX_UNITS"] = "mm, mm, mm, mm/s"
+            if "STATE_SAFETY_MITIGATION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_SAFETY_MITIGATION"] = "ISO 14971:2019 §7.1 Risk Controls"
+            if "CONTAINMENT_BUFFER_UNIT" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_BUFFER_UNIT"] = "mm"
+            if "CONTAINMENT_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_STANDARD"] = "IEC 60601-1-8:2020 §6.3"
+            if "C2_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["C2_STANDARD"] = "IEC 60601-1-8 §6.8 / DICOM"
+            if "CONTAINMENT_RESPONSE_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_RESPONSE_STANDARD"] = "IEC 60601-1:2020 §8.1"
         elif dom == "rail":
             self.parameter_bindings["STRUCTURE_PARTITION_LABEL"] = "Locomotive Heavy Chassis & Underframe Structure"
             self.parameter_bindings["FAILSAFE_CONTAINMENT_NAME"] = "pneumatic train brake pipe venting / automatic coupler emergency release"
@@ -710,6 +853,28 @@ class SysMLParameterBindingEngine:
             self.parameter_bindings["OPTX13_SOURCE"] = "TrainIdentification"
             self.parameter_bindings["OPTX13_PROTOCOL_DESC"] = "Digitally Signed Train Telemetry (ETCS / AEI RFID per EN 50128)"
             self.parameter_bindings["ALTITUDE_TELEMETRY"] = "Track Elevation / Chainage"
+            if "STATE_SPACE_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["STATE_SPACE_STANDARD"] = "EN 50126:2017 §6.2"
+            if "SAFETY_BOUNDS_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["SAFETY_BOUNDS_STANDARD"] = "EN 50128:2011/A2:2020 SIL 4 §6.3"
+            if "STATE_VECTOR_MIN_EXPRESSION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MIN_EXPRESSION"] = "[s_min, v_min, a_min, p_brake_min]^T"
+            if "STATE_VECTOR_MAX_EXPRESSION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MAX_EXPRESSION"] = "[s_max, v_max, a_max, p_brake_max]^T"
+            if "STATE_VECTOR_MIN_UNITS" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MIN_UNITS"] = "m, m/s, m/s^2, bar"
+            if "STATE_VECTOR_MAX_UNITS" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MAX_UNITS"] = "m, m/s, m/s^2, bar"
+            if "STATE_SAFETY_MITIGATION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_SAFETY_MITIGATION"] = "EN 50129:2018 §6.3 Safety Interlocks"
+            if "CONTAINMENT_BUFFER_UNIT" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_BUFFER_UNIT"] = "m"
+            if "CONTAINMENT_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_STANDARD"] = "EN 50128 SIL 4 / IEEE 1474.1"
+            if "C2_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["C2_STANDARD"] = "EN 50159 / GSM-R / Eurobalise"
+            if "CONTAINMENT_RESPONSE_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_RESPONSE_STANDARD"] = "EN 50126:2017 §7.3"
         elif dom == "marine":
             self.parameter_bindings["STRUCTURE_PARTITION_LABEL"] = "Pressure-Tolerant Titanium & Syntactic Foam Hull"
             self.parameter_bindings["FAILSAFE_CONTAINMENT_NAME"] = "positive buoyancy ballast drop-weight / ascent actuator"
@@ -735,6 +900,28 @@ class SysMLParameterBindingEngine:
             self.parameter_bindings["OPTX13_SOURCE"] = "MaritimeIdentification"
             self.parameter_bindings["OPTX13_PROTOCOL_DESC"] = "Digitally Signed Subsea Telemetry (USBL Acoustic / AIS per DNV-GL)"
             self.parameter_bindings["ALTITUDE_TELEMETRY"] = "Bathymetric Depth"
+            if "STATE_SPACE_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["STATE_SPACE_STANDARD"] = "DNV-GL-ST-E403 §3.2"
+            if "SAFETY_BOUNDS_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["SAFETY_BOUNDS_STANDARD"] = "ISO 13628-6 §6.3"
+            if "STATE_VECTOR_MIN_EXPRESSION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MIN_EXPRESSION"] = "[x_north_min, y_east_min, z_depth_min, u_surge_min, v_sway_min, w_heave_min]^T"
+            if "STATE_VECTOR_MAX_EXPRESSION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MAX_EXPRESSION"] = "[x_north_max, y_east_max, z_depth_max, u_surge_max, v_sway_max, w_heave_max]^T"
+            if "STATE_VECTOR_MIN_UNITS" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MIN_UNITS"] = "m, m, m Depth, m/s"
+            if "STATE_VECTOR_MAX_UNITS" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MAX_UNITS"] = "m, m, m Depth, m/s"
+            if "STATE_SAFETY_MITIGATION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_SAFETY_MITIGATION"] = "IMO MASS Code §4.2 / COLREGs Rule 8"
+            if "CONTAINMENT_BUFFER_UNIT" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_BUFFER_UNIT"] = "m Depth"
+            if "CONTAINMENT_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_STANDARD"] = "DNV-GL-ST-E403 §4.4"
+            if "C2_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["C2_STANDARD"] = "USBL Acoustic / AIS Datalink"
+            if "CONTAINMENT_RESPONSE_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_RESPONSE_STANDARD"] = "ISO 13628-6 §6.3"
         elif dom == "space":
             self.parameter_bindings["STRUCTURE_PARTITION_LABEL"] = "Spacecraft Space-Grade Aluminum Chassis & Structural Panels"
             self.parameter_bindings["FAILSAFE_CONTAINMENT_NAME"] = "autonomous de-orbit propulsion / reaction wheel passivation"
@@ -760,6 +947,28 @@ class SysMLParameterBindingEngine:
             self.parameter_bindings["OPTX13_SOURCE"] = "SpaceTrackingIdentification"
             self.parameter_bindings["OPTX13_PROTOCOL_DESC"] = "Digitally Signed CCSDS Space Telemetry per ECSS-E-ST-40C"
             self.parameter_bindings["ALTITUDE_TELEMETRY"] = "Orbital Altitude / Ephemeris"
+            if "STATE_SPACE_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["STATE_SPACE_STANDARD"] = "ECSS-E-ST-10C §5.2"
+            if "SAFETY_BOUNDS_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["SAFETY_BOUNDS_STANDARD"] = "ECSS-E-ST-40C §6.3"
+            if "STATE_VECTOR_MIN_EXPRESSION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MIN_EXPRESSION"] = "[r_x_min, r_y_min, r_z_min, v_x_min, v_y_min, v_z_min]^T"
+            if "STATE_VECTOR_MAX_EXPRESSION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MAX_EXPRESSION"] = "[r_x_max, r_y_max, r_z_max, v_x_max, v_y_max, v_z_max]^T"
+            if "STATE_VECTOR_MIN_UNITS" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MIN_UNITS"] = "km, km, km, km/s"
+            if "STATE_VECTOR_MAX_UNITS" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MAX_UNITS"] = "km, km, km, km/s"
+            if "STATE_SAFETY_MITIGATION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_SAFETY_MITIGATION"] = "NASA-STD-8739.8 §4.2 Orbital Demise"
+            if "CONTAINMENT_BUFFER_UNIT" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_BUFFER_UNIT"] = "km Orbital Altitude"
+            if "CONTAINMENT_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_STANDARD"] = "ECSS-E-ST-40C §5.8"
+            if "C2_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["C2_STANDARD"] = "CCSDS Space Packet Protocol / ECSS-E-ST-40C"
+            if "CONTAINMENT_RESPONSE_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_RESPONSE_STANDARD"] = "NASA-STD-8739.8 §5.3"
         elif dom == "industrial":
             self.parameter_bindings["STRUCTURE_PARTITION_LABEL"] = "Heavy-Duty Welded Steel AGV Chassis & Mast Assembly"
             self.parameter_bindings["FAILSAFE_CONTAINMENT_NAME"] = "optical safety lidar field stop / electromagnetic friction brake"
@@ -785,6 +994,28 @@ class SysMLParameterBindingEngine:
             self.parameter_bindings["OPTX13_SOURCE"] = "IndustrialVehicleIdentification"
             self.parameter_bindings["OPTX13_PROTOCOL_DESC"] = "Digitally Signed Industrial Telemetry (VDA 5050 MQTT per ISO 3691-4)"
             self.parameter_bindings["ALTITUDE_TELEMETRY"] = "Fork Lift Height"
+            if "STATE_SPACE_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["STATE_SPACE_STANDARD"] = "ISO 3691-4:2023 §4.2"
+            if "SAFETY_BOUNDS_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["SAFETY_BOUNDS_STANDARD"] = "IEC 61508 SIL 3 Part 2 §7.4"
+            if "STATE_VECTOR_MIN_EXPRESSION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MIN_EXPRESSION"] = "[x_grid_min, y_grid_min, theta_yaw_min, v_trans_min, omega_rot_min, h_fork_min]^T"
+            if "STATE_VECTOR_MAX_EXPRESSION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MAX_EXPRESSION"] = "[x_grid_max, y_grid_max, theta_yaw_max, v_trans_max, omega_rot_max, h_fork_max]^T"
+            if "STATE_VECTOR_MIN_UNITS" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MIN_UNITS"] = "m, m, rad, m/s, rad/s, m"
+            if "STATE_VECTOR_MAX_UNITS" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MAX_UNITS"] = "m, m, rad, m/s, rad/s, m"
+            if "STATE_SAFETY_MITIGATION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_SAFETY_MITIGATION"] = "ISO 3691-4:2023 §4.3 Active Personnel Detection"
+            if "CONTAINMENT_BUFFER_UNIT" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_BUFFER_UNIT"] = "m"
+            if "CONTAINMENT_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_STANDARD"] = "ISO 3691-4:2023 §4.2 Path Containment"
+            if "C2_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["C2_STANDARD"] = "VDA 5050 MQTT §4.0"
+            if "CONTAINMENT_RESPONSE_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_RESPONSE_STANDARD"] = "IEC 61508 SIL 3 Part 3 §7.4"
         else:
             self.parameter_bindings["STRUCTURE_PARTITION_LABEL"] = "Airframe Structure"
             self.parameter_bindings["FAILSAFE_CONTAINMENT_NAME"] = "ballistic parachute recovery / containment actuator"
@@ -812,6 +1043,28 @@ class SysMLParameterBindingEngine:
             self.parameter_bindings["OPTX13_SOURCE"] = "BroadcastRemoteID"
             self.parameter_bindings["OPTX13_PROTOCOL_DESC"] = "Digitally Signed Public Broadcast (Bluetooth 5.x / Wi-Fi Beacon per ASTM F3411-22a)"
             self.parameter_bindings["ALTITUDE_TELEMETRY"] = "Altitude"
+            if "STATE_SPACE_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["STATE_SPACE_STANDARD"] = "ISO/IEC/IEEE 29148:2018 §6.4.2"
+            if "SAFETY_BOUNDS_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["SAFETY_BOUNDS_STANDARD"] = "ASTM F3269-17 §6.2"
+            if "STATE_VECTOR_MIN_EXPRESSION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MIN_EXPRESSION"] = "[phi_min, lambda_min, h_min, u_min, v_min, w_min]^T"
+            if "STATE_VECTOR_MAX_EXPRESSION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MAX_EXPRESSION"] = "[phi_max, lambda_max, h_max, u_max, v_max, w_max]^T"
+            if "STATE_VECTOR_MIN_UNITS" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MIN_UNITS"] = "rad, rad, m, m/s"
+            if "STATE_VECTOR_MAX_UNITS" not in self._explicit_keys:
+                self.parameter_bindings["STATE_VECTOR_MAX_UNITS"] = "rad, rad, m/s"
+            if "STATE_SAFETY_MITIGATION" not in self._explicit_keys:
+                self.parameter_bindings["STATE_SAFETY_MITIGATION"] = "SORA Annex B M1 Mitigations"
+            if "CONTAINMENT_BUFFER_UNIT" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_BUFFER_UNIT"] = "m"
+            if "CONTAINMENT_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_STANDARD"] = "JARUS SORA v2.5 Step #2"
+            if "C2_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["C2_STANDARD"] = "RTCA DO-362A §2.2.1"
+            if "CONTAINMENT_RESPONSE_STANDARD" not in self._explicit_keys:
+                self.parameter_bindings["CONTAINMENT_RESPONSE_STANDARD"] = "ASTM F3269-17 §7.1"
 
         if is_civilian:
             self.parameter_bindings["INTERLOCK_PREFIX"] = "SAF"
@@ -912,6 +1165,325 @@ class SysMLParameterBindingEngine:
                 f"  1. {c1}\n  2. {c2}\n  3. {c3}\n  4. {c4}"
             )
 
+        self._derive_lifecycle_contract()
+
+    def _derive_lifecycle_contract(self) -> LifecycleContract:
+        """
+        Deterministically derives formal MBSE Lifecycle Contract and terminal state tokens from schema AST nodes.
+        Inspects lifecycle_type, is_expendable, terminal_behavior, recovery_mode, payload_type, operational_domain, platform_type.
+        Binds:
+          - LIFECYCLE_TYPE
+          - LIFECYCLE_BINGO_SAFETY_ACTION
+          - LIFECYCLE_END_STATE
+          - LIFECYCLE_FAILSAFE_SEQUENCE
+          - LIFECYCLE_POST_OP_STATE
+          - PRIMARY_TERMINAL_TARGET
+          - SECONDARY_TERMINAL_TARGET
+          - PRIMARY_RECOVERY_FACILITY
+          - SECONDARY_RECOVERY_FACILITY
+          - LIFECYCLE_TRANSIT_MODE
+        """
+        dom = getattr(self, "detected_domain", "aviation").lower()
+        platform_type = str(self.parameter_bindings.get("PLATFORM_TYPE") or "").lower()
+        sys_id = str(self.parameter_bindings.get("SYSTEM_IDENTIFIER") or self.inferred_system_identifier or "").lower()
+        op_domain = str(self.parameter_bindings.get("OPERATIONAL_DOMAIN") or "").lower()
+        payload_type = str(self.parameter_bindings.get("PAYLOAD_TYPE") or "").lower()
+        terminal_behavior = str(self.parameter_bindings.get("TERMINAL_BEHAVIOR") or "").lower()
+        recovery_mode = str(self.parameter_bindings.get("RECOVERY_MODE") or "").lower()
+        raw_is_expendable = self.parameter_bindings.get("IS_EXPENDABLE") or self.parameter_bindings.get("is_expendable")
+        is_expendable = False
+        if raw_is_expendable is not None:
+            if isinstance(raw_is_expendable, bool):
+                is_expendable = raw_is_expendable
+            elif str(raw_is_expendable).strip().lower() in ("true", "1", "yes"):
+                is_expendable = True
+
+        is_explicit_lifecycle = (
+            "LIFECYCLE_TYPE" in self._explicit_keys
+            or "lifecycle_type" in self._explicit_keys
+        )
+        raw_lifecycle = str(
+            self.parameter_bindings.get("LIFECYCLE_TYPE")
+            or self.parameter_bindings.get("lifecycle_type")
+            or ""
+        ).strip().upper()
+
+        combined_context = f"{dom} {platform_type} {sys_id} {op_domain} {payload_type} {terminal_behavior} {recovery_mode}".lower()
+
+        # Archetype classification
+        if is_explicit_lifecycle and raw_lifecycle in LifecycleType.__members__:
+            selected_type = LifecycleType[raw_lifecycle]
+        elif (
+            is_expendable
+            or "expendable" in combined_context
+            or "interceptor" in platform_type
+            or "interceptor" in sys_id
+            or "kinetic" in payload_type
+            or "kinetic" in platform_type
+            or "c-uas" in combined_context
+            or "counter-uas" in combined_context
+            or "run_10" in combined_context
+        ):
+            selected_type = LifecycleType.EXPENDABLE_KINETIC_EFFECTOR
+        elif (
+            dom == "medical"
+            or "surgical" in combined_context
+            or "medical" in combined_context
+            or "laparoscopic" in combined_context
+            or "clinical" in combined_context
+            or "run_07" in combined_context
+        ):
+            selected_type = LifecycleType.CONTINUOUS_STATIONARY
+        elif (
+            dom == "rail"
+            or "locomotive" in combined_context
+            or "rail" in combined_context
+            or "train" in combined_context
+            or "shunting" in combined_context
+            or "run_08" in combined_context
+        ):
+            selected_type = LifecycleType.TRACK_BOUND_GUIDED
+        elif (
+            dom == "space"
+            or "cubesat" in combined_context
+            or "satellite" in combined_context
+            or "spacecraft" in combined_context
+            or "orbital" in combined_context
+            or "run_06" in combined_context
+        ):
+            selected_type = LifecycleType.PERSISTENT_ORBITAL
+        else:
+            selected_type = LifecycleType.REUSABLE_RECOVERY
+
+        def _get_explicit_or_default(key: str, default_val: str) -> str:
+            if key in self._explicit_keys or key.lower() in self._explicit_keys or key.upper() in self._explicit_keys:
+                return str(self.parameter_bindings.get(key) or default_val)
+            return default_val
+
+        # Generate contract definitions
+        if selected_type == LifecycleType.EXPENDABLE_KINETIC_EFFECTOR:
+            containment = ContainmentActionType.SAFE_IMPACT_ZEROIZATION
+            bingo_action = _get_explicit_or_default(
+                "LIFECYCLE_BINGO_SAFETY_ACTION",
+                "Continuously compute closed-loop dynamic resource state and execute terminal target engagement or safe containment ditching with cryptographic zeroization upon reaching safety thresholds ($R(t) \\le R_{\\mathrm{threshold}}(t)$)."
+            )
+            end_state = _get_explicit_or_default(
+                "LIFECYCLE_END_STATE",
+                "All assigned operational corridor waypoints fully traversed and verified; zero unauthorized state boundary excursions; zero unmitigated collision or interference hazards; all state conditions positively identified and verified ($C_{\\mathrm{condition}} \\ge C_{\\mathrm{threshold}}$); and successful terminal intercept or safe containment ditching in the designated containment zone with complete cryptographic zeroization."
+            )
+            failsafe = _get_explicit_or_default(
+                "LIFECYCLE_FAILSAFE_SEQUENCE",
+                "autonomous terminal containment ditching and zeroization sequence"
+            )
+            post_op = _get_explicit_or_default(
+                "LIFECYCLE_POST_OP_STATE",
+                "Terminal kinetic impact or safe containment ditching with complete cryptographic key zeroization, volatile memory purge, and structural containment verification"
+            )
+            primary_target = _get_explicit_or_default(
+                "PRIMARY_TERMINAL_TARGET",
+                "Designated Kinetic Intercept / Terminal Containment Zone"
+            )
+            secondary_target = _get_explicit_or_default(
+                "SECONDARY_TERMINAL_TARGET",
+                "Safe Containment Ditching Zone LZ-DIVERT-ALPHA"
+            )
+            primary_facility = _get_explicit_or_default(
+                "PRIMARY_RECOVERY_FACILITY",
+                "Safe Impact Containment Grid"
+            )
+            secondary_facility = _get_explicit_or_default(
+                "SECONDARY_RECOVERY_FACILITY",
+                "Secondary Safe Ditching Area"
+            )
+            transit_mode = _get_explicit_or_default(
+                "LIFECYCLE_TRANSIT_MODE",
+                "Terminal_Engagement_Transit"
+            )
+
+        elif selected_type == LifecycleType.CONTINUOUS_STATIONARY:
+            containment = ContainmentActionType.ELECTROMECHANICAL_BRAKE_LOCK
+            bingo_action = _get_explicit_or_default(
+                "LIFECYCLE_BINGO_SAFETY_ACTION",
+                "Continuously compute closed-loop dynamic resource state and execute automated electromechanical joint brake locking and sterile field preservation upon reaching safety thresholds ($R(t) \\le R_{\\mathrm{threshold}}(t)$)."
+            )
+            end_state = _get_explicit_or_default(
+                "LIFECYCLE_END_STATE",
+                "All assigned surgical trajectory segments fully traversed and verified; zero unauthorized workspace boundary excursions; zero unmitigated tissue contact hazards; all clinical conditions positively identified and verified ($C_{\\mathrm{condition}} \\ge C_{\\mathrm{threshold}}$); and successful safe parking at the primary sterile console with residual power reserves strictly satisfying $R_{\\mathrm{reserve}} \\ge \\text{Ratio}_{\\text{reserve\\_min}} \\cdot R_{\\mathrm{capacity}}$."
+            )
+            failsafe = _get_explicit_or_default(
+                "LIFECYCLE_FAILSAFE_SEQUENCE",
+                "electromechanical joint brake lock and sterile field safing sequence"
+            )
+            post_op = _get_explicit_or_default(
+                "LIFECYCLE_POST_OP_STATE",
+                "Post-operation stationary safe rest at sterile field console with engaged electromechanical joint brake locks, complete cryptographic key zeroization, and diagnostic log offloading"
+            )
+            primary_target = _get_explicit_or_default(
+                "PRIMARY_TERMINAL_TARGET",
+                "Primary Sterile Field Docking Station"
+            )
+            secondary_target = _get_explicit_or_default(
+                "SECONDARY_TERMINAL_TARGET",
+                "Secondary Clinical Safe Staging Console"
+            )
+            primary_facility = _get_explicit_or_default(
+                "PRIMARY_RECOVERY_FACILITY",
+                "Clinical Operating Suite"
+            )
+            secondary_facility = _get_explicit_or_default(
+                "SECONDARY_RECOVERY_FACILITY",
+                "Secondary Maintenance Staging Bay"
+            )
+            transit_mode = _get_explicit_or_default(
+                "LIFECYCLE_TRANSIT_MODE",
+                "Autonomous_Clinical_Safing"
+            )
+
+        elif selected_type == LifecycleType.TRACK_BOUND_GUIDED:
+            containment = ContainmentActionType.TRACK_SIDING_BRAKE
+            bingo_action = _get_explicit_or_default(
+                "LIFECYCLE_BINGO_SAFETY_ACTION",
+                "Continuously compute closed-loop dynamic resource state and execute controlled track deceleration or secondary maintenance siding divert upon reaching safety thresholds ($R(t) \\le R_{\\mathrm{threshold}}(t)$)."
+            )
+            end_state = _get_explicit_or_default(
+                "LIFECYCLE_END_STATE",
+                "All assigned track blocks and route sections fully traversed and verified; zero unauthorized siding excursions; zero unmitigated collision or derailment hazards; all signal aspects positively identified and verified ($C_{\\mathrm{condition}} \\ge C_{\\mathrm{threshold}}$); and successful controlled arrival at the primary maintenance siding or designated secondary spur with residual resources strictly satisfying $R_{\\mathrm{reserve}} \\ge \\text{Ratio}_{\\text{reserve\\_min}} \\cdot R_{\\mathrm{capacity}}$."
+            )
+            failsafe = _get_explicit_or_default(
+                "LIFECYCLE_FAILSAFE_SEQUENCE",
+                "controlled track deceleration and siding brake sequence"
+            )
+            post_op = _get_explicit_or_default(
+                "LIFECYCLE_POST_OP_STATE",
+                "Post-operation stationary rest at rail siding with mechanical parking brakes engaged, pneumatic systems vented, cryptographic key zeroization, and diagnostic log offloading"
+            )
+            primary_target = _get_explicit_or_default(
+                "PRIMARY_TERMINAL_TARGET",
+                "Primary Rail Maintenance Siding"
+            )
+            secondary_target = _get_explicit_or_default(
+                "SECONDARY_TERMINAL_TARGET",
+                "Secondary Controlled Deceleration Spur LZ-DIVERT-ALPHA"
+            )
+            primary_facility = _get_explicit_or_default(
+                "PRIMARY_RECOVERY_FACILITY",
+                "Classification Yard Maintenance Depot"
+            )
+            secondary_facility = _get_explicit_or_default(
+                "SECONDARY_RECOVERY_FACILITY",
+                "Secondary Service Siding"
+            )
+            transit_mode = _get_explicit_or_default(
+                "LIFECYCLE_TRANSIT_MODE",
+                "Autonomous_Track_Deceleration"
+            )
+
+        elif selected_type == LifecycleType.PERSISTENT_ORBITAL:
+            containment = ContainmentActionType.DEORBIT_DISPOSAL_BURN
+            bingo_action = _get_explicit_or_default(
+                "LIFECYCLE_BINGO_SAFETY_ACTION",
+                "Continuously compute closed-loop dynamic resource state and execute autonomous de-orbit disposal burn or graveyard orbit maneuver upon reaching safety thresholds ($R(t) \\le R_{\\mathrm{threshold}}(t)$)."
+            )
+            end_state = _get_explicit_or_default(
+                "LIFECYCLE_END_STATE",
+                "All assigned orbital mission phases fully executed and verified; zero unauthorized constellation slot excursions; zero unmitigated orbital debris collision hazards; all payload observations positively verified ($C_{\\mathrm{condition}} \\ge C_{\\mathrm{threshold}}$); and successful de-orbit disposal or transfer to graveyard orbit with residual propellant satisfying disposal containment standards."
+            )
+            failsafe = _get_explicit_or_default(
+                "LIFECYCLE_FAILSAFE_SEQUENCE",
+                "autonomous de-orbit disposal and passivation sequence"
+            )
+            post_op = _get_explicit_or_default(
+                "LIFECYCLE_POST_OP_STATE",
+                "Post-mission passivation and safe disposal state with reaction wheels desaturated, batteries passivated, cryptographic key zeroization, and final ephemeris offload"
+            )
+            primary_target = _get_explicit_or_default(
+                "PRIMARY_TERMINAL_TARGET",
+                "Designated De-Orbit Reentry Corridor / Graveyard Orbit"
+            )
+            secondary_target = _get_explicit_or_default(
+                "SECONDARY_TERMINAL_TARGET",
+                "Secondary Disposal Orbit Node LZ-DIVERT-ALPHA"
+            )
+            primary_facility = _get_explicit_or_default(
+                "PRIMARY_RECOVERY_FACILITY",
+                "Designated Atmospheric Demise Footprint"
+            )
+            secondary_facility = _get_explicit_or_default(
+                "SECONDARY_RECOVERY_FACILITY",
+                "Stable Graveyard Disposal Orbit"
+            )
+            transit_mode = _get_explicit_or_default(
+                "LIFECYCLE_TRANSIT_MODE",
+                "Autonomous_Disposal_Burn_Transit"
+            )
+
+        else:  # REUSABLE_RECOVERY
+            containment = ContainmentActionType.CONTROLLED_RECOVERY_LANDING
+            bingo_action = _get_explicit_or_default(
+                "LIFECYCLE_BINGO_SAFETY_ACTION",
+                "Continuously compute closed-loop dynamic resource state and execute autonomous return-to-base (RTB) or secondary divert routing upon reaching safety thresholds ($R(t) \\le R_{\\mathrm{threshold}}(t)$)."
+            )
+            end_state = _get_explicit_or_default(
+                "LIFECYCLE_END_STATE",
+                "All assigned operational corridor waypoints fully traversed and verified; zero unauthorized state boundary excursions; zero unmitigated collision or interference hazards; all state conditions positively identified and verified ($C_{\\mathrm{condition}} \\ge C_{\\mathrm{threshold}}$); and successful recovery at the primary base or designated secondary divert recovery site with residual resources strictly satisfying $R_{\\mathrm{reserve}} \\ge \\text{Ratio}_{\\text{reserve\\_min}} \\cdot R_{\\mathrm{capacity}}$."
+            )
+            failsafe = _get_explicit_or_default(
+                "LIFECYCLE_FAILSAFE_SEQUENCE",
+                "autonomous return-to-base sequence"
+            )
+            post_op = _get_explicit_or_default(
+                "LIFECYCLE_POST_OP_STATE",
+                "Post-operation stationary rest at recovery site with actuator safe locking, cryptographic data zeroization, and diagnostic log offloading"
+            )
+            primary_target = _get_explicit_or_default(
+                "PRIMARY_TERMINAL_TARGET",
+                "Primary Recovery Base"
+            )
+            secondary_target = _get_explicit_or_default(
+                "SECONDARY_TERMINAL_TARGET",
+                "Secondary Divert Site LZ-DIVERT-ALPHA"
+            )
+            primary_facility = _get_explicit_or_default(
+                "PRIMARY_RECOVERY_FACILITY",
+                "Primary Recovery Base"
+            )
+            secondary_facility = _get_explicit_or_default(
+                "SECONDARY_RECOVERY_FACILITY",
+                "Secondary Divert Base"
+            )
+            transit_mode = _get_explicit_or_default(
+                "LIFECYCLE_TRANSIT_MODE",
+                "Autonomous_RTB_Transit"
+            )
+
+        contract = LifecycleContract(
+            lifecycle_type=selected_type,
+            containment_action=containment,
+            bingo_safety_action=bingo_action,
+            end_state=end_state,
+            failsafe_sequence=failsafe,
+            post_op_state=post_op,
+            primary_terminal_target=primary_target,
+            secondary_terminal_target=secondary_target,
+            primary_recovery_facility=primary_facility,
+            secondary_recovery_facility=secondary_facility,
+            lifecycle_transit_mode=transit_mode,
+        )
+
+        self.lifecycle_contract = contract
+        self.parameter_bindings["LIFECYCLE_TYPE"] = contract.lifecycle_type.value
+        self.parameter_bindings["LIFECYCLE_BINGO_SAFETY_ACTION"] = contract.bingo_safety_action
+        self.parameter_bindings["LIFECYCLE_END_STATE"] = contract.end_state
+        self.parameter_bindings["LIFECYCLE_FAILSAFE_SEQUENCE"] = contract.failsafe_sequence
+        self.parameter_bindings["LIFECYCLE_POST_OP_STATE"] = contract.post_op_state
+        self.parameter_bindings["PRIMARY_TERMINAL_TARGET"] = contract.primary_terminal_target
+        self.parameter_bindings["SECONDARY_TERMINAL_TARGET"] = contract.secondary_terminal_target
+        self.parameter_bindings["PRIMARY_RECOVERY_FACILITY"] = contract.primary_recovery_facility
+        self.parameter_bindings["SECONDARY_RECOVERY_FACILITY"] = contract.secondary_recovery_facility
+        self.parameter_bindings["LIFECYCLE_TRANSIT_MODE"] = contract.lifecycle_transit_mode
+
+        return contract
+
     def ingest_dictionary(self, data: Dict[str, Any]) -> None:
         """Flattens and registers key-value pairs into parameter bindings."""
         if not isinstance(data, dict):
@@ -973,74 +1545,117 @@ class SysMLParameterBindingEngine:
         self._derive_energy_budgets()
         self._derive_domain_regulatory_standards()
         self._derive_domain_ontology()
+        self._derive_lifecycle_contract()
 
     def _map_semantic_aliases(self, key: str, val: str) -> None:
         """Maps domain attributes to canonical template tokens (Issues #162, #170)."""
-        lower = key.lower()
-        if "system_identifier" in lower or (lower in ("system", "system_name") and not self.parameter_bindings.get("SYSTEM_IDENTIFIER")):
-            self.parameter_bindings["SYSTEM_IDENTIFIER"] = val
-            self.parameter_bindings["MISSION_SYSTEM_NAME"] = val
-            self.parameter_bindings["SYSTEM_NAME"] = val
-        elif "max_cruise" in lower or "v_cruise" in lower or lower in ("cruise_speed", "cruise_velocity"):
-            self.parameter_bindings["V_CRUISE_NOMINAL_MPS"] = val
-            self.parameter_bindings["V_CRUISE_MAX_MPS"] = val
-            self.parameter_bindings["V_CRUISE_MIN_MPS"] = val
-            self.parameter_bindings["MAX_CRUISE_SPEED_MS"] = val
-            self.parameter_bindings["CRUISE_SPEED_MS"] = val
-            self.parameter_bindings["CRUISE_SPEED_MPS"] = val
-        elif "v_max" in lower or lower in ("max_speed", "max_velocity"):
-            self.parameter_bindings["V_MAX_MPS"] = val
-            self.parameter_bindings["V_MAX_NOMINAL_MPS"] = val
-            self.parameter_bindings["MAX_SPEED_MS"] = val
-        elif "v_stall" in lower or "stall_speed" in lower or "stall_velocity" in lower:
-            self.parameter_bindings["V_STALL_MAX_MPS"] = val
-            self.parameter_bindings["V_STALL_NOMINAL_MPS"] = val
-            self.parameter_bindings["STALL_SPEED_MS"] = val
-            self.parameter_bindings["V_STALL_MPS"] = val
-            self.parameter_bindings["STALL_SPEED_MPS"] = val
+        lower = key.lower().replace("-", "_").replace(" ", "_")
+        alias_map = {}
+
+        m_num = re.search(r"[-+]?\d*\.?\d+", val)
+        num_val = m_num.group(0) if m_num else val
+
+        if "system_identifier" in lower or "mission_system_name" in lower or (lower in ("system", "system_name") and not self.parameter_bindings.get("SYSTEM_IDENTIFIER")):
+            alias_map.update({
+                "SYSTEM_IDENTIFIER": val,
+                "MISSION_SYSTEM_NAME": val,
+                "SYSTEM_NAME": val,
+            })
+        elif "max_cruise" in lower or "v_cruise" in lower or "cruise_speed" in lower or "cruise_velocity" in lower or "cruise" in lower:
+            alias_map.update({
+                "V_CRUISE_NOMINAL_MPS": num_val,
+                "V_CRUISE_MAX_MPS": num_val,
+                "V_CRUISE_MIN_MPS": num_val,
+                "MAX_CRUISE_SPEED_MS": num_val,
+                "CRUISE_SPEED_MS": num_val,
+                "CRUISE_SPEED_MPS": num_val,
+            })
+        elif "max_horizontal" in lower or "horizontal_speed" in lower or "v_max" in lower or "max_speed" in lower or "max_velocity" in lower or lower in ("speed_max", "vmax"):
+            alias_map.update({
+                "V_MAX_MPS": num_val,
+                "V_MAX_NOMINAL_MPS": num_val,
+                "MAX_SPEED_MS": num_val,
+                "MAX_HORIZONTAL_SPEED_MPS": num_val,
+            })
+        elif "dive" in lower:
+            alias_map.update({
+                "V_DIVE_MAX_MPS": num_val,
+                "MAX_DIVE_SPEED_MPS": num_val,
+                "V_DIVE_MPS": num_val,
+            })
+        elif "v_stall" in lower or "stall_speed" in lower or "stall_velocity" in lower or "stall" in lower:
+            alias_map.update({
+                "V_STALL_MAX_MPS": num_val,
+                "V_STALL_NOMINAL_MPS": num_val,
+                "STALL_SPEED_MS": num_val,
+                "V_STALL_MPS": num_val,
+                "STALL_SPEED_MPS": num_val,
+            })
         elif "wingspan" in lower or "wing_span" in lower:
-            self.parameter_bindings["WINGSPAN_M"] = val
-            self.parameter_bindings["WINGSPAN"] = val
-            self.parameter_bindings["DIM_MAX_W_M"] = val
-            self.parameter_bindings["DIM_NOM_W_M"] = val
+            alias_map.update({
+                "WINGSPAN_M": num_val,
+                "WINGSPAN": num_val,
+                "DIM_MAX_W_M": num_val,
+                "DIM_NOM_W_M": num_val,
+            })
         elif "parachute" in lower and ("area" in lower or "canopy" in lower or "m2" in lower or "size" in lower) or lower in ("s_canopy", "s_canopy_m2", "canopy_area", "canopy_area_m2"):
-            self.parameter_bindings["PARACHUTE_AREA_M2"] = val
-            self.parameter_bindings["PARACHUTE_CANOPY_AREA_M2"] = val
-            self.parameter_bindings["PARACHUTE_CANOPY_AREA"] = val
-            self.parameter_bindings["S_CANOPY"] = val
-            self.parameter_bindings["S_CANOPY_M2"] = val
+            alias_map.update({
+                "PARACHUTE_AREA_M2": num_val,
+                "PARACHUTE_CANOPY_AREA_M2": num_val,
+                "PARACHUTE_CANOPY_AREA": num_val,
+                "S_CANOPY": num_val,
+                "S_CANOPY_M2": num_val,
+            })
         elif "parachute" in lower and ("drag" in lower or "cd" in lower or "c_d" in lower):
-            self.parameter_bindings["PARACHUTE_DRAG_COEFFICIENT"] = val
-            self.parameter_bindings["C_D_PARACHUTE"] = val
-        elif "mtow" in lower or "takeoff_weight" in lower or "takeoff_mass" in lower or "total_mtow" in lower:
-            self.parameter_bindings["TOTAL_MTOW_KG"] = val
-            self.parameter_bindings["MTOW_MAX_KG"] = val
-            self.parameter_bindings["MTOW_NOMINAL_KG"] = val
-        elif "payload" in lower and ("mass" in lower or "weight" in lower):
-            self.parameter_bindings["PAYLOAD_MAX_KG"] = val
-            self.parameter_bindings["PAYLOAD_NOMINAL_KG"] = val
-        elif "ceiling" in lower or "max_altitude" in lower:
-            self.parameter_bindings["CEILING_MAX_M"] = val
-            self.parameter_bindings["CEILING_NOMINAL_M"] = val
-            self.parameter_bindings["H_MAX_M"] = val
-        elif "c2_range" in lower or "range_c2" in lower:
-            self.parameter_bindings["C2_RANGE_NOMINAL_KM"] = val
-            self.parameter_bindings["C2_RANGE_MIN_KM"] = val
+            alias_map.update({
+                "PARACHUTE_DRAG_COEFFICIENT": num_val,
+                "C_D_PARACHUTE": num_val,
+            })
+        elif "mtow" in lower or "takeoff_weight" in lower or "takeoff_mass" in lower or "total_mtow" in lower or "gross_weight" in lower:
+            alias_map.update({
+                "TOTAL_MTOW_KG": num_val,
+                "MTOW_MAX_KG": num_val,
+                "MTOW_NOMINAL_KG": num_val,
+            })
+        elif "payload" in lower or "warhead" in lower:
+            alias_map.update({
+                "PAYLOAD_MAX_KG": num_val,
+                "PAYLOAD_NOMINAL_KG": num_val,
+            })
+        elif "ceiling" in lower or "max_altitude" in lower or "operating_ceiling" in lower:
+            alias_map.update({
+                "CEILING_MAX_M": num_val,
+                "CEILING_NOMINAL_M": num_val,
+                "H_MAX_M": num_val,
+            })
+        elif "c2_range" in lower or "range_c2" in lower or "control_range" in lower or "datalink_range" in lower:
+            alias_map.update({
+                "C2_RANGE_NOMINAL_KM": num_val,
+                "C2_RANGE_MIN_KM": num_val,
+            })
         elif "endurance" in lower:
             is_hours = any(h in lower for h in ("_hour", "_hr", "_h", "hours", "hrs")) or any(h in val.lower() for h in ("hour", "hr", " h", "hrs", "hours"))
-            m_num = re.search(r"[-+]?\d*\.?\d+", val)
             if is_hours and m_num:
                 hours = float(m_num.group(0))
                 min_val = str(round(hours * 60.0, 1))
-                self.parameter_bindings["ENDURANCE_NOMINAL_MIN"] = min_val
-                self.parameter_bindings["ENDURANCE_MIN_MIN"] = min_val
-                self.parameter_bindings["ENDURANCE_HOURS"] = str(hours)
-                self.parameter_bindings["NOMINAL_ENDURANCE_HOURS"] = str(hours)
+                alias_map.update({
+                    "ENDURANCE_NOMINAL_MIN": min_val,
+                    "ENDURANCE_MIN_MIN": min_val,
+                    "ENDURANCE_HOURS": str(hours),
+                    "NOMINAL_ENDURANCE_HOURS": str(hours),
+                })
+            elif m_num:
+                min_val = m_num.group(0)
+                alias_map.update({
+                    "ENDURANCE_NOMINAL_MIN": min_val,
+                    "ENDURANCE_MIN_MIN": min_val,
+                })
             else:
-                self.parameter_bindings["ENDURANCE_NOMINAL_MIN"] = val
-                self.parameter_bindings["ENDURANCE_MIN_MIN"] = val
+                alias_map.update({
+                    "ENDURANCE_NOMINAL_MIN": val,
+                    "ENDURANCE_MIN_MIN": val,
+                })
         elif "battery_capacity" in lower or "energy_capacity" in lower or "battery_energy" in lower:
-            m_num = re.search(r"[-+]?\d*\.?\d+", val)
             if m_num:
                 num = float(m_num.group(0))
                 if "joule" in lower or "joule" in val.lower() or (val.strip().endswith("J") and not val.strip().endswith("kJ")):
@@ -1056,25 +1671,39 @@ class SysMLParameterBindingEngine:
                     kwh = num
                     joules = round(kwh * 3.6e6, 1)
 
-                self.parameter_bindings["BATTERY_CAPACITY_JOULES"] = str(joules)
-                self.parameter_bindings["E_CAPACITY_JOULES"] = str(joules)
-                self.parameter_bindings["BATTERY_CAPACITY_KWH"] = str(kwh)
-                self.parameter_bindings["E_CAPACITY_KWH"] = str(kwh)
-        elif "wind_limit" in lower or "v_wind" in lower:
-            self.parameter_bindings["WIND_LIMIT_MAX_MPS"] = val
-            self.parameter_bindings["WIND_LIMIT_NOMINAL_MPS"] = val
-            self.parameter_bindings["V_WIND_MAX_MPS"] = val
-        elif "temp_min" in lower:
-            self.parameter_bindings["TEMP_MIN_DEGC"] = val
-            self.parameter_bindings["OPERATING_TEMP_MIN_C"] = val
-            self.parameter_bindings["OPERATING_TEMPERATURE_MIN_C"] = val
-        elif "temp_max" in lower:
-            self.parameter_bindings["TEMP_MAX_DEGC"] = val
-            self.parameter_bindings["OPERATING_TEMP_MAX_C"] = val
-            self.parameter_bindings["OPERATING_TEMPERATURE_MAX_C"] = val
+                alias_map.update({
+                    "BATTERY_CAPACITY_JOULES": str(joules),
+                    "E_CAPACITY_JOULES": str(joules),
+                    "BATTERY_CAPACITY_KWH": str(kwh),
+                    "E_CAPACITY_KWH": str(kwh),
+                })
+        elif "wind_limit" in lower or "v_wind" in lower or "wind_speed" in lower or "max_wind" in lower:
+            alias_map.update({
+                "WIND_LIMIT_MAX_MPS": num_val,
+                "WIND_LIMIT_NOMINAL_MPS": num_val,
+                "V_WIND_MAX_MPS": num_val,
+            })
+        elif "temp_min" in lower or "min_temp" in lower or "operating_temperature_min" in lower:
+            alias_map.update({
+                "TEMP_MIN_DEGC": num_val,
+                "OPERATING_TEMP_MIN_C": num_val,
+                "OPERATING_TEMPERATURE_MIN_C": num_val,
+            })
+        elif "temp_max" in lower or "max_temp" in lower or "operating_temperature_max" in lower:
+            alias_map.update({
+                "TEMP_MAX_DEGC": num_val,
+                "OPERATING_TEMP_MAX_C": num_val,
+                "OPERATING_TEMPERATURE_MAX_C": num_val,
+            })
         elif "ingress" in lower or "ip_rating" in lower:
-            self.parameter_bindings["INGRESS_PROTECTION_RATING"] = val
-            self.parameter_bindings["INGRESS_PROTECTION_TARGET"] = val
+            alias_map.update({
+                "INGRESS_PROTECTION_RATING": val,
+                "INGRESS_PROTECTION_TARGET": val,
+            })
+
+        for k, v in alias_map.items():
+            self.parameter_bindings[k] = v
+            self._explicit_keys.add(k)
 
     def ingest_file(self, file_path: str) -> bool:
         """Ingests a file based on its extension."""
@@ -1086,6 +1715,8 @@ class SysMLParameterBindingEngine:
             return self.ingest_json_file(abs_path)
         elif abs_path.endswith(".sysml"):
             return self.ingest_sysml_file(abs_path)
+        elif abs_path.endswith(".md") or abs_path.endswith(".markdown"):
+            return self.ingest_markdown_file(abs_path)
         return False
 
     def ingest_json_file(self, json_path: str) -> bool:
@@ -1117,6 +1748,8 @@ class SysMLParameterBindingEngine:
                 self.inferred_system_identifier = pkg_name
                 self.parameter_bindings["SYSTEM_IDENTIFIER"] = pkg_name
                 self.parameter_bindings["MISSION_SYSTEM_NAME"] = pkg_name
+                self._explicit_keys.add("SYSTEM_IDENTIFIER")
+                self._explicit_keys.add("MISSION_SYSTEM_NAME")
 
         # 2. Attribute extraction: attribute name : Type = value;
         attr_pattern = re.compile(
@@ -1126,6 +1759,8 @@ class SysMLParameterBindingEngine:
         for match in attr_pattern.finditer(text):
             attr_name = match.group(1).strip()
             raw_val = match.group(2).strip().strip('"\'')
+            self._explicit_keys.add(attr_name)
+            self._explicit_keys.add(attr_name.upper())
             self.parameter_bindings[attr_name] = raw_val
             self.parameter_bindings[attr_name.upper()] = raw_val
             self._map_semantic_aliases(attr_name, raw_val)
@@ -1137,20 +1772,183 @@ class SysMLParameterBindingEngine:
         )
         for match in constraint_pattern.finditer(text):
             _c_name, var_name, _op, limit_val = match.groups()
+            self._explicit_keys.add(var_name)
+            self._explicit_keys.add(var_name.upper())
             self._map_semantic_aliases(var_name, limit_val)
+
+        self.detected_domain = self._detect_domain_type()
+        self.parameter_bindings["DETECTED_DOMAIN"] = self.detected_domain
+        self.parameter_bindings["DOMAIN_TYPE"] = self.detected_domain
+
+        self._derive_operational_intent()
+        self._derive_mass_budgets()
+        self._derive_quadratic_physics()
+        self._derive_energy_budgets()
+        self._derive_domain_regulatory_standards()
+        self._derive_domain_ontology()
+        self._derive_lifecycle_contract()
 
         return True
 
-    def auto_discover_sources(self, root_dir: str) -> None:
-        """Auto-detects parameter dictionaries and SysML AST symbols across repository root."""
-        search_dirs = []
-        curr = os.path.abspath(root_dir)
-        for _ in range(5):
-            search_dirs.append(curr)
-            parent = os.path.dirname(curr)
-            if parent == curr:
+    def ingest_markdown_file(self, md_path: str) -> bool:
+        """Parses a Markdown specification file and ingests its parameters."""
+        try:
+            with open(md_path, "r", encoding="utf-8") as f:
+                content = f.read()
+            return self.ingest_markdown_text(content)
+        except Exception:
+            return False
+
+    def ingest_markdown_text(self, text: str) -> bool:
+        """
+        Parses Markdown specification text (tables, key-value lists, headings, and patterns)
+        and ingests extracted parameters into parameter bindings.
+        """
+        ingested = False
+        if not text or not text.strip():
+            return False
+
+        # 1. System Title Extraction: Look for `# <SYSTEM_NAME>`
+        for line in text.splitlines():
+            line_str = line.strip()
+            if line_str.startswith("# ") and not line_str.startswith("##"):
+                title = line_str[2:].strip()
+                title_clean = re.sub(r"[*_`]", "", title).strip()
+                generic_headings = {
+                    "technical specifications",
+                    "specifications",
+                    "table of contents",
+                    "overview",
+                    "system specifications",
+                    "concept of operations",
+                    "conops",
+                    "mission intent",
+                    "requirements",
+                    "architecture",
+                    "metadata",
+                    "document overview",
+                }
+                if title_clean.lower() not in generic_headings and len(title_clean) > 0:
+                    self.inferred_system_identifier = title_clean
+                    self.parameter_bindings["SYSTEM_IDENTIFIER"] = title_clean
+                    self.parameter_bindings["MISSION_SYSTEM_NAME"] = title_clean
+                    self.parameter_bindings["SYSTEM_NAME"] = title_clean
+                    self._explicit_keys.add("SYSTEM_IDENTIFIER")
+                    self._explicit_keys.add("MISSION_SYSTEM_NAME")
+                    self._explicit_keys.add("SYSTEM_NAME")
+                    ingested = True
                 break
-            curr = parent
+
+        # 2. Markdown Table Ingestion
+        # Extract 2-column or multi-column markdown table rows
+        for line in text.splitlines():
+            line_str = line.strip()
+            if not ("|" in line_str):
+                continue
+            if re.match(r"^\|?[\s:-|]+\|?$", line_str) and "-" in line_str:
+                continue
+
+            raw_cells = [c.strip() for c in line_str.split("|")]
+            if line_str.startswith("|") and len(raw_cells) > 0 and raw_cells[0] == "":
+                raw_cells = raw_cells[1:]
+            if line_str.endswith("|") and len(raw_cells) > 0 and raw_cells[-1] == "":
+                raw_cells = raw_cells[:-1]
+
+            if len(raw_cells) >= 2:
+                col1 = raw_cells[0]
+                col2 = raw_cells[1]
+                clean_key = re.sub(r"[*_`]", "", col1).strip().rstrip(":")
+                clean_val = re.sub(r"[*_`]", "", col2).strip()
+                clean_key_name = re.sub(r"[\*†‡#]+$", "", clean_key).strip()
+
+                header_names = {
+                    "parameter", "parameters", "property", "properties",
+                    "attribute", "attributes", "key", "keys", "metric",
+                    "metrics", "item", "items", "specification", "specifications",
+                    "field", "fields", "feature", "features", "name", "variable",
+                    "symbol", "check", "check id", "task id", "exchange id",
+                    "activity id", "standard id", "trigger id", "threat id", "pace tier",
+                }
+                if clean_key_name.lower() in header_names or clean_val.lower() in ("value", "nominal value", "description"):
+                    continue
+
+                if clean_key_name and clean_val:
+                    if len(raw_cells) >= 3:
+                        col3 = re.sub(r"[*_`]", "", raw_cells[2]).strip()
+                        if col3 and re.match(r"^[A-Za-z0-9/°^%_-]+$", col3) and re.match(r"^[-+]?\d*\.?\d+$", clean_val):
+                            clean_val = f"{clean_val} {col3}"
+
+                    norm_key = re.sub(r"[^A-Za-z0-9_]", "_", clean_key_name).upper()
+                    self._explicit_keys.add(norm_key)
+                    self.parameter_bindings[norm_key] = clean_val
+                    self.parameter_bindings[clean_key_name] = clean_val
+                    self._map_semantic_aliases(clean_key_name, clean_val)
+                    ingested = True
+
+        # 3. Key-Value Bullet Ingestion
+        # Extract lines matching - **Key**: Value or - Key: Value
+        bullet_pattern = re.compile(
+            r"^\s*(?:[-*+]|\d+\.)\s+(?:\*\*([^*]+)\*\*|\*([^*]+)\*|`([^`]+)`|([^:\n]+))\s*:\s*(.+)$"
+        )
+        for line in text.splitlines():
+            m_bullet = bullet_pattern.match(line)
+            if m_bullet:
+                raw_k = m_bullet.group(1) or m_bullet.group(2) or m_bullet.group(3) or m_bullet.group(4)
+                raw_v = m_bullet.group(5)
+                if raw_k and raw_v:
+                    clean_k = re.sub(r"[*_`]", "", raw_k).strip().rstrip(":")
+                    clean_v = re.sub(r"[*_`]", "", raw_v).strip()
+                    clean_k_name = re.sub(r"[\*†‡#]+$", "", clean_k).strip()
+                    if clean_k_name and clean_v:
+                        norm_key = re.sub(r"[^A-Za-z0-9_]", "_", clean_k_name).upper()
+                        self._explicit_keys.add(norm_key)
+                        self.parameter_bindings[norm_key] = clean_v
+                        self.parameter_bindings[clean_k_name] = clean_v
+                        self._map_semantic_aliases(clean_k_name, clean_v)
+                        ingested = True
+
+        # 4. Text Pattern Ingestion
+        text_patterns = [
+            re.compile(r"(?:carries\s+(?:up\s+to\s+)?a?|payload\s+of|warhead\s+of|with\s+a)\s+(\d+(?:\.\d+)?)\s*kg\s*(?:warhead|payload)?", re.IGNORECASE),
+            re.compile(r"(\d+(?:\.\d+)?)\s*kg\s+(?:warhead|payload)", re.IGNORECASE),
+        ]
+        for pat in text_patterns:
+            for match in pat.finditer(text):
+                val = match.group(1).strip()
+                self._explicit_keys.add("PAYLOAD_MAX_KG")
+                self._explicit_keys.add("PAYLOAD_NOMINAL_KG")
+                self.parameter_bindings["PAYLOAD_MAX_KG"] = val
+                self.parameter_bindings["PAYLOAD_NOMINAL_KG"] = val
+                self._map_semantic_aliases("PAYLOAD_MAX_KG", val)
+                ingested = True
+
+        # Detect domain
+        self.detected_domain = self._detect_domain_type()
+        self.parameter_bindings["DETECTED_DOMAIN"] = self.detected_domain
+        self.parameter_bindings["DOMAIN_TYPE"] = self.detected_domain
+
+        # Trigger all derivation solvers
+        self._derive_mass_budgets()
+        self._derive_quadratic_physics()
+        self._derive_energy_budgets()
+        self._derive_domain_regulatory_standards()
+        self._derive_domain_ontology()
+        self._derive_operational_intent()
+        self._derive_lifecycle_contract()
+
+        return ingested
+
+    def auto_detect_workspace_parameters(self, search_dirs: Optional[List[str]] = None) -> None:
+        """Auto-detects parameter dictionaries, markdown specs, and SysML AST symbols across workspace."""
+        if search_dirs is None:
+            search_dirs = []
+            curr = os.path.abspath(self.workspace_dir)
+            for _ in range(5):
+                search_dirs.append(curr)
+                parent = os.path.dirname(curr)
+                if parent == curr:
+                    break
+                curr = parent
 
         candidate_paths = []
         for sdir in search_dirs:
@@ -1165,11 +1963,27 @@ class SysMLParameterBindingEngine:
                 for fname in sorted(os.listdir(schema_dir)):
                     if fname.endswith(".sysml"):
                         candidate_paths.append(os.path.join(schema_dir, fname))
+                    elif (fname.endswith(".md") or fname.endswith(".markdown")) and fname.lower() not in ("readme.md",):
+                        candidate_paths.append(os.path.join(schema_dir, fname))
 
         # Ingest existing candidates
         for cpath in candidate_paths:
             if os.path.isfile(cpath):
                 self.ingest_file(cpath)
+
+        self._derive_lifecycle_contract()
+
+    def auto_discover_sources(self, root_dir: str) -> None:
+        """Auto-detects parameter dictionaries and SysML AST symbols across repository root."""
+        search_dirs = []
+        curr = os.path.abspath(root_dir)
+        for _ in range(5):
+            search_dirs.append(curr)
+            parent = os.path.dirname(curr)
+            if parent == curr:
+                break
+            curr = parent
+        self.auto_detect_workspace_parameters(search_dirs=search_dirs)
 
     def get_fallback_default(self, token_name: str, inline_default: Optional[str] = None) -> str:
         """
@@ -1221,6 +2035,20 @@ class SysMLParameterBindingEngine:
         elif token_upper.startswith("CORE_CAPABILITY_"):
             self._derive_operational_intent()
             return self.parameter_bindings.get(token_upper, "Autonomous cyber-physical mission execution capability.")
+        elif token_upper in (
+            "LIFECYCLE_TYPE",
+            "LIFECYCLE_BINGO_SAFETY_ACTION",
+            "LIFECYCLE_END_STATE",
+            "LIFECYCLE_FAILSAFE_SEQUENCE",
+            "LIFECYCLE_POST_OP_STATE",
+            "PRIMARY_TERMINAL_TARGET",
+            "SECONDARY_TERMINAL_TARGET",
+            "PRIMARY_RECOVERY_FACILITY",
+            "SECONDARY_RECOVERY_FACILITY",
+            "LIFECYCLE_TRANSIT_MODE",
+        ):
+            self._derive_lifecycle_contract()
+            return self.parameter_bindings.get(token_upper, "")
 
         # 2. Pugh Decision Matrix
         elif token_upper == "WEIGHT_CRIT_1":
@@ -2550,6 +3378,7 @@ def assemble_conops(
     verify_only: bool = False,
     params: Optional[Union[Dict[str, Any], str, SysMLParameterBindingEngine]] = None,
     domain: Optional[str] = None,
+    workspace_dir: Optional[str] = None,
 ) -> bool:
     """
     Orchestrates the assembly, parameter binding, and validation of both CONOPS.md and MISSION_INTENT.md
@@ -2557,6 +3386,27 @@ def assemble_conops(
     Fixes Issues #143, #148, #174, #175, #177, #178, #179, #180.
     """
     print(f"[*] ConOps Assembly Engine starting: input='{input_dir}', output='{output_dir}', verify_only={verify_only}, domain={domain}")
+
+    ws_dir = workspace_dir
+    if not ws_dir:
+        for cand in (
+            os.path.abspath(output_dir),
+            os.path.abspath(os.path.join(output_dir, "..")),
+            os.path.abspath(os.path.join(output_dir, "..", "..")),
+            os.path.abspath(input_dir),
+            os.path.abspath(os.path.join(input_dir, "..")),
+            os.path.abspath(os.path.join(input_dir, "..", "..")),
+        ):
+            if (
+                os.path.isdir(os.path.join(cand, "schema"))
+                or os.path.isdir(os.path.join(cand, ".pipeline"))
+                or os.path.isfile(os.path.join(cand, "domain_config.json"))
+                or os.path.isfile(os.path.join(cand, "schema", "domain_config.json"))
+            ):
+                ws_dir = cand
+                break
+    if not ws_dir:
+        ws_dir = input_dir
 
     # Resolve parameter binding engine
     if isinstance(params, SysMLParameterBindingEngine):
@@ -2566,11 +3416,11 @@ def assemble_conops(
             param_engine.parameter_bindings["DETECTED_DOMAIN"] = domain
             param_engine.parameter_bindings["DOMAIN_TYPE"] = domain
     elif isinstance(params, dict):
-        param_engine = SysMLParameterBindingEngine(parameter_values=params, workspace_dir=input_dir, auto_detect=True, domain=domain)
+        param_engine = SysMLParameterBindingEngine(parameter_values=params, workspace_dir=ws_dir, auto_detect=True, domain=domain)
     elif isinstance(params, str):
-        param_engine = SysMLParameterBindingEngine(config_path=params, workspace_dir=input_dir, auto_detect=True, domain=domain)
+        param_engine = SysMLParameterBindingEngine(config_path=params, workspace_dir=ws_dir, auto_detect=True, domain=domain)
     else:
-        param_engine = SysMLParameterBindingEngine(workspace_dir=input_dir, auto_detect=True, domain=domain)
+        param_engine = SysMLParameterBindingEngine(workspace_dir=ws_dir, auto_detect=True, domain=domain)
 
     detected_dom = domain or getattr(param_engine, "detected_domain", "aviation")
 
@@ -2719,6 +3569,7 @@ def main() -> int:
         verify_only=args.verify,
         params=args.params,
         domain=args.domain,
+        workspace_dir=workspace,
     )
     return 0 if success else 1
 
