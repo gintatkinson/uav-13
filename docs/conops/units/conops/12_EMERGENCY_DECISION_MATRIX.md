@@ -28,7 +28,7 @@ P_{\mathrm{EMG-07}} > P_{\mathrm{EMG-03}} > P_{\mathrm{EMG-05}} > P_{\mathrm{EMG
 \end{aligned}
 $$
 
-2. **Deterministic Response Timing ($t_{\mathrm{resp}} \le \tau_{\mathrm{deadline}}$):** From initial sensor anomaly threshold crossing to containment command issuance on the actuator bus, the maximum propagation latency is guaranteed to remain strictly bounded by $t_{\mathrm{resp}} \le \tau_{\mathrm{deadline}}$ across all seven canonical triggers (with emergency termination executing within $t_{\mathrm{resp}} \le \tau_{\mathrm{deadline\_abort}}$).
+2. **Deterministic Response Timing ($t_{\mathrm{resp}} \le \tau_{\mathrm{deadline}}$):** From initial sensor anomaly threshold crossing to containment command issuance on the actuator bus, the maximum propagation latency is guaranteed to remain strictly bounded by $t_{\mathrm{resp}} \le \tau_{\mathrm{deadline}}$ across all seven canonical triggers (with emergency termination executing within $t_{\text{resp}} \le \tau_{\text{deadline\_abort}}$).
 3. **Fail-Safe Retention:** Once a critical emergency state (`Emergency_SafeStateTermination` or `Contingency_ResourceDivert`) is triggered, the state machine is non-reentrant and locks until a physical post-operation ground reset and authorized Maintenance Technician clearance are performed.
 
 ### 12.2 Deterministic Emergency Statechart & State Machine
@@ -57,7 +57,7 @@ stateDiagram-v2
 - **Tier 1 (Nominal Execution):** Full multi-sensor fusion, dual-channel C2 links, and nominal envelope margins.
 - **Tier 2 (Degraded Sensor Mode):** Single-sensor failure activates secondary observer and dead reckoning.
 - **Tier 3 (Contingency Link Mode):** Loss of primary C2 link triggers autonomous hold and return-to-base sequence.
-- **Tier 4 (Emergency Containment Mode):** Unrecoverable fault triggers ballistic parachute deploy or instant motor cutoff.
+- **Tier 4 (Emergency Containment Mode):** Unrecoverable fault triggers {{TIER4_CONTAINMENT_DESC:ballistic parachute deploy or instant motor cutoff}}.
 
 ### 12.4 Human-in-the-Loop (HITL) Authority & Override Protocols
 - **Supervisory Authority:** Operator retains positive manual override capability via independent emergency link.

@@ -1,9 +1,9 @@
 # Project-Scoped Rules
 
 ## Repository Role & Scope Classification
-- **Repository Classification:** `UPSTREAM_SPEC_CORE_COMPILER` (Digital Engineering Agent Platform Core Specification Compiler)
-- **Sentinel Indicator:** The presence of `.pipeline/upstream/` and `skills/spec-orchestrator/` denotes that this repository is the **Upstream Specification Core Compiler**, NOT a downstream customer application workspace or domain template.
-- **Domain Template & Customer Data Boundary:** Domain-specific platforms (e.g. UAS safety, automotive, medical) and customer applications belong in downstream distribution repositories, and must NOT be committed to this upstream specification core compiler repository.
+- **Repository Classification:** `DOMAIN_TEMPLATE_CHILD` (UAS Infrastructure Safety; parent domain template: DEAP-avionic-flight-safety)
+- **Sentinel Indicator:** The absence of `.pipeline/upstream/` denotes that this repository is a **Domain Distribution Template (Child)**, NOT an upstream specification core compiler.
+- **Domain Template & Customer Data Boundary:** Domain-specific UAS safety infrastructure platform specifications belong in this distribution template, while concrete customer applications belong in downstream customer workspaces.
 
 ## Pure Schema-Driven Compiler Invariant (Zero Hardcoded Domain Concepts)
 - **Abstract MBSE Compiler Declaration**: The DEAP pipeline is an abstract Model-Based Systems Engineering (MBSE) compiler and verification framework, NOT a domain-specific modeler.

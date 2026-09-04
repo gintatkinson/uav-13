@@ -9,7 +9,7 @@
 ## 1. Scope, System Identification & Normative Baseline
 
 ### 1.1 Document Metadata & Formal Governance
-This Concept of Operations (ConOps) defines the operational architecture, coordinate reference systems, physical mass and resource limits, stakeholder interactions, operational environments, operational state space containment boundaries, and deterministic contingency protocols for {{SYSTEM_IDENTIFIER}}. This specification is authored in strict accordance with ISO/IEC/IEEE 29148:2018 §5.2.4 & §6.4.2, OMG Unified Architecture Framework (UAF) v2.0, INCOSE Systems Engineering Handbook v5.0, RTCA DO-178C DAL-A / DO-254, and MIL-STD-882E (Fixes #117, #123, #128, #121).
+This Concept of Operations (ConOps) defines the operational architecture, coordinate reference systems, physical mass and resource limits, stakeholder interactions, operational environments, operational state space containment boundaries, and deterministic contingency protocols for {{SYSTEM_IDENTIFIER}}. This specification is authored in strict accordance with ISO/IEC/IEEE 29148:2018 §5.2.4 & §6.4.2, OMG Unified Architecture Framework (UAF) v2.0, INCOSE Systems Engineering Handbook v5.0, {{PRIMARY_REGULATORY_STANDARD:MIL-STD-882E}}, and MIL-STD-882E (Fixes #117, #123, #128, #121).
 
 | Attribute | Specification Value |
 | :--- | :--- |
@@ -25,12 +25,9 @@ This Concept of Operations (ConOps) defines the operational architecture, coordi
 ### 1.2 System Classification & Operational Purpose
 - **System Identifier:** `{{SYSTEM_IDENTIFIER}}`
 - **Operational Domain:** `{{OPERATIONAL_DOMAIN}}`
-- **Primary Operational Mission:** The system is engineered to execute autonomous closed-loop state trajectory execution, multi-modal sensor data acquisition, real-time telemetry processing, edge state inference, and deterministic boundary containment within complex, high-reliability cyber-physical operational environments.
+- **Primary Operational Mission:** {{PRIMARY_OPERATIONAL_MISSION}}
 - **Core Mission Capabilities:**
-  1. Autonomous closed-loop state trajectory tracking, corridor execution, and stationary state holding within parameterized performance envelopes.
-  2. Multi-modal sensor data fusion combining redundant state estimation sensors, environmental perception units, and reference state observers.
-  3. Real-time high-throughput telemetry streaming and edge neural state inference processing.
-  4. Deterministic failsafe state machine ensuring autonomous containment within the maximum containment response time threshold $\tau_{\mathrm{containment}}$ upon critical contingency detection.
+{{CORE_MISSION_CAPABILITIES}}
 
 ### 1.3 System Boundary & Operational State Space
 The operational system boundary encompasses all physical, logical, communications, and organizational elements required to conduct end-to-end autonomous mission operations:
@@ -38,6 +35,18 @@ The operational system boundary encompasses all physical, logical, communication
 - **Lateral & Spatial Operating Boundary:** Designated operational perimeter bounded within a verified parametric containment buffer ($R_{\mathrm{buffer}}$) envelope.
 - **Primary Communications Envelope:** Primary command and control (C2) operational range defined by $\text{Range}_{\mathrm{max}}(\text{Link}_{\mathrm{C2}})$ from the operator control node, backed by alternate network links and contingency communication channels.
 - **Normative & Governance Boundary:** Governed under ISO/IEC/IEEE 29148:2018 requirements engineering processes, OMG UAF v2.0 operational architectures, and system safety assurance baselines.
+
+- **Operational State Space Parameter Definitions & Engineering Units:**
+
+| Symbol / Parameter | Domain / Context | Description | Dimension / Limits | Engineering Unit | Normative / Safety Basis |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Ω_state | State Space Domain | Admissible operational state space envelope (Ω_state ⊂ R^n) | Compact subset of R^n (n >= 6) | Dimensionless | ISO/IEC/IEEE 29148:2018 §6.4.2 |
+| X_boundary | State Vector Bounds | Bounding box of admissible vehicle operational states [x_min, x_max]^T | Bounded hyper-rectangle | Mixed SI Units | ASTM F3269-17 §6.2 |
+| x_min | State Lower Limit | Minimum permissible state vector threshold | [phi_min, lambda_min, h_min, u_min, v_min, w_min]^T | rad, rad, m, m/s | SORA Annex B M1 Mitigations |
+| x_max | State Upper Limit | Maximum permissible state vector threshold | [phi_max, lambda_max, h_max, u_max, v_max, w_max]^T | rad, rad, m/s | SORA Annex B M1 Mitigations |
+| R_buffer | Spatial Containment | Verified 1:1 parametric lateral containment safety buffer radius | R_buffer >= 1.0 * Distance_containment | m | JARUS SORA v2.5 Step #2 |
+| Range_max(Link_C2) | C2 Comms Margin | Maximum certified C2 data link operational range | Range_max >= Range_nominal | km | RTCA DO-362A §2.2.1 |
+| tau_containment | Emergency Response | Maximum allowable failsafe containment response time | tau_containment <= 2.0 | s | ASTM F3269-17 §7.1 |
 
 ### 1.3.1 Parametric Coordinate Reference Frames Math
 The cyber-physical state estimation, guidance, and navigation architecture is mathematically formulated across three standardized, right-handed orthogonal coordinate reference frames:
@@ -61,7 +70,7 @@ $$
 $$
 
 3. **Body-Fixed Geometric Frame ($\mathbf{p}_b$ - Body Frame):**
-   Right-handed orthogonal Cartesian frame rigidly attached to the structural airframe of the vehicle with origin at the Center of Mass ($CG$). The axes comprise longitudinal axis $X_b$ (forward along vehicle nominal centerline), lateral axis $Y_b$ (starboard/right), and normal axis $Z_b$ (downward through vehicle belly, $Z_b = X_b \times Y_b$).
+   Right-handed orthogonal Cartesian frame rigidly attached to the structural frame of the vehicle (vehicle chassis / locomotive body / subsea hull / spacecraft structure) with origin at the Center of Mass ($CG$). The axes comprise longitudinal axis $X_b$ (forward along vehicle nominal centerline), lateral axis $Y_b$ (starboard/right), and normal axis $Z_b$ (downward through vehicle bottom/belly, $Z_b = X_b \times Y_b$).
    - Body translational velocity vector $\mathbf{v}_b$:
 
 $$
@@ -117,12 +126,12 @@ The system architecture decomposes into six canonical Abstract System Topology (
 
 | Structural Group (AST Partition) | Allocated Subsystems & Components | Mass Fraction (% MTOW) | Mass Budget (kg) | Nominal Power Budget (W) | Peak Power Budget (W) |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Airframe Structure** | Fuselage primary structure, aerodynamic surfaces, structural spars, mounting bulkheads, chassis/gear | {{MASS_FRACTION_AIRFRAME_PCT}}% | {{MASS_BUDGET_AIRFRAME_KG}} | {{POWER_NOMINAL_AIRFRAME_W}} | {{POWER_PEAK_AIRFRAME_W}} |
+| **{{STRUCTURE_PARTITION_LABEL:Airframe Structure}}** | Fuselage / chassis primary structure, structural spars, mounting bulkheads, enclosure/gear | {{MASS_FRACTION_AIRFRAME_PCT}}% | {{MASS_BUDGET_AIRFRAME_KG}} | {{POWER_NOMINAL_AIRFRAME_W}} | {{POWER_PEAK_AIRFRAME_W}} |
 | **Avionics & Processing** | Flight control computer, redundant IMU/GNSS, air data computer, C2 transceiver, safety watchdog | {{MASS_FRACTION_AVIONICS_PCT}}% | {{MASS_BUDGET_AVIONICS_KG}} | {{POWER_NOMINAL_AVIONICS_W}} | {{POWER_PEAK_AVIONICS_W}} |
 | **Propulsion & Power Distribution** | Actuators, electric motors, electronic speed controllers (ESCs), power distribution unit (PDU) | {{MASS_FRACTION_PROPULSION_PCT}}% | {{MASS_BUDGET_PROPULSION_KG}} | {{POWER_NOMINAL_PROPULSION_W}} | {{POWER_PEAK_PROPULSION_W}} |
 | **Energy Storage Subsystem** | Smart battery module / fuel cell stack, Battery Management System (BMS), safety disconnect contactors | {{MASS_FRACTION_ENERGY_PCT}}% | {{MASS_BUDGET_ENERGY_KG}} | {{POWER_NOMINAL_ENERGY_W}} | {{POWER_PEAK_ENERGY_W}} |
 | **Primary Mission Payload** | Multi-modal mission sensor suite, edge neural processing accelerator, payload gimbal, local storage | {{MASS_FRACTION_PAYLOAD_PCT}}% | {{MASS_BUDGET_PAYLOAD_KG}} | {{POWER_NOMINAL_PAYLOAD_W}} | {{POWER_PEAK_PAYLOAD_W}} |
-| **Autonomous Failsafe Containment** | Independent safety watchdog, ballistic parachute recovery / containment actuator, flight termination interlocks | {{MASS_FRACTION_CONTAINMENT_PCT}}% | {{MASS_BUDGET_CONTAINMENT_KG}} | {{POWER_NOMINAL_CONTAINMENT_W}} | {{POWER_PEAK_CONTAINMENT_W}} |
+| **Autonomous Failsafe Containment** | Independent safety watchdog, {{FAILSAFE_CONTAINMENT_NAME:ballistic parachute recovery / containment actuator}}, flight termination interlocks | {{MASS_FRACTION_CONTAINMENT_PCT}}% | {{MASS_BUDGET_CONTAINMENT_KG}} | {{POWER_NOMINAL_CONTAINMENT_W}} | {{POWER_PEAK_CONTAINMENT_W}} |
 | **Total System Integration** | **Integrated Cyber-Physical Platform (6 AST Structural Groups)** | **100.0% MTOW** | **{{TOTAL_MTOW_KG}}** | **{{TOTAL_POWER_NOMINAL_W}}** | **{{TOTAL_POWER_PEAK_W}}** |
 
 ### 1.3.3 Master Physical Limits Table
@@ -136,7 +145,7 @@ The cyber-physical vehicle operates under bounding physical, aerodynamic/kinemat
 | **PL-04** | Nominal Cruise Velocity | V_cruise | {{V_CRUISE_MIN_MPS}} - {{V_CRUISE_MAX_MPS}} | {{V_CRUISE_NOMINAL_MPS}} | m/s | Optimum aerodynamic / dynamic transit speed |
 | **PL-05** | Maximum Permissible Operating Velocity | V_max | <= {{V_MAX_MPS}} | {{V_MAX_NOMINAL_MPS}} | m/s | Never-exceed boundary limit (V_ne) |
 | **PL-06** | Minimum Controllable / Stall Velocity | V_stall | <= {{V_STALL_MAX_MPS}} | {{V_STALL_NOMINAL_MPS}} | m/s | Minimum steady state controllable velocity limit |
-| **PL-07** | Maximum Operating Ceiling | h_max | <= {{CEILING_MAX_M}} | {{CEILING_NOMINAL_M}} | m AGL | Maximum certified operational altitude |
+| **PL-07** | Maximum Operating Ceiling | h_max | <= {{CEILING_MAX_M}} | {{CEILING_NOMINAL_M}} | {{ALTITUDE_UNIT:m AGL}} | Maximum certified operational altitude |
 | **PL-08** | Command & Control (C2) Datalink Range | Range_C2 | >= {{C2_RANGE_MIN_KM}} | {{C2_RANGE_NOMINAL_KM}} | km | Beyond-Line-of-Sight / Line-of-Sight C2 range margin |
 | **PL-09** | Mission Operational Endurance | t_endurance | >= {{ENDURANCE_MIN_MIN}} | {{ENDURANCE_NOMINAL_MIN}} | min | Continuous nominal execution duration |
 | **PL-10** | Environmental Operating Temperature Envelope | T_env | {{TEMP_MIN_DEGC}} to {{TEMP_MAX_DEGC}} | {{TEMP_NOMINAL_DEGC}} | °C | MIL-STD-810H Methods 501.7 / 502.7 climatic envelope |
@@ -149,57 +158,57 @@ The following Unified Architecture Framework (UAF) operational context diagram d
 ```mermaid
 flowchart TB
     subgraph SpaceSegment["Space & Orbital Segment"]
-        GNSSConstellation["GNSS Satellite Constellation<br/>(InterfacePort[GNSSService])"]
-        SatcomRelay["SATCOM Satellite Network<br/>(InterfacePort[SatcomRelayService])"]
+        GNSSConstellation["GNSS Satellite Constellation<br/>(InterfacePort: GNSSService)"]
+        SatcomRelay["SATCOM Satellite Network<br/>(InterfacePort: SatcomRelayService)"]
     end
 
     subgraph VehicleSegment["Cyber-Physical Vehicle Segment (System Under Design)"]
-        CoreController["Core Controller Subsystem<br/>(PerformerNode[CoreController])"]
-        SensorSuite["Integrated Sensor Suite<br/>(PerformerNode[SensorSuite])"]
-        ActuatorSubsystem["Propulsion & Actuator Subsystem<br/>(PerformerNode[ActuatorSubsystem])"]
-        PayloadSubsystem["Mission Processing Payload<br/>(PerformerNode[PayloadSubsystem])"]
-        VehicleComms["PACE Communications Node<br/>(InterfacePort[VehicleComms])"]
-        SafetyWatchdog["Independent Safety Watchdog<br/>(PerformerNode[SafetyWatchdog])"]
+        CoreController["Core Controller Subsystem<br/>(PerformerNode: CoreController)"]
+        SensorSuite["Integrated Sensor Suite<br/>(PerformerNode: SensorSuite)"]
+        ActuatorSubsystem["Propulsion & Actuator Subsystem<br/>(PerformerNode: ActuatorSubsystem)"]
+        PayloadSubsystem["Mission Processing Payload<br/>(PerformerNode: PayloadSubsystem)"]
+        VehicleComms["PACE Communications Node<br/>(InterfacePort: VehicleComms)"]
+        SafetyWatchdog["Independent Safety Watchdog<br/>(PerformerNode: SafetyWatchdog)"]
     end
 
     subgraph ControlSegment["Control & Infrastructure Segment"]
-        OperatorConsole["Supervisory Operator Console<br/>(PerformerNode[OperatorConsole])"]
-        GroundCommsArray["Communications Gateway Array<br/>(InterfacePort[GroundGateway])"]
-        InfrastructureHub["Infrastructure & Cloud Hub<br/>(PerformerNode[InfrastructureHub])"]
+        OperatorConsole["Supervisory Operator Console<br/>(PerformerNode: OperatorConsole)"]
+        GroundCommsArray["Communications Gateway Array<br/>(InterfacePort: GroundGateway)"]
+        InfrastructureHub["Infrastructure & Cloud Hub<br/>(PerformerNode: InfrastructureHub)"]
     end
 
     subgraph SupportSegment["Support & Ground Support Equipment (GSE) Segment"]
-        GroundSupportEquipment["GSE Diagnostic & Power Station<br/>(PerformerNode[GSEStation])"]
-        MaintenanceTerminal["Field Maintenance Terminal<br/>(PerformerNode[MaintenanceTerminal])"]
+        GroundSupportEquipment["GSE Diagnostic & Power Station<br/>(PerformerNode: GSEStation)"]
+        MaintenanceTerminal["Field Maintenance Terminal<br/>(PerformerNode: MaintenanceTerminal)"]
     end
 
     subgraph OperationalRoles["Operational Roles (Human Stakeholders)"]
-        SystemOperator["System Operator<br/>(UserRole[SystemOperator])"]
-        SafetySupervisor["Safety Supervisor<br/>(UserRole[SafetySupervisor])"]
-        OperationsCoordinator["Operations Coordinator<br/>(UserRole[OperationsCoordinator])"]
-        MaintenanceTechnician["Maintenance Technician<br/>(UserRole[MaintenanceTechnician])"]
+        SystemOperator["System Operator<br/>(UserRole: SystemOperator)"]
+        SafetySupervisor["Safety Supervisor<br/>(UserRole: SafetySupervisor)"]
+        OperationsCoordinator["Operations Coordinator<br/>(UserRole: OperationsCoordinator)"]
+        MaintenanceTechnician["Maintenance Technician<br/>(UserRole: MaintenanceTechnician)"]
     end
 
     subgraph ExternalAuthorities["External Authorities & Regulatory Services"]
-        AirspaceAuthority["Civil Aviation & Airspace Authority / UTM<br/>(InterfacePort[UTMService])"]
-        WeatherDataService["Meteorological & Weather Service<br/>(InterfacePort[WeatherService])"]
+        AirspaceAuthority["Civil Aviation & Airspace Authority / UTM<br/>(InterfacePort: UTMService)"]
+        WeatherDataService["Meteorological & Weather Service<br/>(InterfacePort: WeatherService)"]
     end
 
     GNSSConstellation -->|"1. Positioning & Timing Signals"| SensorSuite
-    SatcomRelay <-->|"2. Emergency SATCOM C2 Link"| VehicleComms
-    VehicleComms <-->|"3. Primary/Alternate PACE Datalink"| GroundCommsArray
+    SatcomRelay ---|"2. Emergency SATCOM C2 Link"| VehicleComms
+    VehicleComms ---|"3. Primary/Alternate PACE Datalink"| GroundCommsArray
     SensorSuite -->|"4. Raw & Filtered State Telemetry"| CoreController
     CoreController -->|"5. Deterministic Actuation Demands"| ActuatorSubsystem
     PayloadSubsystem -->|"6. High-Throughput Feature Data"| CoreController
     SafetyWatchdog -.->|"7. Safety Veto & Failsafe Interlock"| ActuatorSubsystem
-    GroundCommsArray <-->|"8. Telemetry & Control Bus"| OperatorConsole
-    OperatorConsole <-->|"9. Cloud Telemetry & Mission Archiving"| InfrastructureHub
+    GroundCommsArray ---|"8. Telemetry & Control Bus"| OperatorConsole
+    OperatorConsole ---|"9. Cloud Telemetry & Mission Archiving"| InfrastructureHub
     SystemOperator ---|"10. Supervisory Mission Control"| OperatorConsole
     SafetySupervisor ---|"11. Safety Monitor & Emergency Veto"| OperatorConsole
     OperationsCoordinator -->|"12. Flight Plan & Mission Tasking"| SystemOperator
     MaintenanceTechnician ---|"13. Diagnostic Calibration & BIT Checkout"| MaintenanceTerminal
-    GroundSupportEquipment <-->|"14. Power Charging & GSE Umbilical Link"| CoreController
-    OperatorConsole <-->|"15. Dynamic Geo-Zone & Flight Authorization"| AirspaceAuthority
+    GroundSupportEquipment ---|"14. Power Charging & GSE Umbilical Link"| CoreController
+    OperatorConsole ---|"15. Dynamic Geo-Zone & Flight Authorization"| AirspaceAuthority
 ```
 
 ### 1.5 Normative Standards & Regulatory Baseline
@@ -207,16 +216,11 @@ The following normative standards and regulatory baselines govern all architectu
 
 | Standard ID | Issuing Body | Title & Baseline Edition | Applicable Clauses & Focus Areas |
 | :--- | :--- | :--- | :--- |
-| RTCA DO-178C (DAL-A) | RTCA / EUROCAE (ED-12C) | Software Considerations in Airborne Systems and Equipment Certification | §6.3.1 Software Safety & Verification, §6.4.4 Structural Coverage (MC/DC Verification), Tables A-1 to A-7 DAL-A Life Cycle Objectives |
-| RTCA DO-254 | RTCA / EUROCAE (ED-80) | Design Assurance Guidance for Airborne Electronic Hardware | §5.0 Hardware Design Processes, §6.0 Validation & Verification, Appendix B Design Assurance Levels for Complex Electronic Hardware (DAL-A/B) |
-| RTCA DO-365B | RTCA | Minimum Operational Performance Standards (MOPS) for Detect and Avoid (DAA) Systems | §2.2 DAA System Requirements, §2.2.4 Well-Clear Boundaries & Alerting, §2.2.5 Collision Avoidance Guidance & Maneuver Coordination |
-| RTCA DO-362A | RTCA | Command and Control (C2) Data Link Minimum Operational Performance Standards (MOPS) | §2.2.1 C2 Link Performance & Availability, §2.2.3 Lost C2 Link Detection Latency & Fallback Protocols, §2.2.6 Link Encryption & Integrity Verification |
+| ISO/IEC/IEEE 29148:2018 | ISO / IEC / IEEE | Systems and Software Engineering — Life Cycle Processes — Requirements Engineering | §5.2.4 ConOps Development Process, §6.4.2 Concept of Operations Baseline Specification, §6.4.3 Operational Concept Document Structure |
+| INCOSE SEH v5.0 | INCOSE | Systems Engineering Handbook (5th Edition) | §3.3 Operational Concepts & §4.2 Requirements Engineering |
+| OMG UAF v2.0 | OMG | Unified Architecture Framework Specification | Operational Domain Views (Op-Pr, Op-Tx, Op-Is) |
 | MIL-STD-882E | US Department of Defense | Department of Defense Standard Practice: System Safety | §4.3 System Safety Process, Task 102 System Safety Program Plan, Task 202 Operational Hazard Analysis (OHA), Task 205 Hazard Tracking System |
 | MIL-STD-810H | US Department of Defense | Environmental Engineering Considerations and Laboratory Tests | Method 501.7 High Temp, Method 502.7 Low Temp, Method 505.7 Solar Radiation, Method 506.6 Rain, Method 509.7 Salt Fog, Method 510.7 Sand/Dust, Method 514.8 Vibration, Method 516.8 Shock |
 | MIL-STD-461G | US Department of Defense | Requirements for the Control of Electromagnetic Interference Characteristics of Subsystems and Equipment | CE102 Conducted Emissions, CS101/CS114/CS115/CS116 Conducted Susceptibility, RE102 Radiated Emissions, RS103 Radiated Susceptibility up to 200 V/m |
-| ISO/IEC/IEEE 29148:2018 | ISO / IEC / IEEE | Systems and Software Engineering — Life Cycle Processes — Requirements Engineering | §5.2.4 ConOps Development Process, §6.4.2 Concept of Operations Baseline Specification, §6.4.3 Operational Concept Document Structure |
-| ISO 26262:2018 | ISO | Road Vehicles — Functional Safety (ASIL-D Alignment) | Part 3 §6.4 Hazard Analysis and Risk Assessment (HARA), Part 4 §6.4 System-Level Safety Concept, Part 9 §5 ASIL Decomposition & Safety Independence |
-| ASTM F3411-22a | ASTM International | Standard Specification for Remote ID and Tracking | §5.1 Direct Broadcast Remote ID Message Formats, §5.2 Network Remote ID Transmission, §6.3 Authentication & Position Accuracy Bounds |
-| ASTM F3269-17 | ASTM International | Standard Practice for Methods to Safely Bound Flight Behavior of Unmanned Aircraft Systems Containing Complex Functions | §5.0 Independent Non-Complex Safety Monitor Architecture, §6.2 Deterministic Emergency Containment Interlocks, §7.1 Emergency Recovery Envelope Triggers |
-| JARUS SORA v2.5 | JARUS | Specific Operations Risk Assessment (SORA) Methodology | Step #2 Initial Ground Risk Class (GRC), Step #4 Specific Assurance and Integrity Levels (SAIL I–VI), Step #5 Air Risk Class (ARC), Annex B M1–M3 Safety Mitigations & Ground Risk Buffer Radius |
 | NIST SP 800-82r3 | NIST | Guide to Operational Technology (OT) Security | §5.2 Zero-Trust OT Architecture & Device Hardening, §6.3 Real-Time Telemetry Authentication, §6.4 Cryptographic Key Management & Firmware Integrity |
+{{DOMAIN_REGULATORY_STANDARDS_TABLE_ROWS}}

@@ -45,3 +45,6 @@ venv/
 !/.agents/**
 !/scripts/
 !/scripts/**
+
+# Diagnostics and reproduction payloads
+.pipeline/diagnostics/
