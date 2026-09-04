@@ -419,7 +419,7 @@ def _main_impl():
     # zones are clean and which has no client app codebases BY DESIGN. See the
     # Clean Landing Zone Invariant in .pipeline/constitution.md and the
     # #68 reconciler exemption.
-    upstream_mode = repo.is_upstream_compiler_repo() or not repo.has_configured_target_code_directories()
+    upstream_mode = repo.is_upstream_compiler_repo() and not repo.has_configured_target_code_directories()
 
     print("=== Model Coverage Parity Audit ===")
     print(f"Scanning schemas in: {schema_dir}")

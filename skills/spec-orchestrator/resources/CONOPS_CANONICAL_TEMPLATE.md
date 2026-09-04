@@ -29,6 +29,23 @@
 - **Mission Drivers & Value Proposition:** {{MISSION_DRIVERS_AND_VALUE_PROPOSITION}}
 - **Trade-Off Analysis:** {{TRADE_OFF_ANALYSIS}}
 
+### 4.1 Pugh Decision Matrix & Architectural Sensitivity Analysis
+$$
+\begin{aligned}
+S_j(w) &= \sum_{i=1}^{M} w_i \cdot c_{ij} \\
+\sum_{i=1}^{M} w_i &= 1.0 \\
+\frac{\partial S_j}{\partial w_i} &= c_{ij}
+\end{aligned}
+$$
+
+| Evaluation Criterion | Weight (w_i) | Baseline (Datum) | Candidate Architecture A | Candidate Architecture B | Candidate Architecture C |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Operational Reliability | {{WEIGHT_CRIT_1}} | 0 (Datum) | {{SCORE_A_1}} | {{SCORE_B_1}} | {{SCORE_C_1}} |
+| Containment Response Latency | {{WEIGHT_CRIT_2}} | 0 (Datum) | {{SCORE_A_2}} | {{SCORE_B_2}} | {{SCORE_C_2}} |
+| Lifecycle Maintenance Cost | {{WEIGHT_CRIT_3}} | 0 (Datum) | {{SCORE_A_3}} | {{SCORE_B_3}} | {{SCORE_C_3}} |
+| **Weighted Total Score S_j(w)** | **1.00** | **0.00** | **{{WEIGHTED_SCORE_A}}** | **{{WEIGHTED_SCORE_B}}** | **{{WEIGHTED_SCORE_C}}** |
+
+
 ## 5. Operational Modes & Lifecycle Stages
 Formal operational lifecycle stages across $\Phi_{\mathrm{lifecycle}}$:
 - **Phase_Startup:** {{PHASE_STARTUP_DESCRIPTION}}
@@ -95,72 +112,55 @@ $$
 | `EMG-07` | {{EMG_TRIGGER_NAME}} | {{EMG_DETECTION_MECHANISM}} | {{EMG_CONTAINMENT_ACTION}} | `{{EMG_FAILSAFE_STATE}}` | {{EMG_MAX_RESPONSE_TIME}} | {{EMG_HITL_ROLE}} |
 
 ### 12.1 Failsafe State Transition Semantics & Timing Guarantees
-- **State Transition Semantics:** {{FAILSAFE_TRANSITION_SEMANTICS}}
-- **Priority Arbitration:**
 $$
 \begin{aligned}
 P_{\mathrm{EMG-07}} > P_{\mathrm{EMG-03}} > P_{\mathrm{EMG-05}} > P_{\mathrm{EMG-06}} > P_{\mathrm{EMG-04}} > P_{\mathrm{EMG-02}} > P_{\mathrm{EMG-01}}
 \end{aligned}
 $$
-- **Timing Bounds:** Maximum automated containment reaction time strictly bounded by $t_{\mathrm{resp}} \le {{MAX_CONTAINMENT_RESPONSE_TIME_MS}}\text{ ms}$.
-- **State Latching:** {{FAILSAFE_STATE_LATCHING_RULES}}
 
-### 12.2 Failsafe State Machine Architecture & Statechart Diagram
+- **Priority Invariant:** Higher priority contingency triggers preempt lower priority states unconditionally.
+- **Deterministic Timing:** Maximum detection-to-actuation latency $t_{\mathrm{resp}} \le \tau_{\mathrm{deadline}}$ across all triggers.
+- **Fail-Safe Retention:** Non-reentrant emergency containment locks until authorized manual ground reset.
+
+### 12.2 Deterministic Emergency Statechart & State Machine
 ```mermaid
 stateDiagram-v2
-    [*] --> Phase_NominalExecution : System BIT Passed / Normal Operation
-
-    state Phase_NominalExecution {
-        [*] --> MissionExecution
-        MissionExecution --> SensorProcessing
-        SensorProcessing --> MissionExecution
-    }
-
-    Phase_NominalExecution --> Degraded_SensorFailsafe : EMG-04 (Sensor Fault)
-    Phase_NominalExecution --> Contingency_DeadReckoning : EMG-02 (GNSS Loss)
-    Phase_NominalExecution --> Contingency_LostLinkReturn : EMG-01 (C2 Loss)
-    Phase_NominalExecution --> Contingency_GeofenceContainment : EMG-05 (Geofence Breach)
-    Phase_NominalExecution --> Contingency_PrecautionaryLand : EMG-06 (Structural Anomaly)
-    Phase_NominalExecution --> Contingency_EmergencyGlide : EMG-03 (Propulsion Loss)
-    Phase_NominalExecution --> Emergency_FlightTermination : EMG-07 (FTS Abort Command)
-
-    Degraded_SensorFailsafe --> Contingency_PrecautionaryLand : Fault Escalation
-    Contingency_DeadReckoning --> Contingency_LostLinkReturn : Timeout Expired
-    Contingency_LostLinkReturn --> Emergency_FlightTermination : Outer Geofence Violation
-    Contingency_GeofenceContainment --> Phase_NominalExecution : Safe Corridor Restored
-    Contingency_EmergencyGlide --> Phase_SecureShutdown : Glide Touchdown
-    Contingency_PrecautionaryLand --> Phase_SecureShutdown : Landing Verified
-    Emergency_FlightTermination --> Phase_SecureShutdown : Parachute Descent & Ground Quarantine
-
-    state Phase_SecureShutdown {
-        [*] --> PowerCutoff
-        PowerCutoff --> TelemetryQuarantineLock
-        TelemetryQuarantineLock --> EmergencyBeaconActive
-    }
+    [*] --> Phase_Startup
+    Phase_Startup --> Phase_NominalExecution : BIT_Pass
+    Phase_NominalExecution --> Degraded_SensorFailsafe : EMG_04_SensorFault
+    Phase_NominalExecution --> Contingency_LostLinkReturn : EMG_01_LostC2
+    Phase_NominalExecution --> Contingency_DeadReckoning : EMG_02_GNSSLoss
+    Phase_NominalExecution --> Contingency_ResourceDivert : EMG_03_PowerDepletion
+    Phase_NominalExecution --> Contingency_GeofenceContainment : EMG_05_GeofenceBreach
+    Phase_NominalExecution --> Contingency_PrecautionaryHalt : EMG_06_StructuralAnomaly
+    Phase_NominalExecution --> Emergency_SafeStateTermination : EMG_07_AbortCommand
+    Degraded_SensorFailsafe --> Contingency_LostLinkReturn : LinkTimeout
+    Contingency_LostLinkReturn --> Phase_SecureShutdown : SafeContainment
+    Contingency_DeadReckoning --> Phase_SecureShutdown : SafeContainment
+    Contingency_ResourceDivert --> Phase_SecureShutdown : SafeContainment
+    Contingency_GeofenceContainment --> Contingency_ResourceDivert : ContainmentHold
+    Contingency_PrecautionaryHalt --> Phase_SecureShutdown : SafeStop
+    Emergency_SafeStateTermination --> Phase_SecureShutdown : ImpactSafe
+    Phase_SecureShutdown --> [*]
 ```
 
-### 12.3 Contingency Flight Maneuvers & Aerodynamic Descent Profiles
-- **Containment Turnaround Profile:** Commanded coordinated turn at maximum bank angle $\phi_{\mathrm{max}} = {{MAX_BANK_ANGLE_DEG}}^\circ$ with turnaround airspeed $v_{\mathrm{turn}} = {{TURNAROUND_AIRSPEED_MPS}}\text{ m/s}$.
-$$
-\begin{aligned}
-R_{\mathrm{turn}} = \frac{v_{\mathrm{turn}}^2}{g \cdot \tan(\phi_{\mathrm{max}})}
-\end{aligned}
-$$
-- **Optimal Glide Descent Profile:** Best $(L/D)_{\mathrm{max}} = {{MAX_L_OVER_D_RATIO}}$ unpowered glide descent toward secondary divert coordinates.
-- **Precautionary Landing Profile:** {{PRECAUTIONARY_LANDING_PROFILE}}
+### 12.3 Degraded Modes & Fallback Hierarchy
+- **Tier 1 (Nominal Execution):** Full multi-sensor fusion, dual-channel C2 links, and nominal envelope margins.
+- **Tier 2 (Degraded Sensor Mode):** Single-sensor failure activates secondary observer and dead reckoning.
+- **Tier 3 (Contingency Link Mode):** Loss of primary C2 link triggers autonomous hold and return sequence.
+- **Tier 4 (Emergency Containment Mode):** Unrecoverable fault triggers ballistic containment deploy or instant power cutoff.
 
-### 12.4 Flight Termination Subsystem (FTS) & Safe-Arm Circuitry
-- **Hardware Isolation:** {{FTS_HARDWARE_ISOLATION_DESCRIPTION}}
-- **Power Cutoff Mechanism:** High-voltage main power distribution bus disconnect within $t_{\mathrm{cut}} \le {{FTS_CUTOFF_TIME_MS}}\text{ ms}$.
-- **Deployment Mechanism:** {{FTS_PARACHUTE_DEPLOYMENT_MECHANISM}}
-- **Safe-Arm Interlocks:** {{FTS_SAFE_ARM_INTERLOCKS}}
+### 12.4 Human-in-the-Loop (HITL) Authority & Override Protocols
+- **Supervisory Authority:** Operator retains positive manual override capability via independent emergency link.
+- **Dual-Consent Authentication:** Critical emergency termination (`EMG-07`) requires two-operator verified consent keys.
+- **Interlock Inhibit:** Safety computer rejects manual commands that violate dynamic geofence containment limits.
 
-### 12.5 Human-in-the-Loop Override & Veto Timers
-- **Supervisory Veto Timer:** GCS operator veto countdown window $\tau_{\mathrm{veto}} = {{HITL_VETO_WINDOW_SECONDS}}\text{ s}$ prior to non-immediate failsafe trajectory execution.
-- **Manual Override Precedence:** Dedicated emergency link manual override commands strictly preempt autonomous loiter profiles.
-- **Dual-Consent Authorization:** Critical flight termination requires dual-consent cryptographic confirmation.
+### 12.5 Autonomous Divert & Secondary Recovery Protocols
+- **Primary Recovery:** Designated nominal operational site or recovery zone.
+- **Secondary Divert Sites:** Pre-surveyed alternate recovery coordinates evaluated dynamically against Bingo energy.
+- **Terrain Clearance:** All emergency divert trajectories maintain minimum statutory boundary separation.
 
-### 12.6 Post-Emergency Ground Recovery, Telemetry Quarantine & Investigation
-- **Telemetry Quarantine:** Autonomous write-lock and cryptographic hashing (SHA-256) of flight recorder partitions upon touchdown.
-- **Localization Beacon:** Dedicated emergency homing beacon ($406.040\text{ MHz}$ COSPAS-SARSAT / $121.5\text{ MHz}$) active for at least {{BEACON_DURATION_HOURS}} hours.
-- **Ground Ordnance & De-Arming:** {{GROUND_DEARMING_AND_RECOVERY_PROCEDURES}}
+### 12.6 Post-Emergency Containment, Latching & Reset Procedures
+- **Safety Lockout:** Emergency shutdown latches all actuators and high-voltage buses in de-energized safe states.
+- **Non-Volatile Blackbox Offload:** Diagnostic fault logs, sensor telemetry, and watchdog stack traces are securely written to non-volatile flash.
+- **Authorized Ground Clearance:** Physical inspection and signed maintenance clearance required before clearing failsafe lock.

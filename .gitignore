@@ -33,3 +33,15 @@ app_flutter_release.zip
 .venv/
 venv/
 *.egg-info/
+
+# Pipeline infrastructure (whitelisted by setup_git_hooks.py)
+!/skills/
+!/skills/**
+!/rules/
+!/rules/**
+!/.pipeline/
+!/.pipeline/**
+!/.agents/
+!/.agents/**
+!/scripts/
+!/scripts/**
