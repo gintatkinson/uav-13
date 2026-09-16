@@ -1,7 +1,0 @@
-{
-  "tier": 2,
-  "role": "child_domain_distribution_template",
-  "classification": "DOMAIN_TEMPLATE_CHILD",
-  "parent": "gintatkinson/DEAP-avionic-flight-safety",
-  "upstream_sync_ref": "cb2a223"
-}

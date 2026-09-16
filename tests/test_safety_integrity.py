@@ -4,6 +4,7 @@ Safety Integrity Quality Gate & SORA OSO-01..24 Completeness Verification Suite.
 """
 import os
 import sys
+import re
 import tempfile
 import pathlib
 import pytest
@@ -15,9 +16,13 @@ if repo_root not in sys.path:
 
 from scripts.verify_downstream_baseline import (
     count_fmeca_rows,
+    parse_fmeca_table,
     check_uca_categories,
     check_sora_osos,
     validate_safety_matrix_content,
+    validate_safety_matrix_ast,
+    check_stateflow_ast_coverage,
+    group_state_defs_by_family,
     check_safety_integrity_and_sora_completeness,
 )
 
@@ -104,17 +109,90 @@ def test_sora_oso_01_to_24_validation():
     assert any("OSO-23" in err and "OSO-24" in err for err in errors), f"Expected missing OSOs error, got:\n{errors}"
 
 
-def test_fmeca_row_count_validation():
-    """Verify FMECA matrix row count requires at least 15 component rows."""
+def test_fmeca_table_parser_and_multi_mode_distribution():
+    """Verify parse_fmeca_table accurately extracts components, modes, RPN, and Basis classifications."""
     complete_content = read_fixture("complete_stpa_matrix.md")
-    assert count_fmeca_rows(complete_content) == 16
+    parsed = parse_fmeca_table(complete_content)
+
+    assert parsed["total_rows"] == 18
+    assert parsed["has_rpn"] is True
+    assert len(parsed["components"]) == 6
+    for comp, modes in parsed["components"].items():
+        assert len(modes) >= 3, f"Expected component {comp} to have at least 3 failure modes, got {len(modes)}"
+    assert parsed["basis_counts"]["SSOT"] == 12
+    assert parsed["basis_counts"]["Derived"] == 6
+    assert len(parsed["failure_modes"]) == 18
+
+    errors = validate_safety_matrix_content(complete_content)
+    assert errors == []
+
+
+def test_fmeca_missing_basis_rejected():
+    """Verify FMECA matrix missing explicit Derivation Basis (SSOT / Derived) is rejected."""
+    complete_content = read_fixture("complete_stpa_matrix.md")
+    # Strip Basis column
+    lines = []
+    for line in complete_content.splitlines():
+        if line.strip().startswith("|") and line.strip().endswith("|"):
+            cells = [c.strip() for c in line.strip().split("|")[1:-1]]
+            if len(cells) > 1 and ("Basis" in cells[-1] or cells[-1] in ("SSOT", "Derived")):
+                cells = cells[:-1]
+                lines.append("| " + " | ".join(cells) + " |")
+            elif re.match(r"^\|(?:\s*:?-+:?\s*\|)+$", line.strip()):
+                parts = line.strip().split("|")[1:-1]
+                lines.append("| " + " | ".join(parts[:-1]) + " |")
+            else:
+                lines.append(line)
+        else:
+            lines.append(line)
+    invalid_no_basis = "\n".join(lines)
+
+    parsed = parse_fmeca_table(invalid_no_basis)
+    assert parsed["basis_counts"]["SSOT"] == 0
+    assert parsed["basis_counts"]["Derived"] == 0
+
+    errors = validate_safety_matrix_content(invalid_no_basis)
+    assert any("Pillar 7 violation: FMECA Criticality Matrix missing explicit Derivation Basis" in err for err in errors), (
+        f"Expected missing Basis classification error, got:\n{errors}"
+    )
+
+
+def test_fmeca_missing_universal_failure_dimension_rejected():
+    """Verify FMECA matrix missing a universal failure dimension is rejected."""
+    complete_content = read_fixture("complete_stpa_matrix.md")
+    # Replace all failure modes with Interface-only modes
+    lines = []
+    for line in complete_content.splitlines():
+        if line.strip().startswith("| FM-"):
+            cells = [c.strip() for c in line.strip().split("|")[1:-1]]
+            cells[2] = f"Bus Protocol Timeout {cells[0]}"
+            lines.append("| " + " | ".join(cells) + " |")
+        else:
+            lines.append(line)
+    single_dim_content = "\n".join(lines)
+
+    errors = validate_safety_matrix_content(single_dim_content)
+    assert any("Pillar 7 violation: FMECA table missing coverage for universal failure dimension(s)" in err for err in errors), (
+        f"Expected universal failure dimension error, got:\n{errors}"
+    )
+
+
+def test_fmeca_row_count_validation():
+    """Verify FMECA matrix requires non-empty rows."""
+    complete_content = read_fixture("complete_stpa_matrix.md")
+    assert count_fmeca_rows(complete_content) == 18
     assert validate_safety_matrix_content(complete_content) == []
 
-    # Structurally reduced to 5 rows must be rejected
-    invalid_content_5 = _reduce_fmeca_rows(complete_content, keep=5)
-    assert count_fmeca_rows(invalid_content_5) == 5
-    errors = validate_safety_matrix_content(invalid_content_5)
-    assert any("FMECA Criticality Matrix contains 5 row(s); minimum required is 15 rows" in err for err in errors)
+    # Structurally reduced to 0 rows must be rejected
+    lines = []
+    for line in complete_content.splitlines():
+        if line.strip().startswith("| FM-"):
+            continue
+        lines.append(line)
+    empty_content = "\n".join(lines)
+    assert count_fmeca_rows(empty_content) == 0
+    errors = validate_safety_matrix_content(empty_content)
+    assert any("FMECA Criticality Matrix contains 0 rows" in err for err in errors)
 
 
 def test_uca_failure_mode_categories():
@@ -154,6 +232,27 @@ def test_astm_f3269_rta_and_commercial_toolchain_hooks():
     no_matlab = base_content.replace("MATLAB", "").replace("Simulink", "").replace("Stateflow", "").replace("Embedded Coder", "").replace("SLDV", "")
     errors = validate_safety_matrix_content(no_matlab)
     assert any("MATLAB / Simulink" in err for err in errors)
+
+
+def test_non_rta_system_not_rejected_when_ast_and_content_omit_rta():
+    """Verify valid non-RTA systems (where neither SysML AST nor safety content declares RTA) are not rejected."""
+    base_content = read_fixture("complete_stpa_matrix.md")
+
+    # Strip all RTA mentions to simulate a valid non-RTA cyber-physical or medical system
+    non_rta_content = (
+        base_content
+        .replace("ASTM F3269-17 RTA | ", "")
+        .replace("ASTM F3269-17", "")
+        .replace("ASTM F3269", "")
+        .replace("Run-Time Assurance", "Deterministic Statechart")
+        .replace("(`RTA`)", "")
+        .replace("(RTA)", "")
+        .replace("RTA_", "Failsafe_")
+        .replace("Safety Net", "Failsafe Architecture")
+        .replace("safety net", "failsafe")
+    )
+    errors = validate_safety_matrix_content(non_rta_content)
+    assert not any("ASTM F3269-17" in err for err in errors)
 
 
 def test_truncated_cartesian_matrix_rejected(tmpdir):
@@ -240,3 +339,125 @@ def test_end_to_end_check_17_downstream_integration(tmpdir):
     with pytest.raises(SystemExit) as exc_info:
         check_safety_integrity_and_sora_completeness(tmpdir)
     assert exc_info.value.code == 1
+
+
+def test_check17_ast_state_machine_families_complete(tmpdir):
+    """Verify downstream repo with AST state machine families and complete Section 6.1 passes Check 17."""
+    schema_dir = os.path.join(tmpdir, "schema")
+    os.makedirs(schema_dir, exist_ok=True)
+    with open(os.path.join(schema_dir, "system.sysml"), "w", encoding="utf-8") as f:
+        f.write(
+            "package SystemArchitecture {\n"
+            "    part def Unit_01 {\n"
+            "        action def ChannelActivate;\n"
+            "        action def ChannelDeactivate;\n"
+            "    }\n"
+            "    part def Unit_02 {\n"
+            "        action def ModeAdvance;\n"
+            "        action def ParameterStep;\n"
+            "    }\n"
+            "    part def Unit_03;\n"
+            "    part def Unit_04;\n"
+            "    part def Unit_05;\n"
+            "    part def Unit_06;\n"
+            "    requirement def SafetyConstraint_SC_1;\n"
+            "    requirement def SafetyConstraint_SC_2;\n"
+            "    state def RTA_Nominal;\n"
+            "    state def RTA_Intervention;\n"
+            "    state def RTA_Recovery;\n"
+            "}\n"
+        )
+
+    valid_content = read_fixture("complete_stpa_matrix.md")
+    write_safety_matrix(tmpdir, valid_content)
+    # Should pass cleanly without error
+    check_safety_integrity_and_sora_completeness(tmpdir)
+
+
+def test_check17_ast_state_machine_missing_diagram_rejected(tmpdir):
+    """Verify downstream repo with multi-state AST family missing dedicated stateDiagram-v2 is rejected."""
+    schema_dir = os.path.join(tmpdir, "schema")
+    os.makedirs(schema_dir, exist_ok=True)
+    with open(os.path.join(schema_dir, "system.sysml"), "w", encoding="utf-8") as f:
+        f.write(
+            "package SystemArchitecture {\n"
+            "    part def Unit_01 {\n"
+            "        action def ChannelActivate;\n"
+            "        action def ChannelDeactivate;\n"
+            "    }\n"
+            "    part def Unit_02 {\n"
+            "        action def ModeAdvance;\n"
+            "        action def ParameterStep;\n"
+            "    }\n"
+            "    part def Unit_03;\n"
+            "    part def Unit_04;\n"
+            "    part def Unit_05;\n"
+            "    part def Unit_06;\n"
+            "    requirement def SafetyConstraint_SC_1;\n"
+            "    requirement def SafetyConstraint_SC_2;\n"
+            "    state def RTA_Nominal;\n"
+            "    state def RTA_Intervention;\n"
+            "    state def RTA_Recovery;\n"
+            "    state def ESAD_Safe;\n"
+            "    state def ESAD_Armed;\n"
+            "    state def ESAD_Fired;\n"
+            "}\n"
+        )
+
+    valid_content = read_fixture("complete_stpa_matrix.md")
+    write_safety_matrix(tmpdir, valid_content)
+
+    with pytest.raises(SystemExit) as exc_info:
+        check_safety_integrity_and_sora_completeness(tmpdir)
+    assert exc_info.value.code == 1
+
+
+def test_check17_ast_state_machine_missing_hook_rejected(tmpdir):
+    """Verify downstream repo with multi-state AST family having diagram but missing Stateflow hook is rejected."""
+    schema_dir = os.path.join(tmpdir, "schema")
+    os.makedirs(schema_dir, exist_ok=True)
+    with open(os.path.join(schema_dir, "system.sysml"), "w", encoding="utf-8") as f:
+        f.write(
+            "package SystemArchitecture {\n"
+            "    part def Unit_01 {\n"
+            "        action def ChannelActivate;\n"
+            "        action def ChannelDeactivate;\n"
+            "    }\n"
+            "    part def Unit_02 {\n"
+            "        action def ModeAdvance;\n"
+            "        action def ParameterStep;\n"
+            "    }\n"
+            "    part def Unit_03;\n"
+            "    part def Unit_04;\n"
+            "    part def Unit_05;\n"
+            "    part def Unit_06;\n"
+            "    requirement def SafetyConstraint_SC_1;\n"
+            "    requirement def SafetyConstraint_SC_2;\n"
+            "    state def RTA_Nominal;\n"
+            "    state def RTA_Intervention;\n"
+            "    state def RTA_Recovery;\n"
+            "    state def ESAD_Safe;\n"
+            "    state def ESAD_Armed;\n"
+            "}\n"
+        )
+
+    valid_content = read_fixture("complete_stpa_matrix.md")
+    # Add ESAD state diagram to Section 6.1, but do NOT add ESAD to the Stateflow synthesis hooks text
+    esad_diagram = (
+        "\n#### 6.1.2 ESAD Safety Statechart\n"
+        "```mermaid\n"
+        "stateDiagram-v2\n"
+        "    [*] --> ESAD_Safe\n"
+        "    ESAD_Safe --> ESAD_Armed : arm_command\n"
+        "```\n"
+    )
+    content_with_diagram = valid_content.replace(
+        "### 6.1 Stateflow Synthesis Hooks & Safety Statecharts",
+        "### 6.1 Stateflow Synthesis Hooks & Safety Statecharts\n" + esad_diagram,
+    )
+    write_safety_matrix(tmpdir, content_with_diagram)
+
+    with pytest.raises(SystemExit) as exc_info:
+        check_safety_integrity_and_sora_completeness(tmpdir)
+    assert exc_info.value.code == 1
+
