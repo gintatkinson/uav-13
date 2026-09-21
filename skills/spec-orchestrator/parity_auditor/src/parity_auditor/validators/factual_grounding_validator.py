@@ -896,6 +896,24 @@ class MechanicalSectionSlicer:
         full_path = os.path.join(self.workspace_dir, file_rel_path) if not os.path.isabs(file_rel_path) else file_rel_path
         if os.path.isfile(full_path):
             return full_path
+        # Strip leading relative navigation (e.g. ../../schema/... or ../research/...)
+        clean_rel = re.sub(r'^(?:\.\.[\\/])+', '', file_rel_path).lstrip('./')
+        if clean_rel:
+            clean_full = os.path.join(self.workspace_dir, clean_rel)
+            if os.path.isfile(clean_full):
+                return clean_full
+            file_rel_path = clean_rel
+        if file_rel_path == "schema.sysml":
+            pipeline_cand = os.path.join(self.workspace_dir, ".pipeline", "schema.sysml")
+            if os.path.isfile(pipeline_cand):
+                return pipeline_cand
+            schema_dir = os.path.join(self.workspace_dir, "schema")
+            if os.path.isdir(schema_dir):
+                for f in sorted(os.listdir(schema_dir)):
+                    if f.endswith(".sysml"):
+                        cand = os.path.join(schema_dir, f)
+                        if os.path.isfile(cand):
+                            return cand
         if not file_rel_path.startswith("schema/"):
             cand = os.path.join(self.workspace_dir, "schema", file_rel_path)
             if os.path.isfile(cand):
@@ -1775,10 +1793,13 @@ class FactualGroundingValidator(IValidator):
 
     def _is_excluded_spec_file(self, rel_path: str, filename: str) -> bool:
         """
-        Excludes retrospective defect reports and audit summary files from normative specification evaluation:
-        1. Any file located under docs/reports/defects/
-        2. Any file matching *AUDIT.md or *audit*.md
+        Excludes retrospective defect reports, audit summary files, and non-specification developer guides/catalogs:
+        1. Non-specification developer guides and prompt catalogs (OPERATOR_PROMPT_CATALOG.md, JIRA_INTEGRATION_GUIDE.md, README.md)
+        2. Any file located under docs/reports/defects/
+        3. Any file matching *AUDIT.md or *audit*.md
         """
+        if filename in ("OPERATOR_PROMPT_CATALOG.md", "JIRA_INTEGRATION_GUIDE.md", "README.md"):
+            return True
         norm_rel = rel_path.replace("\\", "/")
         if norm_rel.startswith("docs/reports/defects/") or "/reports/defects/" in f"/{norm_rel}":
             return True
@@ -1851,7 +1872,7 @@ class FactualGroundingValidator(IValidator):
             return target, loc
 
         # 2. Markdown link e.g. [User Manual §7.2.3](schema/a5-user-manual-2.md) or [Manual](schema/a5-user-manual-2.md#723)
-        m_link = re.search(r'\[([^\]]*)\]\(([^)]*?(?:schema|docs)/[^)]*)\)', line, re.I)
+        m_link = re.search(r'\[([^\]]*)\]\(([^)]*?(?:\.pipeline|schema|docs)/[^)]*)\)', line, re.I)
         if m_link:
             link_text = m_link.group(1).strip()
             link_target = m_link.group(2).strip()
@@ -1866,7 +1887,7 @@ class FactualGroundingValidator(IValidator):
 
         # 3. Path in prose or table e.g. `schema/a5-user-manual-2.md` §7.2.3 or docs/conops/CONOPS.md §7.1
         m_path = re.search(
-            r'(?:^|[\s`\'"(\[<|])(?:\.\.?/)?((?:schema|docs)/[a-zA-Z0-9_./\-]+\.[a-zA-Z0-9]+)(?:#([a-zA-Z0-9_\-]+))?',
+            r'(?:^|[\s`\'"(\[<|])(?:\.\.?/)?((?:\.pipeline|schema|docs)/[a-zA-Z0-9_./\-]+\.[a-zA-Z0-9]+)(?:#([a-zA-Z0-9_\-]+))?',
             line,
             re.I
         )
@@ -1897,8 +1918,8 @@ class FactualGroundingValidator(IValidator):
         """Extracts candidate technical tokens (quantities with units, protocols) from line."""
         clean = _normalize_katex_math_expressions(line)
         clean = re.sub(r'<!--.*?-->', '', clean)
-        clean = re.sub(r'\[([^\]]*)\]\([^)]*?(?:schema|docs)/[^)]*\)', r'\1', clean)
-        clean = re.sub(r'(?:^|[\s`\'"(\[<|])(?:\.\.?/)?(?:schema|docs)/[a-zA-Z0-9_./#:\-]+', '', clean)
+        clean = re.sub(r'\[([^\]]*)\]\([^)]*?(?:\.pipeline|schema|docs)/[^)]*\)', r'\1', clean)
+        clean = re.sub(r'(?:^|[\s`\'"(\[<|])(?:\.\.?/)?(?:\.pipeline|schema|docs)/[a-zA-Z0-9_./#:\-]+', '', clean)
         clean = re.sub(r'§\s*\d+(?:\.\d+)*', '', clean)
         clean = re.sub(r'\[TIER-[0-9][^\]]*\]', '', clean)
 
@@ -2057,7 +2078,7 @@ class FactualGroundingValidator(IValidator):
                 results.append(pair)
 
         # 2. Markdown link e.g. [User Manual §7.2.3](schema/a5-user-manual-2.md) or [Manual](schema/a5-user-manual-2.md#723)
-        for m in re.finditer(r'\[([^\]]*)\]\(([^)]*?(?:schema|docs)/[^)]*)\)', line, re.I):
+        for m in re.finditer(r'\[([^\]]*)\]\(([^)]*?(?:\.pipeline|schema|docs)/[^)]*)\)', line, re.I):
             link_text = m.group(1).strip()
             link_target = m.group(2).strip()
             loc = None
@@ -2074,7 +2095,7 @@ class FactualGroundingValidator(IValidator):
 
         # 3. Path in prose or table e.g. `schema/a5-user-manual-2.md` §7.2.3
         for m in re.finditer(
-            r'(?:^|[\s`\'"(\[<|])(?:\.\.?/)?((?:schema|docs)/[a-zA-Z0-9_./\-]+\.[a-zA-Z0-9]+)(?:#([a-zA-Z0-9_\-]+))?((?:\s*[,;]?\s*§\s*[^`\'",\)\n;]+)*)',
+            r'(?:^|[\s`\'"(\[<|])(?:\.\.?/)?((?:\.pipeline|schema|docs)/[a-zA-Z0-9_./\-]+\.[a-zA-Z0-9]+)(?:#([a-zA-Z0-9_\-]+))?((?:\s*[,;]?\s*§\s*[^`\'",\)\n;]+)*)',
             line,
             re.I
         ):

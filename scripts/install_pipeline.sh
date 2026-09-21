@@ -158,6 +158,7 @@ done
 TARGET_DIR="${TARGET_DIR:-.}"
 
 mkdir -p "$TARGET_DIR"
+chmod u+w "$TARGET_DIR" 2>/dev/null || true
 TARGET_DIR="$(cd -P "$TARGET_DIR" 2>/dev/null && pwd -P || echo "$TARGET_DIR")"
 
 if [ "$TARGET_DIR" = "$INSTALLER_ROOT" ]; then
@@ -265,110 +266,89 @@ if [ -f "$TARGET_DIR/.pipeline/profile_config.json" ]; then
 fi
 
 if [ "$TARGET_DIR" != "$INSTALLER_ROOT" ]; then
+  chmod -R u+w "$TARGET_DIR/skills" "$TARGET_DIR/rules" "$TARGET_DIR/.pipeline" "$TARGET_DIR/.agents" "$TARGET_DIR/scripts" 2>/dev/null || true
   rm -rf "$TARGET_DIR/skills" "$TARGET_DIR/rules" "$TARGET_DIR/.pipeline" "$TARGET_DIR/.agents" "$TARGET_DIR/scripts"
-  cp -RP "$INSTALLER_ROOT/skills" "$TARGET_DIR/"
-  cp -RP "$INSTALLER_ROOT/rules" "$TARGET_DIR/"
-  cp -RP "$INSTALLER_ROOT/.pipeline" "$TARGET_DIR/"
+  cp -RPf "$INSTALLER_ROOT/skills" "$TARGET_DIR/"
+  cp -RPf "$INSTALLER_ROOT/rules" "$TARGET_DIR/"
+  cp -RPf "$INSTALLER_ROOT/.pipeline" "$TARGET_DIR/"
   rm -rf "$TARGET_DIR/.pipeline/upstream"
   rm -rf "$TARGET_DIR/.pipeline/diagnostics"
 
   if [ -n "$PRESERVED_METADATA" ]; then
+    chmod u+w "$TARGET_DIR/.pipeline/project_metadata.json" 2>/dev/null || true
     echo "$PRESERVED_METADATA" > "$TARGET_DIR/.pipeline/project_metadata.json"
   fi
   if [ -n "$PRESERVED_PROFILE_CONFIG" ]; then
+    chmod u+w "$TARGET_DIR/.pipeline/profile_config.json" 2>/dev/null || true
     echo "$PRESERVED_PROFILE_CONFIG" > "$TARGET_DIR/.pipeline/profile_config.json"
   fi
-  cp -RP "$INSTALLER_ROOT/.agents" "$TARGET_DIR/"
-  cp -RP "$INSTALLER_ROOT/scripts" "$TARGET_DIR/"
-
-  # Copy schema (UAS SysML v2 models)
+  cp -RPf "$INSTALLER_ROOT/.agents" "$TARGET_DIR/"
+  cp -RPf "$INSTALLER_ROOT/scripts" "$TARGET_DIR/"
   mkdir -p "$TARGET_DIR/schema"
+  chmod -R u+w "$TARGET_DIR/schema" 2>/dev/null || true
   if [ -d "$INSTALLER_ROOT/schema" ]; then
-    cp -RP "$INSTALLER_ROOT/schema/." "$TARGET_DIR/schema/"
+    cp -RPf "$INSTALLER_ROOT/schema/." "$TARGET_DIR/schema/"
   fi
-
-  cp -P "$INSTALLER_ROOT/requirements.txt" "$TARGET_DIR/" 2>/dev/null || true
-  cp -P "$INSTALLER_ROOT/pyproject.toml" "$TARGET_DIR/" 2>/dev/null || true
+  chmod u+w "$TARGET_DIR/requirements.txt" "$TARGET_DIR/pyproject.toml" 2>/dev/null || true
+  cp -Pf "$INSTALLER_ROOT/requirements.txt" "$TARGET_DIR/" 2>/dev/null || true
+  cp -Pf "$INSTALLER_ROOT/pyproject.toml" "$TARGET_DIR/" 2>/dev/null || true
+  chmod u+w "$TARGET_DIR/.gitignore" 2>/dev/null || true
   if [ -f "$TARGET_DIR/.gitignore" ]; then
     cat "$INSTALLER_ROOT/.gitignore" >> "$TARGET_DIR/.gitignore"
     # Deduplicate lines in .gitignore
     sort -u "$TARGET_DIR/.gitignore" -o "$TARGET_DIR/.gitignore"
   elif [ -f "$INSTALLER_ROOT/.gitignore" ]; then
-    cp "$INSTALLER_ROOT/.gitignore" "$TARGET_DIR/"
+    cp -Pf "$INSTALLER_ROOT/.gitignore" "$TARGET_DIR/"
   fi
-
   mkdir -p "$TARGET_DIR/tests"
-  cp -RP "$INSTALLER_ROOT/tests/test_baseline.py" "$TARGET_DIR/tests/" 2>/dev/null || true
-  cp -RP "$INSTALLER_ROOT/tests/test_safety_integrity.py" "$TARGET_DIR/tests/" 2>/dev/null || true
-  cp -RP "$INSTALLER_ROOT/tests/test_gitlab_provider.py" "$TARGET_DIR/tests/" 2>/dev/null || true
-  cp -RP "$INSTALLER_ROOT/tests/test_jira_provider.py" "$TARGET_DIR/tests/" 2>/dev/null || true
-  cp -RP "$INSTALLER_ROOT/tests/test_ground_truth_tooling.py" "$TARGET_DIR/tests/" 2>/dev/null || true
-  cp -RP "$INSTALLER_ROOT/tests/fixtures" "$TARGET_DIR/tests/" 2>/dev/null || true
-
-  # Copy domain assets: docs/conops/, docs/safety/, docs/interfaces/, docs/architecture/blueprints/
-  mkdir -p "$TARGET_DIR/docs"
-  if [ -d "$INSTALLER_ROOT/docs/conops" ]; then
-    mkdir -p "$TARGET_DIR/docs/conops"
-    cp -RP "$INSTALLER_ROOT/docs/conops/." "$TARGET_DIR/docs/conops/"
-  fi
-  if [ -d "$INSTALLER_ROOT/docs/safety" ]; then
-    mkdir -p "$TARGET_DIR/docs/safety"
-    cp -RP "$INSTALLER_ROOT/docs/safety/." "$TARGET_DIR/docs/safety/"
-  fi
-  if [ -d "$INSTALLER_ROOT/docs/interfaces" ]; then
-    mkdir -p "$TARGET_DIR/docs/interfaces"
-    cp -RP "$INSTALLER_ROOT/docs/interfaces/." "$TARGET_DIR/docs/interfaces/"
-  fi
-  if [ -d "$INSTALLER_ROOT/docs/architecture/blueprints" ]; then
-    mkdir -p "$TARGET_DIR/docs/architecture/blueprints"
-    cp -RP "$INSTALLER_ROOT/docs/architecture/blueprints/." "$TARGET_DIR/docs/architecture/blueprints/"
-  fi
-  if [ -d "$INSTALLER_ROOT/docs/catalogs" ]; then
-    mkdir -p "$TARGET_DIR/docs/catalogs"
-    cp -RP "$INSTALLER_ROOT/docs/catalogs/." "$TARGET_DIR/docs/catalogs/"
-  fi
-  if [ -d "$INSTALLER_ROOT/docs/research" ]; then
-    mkdir -p "$TARGET_DIR/docs/research"
-    cp -RP "$INSTALLER_ROOT/docs/research/." "$TARGET_DIR/docs/research/"
-  fi
-  if [ -f "$INSTALLER_ROOT/docs/OPERATOR_PROMPT_CATALOG.md" ]; then
-    cp -P "$INSTALLER_ROOT/docs/OPERATOR_PROMPT_CATALOG.md" "$TARGET_DIR/docs/"
-  fi
-  if [ -f "$INSTALLER_ROOT/docs/JIRA_INTEGRATION_GUIDE.md" ]; then
-    cp -P "$INSTALLER_ROOT/docs/JIRA_INTEGRATION_GUIDE.md" "$TARGET_DIR/docs/"
-  fi
+  chmod -R u+w "$TARGET_DIR/tests" 2>/dev/null || true
+  cp -RPf "$INSTALLER_ROOT/tests/fixtures" "$TARGET_DIR/tests/" 2>/dev/null || true
 else
   # Running in-place in an initialized downstream project
+  chmod -R u+w "$TARGET_DIR/.pipeline" 2>/dev/null || true
   rm -rf "$TARGET_DIR/.pipeline/upstream"
 fi
 
-# Ensure specification landing zones are created with only .gitkeep
-mkdir -p "$TARGET_DIR/schema"
+if [ ! -e "$TARGET_DIR/schema" ]; then
+  mkdir -p "$TARGET_DIR/schema"
+fi
 mkdir -p "$TARGET_DIR/tests"
-mkdir -p "$TARGET_DIR/docs" "$TARGET_DIR/docs/conops" "$TARGET_DIR/docs/interfaces" "$TARGET_DIR/docs/safety" "$TARGET_DIR/docs/architecture/blueprints" "$TARGET_DIR/docs/epics" "$TARGET_DIR/docs/features" "$TARGET_DIR/docs/user-stories" "$TARGET_DIR/docs/use-cases" "$TARGET_DIR/docs/management"
-touch "$TARGET_DIR/docs/interfaces/.gitkeep"
-touch "$TARGET_DIR/docs/epics/.gitkeep"
-touch "$TARGET_DIR/docs/features/.gitkeep"
-touch "$TARGET_DIR/docs/user-stories/.gitkeep"
-touch "$TARGET_DIR/docs/use-cases/.gitkeep"
+mkdir -p "$TARGET_DIR/docs" "$TARGET_DIR/docs/conops" "$TARGET_DIR/docs/conops/units/conops" "$TARGET_DIR/docs/conops/units/mission_intent" "$TARGET_DIR/docs/interfaces" "$TARGET_DIR/docs/safety" "$TARGET_DIR/docs/architecture/blueprints" "$TARGET_DIR/docs/epics" "$TARGET_DIR/docs/features" "$TARGET_DIR/docs/user-stories" "$TARGET_DIR/docs/use-cases" "$TARGET_DIR/docs/management"
+chmod -R u+w "$TARGET_DIR/docs" 2>/dev/null || true
 touch "$TARGET_DIR/docs/management/.gitkeep"
+if [ "$TARGET_DIR" != "$INSTALLER_ROOT" ]; then
+  if [ -f "$INSTALLER_ROOT/docs/conops/README.md" ]; then
+    cp -Pf "$INSTALLER_ROOT/docs/conops/README.md" "$TARGET_DIR/docs/conops/"
+  fi
+  if [ -f "$INSTALLER_ROOT/docs/safety/README.md" ]; then
+    cp -Pf "$INSTALLER_ROOT/docs/safety/README.md" "$TARGET_DIR/docs/safety/"
+  fi
+  if [ -f "$INSTALLER_ROOT/docs/OPERATOR_PROMPT_CATALOG.md" ]; then
+    cp -Pf "$INSTALLER_ROOT/docs/OPERATOR_PROMPT_CATALOG.md" "$TARGET_DIR/docs/"
+  fi
+  if [ -f "$INSTALLER_ROOT/docs/JIRA_INTEGRATION_GUIDE.md" ]; then
+    cp -Pf "$INSTALLER_ROOT/docs/JIRA_INTEGRATION_GUIDE.md" "$TARGET_DIR/docs/"
+  fi
+fi
 mkdir -p "$TARGET_DIR/.pipeline/contracts" "$TARGET_DIR/.pipeline/domain_specs" "$TARGET_DIR/.pipeline/profiles"
+chmod -R u+w "$TARGET_DIR/.pipeline" 2>/dev/null || true
 chmod +x "$TARGET_DIR"/scripts/*.sh "$TARGET_DIR"/scripts/*.py 2>/dev/null || true
-
 
 # Apply provider configurations if specified
 if [ "$PROVIDER" = "gitlab" ] || [ -n "$GITLAB_GROUP" ] || [ "$GITLAB_URL" != "https://gitlab.com" ]; then
+  chmod u+w "$TARGET_DIR/.gitlab-ci.yml" 2>/dev/null || true
   if [ -f "$INSTALLER_ROOT/.pipeline/templates/.gitlab-ci.yml" ]; then
-    cp -P "$INSTALLER_ROOT/.pipeline/templates/.gitlab-ci.yml" "$TARGET_DIR/.gitlab-ci.yml"
+    cp -Pf "$INSTALLER_ROOT/.pipeline/templates/.gitlab-ci.yml" "$TARGET_DIR/.gitlab-ci.yml"
   elif [ -f "$INSTALLER_ROOT/.pipeline/.gitlab-ci.yml" ]; then
-    cp -P "$INSTALLER_ROOT/.pipeline/.gitlab-ci.yml" "$TARGET_DIR/.gitlab-ci.yml"
+    cp -Pf "$INSTALLER_ROOT/.pipeline/.gitlab-ci.yml" "$TARGET_DIR/.gitlab-ci.yml"
   elif [ -f "$TARGET_DIR/.pipeline/templates/.gitlab-ci.yml" ]; then
-    cp -P "$TARGET_DIR/.pipeline/templates/.gitlab-ci.yml" "$TARGET_DIR/.gitlab-ci.yml"
+    cp -Pf "$TARGET_DIR/.pipeline/templates/.gitlab-ci.yml" "$TARGET_DIR/.gitlab-ci.yml"
   elif [ -f "$TARGET_DIR/.pipeline/.gitlab-ci.yml" ]; then
-    cp -P "$TARGET_DIR/.pipeline/.gitlab-ci.yml" "$TARGET_DIR/.gitlab-ci.yml"
+    cp -Pf "$TARGET_DIR/.pipeline/.gitlab-ci.yml" "$TARGET_DIR/.gitlab-ci.yml"
   fi
   for rules_file in "$TARGET_DIR/.pipeline/logical-ui/codebase_rules.json" "$TARGET_DIR/codebase_rules.json"; do
     if [ -f "$rules_file" ]; then
+      chmod u+w "$rules_file" 2>/dev/null || true
       python3 -c "
 import json, sys
 path = '$rules_file'
@@ -441,6 +421,7 @@ with open(path, 'w', encoding='utf-8') as f:
 elif [ "$PROVIDER" = "github" ]; then
   for rules_file in "$TARGET_DIR/.pipeline/logical-ui/codebase_rules.json" "$TARGET_DIR/codebase_rules.json"; do
     if [ -f "$rules_file" ]; then
+      chmod u+w "$rules_file" 2>/dev/null || true
       python3 -c "
 import json, sys
 path = '$rules_file'
@@ -449,6 +430,8 @@ with open(path, 'r', encoding='utf-8') as f:
 if 'tracker_rules' not in data:
     data['tracker_rules'] = {}
 data['tracker_rules']['provider'] = 'github'
+if '$GITHUB_ORG':
+    data['tracker_rules']['owner'] = '$GITHUB_ORG'
 with open(path, 'w', encoding='utf-8') as f:
     json.dump(data, f, indent=2)
 " 2>/dev/null || true
@@ -457,6 +440,7 @@ with open(path, 'w', encoding='utf-8') as f:
 fi
 
 # Generate .env.template in target workspace
+chmod u+w "$TARGET_DIR/.env.template" 2>/dev/null || true
 cat << 'EOF' > "$TARGET_DIR/.env.template"
 # Digital Engineering Agent Platform (DEAP) Environment Variables Template
 # Copy this file to .env or export variables in your shell / CI/CD environment.
@@ -497,23 +481,170 @@ EOF
 
 # Transform and scaffold downstream .agents/AGENTS.md and root AGENTS.md with full governance armor
 mkdir -p "$TARGET_DIR/.agents"
+chmod u+w "$TARGET_DIR/AGENTS.md" "$TARGET_DIR/.agents/AGENTS.md" "$TARGET_DIR/CLAUDE.md" "$TARGET_DIR/README.md" 2>/dev/null || true
 python3 "$INSTALLER_ROOT/scripts/scaffold_downstream_agents.py" "$INSTALLER_ROOT" "$TARGET_DIR"
 
 
-# Scaffold downstream root README.md if missing
-if [ ! -f "$TARGET_DIR/README.md" ]; then
-  cat << 'EOF' > "$TARGET_DIR/README.md"
-# Downstream Cyber-Physical Infrastructure Safety Project
+# Scaffold downstream root README.md if missing, boilerplate, or missing operator prompt catalog
+if [ ! -f "$TARGET_DIR/README.md" ] || \
+   grep -qE "Getting started with GitLab|To make it easy for you to get started" "$TARGET_DIR/README.md" || \
+   ! grep -qE "Multi-Pipeline Operator Prompt Catalog|Operator Prompt Catalog" "$TARGET_DIR/README.md" || \
+   ! grep -qE "Customer Project Onboarding|\.tmp-pipeline" "$TARGET_DIR/README.md"; then
 
-> **Repository Role:** `DOWNSTREAM_APPLICATION_WORKSPACE`  
-> **Primary Technology Profiles:** `ROS2 C++ Real-Time` | `Target Embedded Platform Execution Profile`  
-> **Target Regulatory Frameworks:** `JARUS SORA v2.5 (SAIL I–VI)` | `ASTM F3269-17 RTA` | `ASTM F3411-22a Remote ID` | `RTCA DO-365B DAA`  
+  # Extract domain project metadata from existing project artifacts
+  DOMAIN_PROJECT_NAME=""
+  DOMAIN_PROJECT_DESC=""
+  DOMAIN_TECH_PROFILE=""
+  DOMAIN_REGULATORY=""
+
+  # 1. Check existing README.md before overwriting (e.g. GitLab initial commit: "# <project_name>\n\nGetting started with GitLab...")
+  if [ -f "$TARGET_DIR/README.md" ]; then
+    CANDIDATE_TITLE=$(grep -E '^# ' "$TARGET_DIR/README.md" | head -n 1 | sed 's/^# *//' | tr -d '\r\n')
+    if ! echo "$CANDIDATE_TITLE" | grep -qE "Getting started with GitLab|Downstream Cyber-Physical Infrastructure Safety Project|Downstream Safety-Critical Engineering Project"; then
+      DOMAIN_PROJECT_NAME="$CANDIDATE_TITLE"
+    fi
+  fi
+
+  # 2. Check .pipeline/project_metadata.json if present
+  if [ -f "$TARGET_DIR/.pipeline/project_metadata.json" ]; then
+    META_NAME=$(python3 -c "import json; data=json.load(open('$TARGET_DIR/.pipeline/project_metadata.json')); print(data.get('project_name') or data.get('name') or '')" 2>/dev/null || true)
+    if [ -n "$META_NAME" ] && [ -z "$DOMAIN_PROJECT_NAME" ]; then
+      DOMAIN_PROJECT_NAME="$META_NAME"
+    fi
+    META_DESC=$(python3 -c "import json; data=json.load(open('$TARGET_DIR/.pipeline/project_metadata.json')); print(data.get('description') or '')" 2>/dev/null || true)
+    if [ -n "$META_DESC" ]; then
+      DOMAIN_PROJECT_DESC="$META_DESC"
+    fi
+    META_PROF=$(python3 -c "import json; data=json.load(open('$TARGET_DIR/.pipeline/project_metadata.json')); print(data.get('technology_profile') or data.get('profile') or '')" 2>/dev/null || true)
+    if [ -n "$META_PROF" ]; then
+      DOMAIN_TECH_PROFILE="$META_PROF"
+    fi
+    META_REG=$(python3 -c "import json; data=json.load(open('$TARGET_DIR/.pipeline/project_metadata.json')); print(data.get('regulatory_frameworks') or '')" 2>/dev/null || true)
+    if [ -n "$META_REG" ]; then
+      DOMAIN_REGULATORY="$META_REG"
+    fi
+  fi
+
+  # 3. Check codebase_rules.json if present
+  if [ -z "$DOMAIN_PROJECT_NAME" ] && [ -f "$TARGET_DIR/codebase_rules.json" ]; then
+    CR_NAME=$(python3 -c "import json; data=json.load(open('$TARGET_DIR/codebase_rules.json')); print(data.get('project_name') or data.get('name') or '')" 2>/dev/null || true)
+    if [ -n "$CR_NAME" ]; then
+      DOMAIN_PROJECT_NAME="$CR_NAME"
+    fi
+  fi
+
+  # 4. Check pubspec.yaml (Flutter / Dart)
+  if [ -f "$TARGET_DIR/pubspec.yaml" ]; then
+    if [ -z "$DOMAIN_PROJECT_NAME" ]; then
+      PUB_NAME=$(grep -E '^name:' "$TARGET_DIR/pubspec.yaml" | head -n 1 | sed 's/^name:[[:space:]]*//' | tr -d '\r\n')
+      [ -n "$PUB_NAME" ] && DOMAIN_PROJECT_NAME="$PUB_NAME"
+    fi
+    if [ -z "$DOMAIN_PROJECT_DESC" ]; then
+      PUB_DESC=$(grep -E '^description:' "$TARGET_DIR/pubspec.yaml" | head -n 1 | sed 's/^description:[[:space:]]*//' | tr -d '\r\n')
+      [ -n "$PUB_DESC" ] && DOMAIN_PROJECT_DESC="$PUB_DESC"
+    fi
+    [ -z "$DOMAIN_TECH_PROFILE" ] && DOMAIN_TECH_PROFILE="\`Flutter / Dart Embedded & Operator Console Profile\`"
+  fi
+
+  # 5. Check package.json (React / TypeScript Web)
+  if [ -f "$TARGET_DIR/package.json" ]; then
+    if [ -z "$DOMAIN_PROJECT_NAME" ]; then
+      PKG_NAME=$(python3 -c "import json; data=json.load(open('$TARGET_DIR/package.json')); print(data.get('name') or '')" 2>/dev/null || true)
+      [ -n "$PKG_NAME" ] && DOMAIN_PROJECT_NAME="$PKG_NAME"
+    fi
+    if [ -z "$DOMAIN_PROJECT_DESC" ]; then
+      PKG_DESC=$(python3 -c "import json; data=json.load(open('$TARGET_DIR/package.json')); print(data.get('description') or '')" 2>/dev/null || true)
+      [ -n "$PKG_DESC" ] && DOMAIN_PROJECT_DESC="$PKG_DESC"
+    fi
+    [ -z "$DOMAIN_TECH_PROFILE" ] && DOMAIN_TECH_PROFILE="\`React / TypeScript Web Operator Profile\`"
+  fi
+
+  # 6. Check pyproject.toml
+  if [ -f "$TARGET_DIR/pyproject.toml" ]; then
+    if [ -z "$DOMAIN_PROJECT_NAME" ]; then
+      PYP_NAME=$(grep -E '^name[[:space:]]*=' "$TARGET_DIR/pyproject.toml" | head -n 1 | sed -E 's/^name[[:space:]]*=[[:space:]]*["\x27]([^"\x27]+)["\x27]/\1/' | tr -d '\r\n')
+      if [ -n "$PYP_NAME" ] && [ "$PYP_NAME" != "deap01-spec-core" ]; then
+        DOMAIN_PROJECT_NAME="$PYP_NAME"
+      fi
+    fi
+  fi
+
+  # 7. Check active platform profile configuration
+  if [ -z "$DOMAIN_TECH_PROFILE" ]; then
+    if [ -f "$TARGET_DIR/.pipeline/profile_config.json" ]; then
+      CONF_PROF=$(python3 -c "import json; data=json.load(open('$TARGET_DIR/.pipeline/profile_config.json')); print(data.get('active_profile') or '')" 2>/dev/null || true)
+      [ -n "$CONF_PROF" ] && DOMAIN_TECH_PROFILE="\`$CONF_PROF\`"
+    elif [ -f "$TARGET_DIR/CMakeLists.txt" ] || [ -f "$TARGET_DIR/package.xml" ]; then
+      DOMAIN_TECH_PROFILE="\`ROS2 C++ Real-Time\` | \`Target Embedded Platform Execution Profile\`"
+    fi
+  fi
+
+  # Fallbacks if still empty
+  if [ -z "$DOMAIN_PROJECT_NAME" ]; then
+    DIR_BASE=$(basename "$(cd "$TARGET_DIR" 2>/dev/null && pwd || echo "$TARGET_DIR")")
+    if [ -n "$DIR_BASE" ] && [ "$DIR_BASE" != "." ] && [ "$DIR_BASE" != "/" ]; then
+      DOMAIN_PROJECT_NAME="$DIR_BASE"
+    else
+      DOMAIN_PROJECT_NAME="Downstream Cyber-Physical Infrastructure Safety Project"
+    fi
+  fi
+
+  if [ -z "$DOMAIN_PROJECT_DESC" ]; then
+    DOMAIN_PROJECT_DESC="This repository is an installed downstream implementation workspace governed by the **Digital Engineering Agent Platform (DEAP)** for cyber-physical infrastructure safety, real-time control, run-time assurance (RTA), and autonomous operations."
+  fi
+
+  if [ -z "$DOMAIN_TECH_PROFILE" ]; then
+    DOMAIN_TECH_PROFILE="\`ROS2 C++ Real-Time\` | \`Target Embedded Platform Execution Profile\`"
+  fi
+
+  if [ -z "$DOMAIN_REGULATORY" ]; then
+    DOMAIN_REGULATORY="\`JARUS SORA v2.5 (SAIL I–VI)\` | \`ASTM F3269-17 RTA\` | \`ASTM F3411-22a Remote ID\` | \`RTCA DO-365B DAA\`"
+  fi
+
+  if [ "$DOMAIN_PROJECT_NAME" = "Downstream Cyber-Physical Infrastructure Safety Project" ]; then
+    README_TITLE="# Downstream Cyber-Physical Infrastructure Safety Project"
+  else
+    README_TITLE="# ${DOMAIN_PROJECT_NAME} -- Downstream Cyber-Physical Infrastructure Safety Project"
+  fi
+
+  # Resolve domain repository git remote URL for customer onboarding instructions
+  DOMAIN_REMOTE_URL=""
+  if [ -n "$REMOTE_URL" ] && ! echo "$REMOTE_URL" | grep -q "DEAP01-spec-core"; then
+    DOMAIN_REMOTE_URL="$REMOTE_URL"
+  elif [ -n "$DETECTED_SERVER_URL" ] && [ -n "$DETECTED_NAMESPACE" ] && [ -n "$DETECTED_PROJECT" ] && [ "$DETECTED_PROJECT" != "DEAP01-spec-core" ]; then
+    DOMAIN_REMOTE_URL="${DETECTED_SERVER_URL}/${DETECTED_NAMESPACE}/${DETECTED_PROJECT}.git"
+  elif [ -n "$DETECTED_SERVER_URL" ] && [ -n "$DETECTED_NAMESPACE" ] && [ -n "$DOMAIN_PROJECT_NAME" ] && [ "$DOMAIN_PROJECT_NAME" != "Downstream Cyber-Physical Infrastructure Safety Project" ]; then
+    CLEAN_NAME=$(echo "$DOMAIN_PROJECT_NAME" | tr ' ' '-')
+    DOMAIN_REMOTE_URL="${DETECTED_SERVER_URL}/${DETECTED_NAMESPACE}/${CLEAN_NAME}.git"
+  elif [ ! -e "$INSTALLER_ROOT/.pipeline/upstream" ]; then
+    INSTALLER_REMOTE=$(git -C "$INSTALLER_ROOT" remote get-url origin 2>/dev/null || git -C "$INSTALLER_ROOT" config --get remote.origin.url 2>/dev/null || true)
+    if [ -n "$INSTALLER_REMOTE" ] && ! echo "$INSTALLER_REMOTE" | grep -q "DEAP01-spec-core"; then
+      DOMAIN_REMOTE_URL="$INSTALLER_REMOTE"
+    fi
+  fi
+
+  if [ -z "$DOMAIN_REMOTE_URL" ]; then
+    CLEAN_NAME=$(echo "${DOMAIN_PROJECT_NAME:-downstream-project}" | tr ' ' '-')
+    if [ "$PROVIDER" = "gitlab" ]; then
+      DOMAIN_REMOTE_URL="${GITLAB_URL:-https://gitlab.com}/${GITLAB_GROUP:-your-group}/${CLEAN_NAME}.git"
+    else
+      DOMAIN_REMOTE_URL="https://github.com/${GITHUB_ORG:-your-org}/${CLEAN_NAME}.git"
+    fi
+  fi
+
+  chmod u+w "$TARGET_DIR/README.md" 2>/dev/null || true
+  cat << EOF > "$TARGET_DIR/README.md"
+$README_TITLE
+
+> **Repository Role:** \`DOWNSTREAM_APPLICATION_WORKSPACE\`  
+> **Primary Technology Profiles:** $DOMAIN_TECH_PROFILE  
+> **Target Regulatory Frameworks:** $DOMAIN_REGULATORY  
 
 ---
 
 ## 1. System Overview
 
-This repository is an installed downstream implementation workspace governed by the **Digital Engineering Agent Platform (DEAP)** for cyber-physical infrastructure safety, real-time control, run-time assurance (RTA), and autonomous operations.
+$DOMAIN_PROJECT_DESC
 
 ### 1.1 Primary Commercial Toolchain Integration Context
 
@@ -523,30 +654,53 @@ This platform explicitly declares **MATLAB / Simulink / Stateflow / Embedded Cod
 
 ## 2. Pipeline Structure & Governance
 
-- `.agents/` & `AGENTS.md`: Agent behavior rules, role boundaries, and subagent dispatch protocols.
-- `CLAUDE.md`: Claude Code guidelines and verification gates.
-- `.pipeline/`: Constitution (`constitution.md`), domain specifications, and execution profiles (`profiles/ros2_cpp.md`, `profiles/px4_module.md`).
-- `rules/` & `skills/`: Platform engineering rules and agent workflow skills (including SysML v2 SSOT completeness in `rules/sysml-ssot-completeness.md`).
-- `schema/`: Contract definitions and SysML v2 schemas.
-- `tests/`: Automated baseline verification and safety compliance tests.
+- \`.agents/\` & \`AGENTS.md\`: Agent behavior rules, role boundaries, and subagent dispatch protocols.
+- \`CLAUDE.md\`: Claude Code guidelines and verification gates.
+- \`.pipeline/\`: Constitution (\`constitution.md\`), domain specifications, and execution profiles (\`profiles/ros2_cpp.md\`, \`profiles/px4_module.md\`).
+- \`rules/\` & \`skills/\`: Platform engineering rules and agent workflow skills (including SysML v2 SSOT completeness in \`rules/sysml-ssot-completeness.md\`).
+- \`schema/\`: Contract definitions and SysML v2 schemas.
+- \`tests/\`: Automated baseline verification and safety compliance tests.
 
 ---
 
-## 3. Mandatory Agent Initialization Sequence
+## 3. Customer Project Onboarding & Agent Initialization Sequence
+
+### 3.1 Turnkey Customer Project Onboarding
+
+To install this domain pipeline and its engineering baseline into an end-user customer application workspace, run the following turnkey command from your customer project root directory:
+
+\`\`\`bash
+# Onboard customer application workspace
+git clone ${DOMAIN_REMOTE_URL} ./.tmp-pipeline && bash ./.tmp-pipeline/scripts/install_pipeline.sh . && rm -rf ./.tmp-pipeline
+\`\`\`
+
+This single self-contained command operates strictly inside the customer project directory with zero sibling path dependencies.
+
+To update the pipeline and governance rules inside an existing project workspace at any time, run:
+
+\`\`\`bash
+# Update existing customer application workspace
+bash scripts/install_pipeline.sh .
+\`\`\`
+
+### 3.2 Mandatory Agent Initialization Sequence
 
 Immediately following installation, any AI agent (Antigravity, Claude Code, Gemini CLI, Cursor) initializing in this repository MUST execute the following sequence before accepting user directives or executing task implementations:
 
 0. **Detect Repository Role & Scope**:
-   - Inspect whether `.pipeline/upstream/` exists on disk.
+   - Inspect whether \`.pipeline/upstream/\` exists on disk.
    - If absent -> **Downstream Customer Project Mode**: Authorized for customer feature implementation and domain codebase delivery.
-1. **Read Governance Constitution**: Execute `view_file` on `.pipeline/constitution.md` to ingest the platform-independent functional governance layer and zero-mocking persistence mandates.
-2. **Load Project Skills**: Execute `view_file` on `skills/feature-driven-implementation/SKILL.md` (and any active skills under `skills/` or `.agents/skills/`) to initialize feature-driven implementation protocols and review gates.
-3. **Load Governance Rules**: Ingest `AGENTS.md` and `rules/` to enforce project-scoped agentic rules, context-isolated subagent dispatch loops, and role boundary locks.
-4. **Load Platform Profile**: Read the target platform execution profile (`.pipeline/profiles/flutter.md`, `.pipeline/profiles/react.md`, `.pipeline/profiles/ros2_cpp.md`, or `.pipeline/profiles/px4_module.md`) to establish platform-specific build, test, and lifecycle constraints.
-5. **Bootstrap Tracker Labels & Verify Baseline**: Verify that repository issue tracker labels and baseline tests pass by running `pytest tests/` and `python3 scripts/verify_downstream_baseline.py --no-domain`.
+1. **Read Governance Constitution**: Execute \`view_file\` on \`.pipeline/constitution.md\` to ingest the platform-independent functional governance layer and zero-mocking persistence mandates.
+2. **Load Project Skills**: Execute \`view_file\` on \`skills/feature-driven-implementation/SKILL.md\` (and any active skills under \`skills/\` or \`.agents/skills/\`) to initialize feature-driven implementation protocols and review gates.
+3. **Load Governance Rules**: Ingest \`AGENTS.md\` and \`rules/\` to enforce project-scoped agentic rules, context-isolated subagent dispatch loops, and role boundary locks.
+4. **Load Platform Profile**: Read the target platform execution profile (\`.pipeline/profiles/flutter.md\`, \`.pipeline/profiles/react.md\`, \`.pipeline/profiles/ros2_cpp.md\`, or \`.pipeline/profiles/px4_module.md\`) to establish platform-specific build, test, and lifecycle constraints.
+5. **Bootstrap Tracker Labels & Verify Baseline**: Verify that repository issue tracker labels and baseline conformance pass by running \`python3 scripts/verify_downstream_baseline.py --no-domain\`.
 
 ---
 
+EOF
+
+  cat << 'EOF' >> "$TARGET_DIR/README.md"
 ## 4. Multi-Pipeline Operator Prompt Catalog & Autonomous Execution Workflows
 
 This catalog contains the complete, unabridged, copy-pasteable operator prompt suite for executing all stages of the Digital Engineering Agent Platform (DEAP) lifecycle across context-isolated subagents in Antigravity, Claude Code, Gemini CLI, Cursor, and Cascade.
@@ -555,7 +709,7 @@ This catalog contains the complete, unabridged, copy-pasteable operator prompt s
 
 ```mermaid
 flowchart LR
-    Step0["Step 0: SysML Model Ingestion & Compilation Gate (python3 scripts/compile_sysml.py --compile)"]
+    Step00["Step 0.0: Level 0 OEM Ground Truth Ingestion (sysmlv2_ingest.py)"] --> Step0["Step 0: SysML Model Ingestion & Compilation Gate (python3 scripts/compile_sysml.py --compile)"]
     Step0 -->|"Compiled AST"| Worker_0A["Worker 0A: CONOPS Synthesizer"]
     Worker_0A -->|"docs/conops/CONOPS.md"| Worker_0B["Worker 0B: STPA / FMECA Assurer"]
     Worker_0B -->|"docs/safety/STPA_MATRIX.md"| Step3["Step 3: Level 1C ICD Extraction & Level 2 Specifications"]
@@ -564,6 +718,50 @@ flowchart LR
 ### 4.2 Pipeline 0 Execution Prompts
 
 Execute the following prompts in sequence using context-isolated subagents to transform unstructured intent, operational scenarios, and interface schemas into formal CONOPS, STPA hazard matrices, and SysML v2 AST models:
+
+#### 4.2.0 Worker 00: OEM Prose / BOM Ingestion & Model Synthesis Prompt (Step 0.0)
+
+**Step 0.0 Entrypoint for Unstructured / Prose Customer Documentation:**
+For customer projects starting with unstructured OEM prose manuals, PDF documentation, markdown tables, or Bill of Materials (BOM) specifications, Worker 00 provides the sanctioned, deterministic entrypoint. Extracting OEM Bill of Materials (BOM) and physical parameters into `schema/extracted/` and synthesizing canonical SysML v2 textual models in `schema/model.sysml` (or `.pipeline/schema.sysml`) is fully authorized under Check 23 (Factual Grounding & Numeric Provenance Gate) and serves as the mandatory precursor to executing the Step 0 compilation gate (`python3 scripts/compile_sysml.py --compile`).
+
+```text
+Execute `view_file` on `skills/spec-orchestrator/SKILL.md` as your very first step before taking any action.
+
+Repository Classification: UPSTREAM_SPEC_CORE_COMPILER (or DOWNSTREAM_CUSTOMER_PROJECT depending on execution context)
+
+Role: Worker 00 -- OEM Prose / BOM Ingestion & Model Synthesizer (Step 0.0)
+
+Primary Commercial Toolchain Integration Context:
+This project explicitly declares MATLAB / Simulink / Stateflow / Embedded Coder as the Primary Tier-1 Commercial Toolchain Integration Context (Model-Based Design, Control Law Synthesis, DO-178C C/SPARK Ada code generation).
+
+Directive:
+Execute Level 0 OEM Ground Truth Ingestion and initial SysML v2 textual model synthesis for customer projects starting from unstructured OEM prose manuals, PDF documentation, markdown tables, or Bill of Materials (BOM) specifications:
+
+1. Unstructured & Semi-Structured Ingestion Scope:
+   - Ingest raw OEM technical documentation, flight/operating manuals, ICD tables, and BOM markdown tables located in `schema/` and `schema/extracted/`.
+   - Authorized Under Check 23: Extract physical parameters, component hierarchies, mass/power budgets, port/pin interfaces, and operational envelopes into machine-readable Markdown tables in `schema/extracted/` (e.g., `schema/extracted/oem_bom.md`, `schema/extracted/interface_table.md`, `schema/extracted/parametric_limits.md`).
+
+2. Canonical SysML v2 Model Synthesis:
+   - Execute the Level 0 ingestion translator:
+     python3 skills/spec-orchestrator/scripts/sysmlv2_ingest.py --schema "schema/extracted/" --format markdown --out "schema/model.sysml"
+   - Alternatively, synthesize a formal SysML v2 textual model `schema/model.sysml` directly, defining:
+     * Root `package` matching the target cyber-physical system.
+     * All component definitions as canonical `part def` elements with typed attributes (mass, power, dimensions, channel count, part numbers).
+     * Directional communication and electrical interface boundaries as `port def` elements (`in`, `out`, `inout`).
+     * Physical, environmental, and operational constraints as `constraint def` / `assert constraint` blocks.
+     * State machine structures and operational lifecycle phases as `state def` elements.
+
+3. Compilation Gate Precursor Verification:
+   - Verify that the generated `schema/model.sysml` passes the Step 0 SysML Compilation Gate:
+     python3 scripts/compile_sysml.py --compile
+   - Ensure `.pipeline/schema.sysml` and `.pipeline/schema-digest.json` are successfully generated without compilation errors.
+   - Verify Check 23 compliance (Factual Grounding & Numeric Provenance Gate): all physical parameters and component counts in `schema/model.sysml` strictly match the Level 0 OEM ground truth in `schema/extracted/`.
+
+Defect Filing Directive:
+If any compiler fault, schema inconsistency, or invariant violation is discovered, you are strictly forbidden from filing raw issues directly. You MUST dispatch a fresh context-isolated subagent with `skills/adversarial-code-auditor/SKILL.md` to perform the 5-pillar audit, generate the verified 7-section defect dossier, and submit it via `python3 scripts/file_defect.py`. Issue auto-closing keywords or issue close commands are strictly forbidden.
+
+PROCEED
+```
 
 #### 4.2.1 Worker 0A: CONOPS & Operational Scenario Synthesis Prompt
 
@@ -578,13 +776,13 @@ Primary Commercial Toolchain Integration Context:
 This project explicitly declares MATLAB / Simulink / Stateflow / Embedded Coder as the Primary Tier-1 Commercial Toolchain Integration Context (Model-Based Design, Control Law Synthesis, DO-178C C/SPARK Ada code generation).
 
 Directive:
-Execute front-end CONOPS synthesis for the target cyber-physical system using Universal Multi-Document & Schema Ingestion:
+Execute front-end modular CONOPS and Tactical Mission Intent synthesis for the target cyber-physical system using Universal Multi-Document & Schema Ingestion:
 
-1. Universal Multi-Document & Schema Discovery:
-   - Operational Intent Discovery: Scan `docs/conops/` for all mission/operational intent markdown files (`*.md`, excluding `README.md`). If present, ingest all as authoritative operational specifications. If `docs/conops/` contains no intent files, ingest prompt directives and auto-persist `docs/conops/MISSION_INTENT.md`.
-   - Interface & Model Schema Ingestion: Scan `schema/` for pre-existing customer models and interface definitions (`*.sysml`, `*.proto`, `*.arxml`, `*.json`, `*.yaml`, `*.idl`). Ingest all port types, message structures, and subsystem definitions into the operational context.
-   - Architectural Blueprint Ingestion: Scan `docs/architecture/` (and `docs/architecture/blueprints/`) for existing architectural specifications, network blueprints, and safety frameworks (`*.md`). Ingest all system boundaries, subsystem mappings, and commercial toolchain hooks.
-   - Reconcile customer interface schemas and architectural blueprints with system boundaries and MATLAB / Simulink / Stateflow control law synthesis hooks.
+1. Ingestion & Pre-Flight Analysis:
+   - Ingest Normative Research Baselines: Ingest `docs/research/RESEARCH_INVENTORY.md` and `docs/research/FAILURE_MODE_REGISTRY.md` to map allocated obligations (`OBL-*`) and component failure modes.
+   - Interface & Model Schema Ingestion: Ingest canonical SysML v2 AST model (`.pipeline/schema.sysml`), `schema/`, and `.pipeline/schema-digest.json`. Enforce 100% representation of declared `part def` nodes in Section 4 physical architecture. Scan `schema/` for pre-existing customer models and interface definitions (`*.sysml`, `*.proto`, `*.arxml`, `*.json`, `*.yaml`, `*.idl`).
+   - Architectural Blueprint Ingestion: Scan `docs/architecture/` (and `docs/architecture/blueprints/`) for existing architectural specifications, network blueprints, and safety frameworks (`*.md`). Reconcile customer interface schemas and architectural blueprints with system boundaries and MATLAB / Simulink / Stateflow control law synthesis hooks.
+   - Operational Intent Discovery: Ingest mission directives, operational purpose statements, and domain operational boundaries.
 
 2. Ingestion & Analysis Scope:
    - Schema-derived operational envelope (physical boundaries, operating dynamics, environmental constraints, payload/actuator configurations).
@@ -592,12 +790,22 @@ Execute front-end CONOPS synthesis for the target cyber-physical system using Un
    - Dynamic stakeholder roles derived from the system operational context (e.g., System Operators, Dispatchers/Supervisors, Field Maintenance Technicians, External Management/Telemetry Interfaces).
    - Domain-specific regulatory and safety classification relevant to the operational envelope.
 
-3. Output Requirements:
-   - Persist/validate `docs/conops/MISSION_INTENT.md` under `docs/conops/MISSION_INTENT.md` (if operating from prompt fallback or validating canonical format).
-   - Generate `CONOPS.md` under `docs/conops/CONOPS.md` integrating all discovered intent, schema, and architectural constraints.
+3. Modular Deliverable Generation:
+   - Do NOT draft monolithic files directly. Author modular units conforming to JSON Schema contracts under:
+     * `docs/conops/units/conops/`: 12 canonical units (`01_METADATA_AND_OVERVIEW.md` through `12_EMERGENCY_DECISION_MATRIX.md`), including decoupled 3-tier architecture in `04_SYSTEM_ARCHITECTURE.md`.
+     * `docs/conops/units/mission_intent/`: 10 canonical units (`01_COMMANDERS_INTENT.md` through `10_OPERATIONAL_ALLOCATION_TAGS.md`), including operational `06_ROE_SAFETY_INTERLOCKS.md` and tactical `08_GO_NO_GO_MATRIX.md`.
    - Ensure clear operational phase boundaries, system physical and functional boundaries, and environmental envelope constraints.
    - Include MATLAB / Simulink / Stateflow model integration baseline hooks for downstream control law synthesis.
+   - Relative Link Mandate: Intra-document and schema links must use valid file-relative paths (`../../schema/...`, `../<dir>/...`).
    - KaTeX / LaTeX Math Formatting Mandate: All multi-line aligned equations MUST be enclosed in `\begin{aligned} ... \end{aligned}` within `$$` delimiters on dedicated lines. Bare alignment tabs `&` outside an alignment environment (`aligned`, `matrix`, `cases`) and `\begin{align*}` environments are strictly forbidden. Markdown Table Math Prohibition Rule: Strictly ban `$ ... $` and `$$ ... $$` LaTeX math delimiters inside table headers, rows, and cells; plain text and Unicode (e.g. `Initial S`, `ΔV`, `λ`, `°C`, `≥`, `≤`, `→`, `10⁻⁶`) must be used instead, with 1:1 column count match between header and delimiter rows.
+
+4. Assembly & Verification Gates:
+   - Execute deterministic assembly: `python3 scripts/assemble_conops.py --input-dir docs/conops/units/ --output-dir docs/conops/ --verify`.
+   - Compile master specification documents: `python3 scripts/assemble_conops.py --input-dir docs/conops/units/ --output-dir docs/conops/`.
+   - Gate 26 Validation: Execute `python3 -m unittest tests.test_conops_and_mission_intent_validators`.
+
+Defect Filing Directive:
+If any compiler fault, schema inconsistency, or invariant violation is discovered, you are strictly forbidden from filing raw issues directly. You MUST dispatch a fresh context-isolated subagent with `skills/adversarial-code-auditor/SKILL.md` to perform the 5-pillar audit, generate the verified 7-section defect dossier, and submit it via `python3 scripts/file_defect.py`. Issue auto-closing keywords or issue close commands are strictly forbidden.
 
 PROCEED
 ```
@@ -850,7 +1058,7 @@ Execute backlog reconciliation and model parity verification across your target 
 
 #### 4.4.2 Option B: GitLab Self-Managed / SCIF Air-Gapped Reconciliation
 ```bash
-./scripts/reconcile_backlog.py --provider gitlab --gitlab-url https://gitlab.internal.defense.gov --project <group>/<project>
+./scripts/reconcile_backlog.py --provider gitlab --gitlab-url https://gitlab.internal.defense.gov --project uas-safety/uav-010
 ```
 
 #### 4.4.3 Option C: GitHub Issues Reconciliation
@@ -988,272 +1196,9 @@ docs/reports/simulink_results/
 Execute baseline and safety governance verification:
 
 ```bash
-# Run baseline tests
-python3 -m pytest tests/
-
 # Run downstream conformance gate
 python3 scripts/verify_downstream_baseline.py --no-domain
 ```
-EOF
-fi
-
-if [ ! -f "$TARGET_DIR/tests/test_baseline.py" ]; then
-  cat << 'EOF' > "$TARGET_DIR/tests/test_baseline.py"
-"""
-Downstream Environment & Runtime Integrity Verification Suite.
-/// Realises: [BaselineVerification]
-"""
-import sys
-import os
-import re
-import subprocess
-import tempfile
-import pytest
-
-def test_python_runtime_environment():
-    """Verify Python runtime version and core interpreter executable exist and function."""
-    assert sys.version_info >= (3, 8), f"Python version {sys.version} is below required 3.8+"
-    assert os.path.exists(sys.executable), "Python interpreter path invalid"
-
-def test_disk_io_and_permissions():
-    """Verify local file system read, write, and permission capabilities."""
-    with tempfile.NamedTemporaryFile(mode="w+", delete=True) as temp_file:
-        test_payload = "DEAP_ENVIRONMENT_INTEGRITY_CHECK_PAYLOAD_2026"
-        temp_file.write(test_payload)
-        temp_file.seek(0)
-        read_back = temp_file.read()
-        assert read_back == test_payload, "Disk I/O payload mismatch during environment validation"
-
-def test_schema_directory_accessible():
-    """Verify schema directory exists and is accessible for domain specification contracts."""
-    schema_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "schema")
-    assert os.path.isdir(schema_dir) or os.path.isdir("schema"), "Schema directory missing or inaccessible"
-
-def test_latex_katex_integrity():
-    """Verify KaTeX / LaTeX mathematical rendering syntax across all markdown files.
-
-    Ensures:
-    - Balanced $$ math blocks
-    - No bare alignment operators & outside alignment environments (aligned, matrix, bmatrix, etc.)
-    - No forbidden \\begin{align} or \\begin{align*} in math blocks (\\begin{aligned} must be used)
-    - Balanced \\begin{aligned} and \\end{aligned} pairs
-    """
-    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    if not os.path.isdir(repo_root):
-        repo_root = os.getcwd()
-
-    excluded_dirs = {".git", "node_modules", ".dart_tool", "build"}
-    allowed_alignment_envs = {
-        "aligned", "alignedat", "matrix", "pmatrix", "bmatrix", "Bmatrix",
-        "vmatrix", "Vmatrix", "cases", "dcases", "rcases", "array",
-        "split", "gathered", "gather", "subarray", "smallmatrix"
-    }
-
-    errors = []
-    for root, dirs, files in os.walk(repo_root):
-        dirs[:] = [d for d in dirs if d not in excluded_dirs]
-        for f in files:
-            if not f.endswith(".md"):
-                continue
-            file_path = os.path.join(root, f)
-            rel_path = os.path.relpath(file_path, repo_root)
-            try:
-                with open(file_path, "r", encoding="utf-8") as md_file:
-                    content = md_file.read()
-            except Exception as e:
-                errors.append(f"Failed to read {rel_path}: {e}")
-                continue
-
-            cleaned = re.sub(r"```.*?```|~~~.*?~~~", "", content, flags=re.DOTALL)
-            cleaned = re.sub(r"`+.*?`+", "", cleaned)
-
-            # a. Validate balanced $$ math blocks
-            parts = cleaned.split("$$")
-            if (len(parts) - 1) % 2 != 0:
-                errors.append(f"Unbalanced $$ display math delimiters in {rel_path} (found {len(parts) - 1} delimiters).")
-                continue
-
-            # Check balanced \begin{aligned} and \end{aligned} globally in file
-            num_begin_aligned_all = len(re.findall(r"\\begin\{aligned\}", cleaned))
-            num_end_aligned_all = len(re.findall(r"\\end\{aligned\}", cleaned))
-            if num_begin_aligned_all != num_end_aligned_all:
-                errors.append(f"Unbalanced \\begin{{aligned}} ({num_begin_aligned_all}) and \\end{{aligned}} ({num_end_aligned_all}) pairs in {rel_path}.")
-
-            # Validate each display math block
-            for i in range(1, len(parts), 2):
-                block = parts[i]
-
-                # c. Detect top-level \begin{align} or \begin{align*}
-                if re.search(r"\\begin\{align\*?\}", block):
-                    errors.append(
-                        f"Forbidden \\begin{{align}} or \\begin{{align*}} found in display math block in {rel_path}. "
-                        f"In markdown KaTeX, \\begin{{aligned}} must be used instead."
-                    )
-
-                # d. Validate balanced \begin{aligned} and \end{aligned} pairs within the block
-                num_begin_aligned = len(re.findall(r"\\begin\{aligned\}", block))
-                num_end_aligned = len(re.findall(r"\\end\{aligned\}", block))
-                if num_begin_aligned != num_end_aligned:
-                    errors.append(
-                        f"Unbalanced \\begin{{aligned}} ({num_begin_aligned}) and \\end{{aligned}} ({num_end_aligned}) in math block in {rel_path}."
-                    )
-
-                # b. Detect bare alignment operators & outside alignment environments
-                token_pattern = re.compile(r"\\begin\{([a-zA-Z*]+)\}|\\end\{([a-zA-Z*]+)\}|\\&|&")
-                env_stack = []
-                for match in token_pattern.finditer(block):
-                    token = match.group(0)
-                    if token.startswith(r"\begin{"):
-                        env_stack.append(match.group(1))
-                    elif token.startswith(r"\end{"):
-                        end_name = match.group(2)
-                        if end_name in env_stack:
-                            while env_stack:
-                                popped = env_stack.pop()
-                                if popped == end_name:
-                                    break
-                    elif token == r"\&":
-                        continue
-                    elif token == "&":
-                        if not any(env in allowed_alignment_envs for env in env_stack):
-                            snippet = block[max(0, match.start() - 20):min(len(block), match.end() + 20)].strip().replace("\n", " ")
-                            errors.append(
-                                f"Bare alignment operator '&' outside alignment environment in {rel_path}: \"...{snippet}...\""
-                            )
-
-    assert not errors, "KaTeX / LaTeX mathematical syntax violations found:\n" + "\n".join(errors)
-
-def test_instructions_and_readme_accessible():
-    """Verify README.md and agent instruction entrypoints exist and are accessible."""
-    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    if not os.path.isdir(repo_root):
-        repo_root = os.getcwd()
-
-    readme_path = os.path.join(repo_root, "README.md")
-    assert os.path.isfile(readme_path), f"Root README.md missing in repository at {repo_root}"
-    assert os.path.getsize(readme_path) > 0, f"Root README.md is empty in repository at {repo_root}"
-
-    agent_entrypoints = [
-        os.path.join(repo_root, "AGENTS.md"),
-        os.path.join(repo_root, "CLAUDE.md"),
-        os.path.join(repo_root, ".agents", "AGENTS.md"),
-    ]
-    valid_entrypoints = [p for p in agent_entrypoints if os.path.isfile(p) and os.path.getsize(p) > 0]
-    assert len(valid_entrypoints) > 0, (
-        f"No non-empty agent instruction entrypoint found at {repo_root} "
-        f"(checked AGENTS.md, CLAUDE.md, .agents/AGENTS.md)"
-    )
-
-def test_reconcile_backlog_tooling_accessible():
-    """Verify scripts/reconcile_backlog.py exists, is executable, and runs to completion."""
-    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    if not os.path.isdir(repo_root):
-        repo_root = os.getcwd()
-
-    reconcile_path = os.path.join(repo_root, "scripts", "reconcile_backlog.py")
-    assert os.path.isfile(reconcile_path), f"scripts/reconcile_backlog.py missing at {repo_root}"
-    assert os.path.getsize(reconcile_path) > 0, f"scripts/reconcile_backlog.py is empty at {repo_root}"
-    assert os.access(reconcile_path, os.R_OK), f"scripts/reconcile_backlog.py is not readable at {repo_root}"
-
-    res = subprocess.run([sys.executable, reconcile_path], cwd=repo_root, capture_output=True, text=True, timeout=60)
-    assert res.returncode == 0, f"scripts/reconcile_backlog.py failed with exit code {res.returncode}:\nSTDOUT:\n{res.stdout}\nSTDERR:\n{res.stderr}"
-    assert "Traceback" not in res.stderr, f"scripts/reconcile_backlog.py produced unhandled exception:\n{res.stderr}"
-
-def test_sysml_ssot_completeness_rule_accessible():
-    """Verify rules/sysml-ssot-completeness.md exists, is non-empty, and satisfies governance requirements."""
-    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    if not os.path.isdir(repo_root):
-        repo_root = os.getcwd()
-
-    rule_path = os.path.join(repo_root, "rules", "sysml-ssot-completeness.md")
-    assert os.path.isfile(rule_path), f"rules/sysml-ssot-completeness.md missing at {repo_root}"
-    assert os.path.getsize(rule_path) > 0, f"rules/sysml-ssot-completeness.md is empty at {repo_root}"
-
-    with open(rule_path, "r", encoding="utf-8") as f:
-        content = f.read()
-
-    # Verify key architectural and governance markers
-    required_phrases = [
-        "SysML v2",
-        "Single Source of Truth",
-        "Primary Tier-1 Commercial Toolchain Integration Context",
-        "MATLAB / Simulink / Stateflow / Embedded Coder",
-        "use case def",
-        "requirement def",
-    ]
-    for phrase in required_phrases:
-        assert phrase in content, f"Missing required governance marker '{phrase}' in rules/sysml-ssot-completeness.md"
-
-def test_upstream_template_clean_landing_zones():
-    """Verify upstream template landing zones remain pristine with zero concrete specs.
-
-    If repository is an upstream template (.pipeline/upstream/ exists), asserts that
-    docs/conops/, docs/safety/, docs/epics/, docs/features/, docs/user-stories/,
-    docs/use-cases/, docs/management/, and schema/ contain only .gitkeep and README.md, and zero concrete
-    specification files or concrete .sysml domain models.
-    """
-    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    if not os.path.isdir(repo_root):
-        repo_root = os.getcwd()
-
-    upstream_marker = os.path.join(repo_root, ".pipeline", "upstream")
-    if not os.path.isdir(upstream_marker):
-        pytest.skip("Downstream project detected -- skipping upstream landing zone clean check.")
-
-    landing_zones = [
-        os.path.join("docs", "conops"),
-        os.path.join("docs", "safety"),
-        os.path.join("docs", "epics"),
-        os.path.join("docs", "features"),
-        os.path.join("docs", "user-stories"),
-        os.path.join("docs", "use-cases"),
-        os.path.join("docs", "management"),
-        "schema",
-    ]
-    allowed_files = {".gitkeep", "README.md"}
-    excluded_dirs = {".git", "node_modules", ".dart_tool", "build"}
-
-    violations = []
-    for zone in landing_zones:
-        zone_path = os.path.join(repo_root, zone)
-        if not os.path.isdir(zone_path):
-            continue
-        for root, dirs, files in os.walk(zone_path):
-            dirs[:] = [d for d in dirs if d not in excluded_dirs]
-            for f in files:
-                if f not in allowed_files:
-                    rel_path = os.path.relpath(os.path.join(root, f), repo_root)
-                    violations.append(rel_path)
-
-    assert not violations, (
-        f"Upstream distribution template landing zones contain concrete specification files: {violations}"
-    )
-
-
-def test_operator_prompt_catalog_accessible():
-    """Verify docs/OPERATOR_PROMPT_CATALOG.md exists, is non-empty, and contains headers for Pipeline 1 (Workers 1A-1D) and Pipeline 2."""
-    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    if not os.path.isdir(repo_root):
-        repo_root = os.getcwd()
-
-    catalog_path = os.path.join(repo_root, "docs", "OPERATOR_PROMPT_CATALOG.md")
-    assert os.path.isfile(catalog_path), f"docs/OPERATOR_PROMPT_CATALOG.md missing at {repo_root}"
-    assert os.path.getsize(catalog_path) > 0, f"docs/OPERATOR_PROMPT_CATALOG.md is empty at {repo_root}"
-
-    with open(catalog_path, "r", encoding="utf-8") as f:
-        content = f.read()
-
-    required_headers = [
-        "Pipeline 1",
-        "Worker 1A",
-        "Worker 1B",
-        "Worker 1C",
-        "Worker 1D",
-        "Pipeline 2",
-        "Synthesis Driver",
-    ]
-    for header in required_headers:
-        assert header in content, f"Missing required header/section '{header}' in docs/OPERATOR_PROMPT_CATALOG.md"
 EOF
 fi
 

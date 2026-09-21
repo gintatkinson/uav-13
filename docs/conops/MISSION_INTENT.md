@@ -21,16 +21,16 @@
 
 ## 1. Commander's Intent & Operational Objectives
 
-- **Operational Purpose:** The primary operational purpose of DEAP_Safety_Architecture (Cyber-Physical System) is to execute deterministic, autonomous operational tasks, real-time multi-modal state monitoring, and safety-critical boundary containment within designated Autonomous Operations environments, operating under verified High-Assurance Safety Baseline governance and resilient Multi-Tier C2 Telemetry Link communications.
+- **Operational Purpose:** The primary operational purpose of SYS-UAS-INFRA-01 (Cyber-Physical System) is to execute deterministic, autonomous operational tasks, real-time multi-modal state monitoring, and safety-critical boundary containment within designated Aviation Infrastructure & Critical Asset Inspection environments, operating under verified High-Assurance Safety Baseline governance and resilient Multi-Tier C2 Telemetry Link communications.
 - **Key Tasks:**
-  - Execute pre-operation Built-In-Test (BIT) self-diagnostics, calibration, and cryptographic link binding within $t_{\mathrm{PBIT}} \le \tau_{\text{PBIT\_max}}$ of power activation.
-  - Conduct autonomous transit along designated multi-dimensional state corridors while maintaining strict state boundary containment within $x_{\text{operating\_max}}$.
-  - Perform real-time multi-modal sensor processing and persistent state tracking over designated operational zones.
-  - Maintain continuous boundary deconfliction and separation minima from non-cooperative external entities.
-  - Stream encrypted system telemetry across the primary C2 link with automatic failover across alternate, contingency, and emergency PACE tiers.
-  - Enforce dual-consent cryptographic authorization and positive condition verification ($C_{\mathrm{condition}} \ge C_{\mathrm{threshold}}$) prior to executing high-consequence operational tasks.
-  - Continuously compute closed-loop dynamic resource state and execute autonomous return-to-base (RTB) or secondary divert routing upon reaching safety thresholds ($R(t) \le R_{\mathrm{threshold}}(t)$).
-  - Perform precision autonomous arrival, actuator safe locking, cryptographic data zeroization, and diagnostic log offloading.
+ - Execute pre-operation Built-In-Test (BIT) self-diagnostics, calibration, and cryptographic link binding within $t_{\mathrm{PBIT}} \le \tau_{\text{PBIT\_max}}$ of power activation.
+ - Conduct autonomous transit along designated multi-dimensional state corridors while maintaining strict state boundary containment within $x_{\text{operating\_max}}$.
+ - Perform real-time multi-modal sensor processing and persistent state tracking over designated operational zones.
+ - Maintain continuous boundary deconfliction and separation minima from non-cooperative external entities.
+ - Stream encrypted system telemetry across the primary C2 link with automatic failover across alternate, contingency, and emergency PACE tiers.
+ - Enforce dual-consent cryptographic authorization and positive condition verification ($C_{\mathrm{condition}} \ge C_{\mathrm{threshold}}$) prior to executing high-consequence operational tasks.
+ - Continuously compute closed-loop dynamic resource state and execute autonomous return-to-base (RTB) or secondary divert routing upon reaching safety thresholds ($R(t) \le R_{\mathrm{threshold}}(t)$).
+ - Perform precision autonomous arrival, actuator safe locking, cryptographic data zeroization, and diagnostic log offloading.
 - **End State:** All assigned operational corridor waypoints fully traversed and verified; zero unauthorized state boundary excursions; zero unmitigated collision or interference hazards; all state conditions positively identified and verified ($C_{\mathrm{condition}} \ge C_{\mathrm{threshold}}$); and successful recovery at the primary base or designated secondary divert recovery site with residual resources strictly satisfying $R_{\mathrm{reserve}} \ge \text{Ratio}_{\text{reserve\_min}} \cdot R_{\mathrm{capacity}}$.
 
 ### 1.1 Normative Baseline & Doctrinal Authority
@@ -253,40 +253,40 @@ In accordance with DoD Directive 3000.09 (Autonomy in Weapon Systems), NATO STAN
 ### 6.2 Rules of Engagement Roster & Logical Interlock Predicates
 
 - **ROE-01: Minimum Safe Terrain Clearance Interlock**
-  - **Rule Statement:** The system shall never execute autonomous descent below the declared minimum safe operating clearance ($h_{\mathrm{min}}$) without continuous radar altimeter ground clearance confirmation and active obstacle clearance buffer.
-  - **Interlock Condition:**
-    $$\mathrm{AllowDescent} \iff (h_{\mathrm{RadarAGL}} \ge h_{\mathrm{min}}) \land (\mathrm{ObstacleClearance} = \mathrm{TRUE}) \land (\mathbf{v}_{\mathrm{sink}} \le v_{\mathrm{max}})$$
-  - **Public Clause Citation:** NATO STANAG 4586 Annex B §3.2
+ - **Rule Statement:** The system shall never execute autonomous descent below the declared minimum safe operating clearance ($h_{\mathrm{min}}$) without continuous radar altimeter ground clearance confirmation and active obstacle clearance buffer.
+ - **Interlock Condition:**
+ $$\mathrm{AllowDescent} \iff (h_{\mathrm{RadarAGL}} \ge h_{\mathrm{min}}) \land (\mathrm{ObstacleClearance} = \mathrm{TRUE}) \land (\mathbf{v}_{\mathrm{sink}} \le v_{\mathrm{max}})$$
+ - **Public Clause Citation:** NATO STANAG 4586 Annex B §3.2
 
 - **ROE-02: Multi-Spectral Positive Identification (PID) Fusion**
-  - **Rule Statement:** Laser designation or high-priority kinetic track locking shall only occur when electro-optical (EO) and infrared (IR) feature correlation exceeds the normative confidence threshold ($C_{\mathrm{PID}} \ge C_{\mathrm{threshold}}$).
-  - **Interlock Condition:**
-    $$\mathrm{AllowDesignation} \iff (\mathrm{Score}_{\mathrm{EO}} \ge \mathrm{Score}_{\mathrm{min}}) \land (\mathrm{Score}_{\mathrm{IR}} \ge \mathrm{Score}_{\mathrm{min}}) \land (C_{\mathrm{PID}} \ge C_{\mathrm{threshold}})$$
-  - **Public Clause Citation:** NATO STANAG 4586 Annex B §3.5
+ - **Rule Statement:** Laser designation or high-priority kinetic track locking shall only occur when electro-optical (EO) and infrared (IR) feature correlation exceeds the normative confidence threshold ($C_{\mathrm{PID}} \ge C_{\mathrm{threshold}}$).
+ - **Interlock Condition:**
+ $$\mathrm{AllowDesignation} \iff (\mathrm{Score}_{\mathrm{EO}} \ge \mathrm{Score}_{\mathrm{min}}) \land (\mathrm{Score}_{\mathrm{IR}} \ge \mathrm{Score}_{\mathrm{min}}) \land (C_{\mathrm{PID}} \ge C_{\mathrm{threshold}})$$
+ - **Public Clause Citation:** NATO STANAG 4586 Annex B §3.5
 
 - **ROE-03: Dual-Consent Cryptographic Arming Interlock**
-  - **Rule Statement:** Payload arming sequence requires simultaneous cryptographic signature submission from Mission Commander (Key A) and Safety Officer (Key B) within a rolling validation window $\Delta t_{\mathrm{arm}}$.
-  - **Interlock Condition:**
-    $$\mathrm{SystemArmed} \iff \mathrm{VerifySig}(\mathrm{Key}_A) \land \mathrm{VerifySig}(\mathrm{Key}_B) \land (|t_A - t_B| \le \Delta t_{\mathrm{arm}}) \land (\mathrm{GeofenceStatus} = \mathrm{INSIDE})$$
-  - **Public Clause Citation:** DoD Directive 3000.09 §3.2
+ - **Rule Statement:** Payload arming sequence requires simultaneous cryptographic signature submission from Mission Commander (Key A) and Safety Officer (Key B) within a rolling validation window $\Delta t_{\mathrm{arm}}$.
+ - **Interlock Condition:**
+ $$\mathrm{SystemArmed} \iff \mathrm{VerifySig}(\mathrm{Key}_A) \land \mathrm{VerifySig}(\mathrm{Key}_B) \land (|t_A - t_B| \le \Delta t_{\mathrm{arm}}) \land (\mathrm{GeofenceStatus} = \mathrm{INSIDE})$$
+ - **Public Clause Citation:** DoD Directive 3000.09 §3.2
 
 - **ROE-04: Human-on-the-Loop (HOTL) Veto Authority Interlock**
-  - **Rule Statement:** The autonomous flight executor shall immediately abort mission tasks and enter safe orbit upon receipt of an authenticated HOTL veto command or upon operator veto timeout expiration ($\tau_{\mathrm{veto}}$).
-  - **Interlock Condition:**
-    $$\mathrm{ContinueMission} \iff (\mathrm{VetoReceived} = \mathrm{FALSE}) \land (\mathrm{Heartbeat}_{\mathrm{Operator}} \le \tau_{\mathrm{veto}})$$
-  - **Public Clause Citation:** DoD Directive 3000.09 §4.1
+ - **Rule Statement:** The autonomous flight executor shall immediately abort mission tasks and enter safe orbit upon receipt of an authenticated HOTL veto command or upon operator veto timeout expiration ($\tau_{\mathrm{veto}}$).
+ - **Interlock Condition:**
+ $$\mathrm{ContinueMission} \iff (\mathrm{VetoReceived} = \mathrm{FALSE}) \land (\mathrm{Heartbeat}_{\mathrm{Operator}} \le \tau_{\mathrm{veto}})$$
+ - **Public Clause Citation:** DoD Directive 3000.09 §4.1
 
 - **ROE-05: Non-Combatant & Protected Infrastructure Exclusion**
-  - **Rule Statement:** Automated sensor pointing and trajectory corridors must enforce a minimum standoff distance ($R_{\mathrm{CDA}}$) from all designated civilian structures, hospitals, and dynamic no-fly zones.
-  - **Interlock Condition:**
-    $$\mathrm{TargetValid} \iff \forall \mathbf{p}_{\mathrm{civilian}} \in \mathcal{Z}_{\mathrm{protected}}, \quad \|\mathbf{p}_{\mathrm{target}} - \mathbf{p}_{\mathrm{civilian}}\|_2 \ge R_{\mathrm{CDA}}$$
-  - **Public Clause Citation:** Geneva Conventions Additional Protocol I Art 57
+ - **Rule Statement:** Automated sensor pointing and trajectory corridors must enforce a minimum standoff distance ($R_{\mathrm{CDA}}$) from all designated civilian structures, hospitals, and dynamic no-fly zones.
+ - **Interlock Condition:**
+ $$\mathrm{TargetValid} \iff \forall \mathbf{p}_{\mathrm{civilian}} \in \mathcal{Z}_{\mathrm{protected}}, \quad \|\mathbf{p}_{\mathrm{target}} - \mathbf{p}_{\mathrm{civilian}}\|_2 \ge R_{\mathrm{CDA}}$$
+ - **Public Clause Citation:** Geneva Conventions Additional Protocol I Art 57
 
 - **ROE-06: Lost C2 Autonomous Weapon & Sensor Safing Interlock**
-  - **Rule Statement:** Upon declaration of a lost C2 link condition across all PACE communication tiers, all optical designating devices and active payloads shall immediately de-energize and lock into their mechanical stowed position.
-  - **Interlock Condition:**
-    $$(\mathrm{LinkStatus} = \mathrm{LOST}) \implies (\mathrm{PayloadState} := \mathrm{SAFE}) \land (\mathrm{EmitterPower} := 0.0) \land (\mathrm{GimbalState} := \mathrm{STOWED})$$
-  - **Public Clause Citation:** MIL-STD-882E §4.4
+ - **Rule Statement:** Upon declaration of a lost C2 link condition across all PACE communication tiers, all optical designating devices and active payloads shall immediately de-energize and lock into their mechanical stowed position.
+ - **Interlock Condition:**
+ $$(\mathrm{LinkStatus} = \mathrm{LOST}) \implies (\mathrm{PayloadState} := \mathrm{SAFE}) \land (\mathrm{EmitterPower} := 0.0) \land (\mathrm{GimbalState} := \mathrm{STOWED})$$
+ - **Public Clause Citation:** MIL-STD-882E §4.4
 
 ## 7. Airspace Deconfliction & U-space Dynamic Geo-Zones
 
@@ -296,9 +296,9 @@ In accordance with RTCA DO-365B, JARUS SORA v2.5 (Annex C), and EU Regulation 20
 - **3D Spatial Geometry:** The primary operational airspace is bounded by an authorized convex polygon defined by parameterized geodetic vertices $\{\mathbf{p}_{\mathrm{vertex},1}, \dots, \mathbf{p}_{\mathrm{vertex},N}\}$.
 - **Vertical Altitude Envelope:** Altitude floor $h_{\mathrm{floor}}$ up to operating ceiling $h_{\mathrm{ceiling}}$ (bounded by $h_{\mathrm{MSL}}$).
 - **Containment Buffers:**
-  - Lateral Containment Buffer: $d_{\mathrm{lateral}}$ inward margin along all perimeter boundaries.
-  - Vertical Containment Buffer: $d_{\mathrm{vertical}}$ downward margin below operational ceiling.
-  - Trigger Action: Reaching the containment buffer initiates immediate autonomous closed-loop turnaround heading commands.
+ - Lateral Containment Buffer: $d_{\mathrm{lateral}}$ inward margin along all perimeter boundaries.
+ - Vertical Containment Buffer: $d_{\mathrm{vertical}}$ downward margin below operational ceiling.
+ - Trigger Action: Reaching the containment buffer initiates immediate autonomous closed-loop turnaround heading commands.
 - **Public Clause Citation:** JARUS SORA v2.5 Annex B §2.1
 
 ---
