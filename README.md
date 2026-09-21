@@ -93,20 +93,20 @@ DEAP-uas-infrastructure-safety/
 │   └── skills -> ../skills        # Project skills symlink
 ├── .pipeline/
 │   ├── constitution.md            # Platform-independent functional safety governance tier
-│   ├── contracts/                 # Pipeline handoff contracts (e.g. pipeline0_handoff_contract.json)
+│   ├── contracts/                 # Pipeline handoff contracts such as pipeline0_handoff_contract.json
 │   ├── schema.sysml               # Synchronized canonical SysML v2 safety architecture model
-│   └── profiles/                  # Platform execution profiles (ros2_cpp.md, px4_module.md, etc.)
+│   └── profiles/                  # Platform execution profiles: ros2_cpp.md, px4_module.md
 ├── docs/
-│   ├── conops/                    # UAS Tactical Mission Intent & Concept of Operations (CONOPS.md, MISSION_INTENT.md)
-│   ├── safety/                    # 8-Pillar STPA Matrix, FMECA Criticality & SORA SAIL IV Assurance (STPA_MATRIX.md)
+│   ├── conops/                    # UAS Tactical Mission Intent and Concept of Operations: CONOPS.md, MISSION_INTENT.md
+│   ├── safety/                    # 8-Pillar STPA Matrix, FMECA Criticality and SORA SAIL IV Assurance: STPA_MATRIX.md
 │   ├── architecture/
-│   │   └── blueprints/            # Canonical architecture specifications & safety net blueprints
-│   ├── icd/                       # Interface Control Documents, Signal Dictionary & Port Matrices
-│   ├── epics/                     # Structural System Capabilities (Mermaid Class Diagrams)
-│   ├── features/                  # Behavioral Subsystem Specifications (Statecharts & Flowcharts)
+│   │   └── blueprints/            # Canonical architecture specifications and safety net blueprints
+│   ├── interfaces/                # Interface Control Documents, Signal Dictionary and Port Matrices
+│   ├── epics/                     # Structural System Capabilities and Mermaid Class Diagrams
+│   ├── features/                  # Behavioral Subsystem Specifications, Statecharts and Flowcharts
 │   ├── user-stories/              # BDD Gherkin Interaction Specifications & Verification Lifelines
 │   └── use-cases/                 # Operational Scenario Execution Sequences
-├── schema/                        # Domain SysML v2 Models (DEAP_MODEL.sysml) & Interface Schemas
+├── schema/                        # Domain SysML v2 Models: DEAP_MODEL.sysml and Interface Schemas
 ├── scripts/                       # Reconciler, SysML compiler, and baseline verification scripts
 ├── skills/                        # Multi-agent orchestrator & implementation skills
 ├── tests/                         # Application tests & UAS domain safety compliance test suite
@@ -140,73 +140,35 @@ The platform requires **Python 3.12+**, the configured tracker CLI (or native RE
 
 ### 5.2 Onboarding Quick-Start Guide (Turnkey Multi-Provider Installer)
 
-Run the turnkey automated installer script directly from your project root directory targeting your preferred VCS / issue tracker provider:
+Run the turnkey automated installer script directly from your target project directory:
 
-#### Option 1: GitHub Installation
+#### Remote Bootstrap One-Liner
+Run from inside the target project:
 ```bash
-# Turnkey install for GitHub-backed repositories
-bash scripts/install_pipeline.sh <target_dir> -p github
+git clone https://github.com/gintatkinson/DEAP-uas-infrastructure-safety.git /tmp/deap_uas && bash /tmp/deap_uas/scripts/install_pipeline.sh . && rm -rf /tmp/deap_uas
 ```
 
-#### Option 2: GitLab Installation (SaaS, Self-Hosted, or Air-Gapped)
+#### Sibling Bootstrap Command
 ```bash
-# Turnkey install for GitLab-backed repositories
-bash scripts/install_pipeline.sh <target_dir> -p gitlab --gitlab-group <group>
-
-# For custom self-hosted or air-gapped GitLab instances:
-bash scripts/install_pipeline.sh <target_dir> -p gitlab --gitlab-url https://gitlab.internal.defense.gov --gitlab-group <group>
+bash ../DEAP-uas-infrastructure-safety/scripts/install_pipeline.sh
 ```
 
-### 5.3 Direct Copy / Manual Setup
+#### In-Place Project Update
+```bash
+bash scripts/install_pipeline.sh
+```
 
-Alternatively, copy the pipeline directories and templates into your project repository manually:
+### 5.3 Direct Copy / Manual Bootstrap Setup
+
+Alternatively, clone to a temporary path, install into the target project, and remove the temporary clone:
 
 ```bash
-git clone https://github.com/gintatkinson/DEAP01-spec-core.git ./.tmp-pipeline
-rm -rf ./skills ./rules ./.pipeline ./.agents ./scripts ./schema ./tests
-cp -RP ./.tmp-pipeline/skills ./
-cp -RP ./.tmp-pipeline/rules ./
-cp -RP ./.tmp-pipeline/schema ./
-cp -RP ./.tmp-pipeline/.pipeline ./
-rm -rf ./.pipeline/upstream
-cp -RP ./.tmp-pipeline/.agents ./
-cp -RP ./.tmp-pipeline/scripts ./
-cp -RP ./.tmp-pipeline/tests ./
-if [ ! -f ./README.md ]; then
-  if [ -f ./.tmp-pipeline/README.md ]; then
-    cp ./.tmp-pipeline/README.md ./
-  fi
+git clone https://github.com/gintatkinson/DEAP-uas-infrastructure-safety.git /tmp/deap_uas
+if [ ! -d ./schema ]; then
+  cp -RP /tmp/deap_uas/schema ./
 fi
-# For GitLab Projects:
-if [ -f ./.tmp-pipeline/.pipeline/templates/.gitlab-ci.yml ]; then
-  cp ./.tmp-pipeline/.pipeline/templates/.gitlab-ci.yml ./.gitlab-ci.yml
-fi
-if [ -f ./.gitignore ]; then
-  cat ./.tmp-pipeline/.gitignore >> ./.gitignore
-else
-  cp ./.tmp-pipeline/.gitignore ./
-fi
-rm -rf ./.tmp-pipeline
-find . -name ".DS_Store" -delete 2>/dev/null || true
-mkdir -p ./docs/conops ./docs/safety ./docs/architecture/blueprints ./docs/icd ./docs/epics ./docs/features ./docs/user-stories ./docs/use-cases ./.pipeline/contracts ./.pipeline/profiles
-
-# Verify pipeline directories, agent configuration, and skills
-test -d ./.pipeline && test -d ./skills && test -d ./.agents/skills && echo "Pipeline directories (.pipeline, skills, .agents/skills) verified successfully."
-
-# Configure for GitLab (if applicable)
-python3 -c "
-import json, os
-p = '.pipeline/codebase_rules.json' if os.path.exists('.pipeline') else 'codebase_rules.json'
-try:
-  with open(p, 'r') as f: d = json.load(f)
-except Exception: d = {}
-d.setdefault('tracker_rules', {})['provider'] = 'gitlab'
-d['tracker_rules']['labels'] = {'epic':'type::epic','feature':'type::feature','user_story':'type::user-story','use_case':'type::use-case','ready_for_review':'status::ready-for-review','resolved':'status::fixed-resolved'}
-with open(p, 'w') as f: json.dump(d, f, indent=2)
-"
-
-python3 scripts/setup_git_hooks.py --install
-python3 skills/spec-orchestrator/scripts/bootstrap_tracker_labels.py
+bash /tmp/deap_uas/scripts/install_pipeline.sh .
+rm -rf /tmp/deap_uas
 ```
 
 ### 5.4 Setup for Google Antigravity / Gemini CLI
@@ -305,7 +267,7 @@ The DEAP platform features a unified, zero-dependency **Tracker Abstraction Arch
 The backlog reconciliation engine synchronizes markdown specifications (`docs/epics/`, `docs/features/`, `docs/user-stories/`, `docs/use-cases/`) with remote issue trackers:
 
 ```bash
-# Reconcile against GitHub Issues (default)
+# Reconcile against GitHub Issues
 python3 scripts/reconcile_backlog.py --provider github
 
 # Reconcile against GitLab Issues
@@ -314,7 +276,7 @@ python3 scripts/reconcile_backlog.py --provider gitlab
 # Reconcile against Self-Hosted / Air-Gapped GitLab Instance
 python3 scripts/reconcile_backlog.py --provider gitlab --gitlab-url https://gitlab.internal.defense.gov
 
-# Perform Offline Reconciliation (No remote mutation)
+# Perform Offline Reconciliation without remote mutation
 python3 scripts/reconcile_backlog.py --provider gitlab --offline
 ```
 
@@ -748,7 +710,7 @@ Execute backlog reconciliation and model parity verification across your target 
 
 #### 9.3.2 Option B: GitLab Self-Managed / SCIF Air-Gapped Reconciliation
 ```bash
-./scripts/reconcile_backlog.py --provider gitlab --gitlab-url https://gitlab.internal.defense.gov --project <group>/<project>
+./scripts/reconcile_backlog.py --provider gitlab --gitlab-url https://gitlab.internal.defense.gov --project group/project
 ```
 
 #### 9.3.3 Option C: GitHub Issues Reconciliation
@@ -887,7 +849,7 @@ Run the automated verification suite before every commit and pull/merge request 
 # Execute full unit and integration test suites
 python3 -m unittest discover tests
 
-# Execute downstream baseline conformance gate (Checks 10–19)
+# Execute downstream baseline conformance gate Checks 10-19
 python3 scripts/verify_downstream_baseline.py
 ```
 
