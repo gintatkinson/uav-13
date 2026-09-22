@@ -1,6 +1,6 @@
-# Digital Engineering Agent Platform (DEAP) — Tactical UAS & Infrastructure Safety Platform -- Downstream Cyber-Physical Infrastructure Safety Project
+# DEAP-uas-infrastructure-safety -- Downstream Cyber-Physical Infrastructure Safety Project
 
-> **Repository Role:** `DOWNSTREAM_APPLICATION_WORKSPACE`  
+> **Repository Role:** `DOMAIN_DISTRIBUTION_TEMPLATE`  
 > **Primary Technology Profiles:** `ROS2 C++ Real-Time` | `Target Embedded Platform Execution Profile`  
 > **Target Regulatory Frameworks:** `JARUS SORA v2.5 (SAIL I–VI)` | `ASTM F3269-17 RTA` | `ASTM F3411-22a Remote ID` | `RTCA DO-365B DAA`  
 
@@ -10,7 +10,11 @@
 
 This repository is an installed downstream implementation workspace governed by the **Digital Engineering Agent Platform (DEAP)** for cyber-physical infrastructure safety, real-time control, run-time assurance (RTA), and autonomous operations.
 
-### 1.1 Primary Commercial Toolchain Integration Context
+### 1.1 Clean Landing Zone Invariant
+
+As a **Tier 1 Domain Distribution Template**, this repository maintains pristine, clean landing zones in `schema/`, `docs/epics/`, `docs/features/`, `docs/user-stories/`, and `docs/use-cases/` with only `.gitkeep` files (or domain-wide baseline SysML v2 schemas). Concrete customer project specifications, flight code, ROS2 nodes, and proprietary implementation artifacts belong exclusively in downstream customer application workspaces and must NOT be committed here.
+
+### 1.2 Primary Commercial Toolchain Integration Context
 
 This platform explicitly declares **MATLAB / Simulink / Stateflow / Embedded Coder** as the Primary Tier-1 Commercial Toolchain Integration Context (Model-Based Design, Control Law Synthesis, DO-178C C/SPARK Ada code generation).
 
@@ -40,10 +44,10 @@ git clone https://github.com/gintatkinson/DEAP-uas-infrastructure-safety.git ./.
 
 This single self-contained command operates strictly inside the customer project directory with zero sibling path dependencies.
 
-To update the pipeline and governance rules inside an existing project workspace at any time, run:
+To update the pipeline and governance rules inside this domain distribution template at any time, run:
 
 ```bash
-# Update existing customer application workspace
+# Update domain distribution template tooling in-place
 bash scripts/install_pipeline.sh .
 ```
 
@@ -53,7 +57,7 @@ Immediately following installation, any AI agent (Antigravity, Claude Code, Gemi
 
 0. **Detect Repository Role & Scope**:
    - Inspect whether `.pipeline/upstream/` exists on disk.
-   - If absent -> **Downstream Customer Project Mode**: Authorized for customer feature implementation and domain codebase delivery.
+   - If absent and repository name starts with `DEAP-` -> **Domain Distribution Template Mode**: Clean landing zones must be maintained.
 1. **Read Governance Constitution**: Execute `view_file` on `.pipeline/constitution.md` to ingest the platform-independent functional governance layer and zero-mocking persistence mandates.
 2. **Load Project Skills**: Execute `view_file` on `skills/feature-driven-implementation/SKILL.md` (and any active skills under `skills/` or `.agents/skills/`) to initialize feature-driven implementation protocols and review gates.
 3. **Load Governance Rules**: Ingest `AGENTS.md` and `rules/` to enforce project-scoped agentic rules, context-isolated subagent dispatch loops, and role boundary locks.
