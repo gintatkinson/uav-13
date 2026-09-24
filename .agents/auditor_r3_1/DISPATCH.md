@@ -1,29 +1,26 @@
-## 2026-09-21T11:57:26Z
-
-Execute `view_file` on `/Users/perkunas/jail/DEAP01-spec-core/skills/feature-driven-implementation/SKILL.md` as your very first step before executing any file edits or commands, and strictly follow its formatting templates and instruction guidelines.
+## 2026-09-24T15:54:39Z
+Execute `view_file` on `/Users/perkunas/jail/DEAP01-spec-core/skills/adversarial-code-auditor/SKILL.md` as your very first step before executing any file edits or commands, and strictly follow its formatting templates and instruction guidelines.
 
 Repository Classification: UPSTREAM_SPEC_CORE_COMPILER
 Primary Commercial Toolchain Integration Context: MATLAB / Simulink / Stateflow / Embedded Coder
 
-You are Auditor R3_1. Your working directory is `/Users/perkunas/jail/DEAP01-spec-core/.agents/auditor_r3_1`.
-You are a forensic integrity auditor. You MUST NOT modify any codebase or specification files. Write your progress and final handoff report to: `/Users/perkunas/jail/DEAP01-spec-core/.agents/auditor_r3_1/progress.md` and `/Users/perkunas/jail/DEAP01-spec-core/.agents/auditor_r3_1/handoff.md`.
+You are the Forensic Auditor. Your working directory is `/Users/perkunas/jail/DEAP01-spec-core/.agents/auditor_r3_1`.
+Your role is to perform forensic integrity verification of all changes made for Issue #368 in `scripts/install_pipeline.sh` and `tests/test_readme_scaffolding.py`.
 
-Context & Objectives:
-Perform a comprehensive forensic integrity audit on all changes made across Iterations 1, 2, and 3:
-- Modified files:
-  - `README.md`
-  - `scripts/install_pipeline.sh`
-  - `scripts/scaffold_downstream_agents.py`
-  - `skills/spec-orchestrator/parity_auditor/src/parity_auditor/validators/factual_grounding_validator.py`
-  - `docs/OPERATOR_PROMPT_CATALOG.md`
+References to read:
+- `/Users/perkunas/jail/DEAP01-spec-core/.agents/ORIGINAL_REQUEST.md` (header ## 2026-09-24T15:26:00Z)
+- `/Users/perkunas/jail/DEAP01-spec-core/implementation_plan.md`
+- `/Users/perkunas/jail/DEAP01-spec-core/.agents/worker_r3/handoff.md`
+- `git diff` against origin/main
 
-Perform Forensic Checks:
-1. Check 1 (Static Analysis for Cheating Signatures): Scan git diff for hardcoded test results, dummy flags, facade functions, or test bypassing.
-2. Check 2 (AST & Function Verification): Verify that `factual_grounding_validator.py` and `install_pipeline.sh` contain authentic, genuine logic.
-3. Check 3 (Clean Landing Zone Invariant): Verify that `schema/`, `docs/epics/`, `docs/features/`, `docs/user-stories/`, `docs/use-cases/` in `DEAP01-spec-core` contain ONLY `.gitkeep` files.
-4. Check 4 (Markdown Code Fence Integrity): Verify 0 unescaped parentheses in comments and 0 unquoted angle brackets `<...>` in shell code blocks.
-5. Check 5 (Baseline Conformance): Run `python3 scripts/verify_downstream_baseline.py --no-domain` and verify all 30 checks pass cleanly with exit code 0.
-
-Write your verdict (CLEAN or INTEGRITY VIOLATION) in `/Users/perkunas/jail/DEAP01-spec-core/.agents/auditor_r3_1/handoff.md`, send a message to parent, and finish.
+Forensic Integrity Verification:
+1. Hardcoded Result Detection: Verify that tests in `tests/test_readme_scaffolding.py` genuinely test installer outputs, rather than hardcoding static return values or mocking out execution.
+2. Dummy/Facade Implementation Detection: Verify that `scripts/install_pipeline.sh` genuinely iterates through all `rules/*.md`, extracts actual filenames and titles, and bundles unabridged rule contents.
+3. Verification Circumvention: Ensure no baseline verification checks in `scripts/verify_downstream_baseline.py` were bypassed, disabled, or weakened.
+4. Clean Landing Zone Compliance: Verify that upstream landing zones (`schema/`, `docs/epics/`, `docs/features/`, `docs/user-stories/`, `docs/use-cases/`) remain clean with only `.gitkeep`.
+5. Non-Closure Commit Citation: Verify any commit messages or issue citations use neutral references `(#368)` and never auto-closing keywords.
+6. If defects or integrity violations are discovered, file corresponding defect reports via `gh issue create` and `glab issue create` if online/authenticated, and report INTEGRITY VIOLATION.
+7. If all checks pass with zero violations, report CLEAN.
+8. Write your forensic audit report to `/Users/perkunas/jail/DEAP01-spec-core/.agents/auditor_r3_1/handoff.md`, send message to parent orchestrator with your verdict.
 
 PROCEED

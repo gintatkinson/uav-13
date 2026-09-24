@@ -1,7 +1,7 @@
-# BRIEFING — 2026-09-21T15:00:30+03:00
+# BRIEFING — 2026-09-24T19:01:00+03:00
 
 ## Mission
-Review remediation applied by Worker R3_1 for Challenger R2_2 downstream Check 23 finding.
+Independent review and adversarial verification of active rule bundling and prompt catalog overhaul in `scripts/install_pipeline.sh` and `tests/test_readme_scaffolding.py` for Issue #368.
 
 ## 🔒 My Identity
 - Archetype: reviewer_and_adversarial_critic
@@ -10,6 +10,9 @@ Review remediation applied by Worker R3_1 for Challenger R2_2 downstream Check 2
 - Original parent: f3cf7ab0-b3f5-46dd-b0c6-a615bbe571ed
 - Milestone: milestone_r3_review
 - Instance: 1 of 1
+- Current parent: 761cfc49-ac4f-42a5-9c57-113db68ccf54
+- Current milestone: issue_368_review
+- Current instance: 1 of 1
 
 ## 🔒 Key Constraints
 - Review-only — do NOT modify implementation code or specification files
@@ -17,38 +20,45 @@ Review remediation applied by Worker R3_1 for Challenger R2_2 downstream Check 2
 - Write only to /Users/perkunas/jail/DEAP01-spec-core/.agents/reviewer_r3_1
 
 ## Current Parent
-- Conversation ID: f3cf7ab0-b3f5-46dd-b0c6-a615bbe571ed
-- Updated: 2026-09-21T15:00:30+03:00
+- Conversation ID: 761cfc49-ac4f-42a5-9c57-113db68ccf54
+- Updated: 2026-09-24T19:01:00+03:00
 
 ## Review Scope
 - **Files to review**:
-  - `skills/spec-orchestrator/parity_auditor/src/parity_auditor/validators/factual_grounding_validator.py`
-  - `docs/OPERATOR_PROMPT_CATALOG.md`
-- **Interface contracts**: PROJECT.md / downstream verification baseline
-- **Review criteria**: Correctness, integrity, regression testing, syntax, code block formatting
+  - `scripts/install_pipeline.sh`
+  - `tests/test_readme_scaffolding.py`
+  - `.pipeline/ACTIVE_RULES_BUNDLE.md`
+  - Generated downstream README.md files
+- **Interface contracts**: PROJECT.md / downstream verification baseline / Issue #368 requirements
+- **Review criteria**: Correctness, integrity, regression testing, syntax, rule coverage completeness, prompt catalog hygiene
 
 ## Review Checklist
 - **Items reviewed**:
-  - `factual_grounding_validator.py` exclusion logic: VERIFIED
-  - `docs/OPERATOR_PROMPT_CATALOG.md` line 216 rewording: VERIFIED
-  - Python syntax py_compile: PASSED
-  - Unit test suite (39 tests): PASSED
-  - Upstream baseline gate verify_downstream_baseline.py: PASSED
-  - Downstream Tier 1 & Tier 2 reproduction with SysML models: PASSED
-  - Code block formatting (parentheses/fences): PASSED
+  - `scripts/install_pipeline.sh` rule bundling logic: VERIFIED
+  - `.pipeline/ACTIVE_RULES_BUNDLE.md` completeness & formatting: VERIFIED (100% of 20 rules match)
+  - Downstream README Step 3 update: VERIFIED
+  - Downstream prompt templates in Section 4: VERIFIED
+  - Removal of isolated rule subsets (`rules/sysml-ssot-completeness.md`, `rules/dual-track-mbd-verification.md`): VERIFIED
+  - `tests/test_readme_scaffolding.py` (24 tests): PASSED
+  - `scripts/verify_downstream_baseline.py --no-domain`: PASSED
+  - `bash -n scripts/install_pipeline.sh`: PASSED
 - **Verdict**: APPROVE
 - **Unverified claims**: None
 
 ## Attack Surface
 - **Hypotheses tested**:
-  - Exclusion bypassing real spec fraud: TESTED (specs still strictly audited, fraud detected)
-  - Unescaped parentheses in prompt catalog code blocks: TESTED (0 unescaped parentheses found)
-  - SysML models in downstream domain/customer repos: TESTED (Check 23 passes cleanly in both tiers)
-- **Vulnerabilities found**: None
+  - Incomplete or corrupted rule bundle: TESTED (0 missing rules, 0 content mismatches across 20 active rules)
+  - Broken anchor resolution: TESTED (4 slug/stem variations generated per rule)
+  - In-place upgrade idempotence: TESTED (identical content across repeated installations)
+  - Prompt shortcutting or partial rule pointers: TESTED (clean grep across install script and generated READMEs)
+  - Edge cases in installer execution: TESTED (tested both domain-template and customer-project roles in /tmp)
+- **Vulnerabilities found**:
+  - Pre-existing test expectation divergence in unrelated file `tests/test_domain_url_synthesis.py` caused by prior commit 196512d. Documented as non-blocking observation.
 - **Untested angles**: None
 
 ## Key Decisions Made
-- Confirmed that excluding non-specification developer guides/catalogs from normative spec audits is architecturally valid and resolves the false positive downstream.
+- Confirmed that bundling all active rules into `.pipeline/ACTIVE_RULES_BUNDLE.md` completely resolves the token-conservation shortcutting problem.
+- Confirmed test coverage in `tests/test_readme_scaffolding.py` is comprehensive, dynamic (not hardcoded), and passing.
 - Issued APPROVE verdict.
 
 ## Artifact Index

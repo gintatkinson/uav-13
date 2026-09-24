@@ -1,4 +1,4 @@
-# Handoff Report: Work Package 2 (R2) & Work Package 3 (R3) Implementation
+# Handoff Report: Work Package 2 (Issue #363 Remediation) Implementation
 
 **Author:** Worker WP2 (`.agents/worker_wp2_1`)  
 **Target File Exclusively Modified:** `scripts/install_pipeline.sh`  
@@ -9,156 +9,187 @@
 
 ## 1. Observation
 
-Direct examination of `scripts/install_pipeline.sh` before modification revealed:
+Direct examination of `scripts/install_pipeline.sh` prior to remediation revealed:
 
-1. **Schema Copying Bug (Lines 283–289):**
+1. **Missing CLI Option for Explicit Domain URL and Domain Name:**
+   - Lines 5-13 declared variables:
+     ```bash
+     TARGET_DIR=""
+     PROVIDER="auto"
+     GITLAB_URL="https://gitlab.com"
+     GITLAB_GROUP=""
+     GITHUB_ORG=""
+     JIRA_URL="https://your-domain.atlassian.net"
+     JIRA_PROJECT=""
+     JIRA_EMAIL=""
+     ```
+     Neither `DOMAIN_URL` nor `DOMAIN_NAME` was declared or parsed.
+   - `show_help()` (lines 14-48) had no documentation for `--domain-url <URL>` or `--domain-name <NAME>`.
+   - The CLI argument parsing loop (lines 50-156) lacked case blocks for `--domain-url`, `--domain-url=*`, `--domain-name`, or `--domain-name=*`. Passing `--domain-url` or `--domain-name` triggered line 140 `Error: Unknown option: $1` and exited with code 1.
+
+2. **Domain URL Fallback Conflated Customer Provider with Domain Host (Lines 626–633):**
    ```bash
-     if [ ! -e "$TARGET_DIR/schema" ]; then
-       if [ -d "$INSTALLER_ROOT/schema" ]; then
-         cp -RP "$INSTALLER_ROOT/schema" "$TARGET_DIR/"
-       else
-         mkdir -p "$TARGET_DIR/schema"
-       fi
+   if [ -z "$DOMAIN_REMOTE_URL" ]; then
+     CLEAN_NAME=$(echo "${DOMAIN_PROJECT_NAME:-downstream-project}" | tr ' ' '-')
+     if [ "$PROVIDER" = "gitlab" ]; then
+       DOMAIN_REMOTE_URL="${GITLAB_URL:-https://gitlab.com}/${GITLAB_GROUP:-your-group}/${CLEAN_NAME}.git"
+     else
+       DOMAIN_REMOTE_URL="https://github.com/${GITHUB_ORG:-your-org}/${CLEAN_NAME}.git"
      fi
+   fi
    ```
-   If `$TARGET_DIR/schema` already existed (e.g. holding `.gitkeep` from repository initialization), line 283 evaluated to `false`, completely skipping domain models and schemas. Furthermore, if line 283 were replaced without `/.`, `cp -RP "$INSTALLER_ROOT/schema" "$TARGET_DIR/"` created nested `$TARGET_DIR/schema/schema/`.
+   When installing into a downstream customer project whose issue tracker and git host was GitLab (`--provider gitlab`), line 628 caused the fallback to synthesize a non-existent `gitlab.com` URL (e.g. `https://gitlab.com/your-group/DEAP-uas-infrastructure-safety.git` or `https://gitlab.com/gintatkinson/DEAP-uas-infrastructure-safety.git`) rather than pointing to the canonical domain template on GitHub (`https://github.com/gintatkinson/DEAP-uas-infrastructure-safety.git`).
 
-2. **Downstream README Scaffolding Trigger (Lines 475–478):**
-   ```bash
-   if [ ! -f "$TARGET_DIR/README.md" ] || \
-      grep -qE "Getting started with GitLab|To make it easy for you to get started" "$TARGET_DIR/README.md" || \
-      ! grep -qE "Multi-Pipeline Operator Prompt Catalog|Operator Prompt Catalog" "$TARGET_DIR/README.md"; then
-   ```
-   The condition checked only for missing files, boilerplate, or missing operator catalog, but did not check for customer project onboarding instructions (`Customer Project Onboarding|\.tmp-pipeline`).
-
-3. **Remote URL & Scaffolding Heredoc (Lines 594–641):**
-   Downstream README generation contained zero installation or customer onboarding instructions. In Section 3, only `## 3. Mandatory Agent Initialization Sequence` was present. Line 643 began a quoted heredoc (`cat << 'EOF' >> "$TARGET_DIR/README.md"`), meaning any variable expansions (`${DOMAIN_REMOTE_URL}`) had to occur prior to line 643 inside the unquoted heredoc block.
+3. **No Priority for Explicit `DOMAIN_URL` in `DOMAIN_REMOTE_URL` Resolution:**
+   The `DOMAIN_REMOTE_URL` resolution block (lines 610–625) only inspected `REMOTE_URL`, `DETECTED_SERVER_URL`, and `INSTALLER_REMOTE`, with no mechanism for users or CI scripts to provide an explicit `--domain-url` override.
 
 ---
 
 ## 2. Logic Chain
 
-1. **Robust Schema Copying (WP3 / R3):**
-   - Per Observation 1, replacing lines 283–289 with:
+1. **CLI Parameter Support & Error Handling (R1):**
+   - Declared `DOMAIN_URL=""` and `DOMAIN_NAME=""` in variable initialization.
+   - Added documentation in `show_help()`:
+     ```text
+           --domain-url URL       Explicit remote URL for upstream domain template repository
+           --domain-name NAME     Domain template or project name (e.g. 'DEAP-uas-infrastructure-safety')
+     ```
+   - Added `--domain-url`, `--domain-url=*`, `--domain-name`, and `--domain-name=*` to the CLI argument parser:
      ```bash
-       mkdir -p "$TARGET_DIR/schema"
-       if [ -d "$INSTALLER_ROOT/schema" ]; then
-         cp -RP "$INSTALLER_ROOT/schema/." "$TARGET_DIR/schema/"
+         --domain-url)
+           if [[ -z "$2" || "$2" == -* ]]; then
+             echo "Error: --domain-url requires a URL argument." >&2
+             exit 1
+           fi
+           DOMAIN_URL="$2"
+           shift 2
+           ;;
+         --domain-url=*)
+           DOMAIN_URL="${1#*=}"
+           shift
+           ;;
+         --domain-name)
+           if [[ -z "$2" || "$2" == -* ]]; then
+             echo "Error: --domain-name requires a name argument." >&2
+             exit 1
+           fi
+           DOMAIN_NAME="$2"
+           shift 2
+           ;;
+         --domain-name=*)
+           DOMAIN_NAME="${1#*=}"
+           shift
+           ;;
+     ```
+   - Validated that if `--domain-url` or `--domain-name` is passed without an argument or followed by another flag, it prints an informative error message and exits with code 1.
+   - Wired `DOMAIN_NAME` into metadata extraction before fallback checks so that passing `--domain-name` explicitly establishes `DOMAIN_PROJECT_NAME`.
+
+2. **Decoupling Customer Provider from Domain Host (R2):**
+   - Upstream domain distribution templates (e.g. `DEAP-uas-infrastructure-safety`) canonicalize on GitHub under `gintatkinson`. The customer project provider (`$PROVIDER`) governs the downstream customer's issue tracking and repo host, NOT the host platform of the upstream domain template.
+   - Prioritized `DOMAIN_URL` at the top of the `DOMAIN_REMOTE_URL` resolution block:
+     ```bash
+       DOMAIN_REMOTE_URL=""
+       if [ -n "$DOMAIN_URL" ]; then
+         DOMAIN_REMOTE_URL="$DOMAIN_URL"
+       elif [ -n "$REMOTE_URL" ] && ! echo "$REMOTE_URL" | grep -q "DEAP01-spec-core"; then
+     ```
+   - In the fallback logic (lines 626–633), removed the `if [ "$PROVIDER" = "gitlab" ]` check entirely:
+     ```bash
+       if [ -z "$DOMAIN_REMOTE_URL" ]; then
+         CLEAN_NAME=$(echo "${DOMAIN_PROJECT_NAME:-downstream-project}" | tr ' ' '-')
+         DOMAIN_REMOTE_URL="https://github.com/${GITHUB_ORG:-gintatkinson}/${CLEAN_NAME}.git"
        fi
      ```
-     ensures that the target schema directory is ensured to exist, and all contents of `$INSTALLER_ROOT/schema/` are copied directly into `$TARGET_DIR/schema/` without creating nested `schema/schema/` directories, even when `$TARGET_DIR/schema` pre-exists with `.gitkeep` or customer-specific schemas.
+   - This ensures fallback resolves to GitHub under `${GITHUB_ORG:-gintatkinson}` and never synthesizes a non-existent `gitlab.com` URL.
 
-2. **4-Tier `$DOMAIN_REMOTE_URL` Resolution (WP2 / R2):**
-   - Prior to expanding `cat << EOF > "$TARGET_DIR/README.md"`, `$DOMAIN_REMOTE_URL` is resolved through a 4-tier hierarchy:
-     - **Tier A:** `$REMOTE_URL` from `$TARGET_DIR` if non-empty and does not contain `DEAP01-spec-core`.
-     - **Tier B:** Normalized HTTPS URL `${DETECTED_SERVER_URL}/${DETECTED_NAMESPACE}/${DETECTED_PROJECT}.git` if detected project is not `DEAP01-spec-core`.
-     - **Tier B2:** `${DETECTED_SERVER_URL}/${DETECTED_NAMESPACE}/${CLEAN_NAME}.git` if domain project name is detected and distinct from generic fallback.
-     - **Tier C:** If installer root is a downstream distribution template (`[ ! -e "$INSTALLER_ROOT/.pipeline/upstream" ]`), query `origin` remote from `$INSTALLER_ROOT` (ensuring it is not `DEAP01-spec-core`).
-     - **Tier D:** Concrete fallback constructed from detected server/provider, detected namespace or group, and domain project name (`https://github.com/${GITHUB_ORG:-your-org}/${CLEAN_NAME}.git` or `${GITLAB_URL:-https://gitlab.com}/${GITLAB_GROUP:-your-group}/${CLEAN_NAME}.git`).
-   - This ensures `$DOMAIN_REMOTE_URL` is always concrete, well-formed, and never points back to `DEAP01-spec-core`.
-
-3. **Customer Project Onboarding Scaffolding (WP2 / R2):**
-   - Section 3 is structured as `## 3. Customer Project Onboarding & Agent Initialization Sequence` containing:
-     - `### 3.1 Turnkey Customer Project Onboarding` with the single self-contained onboarding command:
-       ```bash
-       # Onboard customer application workspace
-       git clone ${DOMAIN_REMOTE_URL} ./.tmp-pipeline && bash ./.tmp-pipeline/scripts/install_pipeline.sh . && rm -rf ./.tmp-pipeline
-       ```
-       and the in-place update command:
-       ```bash
-       # Update existing customer application workspace
-       bash scripts/install_pipeline.sh .
-       ```
-     - `### 3.2 Mandatory Agent Initialization Sequence` preserving steps 0 through 5 intact.
-   - Section 4 (`## 4. Multi-Pipeline Operator Prompt Catalog & Autonomous Execution Workflows`) and all its subsections (`4.1`–`4.5.3`) remain completely unchanged and aligned.
-   - All shell comments contain zero parentheses, and all code blocks contain pure valid shell syntax with zero unquoted angle brackets.
-
-4. **Trigger Condition Upgrade:**
-   - Line 476 was updated to append `! grep -qE "Customer Project Onboarding|\.tmp-pipeline" "$TARGET_DIR/README.md"; then` so that existing downstream READMEs are updated when running the installer.
+3. **Downstream Onboarding Command Verification (R3):**
+   - The onboarding command generated in downstream `README.md`:
+     ```bash
+     git clone ${DOMAIN_REMOTE_URL} ./.tmp-pipeline && bash ./.tmp-pipeline/scripts/install_pipeline.sh . && rm -rf ./.tmp-pipeline
+     ```
+     now resolves to `https://github.com/gintatkinson/DEAP-uas-infrastructure-safety.git` (or the explicit `--domain-url`) even when running with `--provider gitlab`.
 
 ---
 
 ## 3. Caveats
 
-1. **Downstream Customizations in Existing README.md:**
-   - If an existing downstream repository already contains `Customer Project Onboarding` or `.tmp-pipeline`, `scripts/install_pipeline.sh` preserves that README as-is unless other boilerplate conditions are met.
-2. **Upstream Compiler Refusal Invariant:**
-   - As enforced by lines 163–167, `scripts/install_pipeline.sh` refuses to run with `$TARGET_DIR` set to `DEAP01-spec-core` itself (`REFUSING: target is the pipeline repository itself`). Upstream `DEAP01-spec-core/README.md` is governed separately (WP1) and is never touched by the installer script.
+- **Scope Boundary:** Modifications were strictly confined to `scripts/install_pipeline.sh`. No other repository files were altered.
+- **GitLab Provider Scope:** Decoupling `$PROVIDER` from `DOMAIN_REMOTE_URL` applies specifically to the domain template onboarding URL. Downstream tracker label bootstrapping, CI/CD templates (`.gitlab-ci.yml`), and issue creation continue to honor `$PROVIDER=gitlab`.
+- **Pure Schema-Driven Compiler Invariant:** Domain concepts are not hardcoded in compiler logic; `GITHUB_ORG` defaults to `gintatkinson` and `CLEAN_NAME` derives dynamically from `DOMAIN_PROJECT_NAME` or `--domain-name`.
 
 ---
 
 ## 4. Conclusion
 
-Work Package 2 (R2: Parameterized Domain Installer & Scaffolding) and Work Package 3 (R3: Robust Model & Schema Copying) are fully implemented and verified in `scripts/install_pipeline.sh`:
-- Line 283–286: Schema copying logic uses `cp -RP "$INSTALLER_ROOT/schema/." "$TARGET_DIR/schema/"`.
-- Line 476: Trigger condition includes `Customer Project Onboarding|\.tmp-pipeline`.
-- Lines 594–618: 4-tier `$DOMAIN_REMOTE_URL` resolution hierarchy implemented.
-- Lines 649–671: Section 3 scaffolded with turnkey onboarding and update commands embedding `$DOMAIN_REMOTE_URL` with zero angle brackets and zero unescaped parentheses in comments.
-- Only `scripts/install_pipeline.sh` was modified.
+Work Package 2 (Issue #363 Remediation) is completely implemented and verified in `scripts/install_pipeline.sh`:
+1. Added `--domain-url <URL>` and `--domain-url=*` CLI parameter support with strict validation (missing arg raises error and exits 1).
+2. Added `--domain-name <NAME>` and `--domain-name=*` CLI parameter support with strict validation.
+3. Updated `show_help()` to document `--domain-url <URL>` and `--domain-name <NAME>`.
+4. Prioritized `DOMAIN_URL` at the top of the `DOMAIN_REMOTE_URL` resolution block (`if [ -n "$DOMAIN_URL" ]; then DOMAIN_REMOTE_URL="$DOMAIN_URL"`).
+5. Removed `if [ "$PROVIDER" = "gitlab" ]` from fallback logic; fallback resolves deterministically to GitHub (`https://github.com/${GITHUB_ORG:-gintatkinson}/${CLEAN_NAME}.git`).
+6. Verified manual test cases in temporary sandbox `/tmp/test_install_domain_url`:
+   - `bash scripts/install_pipeline.sh /tmp/test_install_domain_url --provider gitlab --domain-name "DEAP-uas-infrastructure-safety"` produces `git clone https://github.com/gintatkinson/DEAP-uas-infrastructure-safety.git ./.tmp-pipeline` and 0 occurrences of `gitlab.com` in `README.md`.
+   - `bash scripts/install_pipeline.sh /tmp/test_install_domain_url --provider gitlab --domain-url https://example.com/custom-domain.git` produces `git clone https://example.com/custom-domain.git ./.tmp-pipeline`.
+7. `bash -n scripts/install_pipeline.sh` passes with exit code 0.
+8. `python3 scripts/verify_downstream_baseline.py --no-domain` passes all 30 checks cleanly with exit code 0.
 
 ---
 
 ## 5. Verification Method
 
-### 5.1 Syntax & Baseline Conformance
-```bash
-bash -n scripts/install_pipeline.sh
-python3 scripts/verify_downstream_baseline.py --no-domain
-```
-**Observed Output:**
-- `bash -n` exited with code 0.
-- `python3 scripts/verify_downstream_baseline.py --no-domain` exited with code 0 (Checks 10–30 all verified).
+To independently verify these changes:
 
-### 5.2 End-to-End Sandbox Verification
-Run the complete multi-tier sandbox test verifying Tier 1 installation, domain model commit, and Tier 2 customer onboarding:
-```bash
-python3 -c '
-import tempfile, subprocess, os
+1. **Syntax Check:**
+   ```bash
+   bash -n scripts/install_pipeline.sh
+   ```
+   *Expected:* Exit code 0, no output.
 
-with tempfile.TemporaryDirectory() as td:
-    # 1. Tier 1: install to domain repo
-    domain_repo = os.path.join(td, "DEAP-uas-safety")
-    subprocess.run(["git", "init", domain_repo], check=True, capture_output=True)
-    subprocess.run(["git", "-C", domain_repo, "remote", "add", "origin", "https://github.com/my-defense-org/DEAP-uas-safety.git"], check=True, capture_output=True)
-    res1 = subprocess.run(["bash", "/Users/perkunas/jail/DEAP01-spec-core/scripts/install_pipeline.sh", domain_repo], check=True, capture_output=True)
-    
-    # 2. Add domain models
-    with open(os.path.join(domain_repo, "schema", "UAS_SAFETY_MODEL.sysml"), "w") as f:
-        f.write("package UasSafetyModel {}")
-    subprocess.run(["git", "-C", domain_repo, "add", "."], check=True, capture_output=True)
-    subprocess.run(["git", "-C", domain_repo, "commit", "-m", "models"], check=True, capture_output=True)
-    
-    # 3. Tier 2: customer repo with pre-existing schema directory
-    customer_repo = os.path.join(td, "customer_app")
-    os.makedirs(os.path.join(customer_repo, "schema"))
-    with open(os.path.join(customer_repo, "schema", ".gitkeep"), "w") as f:
-        f.write("")
-    subprocess.run(["git", "init", customer_repo], check=True, capture_output=True)
-    
-    # Run turnkey command
-    tmp_pipe = os.path.join(customer_repo, ".tmp-pipeline")
-    subprocess.run(["git", "clone", domain_repo, tmp_pipe], check=True, capture_output=True)
-    subprocess.run(["git", "-C", tmp_pipe, "remote", "set-url", "origin", "https://github.com/my-defense-org/DEAP-uas-safety.git"], check=True, capture_output=True)
-    subprocess.run(["bash", os.path.join(tmp_pipe, "scripts/install_pipeline.sh"), customer_repo], check=True, capture_output=True)
-    subprocess.run(["rm", "-rf", tmp_pipe], check=True)
-    
-    # Assertions
-    schema_contents = os.listdir(os.path.join(customer_repo, "schema"))
-    assert "UAS_SAFETY_MODEL.sysml" in schema_contents
-    assert not os.path.exists(os.path.join(customer_repo, "schema", "schema"))
-    
-    readme = open(os.path.join(domain_repo, "README.md")).read()
-    assert "git clone https://github.com/my-defense-org/DEAP-uas-safety.git ./.tmp-pipeline" in readme
-    assert "DEAP01-spec-core" not in readme
-    print("Verification SUCCESS")
-'
-```
-**Observed Output:**
-```
-Verification SUCCESS
-```
+2. **Argument Validation Tests:**
+   ```bash
+   bash scripts/install_pipeline.sh --domain-url
+   # Expected: Error: --domain-url requires a URL argument. (Exit code 1)
 
-### 5.3 Invalidation Conditions
-- If `python3 scripts/verify_downstream_baseline.py --no-domain` fails with non-zero exit code.
-- If running the installer into a directory with pre-existing `schema/` directory fails to copy files from `$INSTALLER_ROOT/schema/` or creates `$TARGET_DIR/schema/schema/`.
-- If generated downstream `README.md` contains `DEAP01-spec-core` in customer onboarding instructions or contains unquoted `<...>` placeholders.
+   bash scripts/install_pipeline.sh --domain-url --provider gitlab
+   # Expected: Error: --domain-url requires a URL argument. (Exit code 1)
+
+   bash scripts/install_pipeline.sh --domain-name
+   # Expected: Error: --domain-name requires a name argument. (Exit code 1)
+
+   bash scripts/install_pipeline.sh --domain-name --provider gitlab
+   # Expected: Error: --domain-name requires a name argument. (Exit code 1)
+   ```
+
+3. **Domain Remote URL Decoupling Verification with GitLab Provider:**
+   ```bash
+   rm -rf /tmp/test_install_domain_url
+   bash scripts/install_pipeline.sh /tmp/test_install_domain_url --provider gitlab --domain-name "DEAP-uas-infrastructure-safety"
+   grep "git clone" /tmp/test_install_domain_url/README.md
+   # Expected output:
+   # git clone https://github.com/gintatkinson/DEAP-uas-infrastructure-safety.git ./.tmp-pipeline && bash ./.tmp-pipeline/scripts/install_pipeline.sh . && rm -rf ./.tmp-pipeline
+
+   grep "gitlab.com" /tmp/test_install_domain_url/README.md
+   # Expected: Exit code 1 (no occurrences found)
+   ```
+
+4. **Explicit `--domain-url` Verification:**
+   ```bash
+   rm -rf /tmp/test_install_domain_url
+   bash scripts/install_pipeline.sh /tmp/test_install_domain_url --provider gitlab --domain-url https://example.com/custom-domain.git
+   grep "git clone" /tmp/test_install_domain_url/README.md
+   # Expected output:
+   # git clone https://example.com/custom-domain.git ./.tmp-pipeline && bash ./.tmp-pipeline/scripts/install_pipeline.sh . && rm -rf ./.tmp-pipeline
+   ```
+
+5. **Full Baseline Conformance Gate:**
+   ```bash
+   python3 scripts/verify_downstream_baseline.py --no-domain
+   ```
+   *Expected:* All 30 checks pass with exit code 0.
+
+6. **Invalidation Conditions:**
+   - If running `install_pipeline.sh` with `--provider gitlab` generates a `gitlab.com` URL for a domain template in `README.md`.
+   - If `--domain-url` without an argument does not return exit code 1 with an error on stderr.
+   - If `--domain-url <URL>` is overridden by downstream heuristics instead of taking priority.
+   - If `verify_downstream_baseline.py --no-domain` fails.
+

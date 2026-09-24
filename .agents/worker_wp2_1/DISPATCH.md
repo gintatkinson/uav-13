@@ -32,3 +32,46 @@ Implement Work Package 2 (R2: Parameterized Domain Installer & Scaffolding) and 
 5. Record your progress in `/Users/perkunas/jail/DEAP01-spec-core/.agents/worker_wp2_1/progress.md`, write your completion handoff report to `/Users/perkunas/jail/DEAP01-spec-core/.agents/worker_wp2_1/handoff.md`, send a message to parent with your handoff path, and finish.
 
 PROCEED
+
+## 2026-09-21T13:04:54Z
+
+Execute `view_file` on `skills/feature-driven-implementation/SKILL.md` as your very first step before taking any action.
+
+Repository Classification: UPSTREAM_SPEC_CORE_COMPILER
+
+Role: Micro-Task Implementer
+Working directory: /Users/perkunas/jail/DEAP01-spec-core/.agents/worker_wp2_1
+
+Primary Commercial Toolchain Integration Context:
+This platform explicitly declares MATLAB / Simulink / Stateflow / Embedded Coder as the Primary Tier-1 Commercial Toolchain Integration Context (Model-Based Design, Control Law Synthesis, DO-178C C/SPARK Ada code generation).
+
+DO NOT CHEAT. All implementations must be genuine. DO NOT hardcode test results, create dummy/facade implementations, or circumvent the intended task. An auditor will independently verify your work. Integrity violations WILL be detected and your work WILL be rejected.
+
+Original User Request:
+/Users/perkunas/jail/DEAP01-spec-core/.agents/ORIGINAL_REQUEST.md
+
+Task: Grounded Code Remediation in `scripts/install_pipeline.sh` (WP2 / Issue #363):
+1. Add explicit `--domain-url <URL>` and `--domain-url=*` CLI parameter support to `scripts/install_pipeline.sh`:
+   - Store in variable `DOMAIN_URL`.
+   - Validate that if `--domain-url` is passed without an argument or followed by another flag, print an error and exit 1 (consistent with `--gitlab-url`, `--github-org`, etc.).
+   - Update `show_help()` in `scripts/install_pipeline.sh` to document `--domain-url <URL>` ("Explicit remote URL for upstream domain template repository").
+2. Decouple customer project provider (`$PROVIDER`, e.g. `gitlab`) from the host platform of the upstream domain template:
+   - In the `DOMAIN_REMOTE_URL` resolution block (around line 610-634):
+     - If `DOMAIN_URL` is set, prioritize it: `DOMAIN_REMOTE_URL="$DOMAIN_URL"`.
+     - In the fallback logic (lines 626–633):
+       DO NOT check `if [ "$PROVIDER" = "gitlab" ]` to synthesize a `gitlab.com` URL. The customer's provider is for customer tracking/repo, whereas upstream domain distribution templates canonicalize on GitHub.
+       Ensure fallback resolves to GitHub:
+       `DOMAIN_REMOTE_URL="https://github.com/${GITHUB_ORG:-gintatkinson}/${CLEAN_NAME}.git"`
+       Never synthesize a non-existent `gitlab.com` URL for canonical domain templates like `DEAP-uas-infrastructure-safety`.
+3. Verify that the customer onboarding command generated in downstream `README.md` files:
+   ```bash
+   git clone ${DOMAIN_REMOTE_URL} ./.tmp-pipeline && bash ./.tmp-pipeline/scripts/install_pipeline.sh . && rm -rf ./.tmp-pipeline
+   ```
+   resolves to the verified working domain remote URL (e.g. `https://github.com/gintatkinson/DEAP-uas-infrastructure-safety.git` when running with `--provider gitlab`).
+4. Test your changes manually against a temporary directory (e.g. in `/tmp/test_install_domain_url/`) with:
+   - `bash scripts/install_pipeline.sh /tmp/test_install_domain_url --provider gitlab --domain-name "DEAP-uas-infrastructure-safety"`
+   - Verify `cat /tmp/test_install_domain_url/README.md` contains `git clone https://github.com/gintatkinson/DEAP-uas-infrastructure-safety.git ./.tmp-pipeline` and NOT `gitlab.com`.
+   - Test `--domain-url https://example.com/custom-domain.git` and verify README reflects that URL.
+5. Write your handoff report to `/Users/perkunas/jail/DEAP01-spec-core/.agents/worker_wp2_1/handoff.md` and report back via `send_message`.
+
+PROCEED

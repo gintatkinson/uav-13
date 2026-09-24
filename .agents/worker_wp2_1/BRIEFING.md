@@ -1,7 +1,7 @@
-# BRIEFING — 2026-09-21T11:32:10Z
+# BRIEFING — 2026-09-21T13:08:00Z
 
 ## Mission
-Implement WP2 (R2: Parameterized Domain Installer & Scaffolding) and WP3 (R3: Robust Model & Schema Copying) in scripts/install_pipeline.sh.
+Remediate Issue #363 in scripts/install_pipeline.sh: add `--domain-url` and `--domain-name` CLI parameters, decouple provider from upstream domain host platform, prioritize DOMAIN_URL, and ensure fallback resolves to GitHub canonical domain templates without fabricating GitLab URLs.
 
 ## 🔒 My Identity
 - Archetype: worker
@@ -19,28 +19,31 @@ Implement WP2 (R2: Parameterized Domain Installer & Scaffolding) and WP3 (R3: Ro
 - Genuine implementation: DO NOT CHEAT
 
 ## Current Parent
-- Conversation ID: f3cf7ab0-b3f5-46dd-b0c6-a615bbe571ed
-- Updated: 2026-09-21T11:29:15Z
+- Conversation ID: a40fd795-1e85-435d-9d9c-a1603074c664
+- Updated: 2026-09-21T13:08:00Z
 
 ## Task Summary
-- **What to build**: Update `scripts/install_pipeline.sh` for WP2 (4-tier DOMAIN_REMOTE_URL resolution, downstream README scaffolding update) and WP3 (robust schema copying with `cp -RP "$INSTALLER_ROOT/schema/." "$TARGET_DIR/schema/"`).
+- **What to build**: Support `--domain-url <URL>`, `--domain-url=*`, `--domain-name <NAME>`, `--domain-name=*` in `scripts/install_pipeline.sh`. Prioritize `DOMAIN_URL` in `DOMAIN_REMOTE_URL`. Decouple `$PROVIDER` from upstream domain template host so fallback points to GitHub (`https://github.com/${GITHUB_ORG:-gintatkinson}/${CLEAN_NAME}.git`) rather than non-existent `gitlab.com`. Update `show_help()`.
 - **Success criteria**:
-  1. WP3 (R3) schema copying handles existing target schema dir without creating nested schema/schema/.
-  2. WP2 (R2) 4-tier DOMAIN_REMOTE_URL resolution hierarchy works correctly.
-  3. Downstream README scaffolding embeds resolved DOMAIN_REMOTE_URL in onboarding command with zero unquoted angle brackets and zero unescaped parentheses in comments.
-  4. Verification tests pass (including `python3 scripts/verify_downstream_baseline.py --no-domain` and sandbox installation tests).
-- **Interface contracts**: implementation_plan.md, explorer_r1_2/handoff.md, explorer_r1_3/handoff.md
+  1. `--domain-url` and `--domain-url=*` stored in `DOMAIN_URL`; missing argument raises error and exits 1.
+  2. `--domain-name` and `--domain-name=*` stored in `DOMAIN_NAME`; missing argument raises error and exits 1.
+  3. `show_help()` updated with `--domain-url` and `--domain-name`.
+  4. If `DOMAIN_URL` is set, `DOMAIN_REMOTE_URL="$DOMAIN_URL"`.
+  5. Fallback logic does not check `[ "$PROVIDER" = "gitlab" ]` to synthesize `gitlab.com` URL; fallback resolves to GitHub.
+  6. Tested manually with `/tmp/test_install_domain_url/` under `--provider gitlab --domain-name "DEAP-uas-infrastructure-safety"` and `--domain-url`.
+  7. `verify_downstream_baseline.py --no-domain` passes all checks.
+- **Interface contracts**: implementation_plan.md, ORIGINAL_REQUEST.md
 - **Code layout**: scripts/install_pipeline.sh
 
 ## Change Tracker
-- **Files modified**: `scripts/install_pipeline.sh` (implemented WP2 and WP3 changes)
-- **Build status**: PASS (all 30 checks in `verify_downstream_baseline.py` pass cleanly; end-to-end sandbox tests pass)
+- **Files modified**: `scripts/install_pipeline.sh` (added `--domain-url`, `--domain-name`, decoupled `$PROVIDER` from upstream domain host, ensured GitHub fallback)
+- **Build status**: PASS (`bash -n scripts/install_pipeline.sh` exit code 0; `verify_downstream_baseline.py --no-domain` exit code 0)
 - **Pending issues**: None
 
 ## Quality Status
-- **Build/test result**: PASS (exit code 0 on `verify_downstream_baseline.py --no-domain` and comprehensive sandbox tests)
-- **Lint status**: PASS (`bash -n scripts/install_pipeline.sh` exit code 0; zero unquoted angle brackets; zero parentheses in comments)
-- **Tests added/modified**: End-to-end Tier 1 and Tier 2 sandbox verification script executed and passed
+- **Build/test result**: PASS (all 30 baseline checks pass; manual sandbox tests with `--provider gitlab --domain-name "DEAP-uas-infrastructure-safety"` and `--domain-url` pass)
+- **Lint status**: PASS (`bash -n` clean; zero unquoted angle brackets; zero unescaped parentheses in comments)
+- **Tests added/modified**: Manual and automated tests against `/tmp/test_install_domain_url/` validating GitHub URL generation and no `gitlab.com` URLs
 
 ## Loaded Skills
 - **Source**: /Users/perkunas/jail/DEAP01-spec-core/skills/feature-driven-implementation/SKILL.md
@@ -48,13 +51,13 @@ Implement WP2 (R2: Parameterized Domain Installer & Scaffolding) and WP3 (R3: Ro
 - **Core methodology**: Feature-driven implementation lifecycle, TDD discipline, two-stage review gates, micro-task verification.
 
 ## Key Decisions Made
-- Implemented WP3 (R3) using `cp -RP "$INSTALLER_ROOT/schema/." "$TARGET_DIR/schema/"` to copy schema files into pre-existing directories without creating nested `schema/schema/`.
-- Implemented WP2 (R2) 4-tier `$DOMAIN_REMOTE_URL` resolution hierarchy prior to README heredoc expansion.
-- Structured Section 3 in scaffolded downstream README as `## 3. Customer Project Onboarding & Agent Initialization Sequence` with subsections 3.1 (onboarding command) and 3.2 (agent initialization sequence), preserving Section 4 and its 4.1-4.5.3 subsections.
-- Validated with zero unescaped parentheses in shell comments and zero unquoted angle brackets.
+- Prioritize `DOMAIN_URL` if set: `DOMAIN_REMOTE_URL="$DOMAIN_URL"`.
+- Support `--domain-name` to allow explicit domain project naming and satisfy test invocations.
+- Fallback always resolves to GitHub (`https://github.com/${GITHUB_ORG:-gintatkinson}/${CLEAN_NAME}.git`).
 
 ## Artifact Index
 - DISPATCH.md — Assignment instructions
 - BRIEFING.md — Situational awareness
 - progress.md — Heartbeat and progress tracking
 - handoff.md — Final completion report
+

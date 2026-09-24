@@ -1,13 +1,17 @@
-# BRIEFING — 2026-09-21T12:09:40Z
+# BRIEFING — 2026-09-24T20:43:00Z
 
 ## Mission
-Implement Level 0 OEM prose/markdown ingestion support in sysmlv2_ingest.py and update Operator Prompt Catalog / Pipeline 0 sequence in DEAP01-spec-core.
+Orchestrate downstream propagation and integration of updated DEAP pipeline tooling, active governance rule bundle (`.pipeline/ACTIVE_RULES_BUNDLE.md`), and updated non-circular operator prompt catalogs to all downstream repositories (DEAP-uas-infrastructure-safety, uav-011, uav-009).
 
 ## 🔒 My Identity
 - Archetype: sentinel
 - Working directory: /Users/perkunas/jail/DEAP01-spec-core/.agents/sentinel
-- Orchestrator: ea84046e-6691-49ef-aa05-6fd03c3d5e19 (completed and reclaimed)
-- Victory Auditor: 9637df75-11c8-409c-960a-db072ec6a6e5 (completed and reclaimed)
+- Orchestrator: fc7b047c-fd31-4577-ab8b-b65f4c56c828
+- Victory Auditor: 55dcfbc5-a1ee-4624-9af5-a51e63b336cb
+- Cron 1 (Progress Reporting): task-24 (*/8 * * * *)
+- Cron 2 (Liveness Check): task-26 (*/10 * * * *)
+- Orchestrator (Active): 3c2d20b4-1728-4491-bb03-6cd522a21821
+- Victory Auditor (Active): to be spawned on victory claim
 
 ## 🔒 Key Constraints
 - No technical decisions — relay only
@@ -16,28 +20,26 @@ Implement Level 0 OEM prose/markdown ingestion support in sysmlv2_ingest.py and 
 - Keep context ultra-light
 
 ## User Context
-- **Last user request**: Implement Level 0 OEM prose/markdown ingestion support in sysmlv2_ingest.py and update Operator Prompt Catalog / Pipeline 0 sequence (R1, R2, R3).
+- **Last user request**: Downstream Propagation & Integration Team: Distribute and install updated DEAP pipeline tooling, active governance rule bundle (.pipeline/ACTIVE_RULES_BUNDLE.md), and updated non-circular operator prompt catalogs to all downstream repositories (DEAP-uas-infrastructure-safety, uav-011, uav-009).
 - **Pending clarifications**: none
 - **Delivered results**:
-  - R1: Level 0 Markdown / BOM Schema Ingestion implemented in `markdown_translator.py` and integrated into `sysmlv2_ingest.py` with `--format markdown` and table auto-detection.
-  - R2: Operator Prompt Catalog & Pipeline 0 Sequence formalized with Step 0.0 (Worker 00) across `docs/OPERATOR_PROMPT_CATALOG.md`, `README.md`, `scripts/install_pipeline.sh`, and `skills/spec-orchestrator/SKILL.md`.
-  - R3: Pipeline 0 Compilation Gate Fallback updated in `scripts/compile_sysml.py` to output actionable remediation guidance pointing to Step 0.0 / `sysmlv2_ingest.py` when no `.sysml` exists.
-  - R4: Verification complete with 14 unit tests in `tests/test_sysmlv2_markdown_ingest.py`, clean compilation, and baseline conformance pass.
+  - Appended request to .agents/ORIGINAL_REQUEST.md
+  - Created .agents/orchestrator_7/DISPATCH.md
+  - Dispatched teamwork_preview_orchestrator (3c2d20b4-1728-4491-bb03-6cd522a21821)
+  - Scheduled progress reporting cron (task-24) and liveness check cron (task-26)
 
 ## Project Status
-- **Phase**: complete
+- **Phase**: in progress
 - **Routing Decision**: General -> teamwork_preview_orchestrator
-- **Active Orchestrator**: completed and cleaned up
-- **Active Auditor**: completed and cleaned up
+- **Active Orchestrator**: 3c2d20b4-1728-4491-bb03-6cd522a21821
+- **Active Auditor**: pending completion
 
 ## Victory Audit Status
-- **Triggered**: yes
-- **Verdict**: VICTORY CONFIRMED
+- **Triggered**: no
+- **Verdict**: pending
 - **Retry count**: 0
-- **Auditor Report**: /Users/perkunas/jail/DEAP01-spec-core/.agents/victory_auditor_1/handoff.md
 
 ## Artifact Index
 - /Users/perkunas/jail/DEAP01-spec-core/.agents/ORIGINAL_REQUEST.md — Verbatim user request
-- /Users/perkunas/jail/DEAP01-spec-core/.agents/orchestrator_2/handoff.md — Orchestrator handoff report
-- /Users/perkunas/jail/DEAP01-spec-core/.agents/victory_auditor_1/handoff.md — Victory Auditor handoff report
-- /Users/perkunas/jail/DEAP01-spec-core/.agents/sentinel/handoff.md — Sentinel final handoff report
+- /Users/perkunas/jail/DEAP01-spec-core/.agents/orchestrator_7/DISPATCH.md — Orchestrator dispatch instructions
+- /Users/perkunas/jail/DEAP01-spec-core/.agents/sentinel/BRIEFING.md — Sentinel briefing

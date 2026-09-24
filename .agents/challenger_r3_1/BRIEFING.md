@@ -1,7 +1,7 @@
-# BRIEFING — 2026-09-21T12:00:00Z
+# BRIEFING — 2026-09-24T18:55:00Z
 
 ## Mission
-Adversarial empirical challenge of the Check 23 citation fraud fix and downstream turnkey onboarding workflow.
+Adversarial empirical challenge of the rule bundling and scaffolding logic implemented for Issue #368 in `scripts/install_pipeline.sh` and `tests/test_readme_scaffolding.py`.
 
 ## 🔒 My Identity
 - Archetype: Empirical Challenger
@@ -10,29 +10,37 @@ Adversarial empirical challenge of the Check 23 citation fraud fix and downstrea
 - Original parent: f3cf7ab0-b3f5-46dd-b0c6-a615bbe571ed
 - Milestone: Verification of Worker R3_1 Check 23 resolution
 - Instance: 1 of 1
+- Round 3 Parent: 761cfc49-ac4f-42a5-9c57-113db68ccf54
+- Round 3 Milestone: Adversarial empirical challenge of Issue #368 rule bundling and scaffolding logic
 
 ## 🔒 Key Constraints
 - Review-only — do NOT modify repository files
 - All test workspaces, scripts, and temporary directories must be created strictly outside the workspace (in /tmp)
 - Output files restricted to .agents/challenger_r3_1/ (progress.md, handoff.md, DISPATCH.md, BRIEFING.md)
+- Do not trust claims: run empirical verification in scratch directories and test harness directly
 
 ## Current Parent
-- Conversation ID: f3cf7ab0-b3f5-46dd-b0c6-a615bbe571ed
-- Updated: not yet
+- Conversation ID: 761cfc49-ac4f-42a5-9c57-113db68ccf54
+- Updated: 2026-09-24T18:55:00Z
 
 ## Review Scope
 - **Files to review**:
-  - `skills/spec-orchestrator/parity_auditor/src/parity_auditor/validators/factual_grounding_validator.py`
-  - `docs/OPERATOR_PROMPT_CATALOG.md`
   - `scripts/install_pipeline.sh`
-  - `scripts/verify_downstream_baseline.py`
-- **Interface contracts**: Check 23 (Factual Grounding & Numeric Provenance Gate), downstream turnkey onboarding lifecycle
-- **Review criteria**: Empirical reproduction and resolution of Check 23 false positive citation fraud, preservation of pre-existing schemas during turnkey onboarding, clean exit codes.
+  - `tests/test_readme_scaffolding.py`
+  - `rules/*.md`
+- **Interface contracts**: Issue #368 acceptance criteria, `.pipeline/ACTIVE_RULES_BUNDLE.md` bundle format, README prompt catalog requirements
+- **Review criteria**:
+  1. Scratch installations (`/tmp/chal1_cust` and `/tmp/chal1_dom`) generate `.pipeline/ACTIVE_RULES_BUNDLE.md`.
+  2. 100% of files in `rules/*.md` are bundled with valid TOC and anchors.
+  3. In-place re-installation idempotence test.
+  4. Scaffolding `README.md` shell syntax and prompt directions.
+  5. Regression test suite execution (`python3 -m unittest tests/test_readme_scaffolding.py`).
 
 ## Key Decisions Made
-- Executed tests in dedicated temporary folders under `/tmp/deap_challenger_r3_1_workspace/`.
-- Tested both reproduction and downstream customer onboarding with git commit hooks active (no `--no-verify`).
-- Adversarially tested that Check 23 still catches true citation fraud in real specification files.
+- Executed tests using isolated temporary scratch directories under `/tmp/chal1_*` and paths with spaces.
+- Verified 100% of 20 active governance rule files are present unabridged with valid TOC and anchors.
+- Verified in-place idempotence across multiple re-installations.
+- Cleaned up all scratch directories on completion.
 
 ## Artifact Index
 - `.agents/challenger_r3_1/DISPATCH.md` — Incoming dispatch log
@@ -41,14 +49,16 @@ Adversarial empirical challenge of the Check 23 citation fraud fix and downstrea
 
 ## Attack Surface
 - **Hypotheses tested**:
-  1. Downstream repo containing domain SysML models passes Check 23 without citation fraud: CONFIRMED PASS.
-  2. Turnkey onboarding command `git clone <domain_dir> ./.tmp-pipeline && bash ./.tmp-pipeline/scripts/install_pipeline.sh . && rm -rf ./.tmp-pipeline` correctly preserves pre-existing customer models and passes Check 23: CONFIRMED PASS.
-  3. Pre-commit hooks run cleanly without needing `--no-verify`: CONFIRMED PASS.
-  4. Check 23 still fails on actual citation fraud in genuine specification documents: CONFIRMED PASS.
-- **Vulnerabilities found**: None. Fix is robust and does not weaken Check 23 for normative specifications.
+  1. `install_pipeline.sh` builds `.pipeline/ACTIVE_RULES_BUNDLE.md` containing all active rules: CONFIRMED PASS (20/20 files, 100% unabridged).
+  2. TOC hyperlinks map 1:1 to embedded HTML anchors: CONFIRMED PASS.
+  3. Re-running `install_pipeline.sh .` is strictly idempotent: CONFIRMED PASS (SHA256 identical).
+  4. Scaffolding `README.md` shell syntax and prompt directions: CONFIRMED PASS (all code fences pass `bash -n`, step 3 verified, zero isolated rule pointers).
+  5. Directory paths containing whitespace: CONFIRMED PASS.
+  6. Downstream baseline verification passes: CONFIRMED PASS (30/30 checks).
+- **Vulnerabilities found**: None. Bundling logic is robust, clean, and idempotent.
 - **Untested angles**: None within scope.
 
 ## Loaded Skills
-- **Source**: `/Users/perkunas/jail/DEAP01-spec-core/skills/feature-driven-implementation/SKILL.md`
-- **Local copy**: `/Users/perkunas/jail/DEAP01-spec-core/.agents/challenger_r3_1/SKILL_feature_driven_implementation.md`
-- **Core methodology**: Feature delivery via serial TDD, two-stage review gates, verification-before-completion.
+- **Source**: `/Users/perkunas/jail/DEAP01-spec-core/skills/adversarial-code-auditor/SKILL.md`
+- **Local copy**: `/Users/perkunas/jail/DEAP01-spec-core/.agents/challenger_r3_1/SKILL_adversarial_code_auditor.md`
+- **Core methodology**: Pre-emptive adversarial audit against four/five correctness risk pillars, offline verification gates.

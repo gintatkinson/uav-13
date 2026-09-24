@@ -1,201 +1,177 @@
-# Reviewer R3_2 Handoff Report
+# Reviewer R3_2 Handoff Report — Issue #368 Active Governance Rule Bundling
+
+## Review Summary
+
+**Verdict**: APPROVE
+
+The implementation for Upstream Issue #368 ("Tooling Defect: Downstream Onboarding Rule-Shortcutting & Lack of Consolidated Rule Ingestion Bundle") in `scripts/install_pipeline.sh` and `tests/test_readme_scaffolding.py` has been independently reviewed and adversarially stress-tested. The changes fully satisfy all functional, architectural, and governance requirements without regressions, facades, or shortcuts.
+
+---
 
 ## 1. Observation
 
-Direct observations from inspecting files, running syntax checks, executing test suites, and running full two-tier reproduction tests:
+### 1.1 Direct Inspection of Changes (`git diff origin/main`)
 
-### 1.1 Target Files Inspected
-1. **`README.md`**:
-   - Lines 31-64: Added ASCII architecture diagram and explicit two-tier separation:
-     - Tier 1: Upstream Compiler (`DEAP01-spec-core`, Sentinel `.pipeline/upstream/` present, `UPSTREAM_SPEC_CORE_COMPILER`) -> Domain Distribution Templates (`DEAP-*`).
-     - Tier 2: Domain Distribution Templates (`DEAP-*`, `DOWNSTREAM_APPLICATION_WORKSPACE`) -> Customer Application Workspaces (`uav-*`, `DOWNSTREAM_CUSTOMER_PROJECT`).
-   - Clean Landing Zone Invariant: Declared that upstream landing zones (`schema/`, `docs/epics/`, `docs/features/`, `docs/user-stories/`, `docs/use-cases/`, `docs/conops/`, `docs/safety/`) remain clean with `.gitkeep` files.
-   - Clean Customer Boundary Mandate: Customer projects onboard strictly from their relevant Domain Distribution Template (`DEAP-*`), NOT from `DEAP01-spec-core`.
-   - Lines 206-250: Renamed section 5.2 to "Tier 1: Compiler Maintainer Propagation Guide (Upstream Compiler -> Domain Templates)" with sibling propagation instructions.
-   - Shell comment audit: 0 unescaped parentheses in bash comments; 0 unquoted `<...>` angle-bracket placeholders.
-
-2. **`scripts/install_pipeline.sh`**:
-   - Lines 287-291: Defensive schema copying:
-     ```bash
-     mkdir -p "$TARGET_DIR/schema"
-     chmod -R u+w "$TARGET_DIR/schema" 2>/dev/null || true
-     if [ -d "$INSTALLER_ROOT/schema" ]; then
-       cp -RPf "$INSTALLER_ROOT/schema/." "$TARGET_DIR/schema/"
-     fi
+1. **`scripts/install_pipeline.sh` (Active Rule Bundling Engine)**:
+   - **Lines 425–475**: Implemented automated aggregation and compilation of active governance rules:
+     - Target path: `$TARGET_DIR/.pipeline/ACTIVE_RULES_BUNDLE.md`.
+     - Proactive directory creation: `mkdir -p "$TARGET_DIR/.pipeline"`.
+     - Defensive write permissions: `chmod u+w "$BUNDLE_FILE" 2>/dev/null || true`.
+     - Static Notice Header: Explicitly notifies autonomous agents (Antigravity, Claude Code, Gemini CLI, Cursor) that the file aggregates 100% of the active rules from `rules/` and mandates a single `view_file` read.
+     - Dynamic Source Discovery: Sets `RULES_SRC="$INSTALLER_ROOT/rules"` with defensive fallback to `"$TARGET_DIR/rules"` if missing (supporting in-place installations).
+     - Table of Contents Generation: Dynamically scans `"$RULES_SRC"/*.md` and emits `- [${rule_base}](#rule-${rule_slug})` where `rule_slug` converts non-alphanumeric characters to `-`, collapses consecutive dashes, and trims leading/trailing dashes.
+     - Anchor & Rule Body Injection: Emits 4 HTML anchor aliases per rule (`#${rule_slug}`, `#rule-${rule_slug}`, `#${rule_stem_slug}`, `#rule-${rule_stem_slug}`) to guarantee backward/cross-referencing compatibility.
+     - Full Unabridged Content: Uses `cat "$rule_file" >> "$BUNDLE_FILE"` with trailing `---` delimiters to ensure zero content truncation or omission.
+   - **Lines 824–825 & 895–896**: Updated directory layout descriptions in scaffolded `README.md` for both Domain Templates and Customer Workspaces to document `.pipeline/ACTIVE_RULES_BUNDLE.md` and removed isolated citations (e.g. `rules/sysml-ssot-completeness.md`).
+   - **Lines 860 & 941**: Updated Step 3 of the downstream agent initialization workflow in scaffolded `README.md`:
+     ```markdown
+     3. **Load Governance Rules**: Execute `view_file` on `.pipeline/ACTIVE_RULES_BUNDLE.md` to ingest the complete, consolidated suite of active governance rules in a single read (covering dual-track MBD, SysML SSOT completeness, role boundary locks, and TDD mandates).
      ```
-     Uses trailing `/.` on source to copy directory contents directly without creating nested `schema/schema/` directories, and `-f` to force overwrite existing files.
-   - Lines 610-633: 4-tier domain remote URL resolution for downstream customer onboarding instructions:
-     - Tier A: Checks if `$REMOTE_URL` is set and does not contain `DEAP01-spec-core`.
-     - Tier B: Checks detected server URL, namespace, and project from target git remote.
-     - Tier C: Synthesizes URL from server, namespace, and clean domain project name.
-     - Tier D: Probes installer root remote (`$INSTALLER_ROOT`) if `.pipeline/upstream` is absent (direct run from domain repo).
-     - Fallback: Defaults to provider-based URL (`https://github.com/${GITHUB_ORG:-your-org}/${CLEAN_NAME}.git`).
-   - Lines 666-684: Embeds self-contained turnkey customer onboarding command:
-     ```bash
-     git clone ${DOMAIN_REMOTE_URL} ./.tmp-pipeline && bash ./.tmp-pipeline/scripts/install_pipeline.sh . && rm -rf ./.tmp-pipeline
-     ```
-     Operates strictly inside customer directory with zero sibling path dependencies (`../...`).
-   - Lines 280-310: Defensive permissions `chmod u+w` and `chmod -R u+w` applied prior to writes across `.pipeline`, `schema`, `docs`, and root configuration files (`requirements.txt`, `pyproject.toml`, `.gitignore`, `.gitlab-ci.yml`).
+     Completely eliminated the previous ambiguous `Ingest AGENTS.md and rules/` directive.
+   - **Lines 1345 & 1377**: Updated Section 4 Operator Prompt Catalog (Worker 2A and Worker 2B templates) to direct subagents to read `.pipeline/ACTIVE_RULES_BUNDLE.md` instead of pointing to isolated rule files like `rules/dual-track-mbd-verification.md`.
 
-3. **`scripts/scaffold_downstream_agents.py`**:
-   - Lines 95-113: Defensive permissions applied:
-     ```python
-     if os.path.exists(target_dot_agents_dir):
-         try:
-             os.chmod(target_dot_agents_dir, 0o755)
-         except OSError:
-             pass
-     ...
-     for target_path in [dot_agents_path, root_agents_path, claude_path, readme_path]:
-         if os.path.exists(target_path):
-             try:
-                 os.chmod(target_path, 0o644)
-             except OSError:
-                 pass
-     ```
-     Ensures existing read-only files in `.agents/` or root do not cause `PermissionError`.
+2. **`tests/test_readme_scaffolding.py` (Regression Test Suite)**:
+   - Added `TestActiveGovernanceRuleBundlingAndPromptCatalog` with 6 new comprehensive tests (total test count increased from 18 to 24):
+     - `test_domain_template_rule_bundle_generation`: Asserts creation, notice header, TOC entries, anchor tags, and 100% verbatim rule body inclusion for Domain Distribution Templates.
+     - `test_customer_workspace_rule_bundle_generation`: Asserts creation, notice header, TOC entries, anchor tags, and 100% verbatim rule body inclusion for Customer Application Workspaces.
+     - `test_domain_template_readme_mandates_active_rules_bundle`: Verifies Step 3 in Domain Template README mandates `view_file` on `.pipeline/ACTIVE_RULES_BUNDLE.md` and removes open-ended `rules/` ingestion.
+     - `test_customer_workspace_readme_mandates_active_rules_bundle`: Verifies Step 3 in Customer Workspace README mandates `view_file` on `.pipeline/ACTIVE_RULES_BUNDLE.md` and removes open-ended `rules/` ingestion.
+     - `test_readme_prompt_templates_no_isolated_rule_subsets`: Exhaustively scans Section 4 prompt catalog across both repository roles to ensure zero occurrences of isolated rule paths (`rules/dual-track-mbd-verification.md`, `rules/sysml-ssot-completeness.md`, bare `rules/`) and verifies reference to `ACTIVE_RULES_BUNDLE.md`.
+     - `test_active_rules_bundle_in_place_idempotence`: Verifies running installer in-place (`.` target) updates and preserves identical bundle content without duplication.
 
-4. **`skills/spec-orchestrator/parity_auditor/src/parity_auditor/validators/factual_grounding_validator.py`**:
-   - Lines 1801-1802:
-     ```python
-     if filename in ("OPERATOR_PROMPT_CATALOG.md", "JIRA_INTEGRATION_GUIDE.md", "README.md"):
-         return True
-     ```
-     Non-specification developer guides and prompt catalogs are properly excluded from normative specification evaluation by `_is_excluded_spec_file()`.
+### 1.2 Independent Empirical Verification Results
 
-5. **`docs/OPERATOR_PROMPT_CATALOG.md`**:
-   - Line 216: Reworded to refer to models descriptively:
-     `synthesizing canonical SysML v2 textual models (such as `model.sysml` in `schema/` or `.pipeline/schema.sysml`)`
-     Prevents citation regex extraction from falsely capturing non-existent file paths.
-
-### 1.2 Tool Executions and Empirical Results
-- **Shell Syntax Verification**:
-  Command: `bash -n scripts/install_pipeline.sh`
-  Result: Exit code 0, 0 errors, 0 warnings.
-- **Python Syntax Compilation**:
-  Command: `python3 -m py_compile scripts/scaffold_downstream_agents.py skills/spec-orchestrator/parity_auditor/src/parity_auditor/validators/factual_grounding_validator.py`
-  Result: Exit code 0.
-- **Parity Auditor Unit Test Suite**:
-  Command: `python3 -m unittest discover -s skills/spec-orchestrator/parity_auditor/tests/`
-  Result: Ran 39 tests in 0.091s, OK (exit code 0).
-- **Factual Grounding Validator Unit Tests**:
-  Command: `python3 -m unittest skills/spec-orchestrator/parity_auditor/tests/test_factual_grounding_validator.py`
-  Result: Ran 3 tests in 0.012s, OK (exit code 0).
-- **Markdown Shell Code Block Syntax Audit**:
-  Audited `README.md` and `docs/OPERATOR_PROMPT_CATALOG.md` code blocks and `scripts/install_pipeline.sh` README generation template:
-  - Bad shell comments (unescaped parentheses): 0
-  - Bad angle brackets (unquoted `<...>` in commands): 0
-- **Upstream Baseline Verification Gate**:
-  Command: `python3 scripts/verify_downstream_baseline.py --no-domain`
-  Result: Exit code 0. All 30 checks verified successfully:
-  - Check 10 (.gitignore hygiene): PASS
-  - Check 11 (.DS_Store hygiene): PASS
-  - Check 12 (No duplicate blueprints): PASS
-  - Check 13 (KaTeX / LaTeX syntax): PASS
-  - Check 14 (Entrypoint files): PASS
-  - Check 15 (reconcile_backlog.py): PASS
-  - Check 16 (Upstream clean landing zones): PASS
-  - Check 17 (Upstream safety landing zone): PASS
-  - Check 18 (Clean blueprints): PASS
-  - Check 19 (Closed-Grammar Metamodel Gate): PASS
-  - Check 20-30 (Domain agnostic / landing zone clean): PASS
-- **Downstream Domain Repository Baseline Verification (Adversarial Challenger R2_2 Scenario)**:
-  Scaffolded a downstream domain repository at `/tmp/test_reviewer_r3_2_domain` with custom domain model `schema/domain_model.sysml`.
-  Command: `python3 "$TMP_DOMAIN/scripts/verify_downstream_baseline.py" "$TMP_DOMAIN" --no-domain`
-  Result: Exit code 0. Check 23 (`FactualGroundingValidator`) passed cleanly with zero ungrounded assertions.
-- **Tier 2 Customer Project Onboarding**:
-  Cloned from `/tmp/test_reviewer_r3_2_domain` using turnkey onboarding command:
-  `git clone /tmp/test_reviewer_r3_2_domain ./.tmp-pipeline && bash ./.tmp-pipeline/scripts/install_pipeline.sh . && rm -rf ./.tmp-pipeline`
-  Result: Exit code 0.
-  Inspected `/tmp/test_reviewer_r3_2_customer/schema/`: `domain_model.sysml` copied cleanly with zero duplicate nesting (`schema/schema`).
-  Ran `python3 scripts/verify_downstream_baseline.py . --no-domain` in customer repo: Exit code 0, all 30 checks passed cleanly.
-- **Project Test Suite**:
-  Command: `python3 -m pytest tests/`
-  Result: 14 passed in 0.12s (exit code 0).
+1. **Unit Test Suite**:
+   - Command: `python3 -m unittest tests/test_readme_scaffolding.py`
+   - Result: `Ran 24 tests in 25.659s; OK` (exit code 0).
+2. **Upstream Baseline Conformance Gate**:
+   - Command: `python3 scripts/verify_downstream_baseline.py --no-domain`
+   - Result: `Build and test suite execution passed for '/Users/perkunas/jail/DEAP01-spec-core'. Conformance gate verified.` (all 30 checks verified, exit code 0).
+3. **Bash Shell Syntax Verification**:
+   - Command: `bash -n scripts/install_pipeline.sh`
+   - Result: Exit code 0, 0 syntax errors or warnings.
+4. **Bundle Generation Sanity Test**:
+   - Executed `scripts/install_pipeline.sh` against an isolated temporary directory.
+   - Result: Generated `.pipeline/ACTIVE_RULES_BUNDLE.md` (1,850 lines, 151,317 bytes) containing all 20 active governance rules from `rules/*.md` with valid TOC and anchors.
+5. **Upstream Defect Issue Verification**:
+   - Command: `gh issue view 368 --repo gintatkinson/DEAP01-spec-core`
+   - Result: Issue #368 confirmed present on upstream GitHub repository, titled `Tooling Defect: Downstream Onboarding Rule-Shortcutting & Lack of Consolidated Rule Ingestion Bundle` with `bug` label and full 7-section dossier.
 
 ---
 
 ## 2. Logic Chain
 
-1. **Two-Tier Architecture Separation**:
-   - Upstream compiler `DEAP01-spec-core` maintains abstract MBSE compiler logic with `.pipeline/upstream/` present and clean landing zones (`schema/`, `docs/epics/`, `docs/features/`, `docs/user-stories/`, `docs/use-cases/`, `docs/conops/`, `docs/safety/`).
-   - Tier 1 domain distribution templates (`DEAP-*`) are maintained by platform maintainers via sibling propagation.
-   - Tier 2 customer workspaces (`uav-*`) onboard strictly from their domain template (`DEAP-*`) using a self-contained turnkey command embedding the domain's remote URL.
-   - Evidence: `README.md` diagrams and text explicitly establish this boundary; `scripts/install_pipeline.sh` automatically generates the domain's remote URL in the customer onboarding instructions.
-
-2. **Zero Hardcoded Domain Concepts Invariant**:
-   - The compiler logic, scripts, and validators must remain pure abstract MBSE tools with zero domain-specific concepts (e.g. UAS, automotive, medical) hardcoded in compiler decision paths.
-   - Evidence: In `factual_grounding_validator.py`, exclusions are strictly non-specification developer documentation (`OPERATOR_PROMPT_CATALOG.md`, `JIRA_INTEGRATION_GUIDE.md`, `README.md`). In `scripts/install_pipeline.sh`, project names and descriptions are dynamically resolved or use generic cyber-physical safety fallbacks. In `scripts/scaffold_downstream_agents.py`, modifications are strictly permission adjustments and classification transformations.
-
-3. **Challenger R2_2 Issue Resolution**:
-   - In Challenger R2_2, downstream projects with custom SysML models failed Check 23 because `OPERATOR_PROMPT_CATALOG.md` was scanned by `FactualGroundingValidator`, and line 216 cited `schema/model.sysml` which did not exist on disk in domain repositories.
-   - Worker R3_1 applied a defense-in-depth two-part fix: (a) excluded developer guides/catalogs in `_is_excluded_spec_file()`, and (b) reworded line 216 in `docs/OPERATOR_PROMPT_CATALOG.md` to reference `model.sysml` descriptively.
-   - Evidence: Both upstream `DEAP01-spec-core` and downstream domain repositories with arbitrary domain models pass Check 23 cleanly with exit code 0.
-
-4. **Defensive Permission and Copy Hardening**:
-   - Sibling propagation and turnkey onboarding previously crashed if pre-existing files or directories had read-only permissions (`0444` / `0555`).
-   - `scripts/install_pipeline.sh` and `scripts/scaffold_downstream_agents.py` defensively apply `chmod u+w` / `chmod -R u+w` and force flags (`cp -RPf`, `cp -Pf`) before modifying files.
-   - Evidence: Tested and verified in adverse permission scenarios.
-
-5. **Integrity and Anti-Deception Audit**:
-   - Audited for hardcoded test results, facade implementations, shortcuts, or fabricated outputs.
-   - Found zero integrity violations: all 30 checks in `verify_downstream_baseline.py` ran genuinely; unit tests ran against live AST models and files; bash syntax checked with native `bash -n`; customer onboarding executed in fresh repositories outside the workspace.
+1. **Root Cause Analysis Validation**:
+   - LLM agents facing an instruction like "Ingest `rules/`" or encountering 20+ separate markdown rule files exhibit documented token-conservation bias, executing `list_dir` or sampling only 1–2 files (Observation 1.1, Issue #368).
+   - This caused silent bypass of non-obvious but safety-critical rules such as `rules/dual-track-mbd-verification.md` and `rules/sysml-ssot-completeness.md`.
+2. **Remediation Mechanism**:
+   - By aggregating all `rules/*.md` into `.pipeline/ACTIVE_RULES_BUNDLE.md` at installation time, the pipeline guarantees that the entire rule corpus is available in a single unified markdown document.
+   - By updating downstream README Step 3 to mandate `view_file` on `.pipeline/ACTIVE_RULES_BUNDLE.md`, agents are directed to perform a single deterministic read, eliminating multi-round-trip shortcuts.
+   - By updating Worker 2A/2B prompt catalog templates, no isolated rule subsets are cited in prompt preambles, reinforcing universal rule coverage.
+3. **Completeness & Determinism**:
+   - Using dynamic shell globbing (`"$RULES_SRC"/*.md`) ensures that any new rules added to `rules/` in the future will automatically be incorporated into the bundle without installer modifications.
+   - Using `cat "$rule_file"` streams the raw unabridged text directly, preventing accidental omission or summarization.
+   - In-place idempotence is ensured by writing with single-redirection `> "$BUNDLE_FILE"` for the header, wiping any stale bundle before re-compilation.
 
 ---
 
 ## 3. Caveats
 
-- No caveats. All 5 review tasks and acceptance criteria were verified empirically with zero errors or discrepancies.
+- **Rule File Extension Assumption**: The bundling script scans `"$RULES_SRC"/*.md`. Any non-markdown governance files placed in `rules/` would not be ingested into the bundle. However, all project rules currently adhere to `.md` naming conventions and `tests/test_readme_scaffolding.py` verifies `rules/` contains only `.md` files.
+- **Rule Corpus Size Consideration**: The compiled bundle is ~151KB (approx. 35,000 tokens). This easily fits well within the context windows of modern models (128k–1M+ tokens), making a single `view_file` read practical and optimal compared to 20 separate API tool calls.
+- No other caveats.
 
 ---
 
-## 4. Conclusion & Verdict
+## 4. Conclusion
 
-**Verdict: APPROVE**
-
-The multi-tier installation and propagation architecture, parameterized domain installer, robust schema copying, and factual grounding validator exclusions are architecturally sound, adhere strictly to all repository invariants (pure schema-driven, zero hardcoded domain concepts, clean landing zones), and pass all verification gates.
+- The implementation for Issue #368 is correct, robust, and complete.
+- All 6 new unit tests pass cleanly, upstream baseline conformance is preserved, shell syntax is verified, and adversarial edge cases pass.
+- No integrity violations, hardcoding, or shortcuts were found.
+- Recommendation: **APPROVE**.
 
 ---
 
 ## 5. Verification Method
 
-To independently reproduce and verify this review:
+To independently reproduce this verification:
 
-1. **Verify Shell Syntax**:
+1. **Run Unit Tests**:
    ```bash
-   bash -n scripts/install_pipeline.sh
+   python3 -m unittest tests/test_readme_scaffolding.py
    ```
-   Must exit with code 0.
+   *Expected*: Ran 24 tests, OK (exit code 0).
 
-2. **Verify Python Syntax & Unit Tests**:
-   ```bash
-   python3 -m py_compile scripts/scaffold_downstream_agents.py skills/spec-orchestrator/parity_auditor/src/parity_auditor/validators/factual_grounding_validator.py
-   python3 -m unittest discover -s skills/spec-orchestrator/parity_auditor/tests/
-   python3 -m pytest tests/
-   ```
-   All must pass with exit code 0.
-
-3. **Verify Upstream Baseline (All 30 Checks)**:
+2. **Run Upstream Baseline Verification**:
    ```bash
    python3 scripts/verify_downstream_baseline.py --no-domain
    ```
-   Must pass all checks cleanly with exit code 0.
+   *Expected*: All 30 checks verified successfully (exit code 0).
 
-4. **Verify Downstream Domain & Customer Lifecycle**:
+3. **Verify Shell Syntax**:
    ```bash
-   TMP_DOMAIN="/tmp/test_verify_domain"
-   rm -rf "$TMP_DOMAIN" && mkdir -p "$TMP_DOMAIN"
-   git -C "$TMP_DOMAIN" init
-   git -C "$TMP_DOMAIN" remote add origin https://github.com/test-org/test-domain.git
-   bash scripts/install_pipeline.sh "$TMP_DOMAIN"
-   echo "package TestModel { part def Subsystem; }" > "$TMP_DOMAIN/schema/domain_model.sysml"
-   python3 "$TMP_DOMAIN/scripts/verify_downstream_baseline.py" "$TMP_DOMAIN" --no-domain
-   
-   # Tier 2 Turnkey Onboarding
-   git -C "$TMP_DOMAIN" add -A && git -C "$TMP_DOMAIN" commit -m "Init domain"
-   TMP_CUSTOMER="/tmp/test_verify_customer"
-   rm -rf "$TMP_CUSTOMER" && mkdir -p "$TMP_CUSTOMER"
-   (cd "$TMP_CUSTOMER" && git init && git clone "$TMP_DOMAIN" ./.tmp-pipeline && bash ./.tmp-pipeline/scripts/install_pipeline.sh . && rm -rf ./.tmp-pipeline && python3 scripts/verify_downstream_baseline.py . --no-domain)
-   rm -rf "$TMP_DOMAIN" "$TMP_CUSTOMER"
+   bash -n scripts/install_pipeline.sh
    ```
-   Must exit with code 0 at all stages.
+   *Expected*: Exit code 0.
+
+4. **Verify Bundle Generation & Idempotence Manually**:
+   ```bash
+   TMP_DIR=$(mktemp -d)
+   bash scripts/install_pipeline.sh "$TMP_DIR" --role customer-project
+   test -f "$TMP_DIR/.pipeline/ACTIVE_RULES_BUNDLE.md" && echo "Bundle exists"
+   grep -q "## Table of Contents" "$TMP_DIR/.pipeline/ACTIVE_RULES_BUNDLE.md" && echo "TOC verified"
+   grep -q "dual-track-mbd-verification.md" "$TMP_DIR/.pipeline/ACTIVE_RULES_BUNDLE.md" && echo "Rule included"
+   rm -rf "$TMP_DIR"
+   ```
+
+---
+
+## 6. Adversarial Review & Attack Surface Analysis
+
+### 6.1 Integrity Violation Audit
+
+| Integrity Risk Pillar | Audit Focus | Result | Evidence |
+|---|---|---|---|
+| **Hardcoded Outputs** | Are test assertions hardcoding synthetic outputs instead of inspecting real logic? | **CLEAN** | `_verify_bundle_completeness` dynamically reads `rules/` on disk, calculates slugs, and asserts raw text inclusion. |
+| **Facade Implementations** | Does `install_pipeline.sh` merely touch the bundle file or simulate bundling? | **CLEAN** | Script actively executes glob iterations, derives slugs, writes multi-target anchor tags, and streams unabridged content via `cat`. |
+| **Bypassing Core Work** | Are responsibilities delegated to unverified runtime commands or omitted? | **CLEAN** | Full bundling is performed in pure bash without external dependencies or shortcuts. |
+| **Fabricated Verification** | Are test run logs or defect URLs fabricated? | **CLEAN** | Upstream Issue #368 was verified live on GitHub via `gh issue view 368`. Tests were run and timed in this session. |
+| **Self-Certifying Work** | Are tests written to trivially pass without asserting invariants? | **CLEAN** | Test suite asserts notice headers, TOC links, 4 anchor variants, 100% verbatim file contents, and lack of isolated rule subsets in prompts. |
+
+### 6.2 Edge Case Stress Tests
+
+1. **Empty `rules/` Directory**:
+   - *Scenario*: What happens if `rules/` has no `.md` files?
+   - *Test*: Ran isolated shell simulation where `RULES_SRC` was empty.
+   - *Result*: Bash glob `"$RULES_SRC"/*.md` expands to literal string; `[ -f "$rule_file" ] || continue` safely triggers, skipping the loop cleanly. Output contains clean Notice and TOC without syntax errors or broken entries.
+2. **Special Characters in Filenames**:
+   - *Scenario*: Rule filename containing spaces, parentheses, brackets, or ampersands (`my rule (v2.0) [draft]_&_test.md`).
+   - *Test*: Created test file with complex punctuation in temporary test directory.
+   - *Result*: Shell quoting prevents word splitting. `rule_slug` transformation `sed -e 's/[^a-z0-9]/-/g'` cleanly converts special characters to `my-rule-v2-0-draft-test-md`. Anchors and TOC markdown links remain fully valid.
+3. **Read-Only Destination Bundle Overwrite**:
+   - *Scenario*: Destination `.pipeline/ACTIVE_RULES_BUNDLE.md` was set to mode `0444` before re-installation.
+   - *Test*: Created `ACTIVE_RULES_BUNDLE.md` with read-only permissions in target.
+   - *Result*: Line 429 executes `chmod u+w "$BUNDLE_FILE" 2>/dev/null || true` prior to writing, successfully preventing `Permission denied` errors.
+4. **In-Place Idempotence**:
+   - *Scenario*: Re-running installation in-place on an already configured workspace.
+   - *Test*: Executed `test_active_rules_bundle_in_place_idempotence` (runs installer twice on the same directory).
+   - *Result*: Output files are byte-for-byte identical; no duplicated sections or corrupted headers.
+
+---
+
+## 7. Verified Claims & Review Dimensions
+
+### Verified Claims
+- `ACTIVE_RULES_BUNDLE.md` generated at `.pipeline/ACTIVE_RULES_BUNDLE.md` -> **VERIFIED** (confirmed in temp install and unit tests).
+- Notice header, TOC, HTML anchors, and unabridged rule bodies present -> **VERIFIED** (1,850 lines, 151KB, 20/20 rules included).
+- Downstream README Step 3 mandates `view_file` on bundle in a single read -> **VERIFIED** (Lines 860 & 941 inspected, regex test asserted).
+- Zero isolated rule subsets in generated prompt catalogs -> **VERIFIED** (Lines 1345 & 1377 inspected, negative assertions passed in test suite).
+- All 24 unit tests in `tests/test_readme_scaffolding.py` pass -> **VERIFIED** (24 passed in 25.6s).
+- Upstream baseline verification passes -> **VERIFIED** (30/30 checks passed).
+- Bash syntax valid -> **VERIFIED** (`bash -n` exited 0).
+
+### Coverage Gaps
+- None.
+
+### Unverified Items
+- None.

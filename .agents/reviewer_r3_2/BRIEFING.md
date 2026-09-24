@@ -1,63 +1,67 @@
-# BRIEFING — 2026-09-21T11:59:45Z
+# BRIEFING — 2026-09-24T18:57:00Z
 
 ## Mission
-Perform comprehensive quality review and adversarial audit of modifications across all iterations (README.md, scripts/install_pipeline.sh, scripts/scaffold_downstream_agents.py, factual_grounding_validator.py, docs/OPERATOR_PROMPT_CATALOG.md) and issue a verified verdict.
+Independently review and adversarially examine the implementation of Issue #368 (Active Rule Bundling in scripts/install_pipeline.sh and tests/test_readme_scaffolding.py), verify test suites, perform edge case stress-testing, check for integrity violations, and issue a verified verdict.
 
 ## 🔒 My Identity
 - Archetype: reviewer_critic
 - Roles: reviewer, critic
 - Working directory: /Users/perkunas/jail/DEAP01-spec-core/.agents/reviewer_r3_2
-- Original parent: f3cf7ab0-b3f5-46dd-b0c6-a615bbe571ed
-- Milestone: Review R3_2
-- Instance: 1 of 1
+- Original parent: 761cfc49-ac4f-42a5-9c57-113db68ccf54
+- Milestone: Review R3_2 (Issue #368)
+- Instance: 2 of 2
 
 ## 🔒 Key Constraints
 - Review-only — do NOT modify implementation code or specification files
-- Write exclusively to /Users/perkunas/jail/DEAP01-spec-core/.agents/reviewer_r3_2/
 - Upstream compiler classification: UPSTREAM_SPEC_CORE_COMPILER
 - Zero hardcoded domain concepts
-- Verify 30 checks pass in scripts/verify_downstream_baseline.py --no-domain
-- Verify bash syntax of scripts/install_pipeline.sh
+- Active rule bundling in scripts/install_pipeline.sh must produce .pipeline/ACTIVE_RULES_BUNDLE.md with notice header, TOC, anchors, and unabridged rule contents
+- Verify tests/test_readme_scaffolding.py passes
+- Verify scripts/verify_downstream_baseline.py --no-domain passes
+- Verify bash -n scripts/install_pipeline.sh passes
 
 ## Current Parent
-- Conversation ID: f3cf7ab0-b3f5-46dd-b0c6-a615bbe571ed
-- Updated: 2026-09-21T11:57:26Z
+- Conversation ID: 761cfc49-ac4f-42a5-9c57-113db68ccf54
+- Updated: 2026-09-24T18:54:38Z
 
 ## Review Scope
-- **Files reviewed**:
-  - `README.md`
+- **Files to review**:
   - `scripts/install_pipeline.sh`
-  - `scripts/scaffold_downstream_agents.py`
-  - `skills/spec-orchestrator/parity_auditor/src/parity_auditor/validators/factual_grounding_validator.py`
-  - `docs/OPERATOR_PROMPT_CATALOG.md`
-- **Context files**:
-  - `.agents/ORIGINAL_REQUEST.md`
-  - `.agents/orchestrator_1/handoff.md`
-  - `.agents/worker_r3_1/handoff.md`
+  - `tests/test_readme_scaffolding.py`
+  - `implementation_plan.md`
+  - `.agents/worker_r3/handoff.md`
+  - `.agents/ORIGINAL_REQUEST.md` (header ## 2026-09-24T15:26:00Z)
+  - `git diff` against origin/main
 - **Review criteria**:
-  - Architectural soundness: upstream compiler vs downstream domain distribution templates vs customer projects: VERIFIED
-  - Zero hardcoded domain concepts: VERIFIED
-  - Verification pass: `python3 scripts/verify_downstream_baseline.py --no-domain` (30 checks, exit code 0): VERIFIED
-  - Verification pass: `bash -n scripts/install_pipeline.sh`: VERIFIED
-  - Adversarial audit / Integrity check: CLEAN (no shortcuts or facades)
+  - Correctness, robustness, and completeness of active rule bundling
+  - Notice header, TOC, anchors, unabridged rule contents
+  - Downstream README Step 3 single-read mandate
+  - Edge cases (empty rules, special characters, in-place vs clean install)
+  - Integrity violation checks (no hardcoded test outputs, no facade implementations, no shortcuts)
 
 ## Review Checklist
-- **Items reviewed**: README.md, scripts/install_pipeline.sh, scripts/scaffold_downstream_agents.py, factual_grounding_validator.py, docs/OPERATOR_PROMPT_CATALOG.md
+- **Items reviewed**:
+  - `scripts/install_pipeline.sh` (active governance bundling & prompt catalog overhaul)
+  - `tests/test_readme_scaffolding.py` (new TestActiveGovernanceRuleBundlingAndPromptCatalog test suite)
+  - `implementation_plan.md`
+  - `.agents/worker_r3/handoff.md`
+  - `.agents/ORIGINAL_REQUEST.md` (header ## 2026-09-24T15:26:00Z)
+  - Upstream GitHub Issue #368
 - **Verdict**: APPROVE
-- **Unverified claims**: none
+- **Unverified claims**: None
 
 ## Attack Surface
 - **Hypotheses tested**:
-  - Pre-existing read-only permissions in destination: passed
-  - Downstream domain repository with custom .sysml schema: passed Check 23 cleanly
-  - Turnkey customer onboarding command: passed end-to-end
-  - Shell comment parentheses and unquoted angle brackets: 0 violations
-  - Parity auditor regression: 39 tests passed
-- **Vulnerabilities found**: none
-- **Untested angles**: none
+  - Empty `rules/` directory handling: Passed (clean skip via `[ -f "$rule_file" ] || continue`)
+  - Special characters and whitespace in rule filenames: Passed (slug transformation `sed -e 's/[^a-z0-9]/-/g'`)
+  - Read-only `.pipeline/ACTIVE_RULES_BUNDLE.md` overwrite: Passed (`chmod u+w` handling)
+  - In-place reinstallation idempotence: Passed (`>` redirection overwrites cleanly)
+  - Integrity violation checks: Passed (0 violations, zero facades or hardcoded values)
+- **Vulnerabilities found**: None
+- **Untested angles**: None
 
 ## Key Decisions Made
-- Confirmed full architectural conformance and integrity across all iterations.
+- Confirmed full architectural conformance, test completeness, and integrity across Issue #368 implementation.
 - Issued APPROVE verdict.
 
 ## Artifact Index
@@ -65,3 +69,5 @@ Perform comprehensive quality review and adversarial audit of modifications acro
 - `.agents/reviewer_r3_2/BRIEFING.md` — Situational awareness
 - `.agents/reviewer_r3_2/progress.md` — Liveness heartbeat
 - `.agents/reviewer_r3_2/handoff.md` — Final review report and verdict
+
+
