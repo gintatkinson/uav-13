@@ -1,17 +1,14 @@
-# BRIEFING — 2026-09-24T20:43:00Z
+# BRIEFING — 2026-09-25T14:30:00Z
 
 ## Mission
-Orchestrate downstream propagation and integration of updated DEAP pipeline tooling, active governance rule bundle (`.pipeline/ACTIVE_RULES_BUNDLE.md`), and updated non-circular operator prompt catalogs to all downstream repositories (DEAP-uas-infrastructure-safety, uav-011, uav-009).
+Fix Issue #363 in DEAP01-spec-core (scripts/install_pipeline.sh) as the essential first step, execute adversarial code audits and file formal dossiers to issue trackers, implement verified fixes, publish and ground 75 specification items in uav-009, and propagate verified pipeline tooling across all 6 Tier-1 domain distribution templates, profile repositories, and Tier-2 customer workspaces.
 
 ## 🔒 My Identity
 - Archetype: sentinel
 - Working directory: /Users/perkunas/jail/DEAP01-spec-core/.agents/sentinel
-- Orchestrator: fc7b047c-fd31-4577-ab8b-b65f4c56c828
-- Victory Auditor: 55dcfbc5-a1ee-4624-9af5-a51e63b336cb
-- Cron 1 (Progress Reporting): task-24 (*/8 * * * *)
-- Cron 2 (Liveness Check): task-26 (*/10 * * * *)
-- Orchestrator (Active): 3c2d20b4-1728-4491-bb03-6cd522a21821
-- Victory Auditor (Active): to be spawned on victory claim
+- Parent Conversation ID: 1ea536b6-1e7b-4283-a4d0-66cf8f306dec
+- Active Orchestrator: pending dispatch (.agents/orchestrator_8)
+- Active Victory Auditor: pending completion
 
 ## 🔒 Key Constraints
 - No technical decisions — relay only
@@ -20,26 +17,16 @@ Orchestrate downstream propagation and integration of updated DEAP pipeline tool
 - Keep context ultra-light
 
 ## User Context
-- **Last user request**: Downstream Propagation & Integration Team: Distribute and install updated DEAP pipeline tooling, active governance rule bundle (.pipeline/ACTIVE_RULES_BUNDLE.md), and updated non-circular operator prompt catalogs to all downstream repositories (DEAP-uas-infrastructure-safety, uav-011, uav-009).
-- **Pending clarifications**: none
-- **Delivered results**:
-  - Appended request to .agents/ORIGINAL_REQUEST.md
-  - Created .agents/orchestrator_7/DISPATCH.md
-  - Dispatched teamwork_preview_orchestrator (3c2d20b4-1728-4491-bb03-6cd522a21821)
-  - Scheduled progress reporting cron (task-24) and liveness check cron (task-26)
+- **Last user request**: Teamwork-Preview Multi-Agent Directive for Issue #363 fix, adversarial audits, grounding in uav-009, and propagation across full fleet of downstream repositories.
+- **Approved Plan**: /Users/perkunas/.gemini/antigravity/brain/1ea536b6-1e7b-4283-a4d0-66cf8f306dec/implementation_plan.md
+- **Status**: Milestone 1 in progress (Fix Issue #363).
 
 ## Project Status
-- **Phase**: in progress
+- **Phase**: Milestone 1 (Fix Issue #363 in scripts/install_pipeline.sh)
 - **Routing Decision**: General -> teamwork_preview_orchestrator
-- **Active Orchestrator**: 3c2d20b4-1728-4491-bb03-6cd522a21821
-- **Active Auditor**: pending completion
-
-## Victory Audit Status
-- **Triggered**: no
-- **Verdict**: pending
-- **Retry count**: 0
+- **Active Orchestrator Dir**: /Users/perkunas/jail/DEAP01-spec-core/.agents/orchestrator_8/
 
 ## Artifact Index
 - /Users/perkunas/jail/DEAP01-spec-core/.agents/ORIGINAL_REQUEST.md — Verbatim user request
-- /Users/perkunas/jail/DEAP01-spec-core/.agents/orchestrator_7/DISPATCH.md — Orchestrator dispatch instructions
+- /Users/perkunas/jail/DEAP01-spec-core/.agents/orchestrator_8/DISPATCH.md — Orchestrator dispatch instructions
 - /Users/perkunas/jail/DEAP01-spec-core/.agents/sentinel/BRIEFING.md — Sentinel briefing

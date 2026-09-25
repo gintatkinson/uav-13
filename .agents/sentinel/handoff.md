@@ -1,87 +1,112 @@
-# Handoff Report: Sentinel (Downstream Onboarding Rule-Shortcutting & Rule Bundling Remediation)
+# Handoff Report — Project Sentinel
 
-**Identity:** Project Sentinel (`cbd02bce-f539-47b1-9bbb-c4cd777e7495`)  
-**Workspace:** `/Users/perkunas/jail/DEAP01-spec-core`  
-**Repository Classification:** `UPSTREAM_SPEC_CORE_COMPILER`  
-**Date:** 2026-09-24T16:16:00Z  
-**Verdict:** `VICTORY CONFIRMED` (Auditor: `e03db5bb-535e-4201-a326-c40ecbfe238f`)  
+**Mission**: Downstream Propagation & Integration of updated DEAP pipeline tooling, active governance rule bundle (`.pipeline/ACTIVE_RULES_BUNDLE.md`), and updated non-circular operator prompt catalogs to all downstream repositories.  
+**Working Directory**: `/Users/perkunas/jail/DEAP01-spec-core/.agents/sentinel`  
+**Date**: 2026-09-25T08:41:00Z  
+**Verdict**: **VICTORY CONFIRMED**  
 
 ---
 
 ## 1. Observation
 
-The user requested an adversarial code audit on the downstream onboarding and rule-ingestion pipeline, submission of a formal defect issue to `gintatkinson/DEAP01-spec-core`, and implementation and verification of a deterministic fix preventing LLM agents from taking ingestion shortcuts:
-1. **R1 (Adversarial Audit & 5-Pillar Vulnerability Diagnosis)**: Conduct an adversarial code audit adhering to `skills/adversarial-code-auditor/SKILL.md` on `scripts/install_pipeline.sh`, `scripts/scaffold_downstream_agents.py`, `tests/test_readme_scaffolding.py`, and the generated operator prompt templates in `README.md`. Generate a verified 7-section defect dossier.
-2. **R2 (Upstream Defect Submission)**: Submit the verified defect report via `python3 scripts/file_defect.py` to `gintatkinson/DEAP01-spec-core` with label `bug` and title `Tooling Defect: Downstream Onboarding Rule-Shortcutting & Lack of Consolidated Rule Ingestion Bundle`. Capture issue number and URL.
-3. **R3 (Debug Protocol & Root-Cause Remediation)**:
-   - **Active Governance Rule Bundling**: Update `scripts/install_pipeline.sh` to automatically compile/bundle all active rule files from `rules/*.md` into a single consolidated, strongly formatted governance manifest at `.pipeline/ACTIVE_RULES_BUNDLE.md` with table of contents, origin file headers, HTML anchors, and 100% unabridged rule text.
-   - **Operator Prompt Catalog Update**: Update `scripts/install_pipeline.sh` README scaffolding logic so downstream prompt catalogs direct agents to execute `view_file` directly on `.pipeline/ACTIVE_RULES_BUNDLE.md` in a single atomic read, eliminating isolated rule citations and open-ended folder reads.
-   - **Regression Test Suite**: Add comprehensive regression tests in `tests/test_readme_scaffolding.py` verifying bundle generation, complete inclusion of all rules, and prompt template references across both domain templates and customer projects.
+1. **Target 1: Domain Distribution Template (`DEAP-uas-infrastructure-safety`)**:
+   - Remote URL: `https://github.com/gintatkinson/DEAP-uas-infrastructure-safety.git`
+   - Remote HEAD Commit: `06f9e7d` (`feat(governance): update prompt catalog to mandate ACTIVE_RULES_BUNDLE.md (refs #368)`)
+   - `.pipeline/ACTIVE_RULES_BUNDLE.md`: Exists, 151,317 bytes, SHA256 `a99dad5c07c3eb570a2c99aa08ccd070b277f30f3d7eb57882d40c3ef668931d`, containing 100% unabridged text of all 20 rules.
+   - Clean Landing Zone Invariant: `docs/epics/`, `docs/features/`, `docs/user-stories/`, `docs/use-cases/` contain strictly `.gitkeep`.
+   - Prompt Catalog: `README.md` Sections 2, 4.5.1, and 4.5.2 mandate reading `.pipeline/ACTIVE_RULES_BUNDLE.md` with zero isolated legacy rule references and zero circular clone commands.
+   - Remote Diff: `git diff origin/main | wc -c` is 0 bytes; working tree is clean.
+
+2. **Target 2: Customer Application Workspace (`uav-011`)**:
+   - Local Path: `/Users/perkunas/jail/uav-011`
+   - Remote URL: `https://gitlab.com/gintatkinson/uav-011.git`
+   - Remote HEAD Commit: `bd851a4` (`feat(governance): sanitize README title and refresh pipeline (refs #368)`)
+   - `.pipeline/ACTIVE_RULES_BUNDLE.md`: Exists, 151,317 bytes, byte-for-byte identical SHA256.
+   - Prompt Catalog: `README.md` directs agents to `.pipeline/ACTIVE_RULES_BUNDLE.md` with zero circular clone commands. Title line 1 cleanly sanitized.
+   - Independent Test Execution: `python3 scripts/verify_downstream_baseline.py` passes all 30 checks with exit code 0.
+   - Remote Diff: `git diff origin/main | wc -c` is 0 bytes; working tree is clean.
+
+3. **Target 3: Customer Application Workspace (`uav-009`)**:
+   - Local Path: `/Users/perkunas/jail/uav-009`
+   - Remote URL: `https://gitlab.com/gintatkinson/uav-009.git`
+   - Remote HEAD Commits: `1f23257`, `ba67242`, `7c227ba`, `b74bd68`, `f75389f`
+   - `.pipeline/ACTIVE_RULES_BUNDLE.md`: Exists, 151,317 bytes, byte-for-byte identical SHA256.
+   - Prompt Catalog: `README.md` directs agents to `.pipeline/ACTIVE_RULES_BUNDLE.md` with zero circular clone commands.
+   - Independent Test Execution: `python3 scripts/verify_downstream_baseline.py` passes all 30 checks with exit code 0.
+   - Remote Diff: `git diff origin/main | wc -c` is 0 bytes; working tree is clean.
+
+4. **Target 4: Upstream Compiler (`DEAP01-spec-core`)**:
+   - Local Path: `/Users/perkunas/jail/DEAP01-spec-core`
+   - Remote URL: `https://github.com/gintatkinson/DEAP01-spec-core.git`
+   - Commits: `14932ff`, `080fc49`, `a749ff8`
+   - Test Suites: `tests/test_readme_scaffolding.py` (27/27 tests pass in 29.8s), `scripts/verify_downstream_baseline.py --no-domain` (30/30 checks pass).
+   - Remote Diff: Clean on repository code.
+
+5. **Multi-Agent Quality Gate (Iteration 3)**:
+   - Code Reviewer 1 (`reviewer_it3_1`): APPROVE
+   - Code Reviewer 2 (`reviewer_it3_2`): APPROVE
+   - Adversarial Verifier 1 (`challenger_it3_1`): APPROVE
+   - Adversarial Verifier 2 (`challenger_it3_2`): APPROVE
+   - Forensic Integrity Auditor (`auditor_it3_1`): CLEAN
+   - Gate Verdict: **PASS (Unanimous)**
+
+6. **Independent Victory Audit**:
+   - Dispatched `teamwork_preview_victory_auditor` (`f2b1ff76-7c22-43f9-9bc5-ea48cdb8de7c`) to `.agents/victory_auditor_5/`.
+   - Conducted independent 3-phase audit (Timeline reconstruction, forensic integrity / anti-mocking analysis, independent test execution across all 4 repositories).
+   - Auditor Verdict: **VICTORY CONFIRMED**.
 
 ---
 
 ## 2. Logic Chain
 
-1. **Routing & Dispatch**:
-   - Evaluated user request under Routing Decision Table: General -> `teamwork_preview_orchestrator`.
-   - Recorded user request verbatim in `.agents/ORIGINAL_REQUEST.md` under `## 2026-09-24T15:26:00Z`.
-   - Initialized `orchestrator_6` (`761cfc49-ac4f-42a5-9c57-113db68ccf54`) in `.agents/orchestrator_6/` with strict planning, context-isolated subagent dispatches, and verification mandates.
-   - Scheduled Cron 1 (Progress Reporting, `task-28`) and Cron 2 (Liveness Check, `task-30`).
-
-2. **Execution & Multi-Stage Orchestration**:
-   - `orchestrator_6` decomposed the scope into work packages and dispatched fresh context-isolated subagents:
-     - **Phase 1 (R1 Audit)**: Subagent `auditor_r1_6` (`f94cb563-346b-47a6-ab8d-7ddcfc2fab8f`) conducted a 5-pillar adversarial audit, producing `.agents/auditor_r1_6/defect_dossier.md` (passed all 12 checks of the adversarial-code-auditor skill).
-     - **Phase 2 (R2 Defect Submission)**: Subagent `defect_r2` (`75452bf7-fa17-41a7-a250-20775ccd4553`) ran `python3 scripts/file_defect.py` dry-run validation, then submitted the defect upstream to `gintatkinson/DEAP01-spec-core`, creating **Issue #368** (`https://github.com/gintatkinson/DEAP01-spec-core/issues/368`).
-     - **Phase 3 (R3 Implementation & Tests)**: Subagent `worker_r3` (`b845e7c3-d29a-4cf4-b675-2a494e0f2657`) updated `scripts/install_pipeline.sh` with active rule compilation and README prompt updates, and added 6 new regression tests in `tests/test_readme_scaffolding.py` under `TestActiveGovernanceRuleBundlingAndPromptCatalog`. Unit tests passed 24/24.
-     - **Phase 4 (Multi-Agent Gate)**: Dispatched 2 Reviewers (`reviewer_r3_1`, `reviewer_r3_2`), 2 Challengers (`challenger_r3_1`, `challenger_r3_2`), and 1 Forensic Auditor (`auditor_r3_1`). All independently evaluated the changes and issued unanimous **APPROVE** and **CLEAN** verdicts.
-     - **Phase 5 (Tracker & Sync)**: Subagent `worker_sync` (`da942e0d-e890-46f0-815b-9a0ee97d9d92`) updated Issue #368 with label `status:fixed-resolved` and posted verification evidence, committed under non-closure message `feat(pipeline): bundle active governance rules into ACTIVE_RULES_BUNDLE.md (refs #368)`, pushed to `origin/main`, and verified clean diff.
-
-3. **Independent Victory Audit**:
-   - Project Orchestrator reported completion. Sentinel held report and dispatched `teamwork_preview_victory_auditor` (`e03db5bb-535e-4201-a326-c40ecbfe238f`) to `.agents/victory_auditor_4/`.
-   - The Victory Auditor conducted an independent 3-phase audit:
-     - **Phase A (Timeline)**: PASS. Chronological order and non-overlapping milestones verified.
-     - **Phase B (Integrity Check)**: PASS. Zero mocking or fake results. Defect dossier adheres to all 12 schema checks. Issue #368 verified open on GitHub with `status:fixed-resolved` label and evidence comment. `ACTIVE_RULES_BUNDLE.md` contains 100% unabridged rule text.
-     - **Phase C (Independent Test Execution)**: PASS. Auditor independently ran `python3 -m unittest tests/test_readme_scaffolding.py` (24/24 tests passed in 23.578s), `python3 scripts/verify_downstream_baseline.py --no-domain` (30/30 checks passed), and verified `git diff origin/main` clean (commit `14932ff`).
-   - Verdict: **VICTORY CONFIRMED**.
-
-4. **Cleanup & Finalization**:
-   - Cancelled Cron 1 (`task-28`) and Cron 2 (`task-30`).
-   - Terminated subagents via `manage_subagents(Action="kill_all")`.
-   - Verified workspace and tracking branch synchronization.
+1. **Task Intake & Delegation**: User request was recorded verbatim in `.agents/ORIGINAL_REQUEST.md`. Routed to Project Orchestrator (`teamwork_preview_orchestrator`) under working directory `.agents/orchestrator_7/`. Progress reporting and liveness monitoring crons were scheduled.
+2. **Execution & Multi-Stage Gate Remediation**:
+   - Initial propagation occurred across all three targets.
+   - Multi-agent review gate iteration 1 identified README catalog section leakage in `DEAP-uas-infrastructure-safety` and in-place upgrade check edge cases.
+   - Upstream fixes were applied in `scripts/install_pipeline.sh` and covered by 27 unit tests in `tests/test_readme_scaffolding.py`.
+   - Gate iteration 2 identified ungrounded Check 23 numbers in `uav-009`'s in-flight user stories. `worker_uav009_final2` remediated the grounding, achieved 30/30 passing checks, and pushed cleanly.
+   - Gate iteration 3 convened 5 fresh subagents who unanimously approved the deliverables.
+3. **Independent Victory Audit**: Following the orchestrator's victory claim, Sentinel dispatched `teamwork_preview_victory_auditor` in `.agents/victory_auditor_5/`. The auditor independently reproduced all test executions, verified SHA256 checksums across all bundle files, checked git logs for neutral citations `(refs #368)`, verified clean landing zones, and verified 0-byte remote diffs across all target repositories.
+4. **Cleanup**: Cancelled all crons and terminated all subagents per mandate.
 
 ---
 
 ## 3. Caveats
 
-- Downstream customer repositories installed via `scripts/install_pipeline.sh` automatically receive `.pipeline/ACTIVE_RULES_BUNDLE.md`. When upgrading existing downstream workspaces in-place (`bash scripts/install_pipeline.sh .`), the installer will recompile and refresh `.pipeline/ACTIVE_RULES_BUNDLE.md` with any newly added rules from the upstream core.
+- In `DEAP01-spec-core`, uncommitted local state is strictly restricted to agent coordination metadata (`.agents/`) and `implementation_plan.md`.
+- In `DEAP-uas-infrastructure-safety`, domain models remain in `schema/`, while all downstream specification directories are strictly clean landing zones.
 
 ---
 
 ## 4. Conclusion
 
-All requirements (R1, R2, R3) and objective acceptance criteria have been fully satisfied, verified through multi-agent review and independent post-victory audit (`VICTORY CONFIRMED`), and pushed cleanly to `origin/main`.
+All requirements (R1, R2, R3) and objective verification acceptance criteria for downstream propagation and integration of `.pipeline/ACTIVE_RULES_BUNDLE.md` and non-circular operator prompt catalogs have been fully satisfied, independently audited, and verified with 0-byte remote diffs across all target repositories.
+
+**FINAL VERDICT: VICTORY CONFIRMED.**
 
 ---
 
 ## 5. Verification Method
 
-- **Adversarial Defect Report Validation**:
-  ```bash
-  python3 scripts/file_defect.py --title "Tooling Defect: Downstream Onboarding Rule-Shortcutting & Lack of Consolidated Rule Ingestion Bundle" --body-file .agents/auditor_r1_6/defect_dossier.md --repo gintatkinson/DEAP01-spec-core --label bug --dry-run
-  ```
-- **Upstream Issue Verification**:
-  ```bash
-  gh issue view 368 --repo gintatkinson/DEAP01-spec-core
-  ```
-- **Regression Unit Tests**:
-  ```bash
-  python3 -m unittest tests/test_readme_scaffolding.py
-  ```
-- **Downstream Baseline Conformance**:
-  ```bash
-  python3 scripts/verify_downstream_baseline.py --no-domain
-  ```
-- **Remote Synchronization**:
-  ```bash
-  git diff origin/main -- . ':!.agents'
-  ```
+To reproduce the verification:
+```bash
+# 1. Verify Remote Diffs across all targets (all return 0 bytes)
+git -C /Users/perkunas/jail/uav-011 diff origin/main | wc -c
+git -C /Users/perkunas/jail/uav-009 diff origin/main | wc -c
+git -C /Users/perkunas/jail/DEAP01-spec-core diff origin/main -- . ':!.agents' ':!implementation_plan.md' | wc -c
+
+# 2. Verify SHA256 Checksum of ACTIVE_RULES_BUNDLE.md
+python3 -c "
+import hashlib
+for path in ['/Users/perkunas/jail/uav-011/.pipeline/ACTIVE_RULES_BUNDLE.md', '/Users/perkunas/jail/uav-009/.pipeline/ACTIVE_RULES_BUNDLE.md']:
+    with open(path, 'rb') as f: data = f.read()
+    assert hashlib.sha256(data).hexdigest() == 'a99dad5c07c3eb570a2c99aa08ccd070b277f30f3d7eb57882d40c3ef668931d'
+print('Checksums match.')
+"
+
+# 3. Run Test Suites
+python3 -m unittest /Users/perkunas/jail/DEAP01-spec-core/tests/test_readme_scaffolding.py
+python3 /Users/perkunas/jail/DEAP01-spec-core/scripts/verify_downstream_baseline.py --no-domain
+python3 /Users/perkunas/jail/uav-011/scripts/verify_downstream_baseline.py
+python3 /Users/perkunas/jail/uav-009/scripts/verify_downstream_baseline.py
+```

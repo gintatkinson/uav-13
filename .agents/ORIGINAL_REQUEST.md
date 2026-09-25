@@ -245,3 +245,42 @@ Integrity mode: development
 - [ ] `git diff origin/main` verified clean across all three target repositories.
 
 PROCEED
+
+## 2026-09-25T14:30:00Z
+
+Teamwork-Preview Multi-Agent Directive:
+Fix Issue #363 in DEAP01-spec-core scripts/install_pipeline.sh as the essential first step, execute adversarial code audits and file formal dossiers to issue trackers, implement verified fixes, publish and ground 75 specification items in uav-009, and propagate verified pipeline tooling, active rules bundles, and non-circular onboarding catalogs across the entire fleet of downstream repositories defined in README.md.
+
+Working directory: /Users/perkunas/jail/DEAP01-spec-core
+Integrity mode: development
+
+## Requirements
+
+### M1. The Essential First Step: Fix Issue #363 in DEAP01-spec-core (scripts/install_pipeline.sh)
+- Target: `scripts/install_pipeline.sh`.
+- Root Cause: In role detection (lines 324-342), when `--domain-url` is specified, `TARGET_ROLE` defaults to `DOWNSTREAM_CUSTOMER_PROJECT`, omitting the domain template onboarding clone command in `README.md` and causing `test_domain_url_synthesis.py` unit tests to fail.
+- Fix: Ensure `install_pipeline.sh` synthesizes domain template onboarding commands properly whenever `--domain-url` or a domain template remote is provided or when `--role DOMAIN_DISTRIBUTION_TEMPLATE` is passed.
+- Verification: `python3 -m unittest -v tests/test_domain_url_synthesis.py` passes 9/9 tests with exit code 0.
+- Review Gate: Reviewer and Challenger verify fix and neutral commit citation `(refs #363)`. Push to GitHub `origin/main`.
+
+### M2. Adversarial Defect Audits & Tracker Grounding
+- Dispatch context-isolated auditor subagents per `skills/adversarial-code-auditor/SKILL.md`:
+  1. Audit Governance Ingestion Defect in `README.md` and `docs/OPERATOR_PROMPT_CATALOG.md` (bare directory reads) -> Post to GitHub `gintatkinson/DEAP01-spec-core`.
+  2. Audit Single-Provider Tooling Defect in `skills/spec-orchestrator/scripts/create_issue.sh` (hardcoded `gh` CLI) -> Post to GitHub `gintatkinson/DEAP01-spec-core`.
+  3. Audit Downstream Specification Grounding Defect in `/Users/perkunas/jail/uav-009/docs/` (75 ungrounded specs with `#[IssueID]`) -> Post to GitLab `gintatkinson/uav-009`.
+- Convene Multi-Agent Gate (Reviewers & Challengers) to verify 12 checks + offline Check 7 Mermaid syntax before posting.
+- Capture created issue numbers and update `HANDOFF.md` to `DEAP-HANDOFF-ROOT-004`.
+
+### M3. Implementation, Grounding & Full-Fleet Downstream Propagation
+- Step 1: Fix `README.md`, `docs/OPERATOR_PROMPT_CATALOG.md`, and `scripts/scaffold_downstream_agents.py` in `DEAP01-spec-core` to mandate `.pipeline/ACTIVE_RULES_BUNDLE.md`. Run unit tests in `tests/test_readme_scaffolding.py` (27/27 pass) and pass Check 14.
+- Step 2: Refactor `create_issue.sh` with `gh` + `glab` auto-detection and link rewriting. Add regression tests in `tests/test_create_issue_dual_provider.py`.
+- Step 3: Deploy updated tooling to `/Users/perkunas/jail/uav-009`, publish 75 specs via `glab`, run `reconcile_backlog.py --provider gitlab`, replace `#[IssueID]` tokens with live numeric IDs, and pass 30/30 baseline checks.
+- Step 4: Propagate verified installer to customer workspaces (`/Users/perkunas/jail/uav-011`, `uav-007`, `uav-006`, `uas-003`). Pass 30/30 checks and push to GitLab.
+- Step 5: Propagate verified installer to the 6 Tier 1 domain distribution templates (`DEAP-uas-infrastructure-safety`, `DEAP-surgical-robotics-console`, `DEAP-space-cubesat-constellation`, `DEAP-industrial-warehouse-agv`, `DEAP-subsea-oceanographic-auv`, `DEAP-rail-autonomous-locomotive`) and Profile Repositories (`DEAP-profile-flutter-app`, `DEAP-profile-react-web`, `DEAP-profile-backend-api`, `DEAP-profile-vhdl-hardware`). Preserve clean landing zone invariant (strictly `.gitkeep`), verify 0-byte remote diffs, and push to GitHub.
+
+### M4. Multi-Agent Consensus Gate & Independent Victory Audit
+- Convene final multi-agent review gate (Reviewers, Challengers, Forensic Auditor).
+- Sentinel dispatches `teamwork_preview_victory_auditor` to conduct 3-phase independent audit (Timeline, Integrity, Test Execution).
+- Issue `VICTORY CONFIRMED` only upon unanimous verification.
+
+PROCEED
