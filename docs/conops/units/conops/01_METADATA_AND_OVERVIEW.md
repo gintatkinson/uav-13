@@ -158,11 +158,13 @@ The following Unified Architecture Framework (UAF) operational context diagram d
 ```mermaid
 flowchart TB
     subgraph SpaceSegment["Space & Orbital Segment"]
+        direction TB
         GNSSConstellation["GNSS Satellite Constellation<br/>(InterfacePort: GNSSService)"]
         SatcomRelay["SATCOM Satellite Network<br/>(InterfacePort: SatcomRelayService)"]
     end
 
     subgraph VehicleSegment["Cyber-Physical Vehicle Segment (System Under Design)"]
+        direction TB
         CoreController["Core Controller Subsystem<br/>(PerformerNode: CoreController)"]
         SensorSuite["Integrated Sensor Suite<br/>(PerformerNode: SensorSuite)"]
         ActuatorSubsystem["Propulsion & Actuator Subsystem<br/>(PerformerNode: ActuatorSubsystem)"]
@@ -172,17 +174,20 @@ flowchart TB
     end
 
     subgraph ControlSegment["Control & Infrastructure Segment"]
+        direction TB
         OperatorConsole["Supervisory Operator Console<br/>(PerformerNode: OperatorConsole)"]
         GroundCommsArray["Communications Gateway Array<br/>(InterfacePort: GroundGateway)"]
         InfrastructureHub["Infrastructure & Cloud Hub<br/>(PerformerNode: InfrastructureHub)"]
     end
 
     subgraph SupportSegment["Support & Ground Support Equipment (GSE) Segment"]
+        direction TB
         GroundSupportEquipment["GSE Diagnostic & Power Station<br/>(PerformerNode: GSEStation)"]
-        MaintenanceTerminal["Field Maintenance Terminal<br/>(PerformerNode: MaintenanceTerminal)"]
+        MaintenanceTerminal["Field Maintenance Terminal<br/>(PerformerNode:<br/>MaintenanceTerminal)"]
     end
 
     subgraph OperationalRoles["Operational Roles (Human Stakeholders)"]
+        direction TB
         SystemOperator["System Operator<br/>(UserRole: SystemOperator)"]
         SafetySupervisor["Safety Supervisor<br/>(UserRole: SafetySupervisor)"]
         OperationsCoordinator["Operations Coordinator<br/>(UserRole: OperationsCoordinator)"]
@@ -190,13 +195,14 @@ flowchart TB
     end
 
     subgraph ExternalAuthorities["External Authorities & Regulatory Services"]
-        AirspaceAuthority["Civil Aviation & Airspace Authority / UTM<br/>(InterfacePort: UTMService)"]
+        direction TB
+        AirspaceAuthority["Civil Aviation & Airspace<br/>Authority - UTM<br/>(InterfacePort: UTMService)"]
         WeatherDataService["Meteorological & Weather Service<br/>(InterfacePort: WeatherService)"]
     end
 
     GNSSConstellation -->|"1. Positioning & Timing Signals"| SensorSuite
     SatcomRelay ---|"2. Emergency SATCOM C2 Link"| VehicleComms
-    VehicleComms ---|"3. Primary/Alternate PACE Datalink"| GroundCommsArray
+    VehicleComms ---|"3. Primary - Alternate PACE Datalink"| GroundCommsArray
     SensorSuite -->|"4. Raw & Filtered State Telemetry"| CoreController
     CoreController -->|"5. Deterministic Actuation Demands"| ActuatorSubsystem
     PayloadSubsystem -->|"6. High-Throughput Feature Data"| CoreController

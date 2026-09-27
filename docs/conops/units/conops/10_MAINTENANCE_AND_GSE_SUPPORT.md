@@ -59,15 +59,26 @@ To achieve sustained high-tempo operational availability ($N_{\mathrm{sorties}} 
 
 ```mermaid
 flowchart TD
-    Step1["Step 1: System Ingress & Safe-State Disarm<br/>(T+0 to T+2 min)"] --> Step2["Step 2: Telemetry Data Offload & Log Audit<br/>(T+2 to T+4 min)"]
-    Step2 --> Step3["Step 3: Rapid Energy Module Hot-Swap<br/>(T+4 to T+6 min, t_swap <= 2 min)"]
-    Step3 --> Step4["Step 4: Rapid Visual & Structural Inspection<br/>(T+6 to T+9 min)"]
-    Step4 --> Step5["Step 5: Mission Re-Tasking & Key Injection<br/>(T+9 to T+11 min)"]
-    Step5 --> Step6["Step 6: Automated PBIT Diagnostics<br/>(T+11 to T+13 min, t_PBIT <= tau_PBIT_max)"]
-    Step6 --> GateCheck{"PBIT Diagnostics & Safety Interlocks"}
-    GateCheck -- "PASS (100%)" --> Step7["Step 7: Final Arming & Sortie Release<br/>(T+13 to T+15 min)"]
-    GateCheck -- "FAIL" --> AbortMTC04["Abort Turnaround & Route to MTC-04 LRU Swap"]
-    Step7 --> SortieLaunch["Nominal Sortie Launch (Phase_NominalExecution)"]
+    Step1["Step 1: System Ingress &<br/>Safe-State Disarm (T+0 to T+2 min)"]
+    Step2["Step 2: Telemetry Data Offload<br/>& Log Audit (T+2 to T+4 min)"]
+    Step3["Step 3: Rapid Energy Module<br/>Hot-Swap (T+4 to T+6 min)<br/>t_swap <= 2 min"]
+    Step4["Step 4: Rapid Visual &<br/>Structural Inspection<br/>(T+6 to T+9 min)"]
+    Step5["Step 5: Mission Re-Tasking<br/>& Key Injection (T+9 to T+11 min)"]
+    Step6["Step 6: Automated PBIT<br/>Diagnostics (T+11 to T+13 min)<br/>t_PBIT <= tau_PBIT_max"]
+    GateCheck{"PBIT Diagnostics &<br/>Safety Interlocks"}
+    Step7["Step 7: Final Arming &<br/>Sortie Release (T+13 to T+15 min)"]
+    AbortMTC04["Abort Turnaround &<br/>Route to MTC-04 LRU Swap"]
+    SortieLaunch["Nominal Sortie Launch<br/>(Phase_NominalExecution)"]
+
+    Step1 --> Step2
+    Step2 --> Step3
+    Step3 --> Step4
+    Step4 --> Step5
+    Step5 --> Step6
+    Step6 --> GateCheck
+    GateCheck -- "PASS (100%)" --> Step7
+    GateCheck -- "FAIL" --> AbortMTC04
+    Step7 --> SortieLaunch
 ```
 
 1. **Step 1: System Recovery & Ingress Safe-Area Positioning ($T_0 + 0\text{ min}$ to $T_0 + 2\text{ min}$):**
