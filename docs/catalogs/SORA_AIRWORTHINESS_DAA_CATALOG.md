@@ -19,8 +19,10 @@ The catalog formalizes four foundational airworthiness and deterministic safety 
 
 ```mermaid
 flowchart TD
-    subgraph AirworthinessPillars ["UAS Airworthiness, Safety Integrity & DAA Architecture"]
+    subgraph AirworthinessPillars ["UAS Airworthiness - Safety Integrity & DAA Architecture"]
+        direction TB
         subgraph Pillar1 ["Pillar 1: JARUS SORA OSO-01..24"]
+            direction TB
             P1A["SAIL I-VI Integrity Level"]
             P1B["System Reliability & FMECA"]
             P1C["Containment & Parachute System"]
@@ -28,6 +30,7 @@ flowchart TD
         end
 
         subgraph Pillar2 ["Pillar 2: ASTM F3269-17 RTA"]
+            direction TB
             P2A["Dual-Channel Simplex Core"]
             P2B["Control Barrier Functions"]
             P2C["Deterministic State Switcher"]
@@ -35,6 +38,7 @@ flowchart TD
         end
 
         subgraph Pillar3 ["Pillar 3: ASTM F3411-22a Remote ID"]
+            direction TB
             P3A["Open Drone ID Types 0x0-0xF"]
             P3B["1.0 Hz Direct RF Broadcast"]
             P3C["ECDSA P-256 Auth Signatures"]
@@ -42,7 +46,8 @@ flowchart TD
         end
 
         subgraph Pillar4 ["Pillar 4: RTCA DO-365B DAA"]
-            P4A["DWC Volume: DMOD, HMD, Tau_mod, ZTHR"]
+            direction TB
+            P4A["DWC Volume:<br/>DMOD - HMD - Tau_mod - ZTHR"]
             P4B["Preventative Alert: 75 s"]
             P4C["Corrective Alert: 55 s"]
             P4D["Warning Alert: 25 s & Maneuver"]
@@ -143,7 +148,7 @@ stateDiagram-v2
     [*] --> CONCEPT_DEFINITION : "Mission Parameters & Airframe Selected"
 
     CONCEPT_DEFINITION --> INITIAL_RISK_ASSESSMENT : "GRC & ARC Scored"
-    INITIAL_RISK_ASSESSMENT --> MITIGATION_APPLICATION : "M1 Parachute / M2 Buffer Applied"
+    INITIAL_RISK_ASSESSMENT --> MITIGATION_APPLICATION : "M1 Parachute - M2 Buffer Applied"
 
     MITIGATION_APPLICATION --> SAIL_EVALUATION : "Final GRC & Final ARC Computed"
     SAIL_EVALUATION --> OSO_ROBUSTNESS_ASSIGNMENT : "Target SAIL 1-6 Resolved"
@@ -323,18 +328,18 @@ $$\begin{aligned}
 
 ```mermaid
 flowchart TD
-    Sensors["GNSS / Barometer / GCS Telemetry"] --> Quantizer["Quantizer & Coordinate Encoder (ASTM F3411-22a §5.4)"]
-    Quantizer --> MsgBuilder["ODID Frame Builder: Type 0x0, 0x1, 0x4, 0x5"]
+    Sensors["GNSS - Barometer - GCS Telemetry"] --> Quantizer["Quantizer & Coordinate Encoder<br/>(ASTM F3411-22a §5.4)"]
+    Quantizer --> MsgBuilder["ODID Frame Builder:<br/>Type 0x0 - 0x1 - 0x4 - 0x5"]
 
     MsgBuilder --> PackAssembler["Message Pack 0xF Assembler"]
-    PackAssembler --> CryptoSigner["ECDSA P-256 / SHA-256 Auth Engine (§5.5)"]
+    PackAssembler --> CryptoSigner["ECDSA P-256 - SHA-256<br/>Auth Engine (§5.5)"]
 
     CryptoSigner --> FrameMux{"PHY Transport Selector"}
-    FrameMux -->|"Direct RF BLE"| BLE_Adv["Bluetooth 5.x Extended Adv (2.4 GHz)"]
+    FrameMux -->|"Direct RF BLE"| BLE_Adv["Bluetooth 5.x Extended<br/>Adv (2.4 GHz)"]
     FrameMux -->|"Direct RF Wi-Fi"| WiFi_Adv["Wi-Fi NAN and Beacon Frame"]
-    FrameMux -->|"Network C2 LTE"| DSS_Broker["Network RID REST / MQTT Cloud Broker"]
+    FrameMux -->|"Network C2 LTE"| DSS_Broker["Network RID REST -<br/>MQTT Cloud Broker"]
 
-    BLE_Adv --> AirspaceBroadcast["1.0 Hz Direct Broadcast to Receivers"]
+    BLE_Adv --> AirspaceBroadcast["1.0 Hz Direct Broadcast<br/>to Receivers"]
     WiFi_Adv --> AirspaceBroadcast
 ```
 

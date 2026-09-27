@@ -20,29 +20,33 @@ In accordance with **INCOSE SEH v5.0**, **JARUS SORA v2.5**, **FAA 14 CFR Part 1
 ```mermaid
 flowchart TB
     subgraph Airspace_UTM["U-Space & UTM Airspace Integration Tier"]
-        UTM["UTM Service Provider / U-Space USS"]
-        DAA["RTCA DO-365B DAA & Surveillance (ADS-B / Radar)"]
-        CORR["Dynamic 4D Flight Corridors & Geozones"]
+        direction TB
+        UTM["UTM Service Provider -<br/>U-Space USS"]
+        DAA["RTCA DO-365B DAA & Surveillance<br/>(ADS-B - Radar)"]
+        CORR["Dynamic 4D Flight Corridors<br/>& Geozones"]
     end
 
     subgraph Platform_Edge["UAS Airborne Platform & Edge Intelligence"]
-        FCS["Flight Control System (ASTM F3269-17 RTA Simplex)"]
-        SENS["Multi-Modal Payload Suite (RGB / LWIR / MWIR / LiDAR / OGI)"]
-        EDGE["Edge AI Compute (TensorRT / INT8 DNN Inference)"]
-        VILO["Visual-Inertial-LiDAR Odometry (GNSS-Denied SLAM)"]
+        direction TB
+        FCS["Flight Control System<br/>(ASTM F3269-17 RTA Simplex)"]
+        SENS["Multi-Modal Payload Suite<br/>(RGB - LWIR - MWIR - LiDAR - OGI)"]
+        EDGE["Edge AI Compute<br/>(TensorRT - INT8 DNN Inference)"]
+        VILO["Visual-Inertial-LiDAR Odometry<br/>(GNSS-Denied SLAM)"]
     end
 
     subgraph C2_Comms["Resilient PACE C2 Infrastructure"]
-        C2_PRI["Primary: 5G Private / Cellular C-Band"]
-        C2_ALT["Alternate: Point-to-Point ISM / COFDM RF"]
-        C2_CON["Contingency: Satellite C2 (Iridium / Starlink Direct)"]
-        C2_EMG["Emergency: Direct RF Broadcast / ADS-B Out / Remote ID"]
+        direction TB
+        C2_PRI["Primary: 5G Private -<br/>Cellular C-Band"]
+        C2_ALT["Alternate: Point-to-Point<br/>ISM - COFDM RF"]
+        C2_CON["Contingency: Satellite C2<br/>(Iridium - Starlink Direct)"]
+        C2_EMG["Emergency: Direct RF Broadcast -<br/>ADS-B Out - Remote ID"]
     end
 
     subgraph Safety_Ops["Ground Risk & Regulatory Assurance"]
-        SORA["JARUS SORA v2.5 (GRC/ARC -> SAIL Assessment)"]
-        FMEA["MIL-STD-1629A / SAE ARP4761 FMECA Safety Net"]
-        DOC["Automated Docking Station / Hangar GSE"]
+        direction TB
+        SORA["JARUS SORA v2.5<br/>(GRC-ARC -> SAIL Assessment)"]
+        FMEA["MIL-STD-1629A - SAE ARP4761<br/>FMECA Safety Net"]
+        DOC["Automated Docking Station -<br/>Hangar GSE"]
     end
 
     UTM <--> C2_Comms
@@ -186,28 +190,43 @@ Where and Operational Parameters:
 ## 3. Exhaustive Analysis of the 15 Infrastructure Inspection Domains
 
 ```mermaid
-mindmap
-  root((15 LAE Critical Infrastructure Inspection Domains))
-    Aviation & Maritime
-      Domain 1: Airport Perimeter & Runway FOD
-      Domain 2: Marine Port & Ship Hull Security
-    Energy & Utilities
-      Domain 3: High-Voltage Grid & Corona/Thermal
-      Domain 4: Oil & Gas Pipeline Methane OGI
-      Domain 5: 5G Telecom Tower & RF Assets
-      Domain 6: Offshore Wind Turbine Blade NDT
-      Domain 9: Solar PV Farm Thermography & EL
-      Domain 11: Hydroelectric Dam & Spillways
-      Domain 12: Nuclear Cooling Tower & Dry Cask
-      Domain 13: Chemical Refinery & Flare Stacks
-    Transportation & Civil
-      Domain 7: High-Speed Rail & Catenary Wire
-      Domain 8: Highway, Overpass & Bridge Photogrammetry
-    Public Safety & Logistics
-      Domain 10: Urban Medical Sample & AED Delivery
-      Domain 15: Forestry Wildfire Smoke & Hotspots
-    Natural Resources
-      Domain 14: Precision Agriculture Canopy & Irrigation
+flowchart TD
+    Root["15 LAE Critical Infrastructure<br/>Inspection Domains"]
+    subgraph G1 ["Aviation & Maritime"]
+        direction TB
+        D1["Domain 1: Airport Perimeter<br/>& Runway FOD"]
+        D2["Domain 2: Marine Port<br/>& Ship Hull Security"]
+    end
+    subgraph G2 ["Energy & Utilities"]
+        direction TB
+        D3["Domain 3: High-Voltage Grid<br/>& Corona-Thermal"]
+        D4["Domain 4: Oil & Gas Pipeline<br/>Methane OGI"]
+        D5["Domain 5: 5G Telecom Tower<br/>& RF Assets"]
+        D6["Domain 6: Offshore Wind Turbine<br/>Blade NDT"]
+        D9["Domain 9: Solar PV Farm<br/>Thermography & EL"]
+        D11["Domain 11: Hydroelectric Dam<br/>& Spillways"]
+        D12["Domain 12: Nuclear Cooling Tower<br/>& Dry Cask"]
+        D13["Domain 13: Chemical Refinery<br/>& Flare Stacks"]
+    end
+    subgraph G3 ["Transportation & Civil"]
+        direction TB
+        D7["Domain 7: High-Speed Rail<br/>& Catenary Wire"]
+        D8["Domain 8: Highway - Overpass<br/>& Bridge Photogrammetry"]
+    end
+    subgraph G4 ["Public Safety & Logistics"]
+        direction TB
+        D10["Domain 10: Urban Medical Sample<br/>& AED Delivery"]
+        D15["Domain 15: Forestry Wildfire Smoke<br/>& Hotspots"]
+    end
+    subgraph G5 ["Natural Resources"]
+        direction TB
+        D14["Domain 14: Precision Agriculture<br/>Canopy & Irrigation"]
+    end
+    Root --> G1
+    Root --> G2
+    Root --> G3
+    Root --> G4
+    Root --> G5
 ```
 
 ---
@@ -903,33 +922,37 @@ The comprehensive engineering characteristics across all 15 infrastructure inspe
 Across all 15 domains, the Edge AI Computer Vision pipeline operates on a standardized, real-time sensor processing and safety interlock architecture.
 
 ```mermaid
-flowchart LR
+flowchart TD
     subgraph Raw_Sensors["Raw Multi-Modal Sensor Ingestion"]
+        direction TB
         S1["Metric RGB (Global Shutter)"]
-        S2["Radiometric Thermal (LWIR/MWIR)"]
+        S2["Radiometric Thermal<br/>(LWIR - MWIR)"]
         S3["LiDAR Point Cloud Streams"]
-        S4["Specialized (UV / OGI / Gas / Gamma)"]
+        S4["Specialized (UV - OGI -<br/>Gas - Gamma)"]
     end
 
     subgraph Edge_Preproc["Onboard Pre-Processing & Calibration"]
+        direction TB
         P1["GPU Hardware Debayer & ISP"]
-        P2["Radiometric LUT & Emissivity Correction"]
-        P3["VILO / LIO-SAM Spatial Registration"]
-        P4["Sensor Fusion & Timestamp Sync (PTP/IEEE 1588)"]
+        P2["Radiometric LUT &<br/>Emissivity Correction"]
+        P3["VILO - LIO-SAM Spatial<br/>Registration"]
+        P4["Sensor Fusion & Timestamp Sync<br/>(PTP - IEEE 1588)"]
     end
 
     subgraph DNN_Inference["Edge TensorRT Inference Engine"]
-        M1["YOLO-OBB / Detection Backbone"]
-        M2["Semantic Segmentation (Mask2Former)"]
+        direction TB
+        M1["YOLO-OBB - Detection Backbone"]
+        M2["Semantic Segmentation<br/>(Mask2Former)"]
         M3["PointNet++ 3D Cloud Geometry"]
-        M4["Temporal Anomaly / Plume Tracking"]
+        M4["Temporal Anomaly -<br/>Plume Tracking"]
     end
 
     subgraph Autonomy_Safety["Autonomy Arbitration & Control Action"]
+        direction TB
         A1["ASTM F3269-17 RTA Simplex Monitor"]
-        A2["Flight Controller Dynamic Trajectory Correction"]
-        A3["Real-Time GeoJSON GIS Telemetry Push"]
-        A4["Critical Safety Interlock / Emergency Abort"]
+        A2["Flight Controller Dynamic<br/>Trajectory Correction"]
+        A3["Real-Time GeoJSON GIS<br/>Telemetry Push"]
+        A4["Critical Safety Interlock -<br/>Emergency Abort"]
     end
 
     S1 --> P1

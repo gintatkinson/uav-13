@@ -34,20 +34,27 @@ Execute Work Package WP-03: Update tests/test_readme_scaffolding.py for three-ti
 
 ## Key Decisions Made
 - Checked out working directory, loaded spec-orchestrator skill, verified .pipeline/ directory.
+- Implemented Section 5.2 specifications in tests/test_readme_scaffolding.py: added 3 new test methods to TestUpstreamCompilerReadme, updated docstrings for Tier 2 and Tier 3, and updated explicit role assertions.
+- Verified all 34 unittest tests pass, all 31 baseline checks pass, and all 297 pytest tests pass with 0 failures.
 
 ## Artifact Index
 - /Users/perkunas/jail/DEAP01-spec-core/tests/test_readme_scaffolding.py — Test file
 - /Users/perkunas/jail/DEAP01-spec-core/.agents/worker_wp03/handoff.md — Handoff report
 
 ## Change Tracker
-- **Files modified**: tests/test_readme_scaffolding.py (pending)
-- **Build status**: Pending
+- **Files modified**: tests/test_readme_scaffolding.py (added 3 tests, updated 2 docstrings, updated 2 test assertions)
+- **Build status**: PASS (unittest: 34 passed in 35.7s, baseline: 31/31 passed, pytest: 297 passed in 192.3s)
 - **Pending issues**: none
 
 ## Quality Status
-- **Build/test result**: Pending
-- **Lint status**: Pending
-- **Tests added/modified**: 3 new tests in TestUpstreamCompilerReadme, 2 updated tests in scaffolding classes, 2 updated docstrings
+- **Build/test result**: PASS (100% pass rate, exit code 0)
+- **Lint status**: clean
+- **Tests added/modified**:
+  * Added `test_upstream_readme_section_1_heading_order_and_hierarchy`
+  * Added `test_upstream_readme_three_tier_architecture_normalization`
+  * Added `test_upstream_readme_pipeline_2_prompt_boundary_confinement`
+  * Updated `TestDomainDistributionTemplateScaffolding` docstring and `test_domain_template_scaffolding_explicit_role`
+  * Updated `TestCustomerWorkspaceScaffolding` docstring and `test_customer_workspace_scaffolding_explicit_role`
 
 ## Loaded Skills
 - **Source**: skills/spec-orchestrator/SKILL.md

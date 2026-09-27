@@ -18,32 +18,37 @@ The catalog synthesizes four critical operational safety pillars governing high-
 ```mermaid
 flowchart TD
     subgraph OperationalPillars ["UAS Mission Operations & Safety Architecture"]
+        direction TB
         subgraph Pillar1 ["Pillar 1: ROE & Interlocks"]
+            direction TB
             P1A["Dual-Consent Arming"]
             P1B["Sensor PID Fusion"]
             P1C["Collateral Damage Bounding"]
-            P1D["HITL / HOTL Override"]
+            P1D["HITL - HOTL Override"]
         end
 
-        subgraph Pillar2 ["Pillar 2: Threat & EW/Cyber"]
-            P2A["GNSS Anti-Jam / Spoof"]
+        subgraph Pillar2 ["Pillar 2: Threat & EW-Cyber"]
+            direction TB
+            P2A["GNSS Anti-Jam - Spoof"]
             P2B["C2 RF Link Hardening"]
-            P2C["Anti-Replay / HMAC Auth"]
+            P2C["Anti-Replay - HMAC Auth"]
             P2D["Bus Isolation & Secure Boot"]
         end
 
-        subgraph Pillar3 ["Pillar 3: Go/No-Go Matrix"]
+        subgraph Pillar3 ["Pillar 3: Go-No-Go Matrix"]
+            direction TB
             P3A["Pre-Flight 6-Gate Audit"]
             P3B["In-Flight Health Monitor"]
-            P3C["Bingo Energy / RTL Guard"]
+            P3C["Bingo Energy - RTL Guard"]
             P3D["SORA Envelope Containment"]
         end
 
         subgraph Pillar4 ["Pillar 4: PACE C2 Plan"]
-            P4A["Primary: LOS C-Band/COFDM"]
-            P4B["Alternate: 915MHz/Mesh"]
-            P4C["Contingency: LTE/SATCOM"]
-            P4D["Emergency: Remote ID/RTH"]
+            direction TB
+            P4A["Primary: LOS C-Band - COFDM"]
+            P4B["Alternate: 915MHz - Mesh"]
+            P4C["Contingency: LTE - SATCOM"]
+            P4D["Emergency: Remote ID - RTH"]
         end
     end
 
@@ -178,7 +183,9 @@ The unified Multi-Domain Threat Taxonomy establishes an open, extensible, and ma
 ```mermaid
 flowchart TD
     subgraph MultiDomainThreats ["Cross-Catalog Multi-Domain Threat Architecture"]
+        direction TB
         subgraph KineticDomain ["Kinetic & Airspace Vectors (THR-KIN-*)"]
+            direction TB
             TK1["Cooperative DAA Intruder (DO-365B)"]
             TK2["Non-Cooperative Radar Track"]
             TK3["Geofence 3D Barrier Breach"]
@@ -186,50 +193,55 @@ flowchart TD
         end
 
         subgraph MechanicalDomain ["Mechanical & Structural Vectors (THR-MEC-*)"]
-            TM1["Actuator Jam / Hardover"]
+            direction TB
+            TM1["Actuator Jam - Hardover"]
             TM2["Composite Spar Delamination"]
             TM3["Pyrotechnic Squib Inhibit"]
         end
 
         subgraph PowerDomain ["Propulsion & Power Vectors (THR-PWR-*)"]
+            direction TB
             TP1["LiPo Thermal Runaway (OSO-24)"]
             TP2["ESC Phase Loss & Motor Stall"]
-            TP3["DC Bus Short / Rail Dropout"]
+            TP3["DC Bus Short - Rail Dropout"]
         end
 
         subgraph EnvironmentalDomain ["Environmental & Climatic Vectors (THR-ENV-*)"]
+            direction TB
             TE1["Atmospheric Icing Accretion"]
             TE2["Microburst Wind Shear"]
-            TE3["Blowing Sand / Dust Erosion"]
+            TE3["Blowing Sand - Dust Erosion"]
             TE4["Extreme Thermal Excursion"]
         end
 
         subgraph EWDomain ["Electronic Warfare Vectors (THR-EW-*)"]
+            direction TB
             TEW1["GNSS Broadband Jamming"]
-            TEW2["GNSS Spoofing / Meaconing"]
+            TEW2["GNSS Spoofing - Meaconing"]
             TEW3["C2 Datalink Saturation DoS"]
-            TEW4["HIRF / EMP Pulse Immersion"]
+            TEW4["HIRF - EMP Pulse Immersion"]
         end
 
         subgraph CyberDomain ["Cybersecurity & OT Vectors (THR-CYB-*)"]
+            direction TB
             TC1["Unauthorized Command Injection"]
-            TC2["Telemetry / C2 Replay Attack"]
+            TC2["Telemetry - C2 Replay Attack"]
             TC3["GCS OT Lateral Compromise"]
             TC4["Firmware Root of Trust Tamper"]
         end
     end
 
-    KineticDomain --> CentralContainment["Unified Autonomous Threat Containment Engine"]
+    KineticDomain --> CentralContainment["Unified Autonomous Threat<br/>Containment Engine"]
     MechanicalDomain --> CentralContainment
     PowerDomain --> CentralContainment
     EnvironmentalDomain --> CentralContainment
     EWDomain --> CentralContainment
     CyberDomain --> CentralContainment
 
-    CentralContainment --> Act1["Simplex RTA Recovery (ASTM F3269-17)"]
+    CentralContainment --> Act1["Simplex RTA Recovery<br/>(ASTM F3269-17)"]
     CentralContainment --> Act2["PACE Link Handover (DO-362A)"]
-    CentralContainment --> Act3["Contingency RTH / Safe Hold"]
-    CentralContainment --> Act4["Ballistic Parachute FTS (ASTM F3322-18)"]
+    CentralContainment --> Act3["Contingency RTH - Safe Hold"]
+    CentralContainment --> Act4["Ballistic Parachute FTS<br/>(ASTM F3322-18)"]
 ```
 
 ### 3.3 Master Threat & Countermeasure Matrix
@@ -319,21 +331,21 @@ where critical emergency threshold is $\Theta_{\text{crit}} = 0.90$ and preventa
 
 ```mermaid
 flowchart TD
-    RF_In["Multi-Domain Input Vectors (RF, Kinematic, Environmental, Bus)"] --> PHY_Check{"Layer 1: Physical & Sensor Telemetry Check"}
+    RF_In["Multi-Domain Input Vectors<br/>(RF - Kinematic -<br/>Environmental - Bus)"] --> PHY_Check{"Layer 1: Physical &<br/>Sensor Telemetry Check"}
 
-    PHY_Check -->|"HIRF / EMP Surge"| Surge_Clamp["TVS Clamp & Structural Shielding"]
-    PHY_Check -->|"J/S Ratio Exceeded"| EW_Failover["Trip Anti-Jam Failover to INS & PACE"]
-    PHY_Check -->|"Atmospheric Icing / Wind Shear"| Env_Mitigate["Trigger De-Ice Heaters / TECS Escape"]
-    PHY_Check -->|"Signal Nominal"| L2_Crypto{"Layer 2: Cryptographic & Bus Security"}
+    PHY_Check -->|"HIRF - EMP Surge"| Surge_Clamp["TVS Clamp & Structural Shielding"]
+    PHY_Check -->|"J-S Ratio Exceeded"| EW_Failover["Trip Anti-Jam Failover<br/>to INS & PACE"]
+    PHY_Check -->|"Atmospheric Icing - Wind Shear"| Env_Mitigate["Trigger De-Ice Heaters -<br/>TECS Escape"]
+    PHY_Check -->|"Signal Nominal"| L2_Crypto{"Layer 2: Cryptographic<br/>& Bus Security"}
 
     L2_Crypto -->|"Bad Ed25519 Signature"| Drop_Pkt["Drop Packet & Log Alarm"]
-    L2_Crypto -->|"Nonce Replayed / Expired"| Drop_Replay["Drop Replay & Isolate Source"]
+    L2_Crypto -->|"Nonce Replayed - Expired"| Drop_Replay["Drop Replay & Isolate Source"]
     L2_Crypto -->|"Bus Frame Anomaly"| Bus_Firewall["CAN Firewall Isolates Node"]
-    L2_Crypto -->|"Signature & Nonce Valid"| L3_Integrity{"Layer 3: State Estimation & Airspace Safety"}
+    L2_Crypto -->|"Signature & Nonce Valid"| L3_Integrity{"Layer 3: State Estimation<br/>& Airspace Safety"}
 
     L3_Integrity -->|"Chi-Square Sensor Anomaly"| Isolate_Sensor["Isolate Sensor (RAIM Spoofing Trip)"]
-    L3_Integrity -->|"DAA Well-Clear Loss / Geofence Breach"| Simplex_RTA["Simplex RTA Escape Maneuver"]
-    L3_Integrity -->|"Structural / Thermal Critical Fault"| FTS_Parachute["Deploy Ballistic Parachute FTS"]
+    L3_Integrity -->|"DAA Well-Clear Loss - Geofence Breach"| Simplex_RTA["Simplex RTA Escape Maneuver"]
+    L3_Integrity -->|"Structural - Thermal Critical Fault"| FTS_Parachute["Deploy Ballistic Parachute FTS"]
     L3_Integrity -->|"All Vectors Clear"| Execute_Cmd["Execute Flight & Payload Guidance"]
 ```
 
@@ -406,10 +418,10 @@ flowchart TD
     Gate1 -->|"Exceeds Limits"| Hold1["HOLD: Unfavorable Weather"]
     Gate1 -->|"Pass"| Gate2{"Battery & Power System Gate"}
 
-    Gate2 -->|"Cell Imbalance / Low SoC"| Hold2["HOLD: Battery Service Required"]
+    Gate2 -->|"Cell Imbalance - Low SoC"| Hold2["HOLD: Battery Service Required"]
     Gate2 -->|"Pass"| Gate3{"Navigation & C2 Link Gate"}
 
-    Gate3 -->|"HDOP High / Link Degraded"| Hold3["HOLD: C2 / GPS Insufficient"]
+    Gate3 -->|"HDOP High - Link Degraded"| Hold3["HOLD: C2 - GPS Insufficient"]
     Gate3 -->|"Pass"| Launch_Auth["LAUNCH AUTHORIZED (Go)"]
 
     Launch_Auth --> InFlight["In-Flight Monitoring Loop"]
@@ -418,7 +430,7 @@ flowchart TD
     BingoCheck -->|"Reserve Depleted"| Trigger_RTH["Engage Autonomous RTH"]
     BingoCheck -->|"Sufficient Energy"| DAA_Check{"DAA & Geofence Monitor"}
 
-    DAA_Check -->|"Airspace Intruder / Containment Breach"| Avoid_Abort["Execute Collision Avoidance / Land"]
+    DAA_Check -->|"Airspace Intruder - Containment Breach"| Avoid_Abort["Execute Collision Avoidance - Land"]
     DAA_Check -->|"En-Route Nominal"| InFlight
 ```
 

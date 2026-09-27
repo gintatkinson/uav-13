@@ -1,0 +1,11 @@
+{
+  "timestamp": 1790539413,
+  "exit_code": 1,
+  "failed_checks": [
+    "baseline_verification"
+  ],
+  "errors": [
+    "Verification failed, see logs for details"
+  ],
+  "target_repository": "/private/tmp/DEAP-uas-infrastructure-safety"
+}

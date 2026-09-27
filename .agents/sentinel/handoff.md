@@ -1,112 +1,79 @@
-# Handoff Report — Project Sentinel
+# Handoff Report: Sentinel — Architecture Tier Normalization & Repository Boundary Hardening
 
-**Mission**: Downstream Propagation & Integration of updated DEAP pipeline tooling, active governance rule bundle (`.pipeline/ACTIVE_RULES_BUNDLE.md`), and updated non-circular operator prompt catalogs to all downstream repositories.  
-**Working Directory**: `/Users/perkunas/jail/DEAP01-spec-core/.agents/sentinel`  
-**Date**: 2026-09-25T08:41:00Z  
-**Verdict**: **VICTORY CONFIRMED**  
+- **Sentinel ID**: `51593246-6e8c-4cb0-8524-2d76e85cb74c`
+- **Archetype**: Sentinel
+- **Target Workspace**: `/Users/perkunas/jail/DEAP01-spec-core`
+- **Repository Classification**: `UPSTREAM_SPEC_CORE_COMPILER`
+- **Primary Native Skill**: `skills/spec-orchestrator/SKILL.md`
+- **Primary Commercial Toolchain Integration Context**: `MATLAB / Simulink / Stateflow / Embedded Coder`
+- **Date**: 2026-09-27
+- **Verdict**: **VICTORY CONFIRMED**
 
 ---
 
 ## 1. Observation
 
-1. **Target 1: Domain Distribution Template (`DEAP-uas-infrastructure-safety`)**:
-   - Remote URL: `https://github.com/gintatkinson/DEAP-uas-infrastructure-safety.git`
-   - Remote HEAD Commit: `06f9e7d` (`feat(governance): update prompt catalog to mandate ACTIVE_RULES_BUNDLE.md (refs #368)`)
-   - `.pipeline/ACTIVE_RULES_BUNDLE.md`: Exists, 151,317 bytes, SHA256 `a99dad5c07c3eb570a2c99aa08ccd070b277f30f3d7eb57882d40c3ef668931d`, containing 100% unabridged text of all 20 rules.
-   - Clean Landing Zone Invariant: `docs/epics/`, `docs/features/`, `docs/user-stories/`, `docs/use-cases/` contain strictly `.gitkeep`.
-   - Prompt Catalog: `README.md` Sections 2, 4.5.1, and 4.5.2 mandate reading `.pipeline/ACTIVE_RULES_BUNDLE.md` with zero isolated legacy rule references and zero circular clone commands.
-   - Remote Diff: `git diff origin/main | wc -c` is 0 bytes; working tree is clean.
+A multi-agent adversarial audit and remediation of `README.md` and installer scaffolding logic in `scripts/install_pipeline.sh` was completed and verified:
 
-2. **Target 2: Customer Application Workspace (`uav-011`)**:
-   - Local Path: `/Users/perkunas/jail/uav-011`
-   - Remote URL: `https://gitlab.com/gintatkinson/uav-011.git`
-   - Remote HEAD Commit: `bd851a4` (`feat(governance): sanitize README title and refresh pipeline (refs #368)`)
-   - `.pipeline/ACTIVE_RULES_BUNDLE.md`: Exists, 151,317 bytes, byte-for-byte identical SHA256.
-   - Prompt Catalog: `README.md` directs agents to `.pipeline/ACTIVE_RULES_BUNDLE.md` with zero circular clone commands. Title line 1 cleanly sanitized.
-   - Independent Test Execution: `python3 scripts/verify_downstream_baseline.py` passes all 30 checks with exit code 0.
-   - Remote Diff: `git diff origin/main | wc -c` is 0 bytes; working tree is clean.
+1. **R1 Forensic Audit**:
+   - `auditor_wp01` performed comprehensive AST and text audits cataloging tier numbering contradictions across Sections 1.2 and 5.4, out-of-order headings in Section 1, and boundary ambiguities in Pipeline 2 prompts.
 
-3. **Target 3: Customer Application Workspace (`uav-009`)**:
-   - Local Path: `/Users/perkunas/jail/uav-009`
-   - Remote URL: `https://gitlab.com/gintatkinson/uav-009.git`
-   - Remote HEAD Commits: `1f23257`, `ba67242`, `7c227ba`, `b74bd68`, `f75389f`
-   - `.pipeline/ACTIVE_RULES_BUNDLE.md`: Exists, 151,317 bytes, byte-for-byte identical SHA256.
-   - Prompt Catalog: `README.md` directs agents to `.pipeline/ACTIVE_RULES_BUNDLE.md` with zero circular clone commands.
-   - Independent Test Execution: `python3 scripts/verify_downstream_baseline.py` passes all 30 checks with exit code 0.
-   - Remote Diff: `git diff origin/main | wc -c` is 0 bytes; working tree is clean.
+2. **R2 Architecture Tier Normalization & Heading Reordering**:
+   - Section 1.1 (`Primary Commercial Toolchain Integration`) now cleanly precedes Section 1.2 (`Three-Tier Architecture & Repository Boundaries`) as valid H3 subsections of Section 1 in `README.md`.
+   - The framework repository topology is normalized to a strict three-tier architecture:
+     * **Tier 1**: Upstream Specification Core Compiler (`DEAP01-spec-core`)
+     * **Tier 2**: Domain Distribution Templates (`DEAP-*`)
+     * **Tier 3**: Customer Application Workspaces (`uav-*`)
+   - All conflicting duplicate "Tier 1 Domain" and "Tier 2 Customer" labels were removed from `README.md` and `scripts/install_pipeline.sh`.
 
-4. **Target 4: Upstream Compiler (`DEAP01-spec-core`)**:
-   - Local Path: `/Users/perkunas/jail/DEAP01-spec-core`
-   - Remote URL: `https://github.com/gintatkinson/DEAP01-spec-core.git`
-   - Commits: `14932ff`, `080fc49`, `a749ff8`
-   - Test Suites: `tests/test_readme_scaffolding.py` (27/27 tests pass in 29.8s), `scripts/verify_downstream_baseline.py --no-domain` (30/30 checks pass).
-   - Remote Diff: Clean on repository code.
+3. **R3 Upstream vs. Downstream Execution Boundary Hardening**:
+   - Section 9.4 in `README.md` now incorporates an explicit `Execution Boundary Invariant` stating that Pipeline 2 prompts are strictly confined to `DOWNSTREAM_CUSTOMER_PROJECT`.
+   - Ambiguous fallback preambles permitting `UPSTREAM_SPEC_CORE_COMPILER` for concrete feature implementation and simulation drivers were eliminated from `README.md` and `scripts/install_pipeline.sh`.
 
-5. **Multi-Agent Quality Gate (Iteration 3)**:
-   - Code Reviewer 1 (`reviewer_it3_1`): APPROVE
-   - Code Reviewer 2 (`reviewer_it3_2`): APPROVE
-   - Adversarial Verifier 1 (`challenger_it3_1`): APPROVE
-   - Adversarial Verifier 2 (`challenger_it3_2`): APPROVE
-   - Forensic Integrity Auditor (`auditor_it3_1`): CLEAN
-   - Gate Verdict: **PASS (Unanimous)**
+4. **R4 Automated Regression & Baseline Verification**:
+   - `tests/test_readme_scaffolding.py` updated with 3 new automated test methods (`test_upstream_readme_section_1_heading_order_and_hierarchy`, `test_upstream_readme_three_tier_architecture_normalization`, `test_upstream_readme_pipeline_2_prompt_boundary_confinement`).
+   - `python3 -m unittest tests/test_readme_scaffolding.py`: 34/34 tests pass (exit code 0).
+   - `python3 scripts/verify_downstream_baseline.py --no-domain`: all 31 baseline checks pass (exit code 0).
+   - `python3 -m pytest tests/`: 297/297 tests pass (exit code 0).
 
-6. **Independent Victory Audit**:
-   - Dispatched `teamwork_preview_victory_auditor` (`f2b1ff76-7c22-43f9-9bc5-ea48cdb8de7c`) to `.agents/victory_auditor_5/`.
-   - Conducted independent 3-phase audit (Timeline reconstruction, forensic integrity / anti-mocking analysis, independent test execution across all 4 repositories).
-   - Auditor Verdict: **VICTORY CONFIRMED**.
+5. **R5 Git Stage, Neutral Citation Commit & Remote Synchronization**:
+   - Neutral citation commit created:
+     `git commit -m "docs(readme): normalize architecture tiers, fix heading sequence, and harden repository boundary (refs #371, refs #368)"` (commit `2864925`).
+   - Commit neutrality verified via `python3 scripts/verify_commit_messages.py --head` (exit code 0).
+   - Changes pushed to GitHub `origin/main`.
+
+6. **Post-Victory Audit**:
+   - Independent Victory Auditor `victory_auditor_9` (`49b2cc23-40c3-45a4-be4c-3d8b41de7512`) conducted an unsteered, context-isolated audit (Timeline, Integrity & Anti-Mocking, Independent Test Execution, Git Diff).
+   - Verdict: **VICTORY CONFIRMED**.
 
 ---
 
 ## 2. Logic Chain
 
-1. **Task Intake & Delegation**: User request was recorded verbatim in `.agents/ORIGINAL_REQUEST.md`. Routed to Project Orchestrator (`teamwork_preview_orchestrator`) under working directory `.agents/orchestrator_7/`. Progress reporting and liveness monitoring crons were scheduled.
-2. **Execution & Multi-Stage Gate Remediation**:
-   - Initial propagation occurred across all three targets.
-   - Multi-agent review gate iteration 1 identified README catalog section leakage in `DEAP-uas-infrastructure-safety` and in-place upgrade check edge cases.
-   - Upstream fixes were applied in `scripts/install_pipeline.sh` and covered by 27 unit tests in `tests/test_readme_scaffolding.py`.
-   - Gate iteration 2 identified ungrounded Check 23 numbers in `uav-009`'s in-flight user stories. `worker_uav009_final2` remediated the grounding, achieved 30/30 passing checks, and pushed cleanly.
-   - Gate iteration 3 convened 5 fresh subagents who unanimously approved the deliverables.
-3. **Independent Victory Audit**: Following the orchestrator's victory claim, Sentinel dispatched `teamwork_preview_victory_auditor` in `.agents/victory_auditor_5/`. The auditor independently reproduced all test executions, verified SHA256 checksums across all bundle files, checked git logs for neutral citations `(refs #368)`, verified clean landing zones, and verified 0-byte remote diffs across all target repositories.
-4. **Cleanup**: Cancelled all crons and terminated all subagents per mandate.
+1. User requested forensic audit and remediation of tier numbering contradictions, inverted headings, and repository boundaries.
+2. Sentinel recorded the verbatim request in `.agents/ORIGINAL_REQUEST.md` under `## 2026-09-27T15:38:55Z` and routed the task to `teamwork_preview_orchestrator`.
+3. Orchestrator `orchestrator_10` established `implementation_plan.md` and dispatched context-isolated subagents for audit (`auditor_wp01`), remediation (`worker_wp02`), test updates (`worker_wp03`), and commit/push (`worker_wp04`).
+4. On victory claim, Sentinel enforced mandatory independent verification by dispatching `victory_auditor_9`.
+5. `victory_auditor_9` verified all 5 requirements empirically with zero test skips or facades.
 
 ---
 
 ## 3. Caveats
 
-- In `DEAP01-spec-core`, uncommitted local state is strictly restricted to agent coordination metadata (`.agents/`) and `implementation_plan.md`.
-- In `DEAP-uas-infrastructure-safety`, domain models remain in `schema/`, while all downstream specification directories are strictly clean landing zones.
+- **Commercial Toolchain Tier Designation**: The vendor phrase `Primary Tier-1 Commercial Toolchain Integration Context` (referencing MATLAB / Simulink / Stateflow / Embedded Coder) signifies industrial partner toolchain status and is strictly distinct from the 3-tier repository architecture.
+- **Landing Zones**: Landing zones in `schema/`, `docs/epics/`, `docs/features/`, `docs/user-stories/`, and `docs/use-cases/` remain clean with `.gitkeep` only.
 
 ---
 
 ## 4. Conclusion
 
-All requirements (R1, R2, R3) and objective verification acceptance criteria for downstream propagation and integration of `.pipeline/ACTIVE_RULES_BUNDLE.md` and non-circular operator prompt catalogs have been fully satisfied, independently audited, and verified with 0-byte remote diffs across all target repositories.
-
-**FINAL VERDICT: VICTORY CONFIRMED.**
+All requirements R1 through R5 are complete, verified by automated test suites, committed with neutral issue citations, synchronized to `origin/main`, and confirmed by an independent Victory Auditor.
 
 ---
 
 ## 5. Verification Method
 
-To reproduce the verification:
-```bash
-# 1. Verify Remote Diffs across all targets (all return 0 bytes)
-git -C /Users/perkunas/jail/uav-011 diff origin/main | wc -c
-git -C /Users/perkunas/jail/uav-009 diff origin/main | wc -c
-git -C /Users/perkunas/jail/DEAP01-spec-core diff origin/main -- . ':!.agents' ':!implementation_plan.md' | wc -c
-
-# 2. Verify SHA256 Checksum of ACTIVE_RULES_BUNDLE.md
-python3 -c "
-import hashlib
-for path in ['/Users/perkunas/jail/uav-011/.pipeline/ACTIVE_RULES_BUNDLE.md', '/Users/perkunas/jail/uav-009/.pipeline/ACTIVE_RULES_BUNDLE.md']:
-    with open(path, 'rb') as f: data = f.read()
-    assert hashlib.sha256(data).hexdigest() == 'a99dad5c07c3eb570a2c99aa08ccd070b277f30f3d7eb57882d40c3ef668931d'
-print('Checksums match.')
-"
-
-# 3. Run Test Suites
-python3 -m unittest /Users/perkunas/jail/DEAP01-spec-core/tests/test_readme_scaffolding.py
-python3 /Users/perkunas/jail/DEAP01-spec-core/scripts/verify_downstream_baseline.py --no-domain
-python3 /Users/perkunas/jail/uav-011/scripts/verify_downstream_baseline.py
-python3 /Users/perkunas/jail/uav-009/scripts/verify_downstream_baseline.py
-```
+1. `python3 -m unittest tests/test_readme_scaffolding.py` -> 34 passed (exit code 0)
+2. `python3 scripts/verify_downstream_baseline.py --no-domain` -> 31 passed (exit code 0)
+3. `python3 scripts/verify_commit_messages.py --head` -> exit code 0
+4. `git log -1 --stat` -> commit `2864925` matches exact requested commit message

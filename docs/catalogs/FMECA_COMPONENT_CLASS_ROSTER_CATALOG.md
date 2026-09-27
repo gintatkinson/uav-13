@@ -20,28 +20,32 @@ The FMECA framework provides systematic bottom-up failure mode analysis from pie
 ```mermaid
 flowchart TD
     subgraph FMECAPillars ["FMECA & Safety Integrity Architecture"]
+        direction TB
         subgraph Rubrics ["Normative Evaluation Rubrics"]
-            R1["Severity S: 1 to 10 (MIL-STD-1629A §4.3)"]
-            R2["Occurrence O: 1 to 10 (MIL-STD-1629A §4.4)"]
-            R3["Detection D: 1 to 10 (MIL-STD-1629A §4.5)"]
-            R4["RPN Calculation: S * O * D from 1 to 1000"]
+            direction TB
+            R1["Severity S: 1 to 10<br/>(MIL-STD-1629A §4.3)"]
+            R2["Occurrence O: 1 to 10<br/>(MIL-STD-1629A §4.4)"]
+            R3["Detection D: 1 to 10<br/>(MIL-STD-1629A §4.5)"]
+            R4["RPN Calculation:<br/>S * O * D from 1 to 1000"]
         end
 
         subgraph ComponentTaxonomy ["Safety-Critical Component Classes"]
-            C1["Avionics & Core: FCC, Triplex IMU, GNSS, ADU, Compass"]
-            C2["Energy & Propulsion: Battery BMS, ESC BLDC, PDU"]
-            C3["Actuation & Flight Surfaces: Primary Actuators"]
-            C4["Communication & DAA: C2 Datalink, DAA Radar/EO-IR, ADS-B"]
-            C5["Safety Net & Containment: Geofence RTA, Parachute FTS, LiDAR"]
-            C6["Mission Payloads: Mission Payload Computer"]
+            direction TB
+            C1["Avionics & Core: FCC -<br/>Triplex IMU - GNSS - ADU"]
+            C2["Energy & Propulsion:<br/>Battery BMS - ESC BLDC - PDU"]
+            C3["Actuation & Flight Surfaces:<br/>Primary Actuators"]
+            C4["Communication & DAA:<br/>C2 Datalink - DAA Radar - ADS-B"]
+            C5["Safety Net & Containment:<br/>Geofence RTA - Parachute - LiDAR"]
+            C6["Mission Payloads:<br/>Mission Payload Computer"]
         end
 
         subgraph ContainmentMitigation ["Automated Containment & Reconfiguration"]
+            direction TB
             M1["Sub-millisecond Lockstep Handover"]
-            M2["TMR Sensor Voting & Disparity Gating"]
+            M2["TMR Sensor Voting &<br/>Disparity Gating"]
             M3["Simplex RTA Dynamic Safety Net"]
-            M4["Autonomous Lost-Link / RTK Fallback"]
-            M5["Emergency Ballistic Parachute Deploy"]
+            M4["Autonomous Lost-Link -<br/>RTK Fallback"]
+            M5["Emergency Ballistic<br/>Parachute Deploy"]
         end
     end
 
@@ -210,18 +214,18 @@ Pursuant to `MIL-STD-882E Task 106 §4.2` and `SAE ARP4761 §4.3.1`, component f
 
 ```mermaid
 flowchart TD
-    Start["Evaluate Failure Mode: Severity, Occurrence, Detection"] --> Calc["Calculate RPN = S * O * D"]
+    Start["Evaluate Failure Mode:<br/>Severity - Occurrence - Detection"] --> Calc["Calculate RPN = S * O * D"]
     Calc --> Decision{"High Risk Criteria Check"}
 
-    Decision -- "Pass" --> HighRisk["High Unacceptable Risk: RPN at or above 200 or S at or above 9"]
+    Decision -- "Pass" --> HighRisk["High Unacceptable Risk:<br/>RPN >= 200 or S >= 9"]
     Decision -- "Fail" --> MediumCheck{"Medium Risk Criteria Check"}
 
-    MediumCheck -- "Pass" --> MediumRisk["Medium Risk: RPN from 100 to 200 and S up to 8"]
-    MediumCheck -- "Fail" --> LowRisk["Low Acceptable Risk: RPN below 100 and S up to 6"]
+    MediumCheck -- "Pass" --> MediumRisk["Medium Risk:<br/>RPN 100 to 200 and S up to 8"]
+    MediumCheck -- "Fail" --> LowRisk["Low Acceptable Risk:<br/>RPN < 100 and S up to 6"]
 
-    HighRisk --> MHigh["Mandatory Dual/Triple Redundancy + Hardware Simplex RTA Interlock"]
-    MediumRisk --> MMed["Mandatory Continuous CBIT + Graceful Degradation Fallback"]
-    LowRisk --> MLow["Periodic Diagnostic BIT Logging + Routine Maintenance"]
+    HighRisk --> MHigh["Mandatory Dual - Triple Redundancy<br/>+ Hardware Simplex RTA Interlock"]
+    MediumRisk --> MMed["Mandatory Continuous CBIT +<br/>Graceful Degradation Fallback"]
+    LowRisk --> MLow["Periodic Diagnostic BIT Logging<br/>+ Routine Maintenance"]
 ```
 
 | Risk Level | RPN Range / Severity Boundary | Architectural Safety Mandate | Required Verification & Validation |
