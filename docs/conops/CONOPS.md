@@ -129,15 +129,15 @@ $$
 
 | Symbol / Variable | Coordinate Frame | Description | Engineering Unit |
 | :--- | :--- | :--- | :--- |
-| phi | Global Geodetic (WGS-84) | Geodetic Latitude | rad or deg |
-| lambda | Global Geodetic (WGS-84) | Geodetic Longitude | rad or deg |
+| phi | Global Geodetic (WGS-84) | Geodetic Latitude | rad |
+| lambda | Global Geodetic (WGS-84) | Geodetic Longitude | rad |
 | h_ellips | Global Geodetic (WGS-84) | Ellipsoidal Height above Reference Ellipsoid | m |
 | X_n, Y_n, Z_n | Local Tangent Plane (NED) | North, East, Down Position Coordinates | m |
 | X_b, Y_b, Z_b | Body-Fixed Frame | Longitudinal (Surge), Lateral (Sway), Normal (Heave) Axes | m |
 | v_b = [u, v, w]^T | Body-Fixed Frame | Body Translational Velocity (Surge u, Sway v, Heave w) | m/s |
-| omega_b/n = [p, q, r]^T | Body-Fixed Frame | Body Angular Rates (Roll p, Pitch q, Yaw r) | rad/s or deg/s |
+| omega_b/n = [p, q, r]^T | Body-Fixed Frame | Body Angular Rates (Roll p, Pitch q, Yaw r) | Hz |
 | C_b^n | Transformation SO(3) | Direction Cosine Matrix (Body to NED) | Dimensionless |
-| Theta = [phi, theta, psi]^T | Attitude Representation | Euler Angles (Roll phi, Pitch theta, Yaw psi) | rad or deg |
+| Theta = [phi, theta, psi]^T | Attitude Representation | Euler Angles (Roll phi, Pitch theta, Yaw psi) | rad |
 
 ### 1.3.2 Parametric Subsystem Mass/Resource Budget Breakdown Table
 The system architecture decomposes into six canonical Abstract System Topology (AST) structural groups. Mass allocations and power resource budgets are partitioned parametrically to maintain strict mass fraction boundaries summing to 100.0% Maximum Takeoff Weight (MTOW):
