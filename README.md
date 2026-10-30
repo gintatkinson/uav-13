@@ -49,6 +49,22 @@ The repository includes precompiled, high-performance native Rust binaries (`./t
 
 ## 3. Project Lifecycle & Tooling Maintenance
 
+### 3.0 Installation & Downstream Project Bootstrap
+
+#### Scenario A: Bootstrapping a Downstream Project from an Empty Cloned Repository
+Starting inside any empty cloned downstream project repository workspace, execute this single command to pull the complete template tree, configure pre-commit hooks, and verify baseline conformance:
+
+```bash
+git remote add template https://github.com/gintatkinson/DEAP-uas-infrastructure-safety.git 2>/dev/null || true && git fetch template main && git merge template/main --allow-unrelated-histories -m "chore: bootstrap from DEAP template" && chmod +x target/release/* && ./target/release/verify-baseline setup-hooks . && ./target/release/verify-baseline . --no-domain
+```
+
+#### Scenario B: Initializing Within this Template Repository Directly
+When working directly in a clone of this template repository:
+
+```bash
+chmod +x target/release/* && ./target/release/verify-baseline setup-hooks . && ./target/release/verify-baseline . --no-domain
+```
+
 ### 3.1 Downstream Baseline Verification & Ingestion Workflows (Quick Start)
 
 To verify that all repository issue tracker labels, baseline contracts, and safety fixtures pass downstream conformance gates, run:
