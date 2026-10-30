@@ -23,6 +23,16 @@
 *define*.json
 .DS_Store
 .agents/teamwork/
+.agents/auditor_*
+.agents/challenger_*
+.agents/explorer_*
+.agents/orchestrator_*
+.agents/reviewer_*
+.agents/victory_*
+.agents/victory_auditor_*
+.agents/worker_*
+.agents/defect_*
+.agents/sentinel/
 .dart_tool/
 .env
 .env.*
