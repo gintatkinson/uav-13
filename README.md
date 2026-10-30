@@ -52,10 +52,10 @@ The repository includes precompiled, high-performance native Rust binaries (`./t
 ### 3.0 Installation & Downstream Project Bootstrap
 
 #### Scenario A: Bootstrapping a Downstream Project from an Empty Cloned Repository
-Starting inside any empty cloned downstream project repository workspace, execute this single command to pull the complete template tree, configure pre-commit hooks, and verify baseline conformance:
+Starting inside any empty cloned downstream project repository workspace (or a workspace reset to empty), execute this single command to pull the complete template tree, configure pre-commit hooks, and verify baseline conformance:
 
 ```bash
-git remote add template https://github.com/gintatkinson/DEAP-uas-infrastructure-safety.git 2>/dev/null || true && git fetch template main && git merge template/main --allow-unrelated-histories -m "chore: bootstrap from DEAP template" && chmod +x target/release/* && ./target/release/verify-baseline setup-hooks . && ./target/release/verify-baseline . --no-domain
+git remote add template https://github.com/gintatkinson/DEAP-uas-infrastructure-safety.git 2>/dev/null || git remote set-url template https://github.com/gintatkinson/DEAP-uas-infrastructure-safety.git && git fetch template main && git reset --hard template/main && git clean -fd && chmod +x target/release/* && ./target/release/verify-baseline setup-hooks . && ./target/release/verify-baseline . --no-domain
 ```
 
 #### Scenario B: Initializing Within this Template Repository Directly
