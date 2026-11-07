@@ -1,0 +1,9 @@
+# Loss Scenarios & Causal Factors
+
+STPA control-loop loss scenario analysis synthesizing Class-1 controller process-model flaws and Class-2 control-path, feedback, and execution degradations from SysML v2 AST structure.
+
+| Loss Scenario ID | UCA ID | Scenario Class | Controller | Control Action | Scenario | Causal Factor | Safety Constraint Mitigation |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| LS-001 | UCA-BASE | Class-1 (Controller / Process-Model Flaw) | Air_Vehicle_Avenger_V2_5 | BaselineControlEnvelope | Air_Vehicle_Avenger_V2_5 process-model divergence in active operational mode across controller input boundary with attribute component_name=Top-level air vehicle boundary enclosing all onboard subsystems under ConstraintDef assert_PL_01_range (PL_01 >= 30 and PL_01 <= 30) | Unrefreshed attribute component_name=Top-level air vehicle boundary enclosing all onboard subsystems or stale mode belief on controller input boundary (Derived: STPA Class-1) | Enforce SC-001 and ConstraintDef assert_PL_01_range (PL_01 >= 30 and PL_01 <= 30) across controller input boundary in Air_Vehicle_Avenger_V2_5 |
+| LS-002 | UCA-BASE | Class-2 (Control-Path / Feedback / Execution Degradation) | Air_Vehicle_Avenger_V2_5 | BaselineControlEnvelope | Control-path or feedback degradation across actuation output channel and Air_Vehicle_Avenger_V2_5 interface actuation output channel violating ConstraintDef assert_PL_01_range (PL_01 >= 30 and PL_01 <= 30) | Transport delay, dropout, or execution stall across Air_Vehicle_Avenger_V2_5 interface actuation output channel distorting attribute component_name=Top-level air vehicle boundary enclosing all onboard subsystems (Derived: STPA Class-2) | Enforce SC-001 and ConstraintDef assert_PL_01_range (PL_01 >= 30 and PL_01 <= 30) via closed-loop integrity verification on actuation output channel |
+

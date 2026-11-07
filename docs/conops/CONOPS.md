@@ -1,76 +1,109 @@
 | Attribute | Value |
 | :--- | :--- |
-| **Title** | Concept of Operations (ConOps): DEAP_Safety_Architecture |
-| **Version** | 1.0.0 |
-| **Date** | 2026-09-02 |
+| **Title** | Concept of Operations (ConOps) |
+| **Version** | 1.1.0 |
+| **Date** | 2026-10-31 |
 
-# Concept of Operations (ConOps): DEAP_Safety_Architecture
+# Concept of Operations (ConOps)
 
 ## Table of Contents
 
 - [1. Scope, System Identification & Normative Baseline](#1-scope-system-identification--normative-baseline)
+- [Source References](#source-references)
 - [2. Current Situation, Deficiency Analysis & Operational Motivation](#2-current-situation-deficiency-analysis--operational-motivation)
+- [Source References](#source-references)
 - [3. Proposed Capabilities & Operational Justification (Trade-Offs)](#3-proposed-capabilities--operational-justification-trade-offs)
-- [4. User Classes, Stakeholder Taxonomy & Operational Lifecycle Modes](#4-user-classes-stakeholder-taxonomy--operational-lifecycle-modes)
+- [4. System Operational Architecture, User Classes & Subsystem Decomposition](#4-system-operational-architecture-user-classes--subsystem-decomposition)
 - [5. Operational State Space, Boundary Containment & Risk Assessment](#5-operational-state-space-boundary-containment--risk-assessment)
 - [6. OMG UAF Operational Activity Taxonomy](#6-omg-uaf-operational-activity-taxonomy)
+- [Source References](#source-references)
 - [7. Operational Information Exchange (Op-Tx) Matrix](#7-operational-information-exchange-op-tx-matrix)
+- [Source References](#source-references)
 - [8. Operational Environments & MIL-STD-810H Environmental Stress Qualification](#8-operational-environments--mil-std-810h-environmental-stress-qualification)
+- [Source References](#source-references)
 - [9. Multi-Threaded Operational Scenarios & System Timelines](#9-multi-threaded-operational-scenarios--system-timelines)
-- [10. Maintenance & Support Equipment (SE) Concepts](#10-maintenance--support-equipment-se-concepts)
+- [Source References](#source-references)
+- [10. Maintenance & Sustainment Concepts (O/I/D Maintenance)](#10-maintenance--sustainment-concepts-oid-maintenance)
+- [Source References](#source-references)
 - [11. Operational Impacts, System Limitations & Documented Trade Studies](#11-operational-impacts-system-limitations--documented-trade-studies)
 - [12. 7-Row Emergency Decision & Contingency Matrix](#12-7-row-emergency-decision--contingency-matrix)
+- [Source References](#source-references)
+
+| Attribute | Specification Detail |
+| :--- | :--- |
+| Title | Scope, System Identification & Normative Baseline |
+| Version | 1.0.0 |
+| Date | 2026-10-30 |
+| issue_id | 117 |
+| type | conops |
+| generation_mode | worker |
+| specification_source | docs/conops/units/conops/01_METADATA_AND_OVERVIEW.md |
+| Security Classification | RESTRICTED / DEFENSE-GRADE |
+
+# Concept of Operations (ConOps): Avenger V2.5 Autonomous Loitering Munition UAV & PL-40 Launcher System
 
 ## 1. Scope, System Identification & Normative Baseline
 
 ### 1.1 Document Metadata & Formal Governance
-This Concept of Operations (ConOps) defines the operational architecture, coordinate reference systems, physical mass and resource limits, stakeholder interactions, operational environments, operational state space containment boundaries, and deterministic contingency protocols for DEAP_Safety_Architecture. This specification is authored in strict accordance with ISO/IEC/IEEE 29148:2018 §5.2.4 & §6.4.2, OMG Unified Architecture Framework (UAF) v2.0, INCOSE Systems Engineering Handbook v5.0, MIL-STD-882E, and MIL-STD-882E (Fixes #117, #123, #128, #121).
+
+This Concept of Operations (ConOps) defines the operational architecture, coordinate reference frames, physical and resource limits, stakeholder interactions, operational environments, operational state-space containment boundaries, and deterministic contingency protocols for the Avenger V2.5 Autonomous Loitering Munition UAV and PL-40 Pneumatic Catapult Launcher System. This specification is authored in strict accordance with ISO/IEC/IEEE 29148:2018 Section 5.2.4 and Section 6.4.2, OMG Unified Architecture Framework (UAF) v2.0, INCOSE Systems Engineering Handbook v5.0, MIL-STD-882E, and NATO STANAG 4586 (Refs #117, #123, #128, #121).
 
 | Attribute | Specification Value |
 | :--- | :--- |
-| **System Identifier** | DEAP_Safety_Architecture |
+| **System Identifier** | Avenger V2.5 Loitering Munition System & PL-40 Pneumatic Launcher |
 | **Document Version** | 1.0.0 |
-| **Publication Date** | 2026-09-03 |
-| **Security Classification** | UNCLASSIFIED / COMMERCIAL AIRWORTHINESS STANDARD |
-| **Target System Realization** | Autonomous Quad-Rotor Fixed-Coaxial Hybrid UAS (DO-178C DAL-A / SORA SAIL IV) |
-| **Authoring Organization** | Autonomous Aviation Infrastructure Safety Directorate |
-| **Issue Tracking Baseline** | Fixes #117, #123, #128, #121 |
-| **Metamodel Baseline** | ISO/IEC/IEEE 29148:2018 / OMG UAF v2.0 / INCOSE SEH v5.0 |
+| **Publication Date** | 2026-10-30 |
+| **Security Classification** | RESTRICTED / DEFENSE-GRADE |
+| **Target System Realization** | Avenger V2.5 Fixed-Wing Tactical Loitering Munition with PL-40 Pneumatic Catapult Launcher |
+| **Authoring Organization** | Autonomous Systems Engineering Directorate |
+| **Issue Tracking Baseline** | Refs #117, #123, #128, #121 |
+| **Metamodel Baseline** | ISO/IEC/IEEE 29148:2018 / OMG UAF v2.0 / INCOSE SEH v5.0 / MIL-STD-882E |
 
 ### 1.2 System Classification & Operational Purpose
-- **System Identifier:** `DEAP_Safety_Architecture`
-- **Operational Domain:** `Aviation Infrastructure & Critical Asset Inspection`
-- **Primary Operational Mission:** The DEAP_Safety_Architecture is engineered to execute high-assurance Autonomous Operations missions, autonomous closed-loop control, telemetry processing, and deterministic contingency containment in compliance with High-Assurance Safety Baseline requirements.
-- **Core Mission Capabilities:**
-  1. Autonomous closed-loop state trajectory tracking, corridor execution, and operational boundary holding for Cyber-Physical System in Autonomous Operations.
-  2. Multi-modal sensor data fusion combining redundant state estimation sensors, environmental perception units, and reference state observers.
-  3. Real-time high-throughput telemetry streaming and deterministic command processing over Multi-Tier C2 Telemetry Link.
-  4. Deterministic failsafe state machine ensuring autonomous containment within response threshold limits in accordance with High-Assurance Safety Baseline.
+
+- **System Identifier:** `Avenger V2.5 / PL-40`
+- **Operational Domain:** `Air Domain / Tactical Expeditionary Loitering Munition & Catapult Launch`
+- **Primary Operational Mission:** Conduct expeditionary forward-deployed reconnaissance, persistent target acquisition, optical tracking, and precision terminal engagement of stationary and maneuvering ground targets through catapult launch and human-authorized loitering strike.
+- **Configuration Baseline:** The mission baseline comprises the Avenger V2.5 air vehicle and the PL-40 pneumatic launcher set. The parachute deployment module is a non-mission research and development variant (`configuration: non-mission`; `baseline: false`) and is excluded from all baseline operational analysis. The ESAD is classified as Critical with Design Assurance Level A (DAL-A).
+
+**Core Mission Capabilities:**
+
+- **Pneumatic Rail Launch:** Rapid field deployment using the PL-40 pneumatic rail catapult launcher, an 18 V Makita battery pack (PL-75), and a high-strength pulling rope. Launch pressure is bounded between 13 bar and 14 bar (PL-40, PL-41), and maximum launch velocity is 25 m/s (PL-65).
+- **Autonomous Transit & Loiter:** 90 min flight endurance (PL-06), 30 m/s cruise speed (PL-01), and 300 m loiter radius (PL-37). The operational service ceiling is not stated in OEM sources.
+- **EO/IR Target Acquisition:** Gimbaled Nighthawk2UZ dual day/thermal camera with 1 to 40 times zoom (PL-27), 1280 x 720 pixels day and thermal resolution (PL-28 through PL-31), pitch coverage from -45 deg to 135 deg (PL-25), and yaw/roll coverage from -165 deg to 165 deg (PL-26). The Trip6 compute module provides automated target detection and tracking.
+- **Secure C2 Datalink:** DTC radio transceiver providing 60 km direct radio line-of-sight range (PL-07) and 60 km to 180 km extended radio line-of-sight range (PL-08). The RF band is 4.4 to 5.0 GHz (a5-user-manual-2.md:1273); the airborne transmit level is not stated in OEM sources.
+- **Precision Terminal Strike:** ESAD-controlled 5 kg warhead (PL-13) with mandatory Human-in-the-Loop (HITL) consent. Circular Error Probable is not stated in OEM sources.
+- **Controlled Recovery & Failsafe:** The parachute deployment module and its dual wire-burning pyrotechnic igniters are a non-mission variant and are excluded from the mission baseline. No baseline recovery performance metric is stated in OEM sources.
 
 ### 1.3 System Boundary & Operational State Space
-The operational system boundary encompasses all physical, logical, communications, and organizational elements required to conduct end-to-end autonomous mission operations:
-- **Operational State Space Envelope:** Operational State Space $\Omega_{\mathrm{state}} \subset \mathbb{R}^n$, bounded by physical, environmental, and operational parameter limits $\mathbf{X}_{\mathrm{boundary}} = [\mathbf{x}_{\mathrm{min}}, \mathbf{x}_{\mathrm{max}}]^\top$.
-- **Lateral & Spatial Operating Boundary:** Designated operational perimeter bounded within a verified parametric containment buffer ($R_{\mathrm{buffer}}$) envelope.
-- **Primary Communications Envelope:** Primary command and control (C2) operational range defined by $\text{Range}_{\mathrm{max}}(\text{Link}_{\mathrm{C2}})$ from the operator control node, backed by alternate network links and contingency communication channels.
-- **Normative & Governance Boundary:** Governed under ISO/IEC/IEEE 29148:2018 requirements engineering processes, OMG UAF v2.0 operational architectures, and system safety assurance baselines.
 
-- **Operational State Space Parameter Definitions & Engineering Units:**
+The operational system boundary encompasses all physical, logical, communications, and organizational elements required to conduct end-to-end autonomous mission operations:
+
+- **Operational State Space Envelope:** Operational state space `Omega_state`, a compact subset of `R^n`, bounded by physical, environmental, and operational parameter limits `X_boundary = [x_min, x_max]^T`.
+- **Lateral & Spatial Operating Boundary:** The designated operational perimeter is bounded within a containment buffer `R_buffer` whose numeric value is not stated in OEM sources and is derived in Section 5 of the assembled ConOps.
+- **Primary Communications Envelope:** Direct C2 range is 60 km (PL-07) and extended C2 range is 60 km to 180 km (PL-08) from the operator control node, backed by alternate network links and contingency communication channels.
+- **Normative & Governance Boundary:** Governed under ISO/IEC/IEEE 29148:2018 requirements engineering processes, OMG UAF v2.0 operational architectures, and MIL-STD-882E system safety assurance baselines.
+- **Physical Boundary:** The boundary encloses the Avenger V2.5 air vehicle, the PL-40 launcher set, the ground control station, and the external interface board. Ground personnel, airspace authorities, and GNSS service providers are external actors.
+- **Legal Boundary:** The legal operating volume is the tactical airspace clearance issued by the airspace coordination authority. Specific coordinates, jurisdictional limits, and diplomatic clearances are not stated in OEM sources.
+
+**Operational State Space Parameter Definitions & Engineering Units:**
 
 | Symbol / Parameter | Domain / Context | Description | Dimension / Limits | Engineering Unit | Normative / Safety Basis |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| Ω_state | State Space Domain | Admissible operational state space envelope (Ω_state ⊂ R^n) | Compact subset of R^n (n >= 6) | Dimensionless | ISO/IEC/IEEE 29148:2018 §6.4.2 |
-| X_boundary | State Vector Bounds | Bounding box of admissible vehicle operational states [x_min, x_max]^T | Bounded hyper-rectangle | Mixed SI Units | ASTM F3269-17 §6.2 |
-| x_min | State Lower Limit | Minimum permissible state vector threshold | [phi_min, lambda_min, h_min, u_min, v_min, w_min]^T | rad, rad, m, m/s | SORA Annex B M1 Mitigations |
-| x_max | State Upper Limit | Maximum permissible state vector threshold | [phi_max, lambda_max, h_max, u_max, v_max, w_max]^T | rad, rad, m/s | SORA Annex B M1 Mitigations |
-| R_buffer | Spatial Containment | Verified 1:1 parametric lateral containment safety buffer radius | R_buffer >= 1.0 * Distance_containment | m | JARUS SORA v2.5 Step #2 |
-| Range_max(Link_C2) | C2 Comms Margin | Maximum certified C2 data link operational range | Range_max >= Range_nominal | km | RTCA DO-362A §2.2.1 |
-| tau_containment | Emergency Response | Maximum allowable failsafe containment response time | tau_containment <= 2.0 | s | ASTM F3269-17 §7.1 |
+| Omega_state | State Space Domain | Admissible operational state space envelope | Compact subset of R^n | Dimensionless | ISO/IEC/IEEE 29148:2018 Section 6.4.2 |
+| X_boundary | State Vector Bounds | Bounding hyper-rectangle of admissible vehicle operational states | [x_min, x_max]^T | Mixed SI units | ASTM F3269-17 Section 5.2 |
+| x_min | State Lower Limit | Minimum permissible state vector threshold | [phi_min, lambda_min, h_min, u_min, v_min, w_min]^T | rad, rad, m, m/s | JARUS SORA v2.5 Annex B Section B.2 |
+| x_max | State Upper Limit | Maximum permissible state vector threshold | [phi_max, lambda_max, h_max, u_max, v_max, w_max]^T | rad, rad, m, m/s | JARUS SORA v2.5 Annex B Section B.2 |
+| R_buffer | Spatial Containment | Verified lateral containment safety buffer radius | Not stated in OEM sources | m | JARUS SORA v2.5 Annex E Section E.4 |
+| Range_max(Link_C2) | C2 Comms Margin | Maximum certified C2 data link operational range | 60 km direct (PL-07); 180 km extended (PL-08) | km | RTCA DO-362A Section 2.2.1 |
+| tau_containment | Emergency Response | Maximum allowable failsafe containment response time | Not stated in OEM sources | s | ASTM F3269-17 Section 5.3 |
 
 ### 1.3.1 Parametric Coordinate Reference Frames Math
+
 The cyber-physical state estimation, guidance, and navigation architecture is mathematically formulated across three standardized, right-handed orthogonal coordinate reference frames:
 
-1. **Primary Global Geodetic Frame ($\mathbf{p}_{\mathrm{geodetic}}$):**
-   Earth-fixed curvilinear geodetic frame referenced to the WGS-84 reference ellipsoid, defined by geodetic latitude $\phi$, geodetic longitude $\lambda$, and ellipsoidal height $h_{\mathrm{ellips}}$:
+1. **Primary Global Geodetic Frame (`p_geodetic`):**
+ Earth-fixed curvilinear geodetic frame referenced to the WGS-84 reference ellipsoid, defined by geodetic latitude `phi`, geodetic longitude `lambda`, and ellipsoidal height `h_ellips`:
 
 $$
 \begin{aligned}
@@ -78,8 +111,8 @@ $$
 \end{aligned}
 $$
 
-2. **Local Tangent Plane / Navigation Frame ($\mathbf{p}_n$ - Local NED):**
-   Local Cartesian coordinate frame fixed to an arbitrary local reference origin $(\phi_0, \lambda_0, h_0)$ on the reference geoid/ellipsoid, with orthogonal axes oriented along North ($X_n$), East ($Y_n$), and Down ($Z_n$):
+2. **Local Tangent Plane / Navigation Frame (`p_n` - Local NED):**
+ Local Cartesian coordinate frame fixed to an arbitrary local reference origin `(phi_0, lambda_0, h_0)` on the reference ellipsoid, with orthogonal axes oriented along North (`X_n`), East (`Y_n`), and Down (`Z_n`):
 
 $$
 \begin{aligned}
@@ -87,26 +120,26 @@ $$
 \end{aligned}
 $$
 
-3. **Body-Fixed Geometric Frame ($\mathbf{p}_b$ - Body Frame):**
-   Right-handed orthogonal Cartesian frame rigidly attached to the structural frame of the vehicle (vehicle chassis / locomotive body / subsea hull / spacecraft structure) with origin at the Center of Mass ($CG$). The axes comprise longitudinal axis $X_b$ (forward along vehicle nominal centerline), lateral axis $Y_b$ (starboard/right), and normal axis $Z_b$ (downward through vehicle bottom/belly, $Z_b = X_b \times Y_b$).
-   - Body translational velocity vector $\mathbf{v}_b$:
+3. **Body-Fixed Geometric Frame (`p_b` - Body Frame):**
+ Right-handed orthogonal Cartesian frame rigidly attached to the structural frame of the vehicle with origin at the Center of Mass (CG). The axes comprise longitudinal axis `X_b` (forward along the vehicle nominal centerline), lateral axis `Y_b` (starboard/right), and normal axis `Z_b` (downward through the vehicle belly, `Z_b = X_b cross Y_b`).
+ - Body translational velocity vector `v_b`:
 
 $$
 \begin{aligned}
-\mathbf{v}_b &= \begin{bmatrix} u \\ v \\ w \end{bmatrix}^T
+\mathbf{v}_b &= \begin{bmatrix} u \\ v \\ w \end{bmatrix}^{T}
 \end{aligned}
 $$
 
-   - Body angular rate vector $\boldsymbol{\omega}_{b/n}$:
+ - Body rotational rate vector `omega_b/n`:
 
 $$
 \begin{aligned}
-\boldsymbol{\omega}_{b/n} &= \begin{bmatrix} p \\ q \\ r \end{bmatrix}^T
+\boldsymbol{\omega}_{b/n} &= \begin{bmatrix} p \\ q \\ r \end{bmatrix}^{T}
 \end{aligned}
 $$
 
 4. **Kinematic Transformations & Attitude Dynamics:**
-   The orientation of the Body-Fixed Frame relative to the Local NED Frame is parameterized by the Euler attitude vector $\boldsymbol{\Theta} = [\phi_{\mathrm{euler}}, \theta_{\mathrm{euler}}, \psi_{\mathrm{euler}}]^T$ via Direction Cosine Matrix $\mathbf{C}_b^n \in \mathrm{SO}(3)$:
+ The orientation of the Body-Fixed Frame relative to the Local NED Frame is parameterized by the Euler attitude vector `Theta = [phi_euler, theta_euler, psi_euler]^T` using Direction Cosine Matrix `C_b^n` in SO(3):
 
 $$
 \begin{aligned}
@@ -135,316 +168,619 @@ $$
 | X_n, Y_n, Z_n | Local Tangent Plane (NED) | North, East, Down Position Coordinates | m |
 | X_b, Y_b, Z_b | Body-Fixed Frame | Longitudinal (Surge), Lateral (Sway), Normal (Heave) Axes | m |
 | v_b = [u, v, w]^T | Body-Fixed Frame | Body Translational Velocity (Surge u, Sway v, Heave w) | m/s |
-| omega_b/n = [p, q, r]^T | Body-Fixed Frame | Body Angular Rates (Roll p, Pitch q, Yaw r) | Hz |
+| omega_b/n = [p, q, r]^T | Body-Fixed Frame | Body Rotational Rates (Roll p, Pitch q, Yaw r) | radians |
 | C_b^n | Transformation SO(3) | Direction Cosine Matrix (Body to NED) | Dimensionless |
 | Theta = [phi, theta, psi]^T | Attitude Representation | Euler Angles (Roll phi, Pitch theta, Yaw psi) | rad |
 
-### 1.3.2 Parametric Subsystem Mass/Resource Budget Breakdown Table
-The system architecture decomposes into six canonical Abstract System Topology (AST) structural groups. Mass allocations and power resource budgets are partitioned parametrically to maintain strict mass fraction boundaries summing to 100.0% Maximum Takeoff Weight (MTOW):
+### 1.3.2 OEM-Grounded Subsystem Resource Accounting
 
-| Structural Group (AST Partition) | Allocated Subsystems & Components | Mass Fraction (% MTOW) | Mass Budget (kg) | Nominal Power Budget (W) | Peak Power Budget (W) |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Airframe Structure** | Fuselage / chassis primary structure, structural spars, mounting bulkheads, enclosure/gear | 32.5% | 6.5 | 0.0 | 0.0 |
-| **Avionics & Processing** | Flight control computer, redundant IMU/GNSS, air data computer, C2 transceiver, safety watchdog | 12.0% | 2.4 | 48.0 | 85.0 |
-| **Propulsion & Power Distribution** | Actuators, electric motors, electronic speed controllers (ESCs), power distribution unit (PDU) | 22.5% | 4.5 | 450.0 | 1100.0 |
-| **Energy Storage Subsystem** | Smart battery module / fuel cell stack, Battery Management System (BMS), safety disconnect contactors | 24.0% | 4.8 | 8.0 | 20.0 |
-| **Primary Mission Payload** | Multi-modal mission sensor suite, edge neural processing accelerator, payload gimbal, local storage | 17.5% | 3.5 | 65.0 | 120.0 |
-| **Autonomous Failsafe Containment** | Independent safety watchdog, ballistic parachute recovery / containment actuator, flight termination interlocks | 4.0% | 0.8 | 2.0 | 45.0 |
-| **Total System Integration** | **Integrated Cyber-Physical Platform (6 AST Structural Groups)** | **100.0% MTOW** | **20.0** | **573.0** | **1370.0** |
+The OEM bill of materials states a mass only for the warhead (5 kg, PL-13), the PL-40 rail set (68 kg, PL-69), the PL-40 transport case (43 kg, PL-70), the PL-40 compressor case (25 kg, PL-71), and the PL-40 Hook Option A (0.004 kg, oem_bom.md:100). All other onboard subsystem masses and all subsystem electrical draws are not stated in OEM sources and remain unallocated pending detailed design.
+
+| Structural Group (AST Partition) | Representative OEM Components | OEM-Stated Mass | OEM-Stated Electrical Draw | Evidence Status |
+| :--- | :--- | :--- | :--- | :--- |
+| Top-Level Airframe Structure | Fuselage composite shell, wing panels, Ruddervator (Fins), bulkheads, catapult rail mounts | Not stated in OEM sources | Not stated in OEM sources | oem_bom.md:67; PL-15 wing panel quantity 4 units (a5-user-manual-2.md:337) |
+| Avionics & Processing | Cube Orange Plus, Septentrio Asterx-m3 pro, RPI CM5004032, DTC radio, ETH switch | Not stated in OEM sources | Not stated in OEM sources | oem_bom.md:12; oem_bom.md:13; oem_bom.md:14; oem_bom.md:15; oem_bom.md:44 |
+| Propulsion & Actuation | AXI outrunner motor, IBEX electronic speed controller, HV-series servo set (PL-18), folding propeller | Not stated in OEM sources | Not stated in OEM sources | PL-18 total servo quantity (avenger_v2_5_sysml_v2_ingestion.md:22); oem_bom.md:71 |
+| Energy Storage Subsystem | Li-metal battery pack, current meter, 200 A fuse | Not stated in OEM sources | Not stated in OEM sources | PL-23 minimum 36 V; PL-24 maximum 50.4 V (avenger_v2_5_sysml_v2_ingestion.md:16) |
+| Primary Mission Payload | Nighthawk2UZ EO/IR gimbal camera, Trip6 compute module | Not stated in OEM sources | Not stated in OEM sources | PL-28 through PL-31 high-definition day and thermal resolution (a5-user-manual-2.md:325; a5-user-manual-2.md:326) |
+| Lethal Package | 5 kg warhead (PL-13), ESAD (Critical, DAL-A) | 5 kg (PL-13) | Not stated in OEM sources | oem_bom.md:52; oem_bom.md:57; ESAD ICD prototype reference |
+| Launcher & Ground Support | PL-40 rail set, compressor case, transport case | 68 kg (PL-69), 25 kg (PL-71), 43 kg (PL-70) | Not stated in OEM sources | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:715; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:716; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:717 |
+| Total System Integration | Avenger V2.5 air vehicle plus PL-40 launcher set | 17 kg MTOW (PL-12); 68 kg launcher set (PL-69) | Not stated in OEM sources | BOM; PL-12; PL-69 |
 
 ### 1.3.3 Master Physical Limits Table
-The cyber-physical vehicle operates under bounding physical, aerodynamic/kinematic, and environmental limits:
 
-| Parameter ID | Bounding Parameter Name | Parametric Symbol | Threshold (Boundary Limit) | Objective (Nominal Target) | Engineering Unit | Normative / Safety Basis |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **PL-01** | Maximum Takeoff Weight (MTOW) | m_MTOW | <= 20.0 | 20.0 | kg | Certified maximum structural takeoff mass limit |
-| **PL-02** | Maximum Payload Mass Capacity | m_payload_max | >= 8.0 | 8.0 | kg | Usable mission payload mass reserve |
-| **PL-03** | Physical Dimensions (Length x Width x Height) | L_x, L_y, L_z | <= 1.25 x 1.25 x 0.48 | 1.25 x 1.25 x 0.48 | m | Spatial transport and operational clearance envelope |
-| **PL-04** | Nominal Cruise Velocity | V_cruise | 18.0 - 18.0 | 18.0 | m/s | Optimum aerodynamic / dynamic transit speed |
-| **PL-05** | Maximum Permissible Operating Velocity | V_max | <= 28.0 | 28.0 | m/s | Never-exceed boundary limit (V_ne) |
-| **PL-06** | Minimum Controllable / Stall Velocity | V_stall | <= 0.0 | 0.0 | m/s | Minimum steady state controllable velocity limit |
-| **PL-07** | Maximum Operating Ceiling | h_max | <= 150.0 | 150.0 | m AGL | Maximum certified operational altitude |
-| **PL-08** | Command & Control (C2) Datalink Range | Range_C2 | >= 20000.0 | 20000.0 | km | Beyond-Line-of-Sight / Line-of-Sight C2 range margin |
-| **PL-09** | Mission Operational Endurance | t_endurance | >= 60.0 | 60.0 | min | Continuous nominal execution duration |
-| **PL-10** | Environmental Operating Temperature Envelope | T_env | -20.0 to 50.0 | 22.0 | °C | MIL-STD-810H Methods 501.7 / 502.7 climatic envelope |
-| **PL-11** | Maximum Operating Wind / Gust Envelope | v_wind_max | <= 16.0 | 16.0 | m/s | SORA ground risk and dynamic stability boundary |
-| **PL-12** | Environmental Ingress Protection Envelope | IP_rating | >= IP55 | IP55 | IP Code | Hermetic enclosure sealing per ISO 20653 / IEC 60529 |
+The cyber-physical vehicle operates under bounding physical, aerodynamic and kinematic, and environmental limits grounded in the authoritative parametric limits registry. Every numeric value in this table is traceable to `schema/extracted/parametric_limits.md`. Where the OEM is silent, the cell states "Not stated in OEM sources."
+
+| Parameter ID | Parameter Name | Minimum | Maximum | Engineering Unit | Verification Source |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| PL-01 | Cruise speed | 30 m/s | 30 m/s | m/s | a5-user-manual-2.md:307 |
+| PL-02 | Maximum horizontal speed | Not stated in OEM sources | 38 m/s | m/s | a5-user-manual-2.md:308 |
+| PL-03 | Maximum dive speed | Not stated in OEM sources | 55 m/s | m/s | a5-user-manual-2.md:309 |
+| PL-04 | Maximum dive angle | Not stated in OEM sources | 22 deg | deg | a5-user-manual-2.md:310 |
+| PL-05 | Minimum flight speed | 26 m/s | Not stated in OEM sources | m/s | a5-user-manual-2.md:311 |
+| PL-06 | Flight endurance | 0 min | 90 min | min | avenger-5-spec-sheet-rev3.md:53 |
+| PL-07 | RLOS direct range | 0 km | 60 km | km | a5-user-manual-2.md:315 |
+| PL-08 | RLOS extended range | 60 km | 180 km | km | a5-user-manual-2.md:315 |
+| PL-09 | Wingspan | 1.8 m | 1.8 m | m | a5-user-manual-2.md:287 |
+| PL-10 | Assembled UAV length | 1.6 m | 1.6 m | m | a5-user-manual-2.md:288 |
+| PL-11 | Assembled UAV height | 1.1 m | 1.1 m | m | a5-user-manual-2.md:289 |
+| PL-12 | Maximum take-off weight | Not stated in OEM sources | 17 kg | kg | a5-user-manual-2.md:299 |
+| PL-13 | Warhead mass | Not stated in OEM sources | 5 kg | kg | avenger-5-spec-sheet-rev3.md:133 |
+| PL-14 | Ruddervator quantity | 4 units | 4 units | units | a5-user-manual-2.md:339 |
+| PL-15 | Wing panel quantity | 4 units | 4 units | units | a5-user-manual-2.md:337 |
+| PL-16 | Ruddervator servo quantity | 4 units | 4 units | units | avenger_v2_5_sysml_v2_ingestion.md:22 |
+| PL-17 | Wing servo quantity | 4 units | 4 units | units | avenger_v2_5_sysml_v2_ingestion.md:28 |
+| PL-18 | Total servo quantity | 8 units | 8 units | units | avenger_v2_5_sysml_v2_ingestion.md:22 |
+| PL-22 | Servo power rail voltage | 8 V | 8 V | V | avenger_v2_5_sysml_v2_ingestion.md:79 |
+| PL-23 | Battery minimum voltage | 36 V | 36 V | V | avenger_v2_5_sysml_v2_ingestion.md:16 |
+| PL-24 | Battery maximum voltage | 50.4 V | 50.4 V | V | avenger_v2_5_sysml_v2_ingestion.md:16 |
+| PL-36 | Minimum mission waypoint altitude | 50 m | Not stated in OEM sources | m | a5-user-manual-2.md:1195 |
+| PL-37 | Avenger 5 loiter radius | 300 m | 300 m | m | a5-user-manual-2.md:1497 |
+| PL-39 | Ground radio power | 2 W | 2 W | W | a5-user-manual-2.md:1690 |
+| PL-40 | Catapult launch pressure minimum | 13 bar | 13 bar | bar | a5-user-manual-2.md:1329 |
+| PL-41 | Catapult launch pressure maximum | 14 bar | 14 bar | bar | a5-user-manual-2.md:1329 |
+| PL-42 | Target track duration minimum | 2 s | 2 s | s | a5-user-manual-2.md:2055 |
+| PL-43 | Target track duration maximum | 5 s | 5 s | s | a5-user-manual-2.md:2055 |
+| PL-44 | Maximum engagement elevation | Not stated in OEM sources | 15 deg | deg | a5-user-manual-2.md:2056 |
+| PL-45 | Maximum engagement airspeed | Not stated in OEM sources | 55 m/s | m/s | a5-user-manual-2.md:2061 |
+| PL-46 | ESAD power input minimum | 14 V | 14 V | V | esad-icd-excalibur-ab00-0054.md:272 |
+| PL-47 | ESAD power input maximum | 32 V | 32 V | V | esad-icd-excalibur-ab00-0054.md:272 |
+| PL-48 | ESAD power input nominal | 28 V | 28 V | V | esad-icd-excalibur-ab00-0054.md:272 |
+| PL-49 | ESAD umbilical continuity resistance | 0 Ohm | 0.5 Ohm | Ohm | esad-icd-excalibur-ab00-0054.md:284 |
+| PL-50 | ESAD umbilical continuity current | 20 mA | 20 mA | mA | esad-icd-excalibur-ab00-0054.md:284 |
+| PL-52 | ESAD arm enable high voltage minimum | 2.5 V | 2.5 V | V | esad-icd-excalibur-ab00-0054.md:286 |
+| PL-53 | ESAD arm enable high voltage maximum | 3.3 V | 3.3 V | V | esad-icd-excalibur-ab00-0054.md:286 |
+| PL-56 | ESAD RS- rate | | | bps | esad-icd-excalibur-ab00-0054.md:306 |
+| PL-57 | ESAD RS-485 command interval | 100 Hz | 100 Hz | Hz | esad-icd-excalibur-ab00-0054.md:307 |
+| PL-58 | ESAD response latency | 0 ms | 5 ms | ms | esad-icd-excalibur-ab00-0054.md:330 |
+| PL-64 | Maximum launched plane mass | Not stated in OEM sources | 30 kg | kg | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:718 |
+| PL-65 | Maximum launch velocity | Not stated in OEM sources | 25 m/s | m/s | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:719 |
+| PL-66 | Launcher launch angle | 12 deg | 12 deg | deg | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:712 |
+| PL-69 | Launcher set mass | 68 kg | 68 kg | kg | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:715 |
+| PL-70 | Launcher case mass | 43 kg | 43 kg | kg | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:716 |
+| PL-71 | Compressor case mass | 25 kg | 25 kg | kg | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:717 |
+| PL-72 | Launcher setup time | 0 min | 5 min | min | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:722 |
+| PL-73 | Launcher working temperature minimum | -20 C | -20 C | C | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:723 |
+| PL-74 | Launcher working temperature maximum | 50 C | 50 C | C | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:723 |
+| PL-75 | Launcher battery nominal voltage | 18 V | 18 V | V | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:134 |
+| PL-76 | Launcher battery capacity | 6.0 Ah | 6.0 Ah | Ah | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:134 (6000 mAh) |
+| PL-77 | Battery over-discharge cutoff | Not stated in OEM sources | 14.5 V | V | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:135 |
+| PL-78 | Battery over-discharge recovery | 16 V | Not stated in OEM sources | V | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:136 |
+| PL-79 | Battery recovery delay | 5 s | 5 s | s | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:136 |
+| PL-80 | Pulling rope replacement interval | 100 cycles | 100 cycles | cycles | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:138 (100 launches) |
+| PL-93 | Launcher rail length assembled | 5 m | 5 m | m | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:713 |
+| PL-94 | Launcher rail length disassembled | 1.28 m | 1.28 m | m | uav_launcher_pl_40_sysml_v2_ingestion_manual.md:714 |
 
 ### 1.4 Abstract UAF Context Diagram
-The following Unified Architecture Framework (UAF) operational context diagram defines the external interfaces, performer nodes, and primary interaction channels across the Space, Cyber-Physical Vehicle, Control/Infrastructure, Support/GSE, Operational Roles, and External Authorities segments:
+
+The following Unified Architecture Framework (UAF) operational context diagram defines the external interfaces, performer nodes, and primary interaction channels across six operational segments: Space and Orbital, Air Vehicle, Supervisory and Control, Support and Ground Support Equipment, Operational Roles, and External Authorities. The diagram is a Level 1B operational context view; detailed wire-level interfaces are registered in the Level 1C Interface Control Documents.
 
 ```mermaid
 flowchart TB
-    subgraph SpaceSegment["Space & Orbital Segment"]
-        direction TB
-        GNSSConstellation["GNSS Satellite Constellation<br/>(InterfacePort: GNSSService)"]
-        SatcomRelay["SATCOM Satellite Network<br/>(InterfacePort: SatcomRelayService)"]
-    end
+ subgraph SpaceSegment["SpaceOrbitalSegment"]
+ direction TB
+ GNSSConstellation["GNSS Satellite Constellation<br/>- PORT-SPACE-GNSS (OUT)"]
+ SatcomRelay["Tactical Relay Aircraft or SATCOM<br/>- PORT-SPACE-RELAY (INOUT)"]
+ end
 
-    subgraph VehicleSegment["Cyber-Physical Vehicle Segment (System Under Design)"]
-        direction TB
-        CoreController["Core Controller Subsystem<br/>(PerformerNode: CoreController)"]
-        SensorSuite["Integrated Sensor Suite<br/>(PerformerNode: SensorSuite)"]
-        ActuatorSubsystem["Propulsion & Actuator Subsystem<br/>(PerformerNode: ActuatorSubsystem)"]
-        PayloadSubsystem["Mission Processing Payload<br/>(PerformerNode: PayloadSubsystem)"]
-        VehicleComms["PACE Communications Node<br/>(InterfacePort: VehicleComms)"]
-        SafetyWatchdog["Independent Safety Watchdog<br/>(PerformerNode: SafetyWatchdog)"]
-    end
+ subgraph VehicleSegment["AirVehicleSegment"]
+ direction TB
+ CoreController["Autopilot Stack ASTK A5 V2.5<br/>- PORT-AV-C2 (INOUT)<br/>- PORT-AV-SENS (IN)<br/>- PORT-AV-CMD (OUT)<br/>- PORT-AV-VIDEO (IN)<br/>- PORT-AV-LAUNCH (IN)"]
+ SensorSuite["Airframe Sensors Suite<br/>- PORT-AV-GNSS (IN)<br/>- PORT-AV-SENS (OUT)"]
+ ActuatorSubsystem["Propulsion and Servo Core<br/>- PORT-AV-CMD (IN)<br/>- PORT-AV-VETO (IN)"]
+ PayloadSubsystem["Seeker and Vision Payload<br/>- PORT-AV-PAYLOAD (OUT)"]
+ LethalSubsystem["Lethal Package<br/>- PORT-AV-ESAD (INOUT)"]
+ VehicleComms["DTC Transceiver Module<br/>- PORT-AV-C2 (INOUT)"]
+ SafetyWatchdog["ESAD and Parachute Interlock<br/>- PORT-AV-SAFE (OUT)"]
+ end
 
-    subgraph ControlSegment["Control & Infrastructure Segment"]
-        direction TB
-        OperatorConsole["Supervisory Operator Console<br/>(PerformerNode: OperatorConsole)"]
-        GroundCommsArray["Communications Gateway Array<br/>(InterfacePort: GroundGateway)"]
-        InfrastructureHub["Infrastructure & Cloud Hub<br/>(PerformerNode: InfrastructureHub)"]
-    end
+ subgraph ControlSegment["SupervisoryControlSegment"]
+ direction TB
+ OperatorConsole["GCS Panasonic Toughbook FZ-G2<br/>- PORT-GCS-HMI (INOUT)<br/>- PORT-GCS-LAN (OUT)"]
+ GroundCommsArray["MARS Directional Tracking Antenna<br/>- PORT-GCS-RF (INOUT)"]
+ InfrastructureHub["ODU Tactical LAN and Fiber Spool<br/>- PORT-GCS-LAN (IN)"]
+ end
 
-    subgraph SupportSegment["Support & Ground Support Equipment (GSE) Segment"]
-        direction TB
-        GroundSupportEquipment["GSE Diagnostic & Power Station<br/>(PerformerNode: GSEStation)"]
-        MaintenanceTerminal["Field Maintenance Terminal<br/>(PerformerNode:<br/>MaintenanceTerminal)"]
-    end
+ subgraph SupportSegment["SupportGSESegment"]
+ direction TB
+ PneumaticLauncher["PL-40 Pneumatic Launcher Rail<br/>- PORT-LCH-PNEU (IN)<br/>- PORT-LCH-MECH (OUT)"]
+ CompressorUnit["PL-40 Compressor Station<br/>- PORT-LCH-PNEU (OUT)"]
+ MaintenanceTerminal["External Interface Board<br/>- PORT-GSE-DIAG (INOUT)"]
+ end
 
-    subgraph OperationalRoles["Operational Roles (Human Stakeholders)"]
-        direction TB
-        SystemOperator["System Operator<br/>(UserRole: SystemOperator)"]
-        SafetySupervisor["Safety Supervisor<br/>(UserRole: SafetySupervisor)"]
-        OperationsCoordinator["Operations Coordinator<br/>(UserRole: OperationsCoordinator)"]
-        MaintenanceTechnician["Maintenance Technician<br/>(UserRole: MaintenanceTechnician)"]
-    end
+ subgraph OperationalRoles["OperationalRoles"]
+ direction TB
+ SystemOperator["System Operator (SO)<br/>- PORT-HUM-SO (OUT)"]
+ PayloadSpecialist["Payload Specialist (PS)<br/>- PORT-HUM-PS (OUT)"]
+ SafetySupervisor["Mission Safety Officer (MSO)<br/>- PORT-HUM-MSO (OUT)"]
+ MaintenanceTechnician["Field Technician (MT)<br/>- PORT-HUM-MT (OUT)"]
+ end
 
-    subgraph ExternalAuthorities["External Authorities & Regulatory Services"]
-        direction TB
-        AirspaceAuthority["Civil Aviation & Airspace<br/>Authority - UTM<br/>(InterfacePort: UTMService)"]
-        WeatherDataService["Meteorological & Weather Service<br/>(InterfacePort: WeatherService)"]
-    end
+ subgraph ExternalAuthorities["ExternalAuthorities"]
+ direction TB
+ AirspaceAuthority["Tactical Airspace Coordination<br/>- PORT-EXT-AIR (INOUT)"]
+ WeatherDataService["Meteorological Service<br/>- PORT-EXT-WX (OUT)"]
+ end
 
-    GNSSConstellation -->|"1. Positioning & Timing Signals"| SensorSuite
-    SatcomRelay ---|"2. Emergency SATCOM C2 Link"| VehicleComms
-    VehicleComms ---|"3. Primary - Alternate PACE Datalink"| GroundCommsArray
-    SensorSuite -->|"4. Raw & Filtered State Telemetry"| CoreController
-    CoreController -->|"5. Deterministic Actuation Demands"| ActuatorSubsystem
-    PayloadSubsystem -->|"6. High-Throughput Feature Data"| CoreController
-    SafetyWatchdog -.->|"7. Safety Veto & Failsafe Interlock"| ActuatorSubsystem
-    GroundCommsArray ---|"8. Telemetry & Control Bus"| OperatorConsole
-    OperatorConsole ---|"9. Cloud Telemetry & Mission Archiving"| InfrastructureHub
-    SystemOperator ---|"10. Supervisory Mission Control"| OperatorConsole
-    SafetySupervisor ---|"11. Safety Monitor & Emergency Veto"| OperatorConsole
-    OperationsCoordinator -->|"12. Flight Plan & Mission Tasking"| SystemOperator
-    MaintenanceTechnician ---|"13. Diagnostic Calibration & BIT Checkout"| MaintenanceTerminal
-    GroundSupportEquipment ---|"14. Power Charging & GSE Umbilical Link"| CoreController
-    OperatorConsole ---|"15. Dynamic Geo-Zone & Flight Authorization"| AirspaceAuthority
+ GNSSConstellation -->|"CONN-01: L-Band RF Navigation [PORT-SPACE-GNSS to PORT-AV-GNSS]"| SensorSuite
+ SatcomRelay -->|"CONN-02: Extended RLOS Relay [PORT-SPACE-RELAY to PORT-AV-C2]"| VehicleComms
+ VehicleComms -->|"CONN-03: Primary C2 Datalink [PORT-AV-C2 to PORT-GCS-RF]"| GroundCommsArray
+ SensorSuite -->|"CONN-04: DroneCAN State Telemetry [PORT-AV-SENS to PORT-AV-SENS]"| CoreController
+ CoreController -->|"CONN-05: Demand Vectors [PORT-AV-CMD to PORT-AV-CMD]"| ActuatorSubsystem
+ PayloadSubsystem -->|"CONN-06: Target Track Frames [PORT-AV-PAYLOAD to PORT-AV-VIDEO]"| CoreController
+ SafetySupervisor -->|"CONN-07: Weapon Release Consent [PORT-HUM-MSO to PORT-AV-ESAD]"| LethalSubsystem
+ SafetyWatchdog -->|"CONN-08: Hardware Safety Veto [PORT-AV-SAFE to PORT-AV-VETO]"| ActuatorSubsystem
+ GroundCommsArray -->|"CONN-09: Downlink RF and Telemetry [PORT-GCS-RF to PORT-GCS-HMI]"| OperatorConsole
+ OperatorConsole -->|"CONN-10: Mission Archiving [PORT-GCS-LAN to PORT-GCS-LAN]"| InfrastructureHub
+ SystemOperator -->|"CONN-11: Supervisory Trajectory Control [PORT-HUM-SO to PORT-GCS-HMI]"| OperatorConsole
+ PayloadSpecialist -->|"CONN-12: Gimbal and Target Lock [PORT-HUM-PS to PORT-GCS-HMI]"| OperatorConsole
+ MaintenanceTechnician -->|"CONN-13: Diagnostic Check and Flash [PORT-HUM-MT to PORT-GSE-DIAG]"| MaintenanceTerminal
+ PneumaticLauncher -->|"CONN-14: Catapult Carriage Sled [PORT-LCH-MECH to PORT-AV-LAUNCH]"| CoreController
+ CompressorUnit -->|"CONN-15: Pneumatic Charging [PORT-LCH-PNEU to PORT-LCH-PNEU]"| PneumaticLauncher
+ OperatorConsole -->|"CONN-16: Airspace Clearance [PORT-GCS-HMI to PORT-EXT-AIR]"| AirspaceAuthority
+ WeatherDataService -->|"CONN-17: Field Weather Observations [PORT-EXT-WX to PORT-GCS-HMI]"| OperatorConsole
 ```
 
 ### 1.5 Normative Standards & Regulatory Baseline
+
 The following normative standards and regulatory baselines govern all architectural, operational, safety, and verification artifacts within this Concept of Operations:
 
 | Standard ID | Issuing Body | Title & Baseline Edition | Applicable Clauses & Focus Areas |
 | :--- | :--- | :--- | :--- |
-| ISO/IEC/IEEE 29148:2018 | ISO / IEC / IEEE | Systems and Software Engineering — Life Cycle Processes — Requirements Engineering | §5.2.4 ConOps Development Process, §6.4.2 Concept of Operations Baseline Specification, §6.4.3 Operational Concept Document Structure |
-| INCOSE SEH v5.0 | INCOSE | Systems Engineering Handbook (5th Edition) | §3.3 Operational Concepts & §4.2 Requirements Engineering |
+| ISO/IEC/IEEE 29148:2018 | ISO / IEC / IEEE | Systems and Software Engineering -- Life Cycle Processes -- Requirements Engineering | Section 5.2.4 ConOps Development Process, Section 6.4.2 Concept of Operations Baseline Specification, Section 6.4.3 Operational Concept Document Structure |
+| ISO/IEC/IEEE 15288:2023 | ISO / IEC / IEEE | Systems and Software Engineering -- System Life Cycle Processes | Section 6.4.2 Stakeholder Needs and Requirements Definition, Section 6.4.3 Architecture Definition Process |
+| INCOSE SEH v5.0 | INCOSE | Systems Engineering Handbook (5th Edition) | Section 3.3.1 Life Cycle Stages and Concept Definition, Section 4.3 Architecture Definition, Section 4.6 System Analysis and Multi-Domain Threat Assessment, Section 5.4 System Verification and Validation Traceability |
 | OMG UAF v2.0 | OMG | Unified Architecture Framework Specification | Operational Domain Views (Op-Pr, Op-Tx, Op-Is) |
-| MIL-STD-882E | US Department of Defense | Department of Defense Standard Practice: System Safety | §4.3 System Safety Process, Task 102 System Safety Program Plan, Task 202 Operational Hazard Analysis (OHA), Task 205 Hazard Tracking System |
-| MIL-STD-810H | US Department of Defense | Environmental Engineering Considerations and Laboratory Tests | Method 501.7 High Temp, Method 502.7 Low Temp, Method 505.7 Solar Radiation, Method 506.6 Rain, Method 509.7 Salt Fog, Method 510.7 Sand/Dust, Method 514.8 Vibration, Method 516.8 Shock |
-| MIL-STD-461G | US Department of Defense | Requirements for the Control of Electromagnetic Interference Characteristics of Subsystems and Equipment | CE102 Conducted Emissions, CS101/CS114/CS115/CS116 Conducted Susceptibility, RE102 Radiated Emissions, RS103 Radiated Susceptibility up to 200 V/m |
-| NIST SP 800-82r3 | NIST | Guide to Operational Technology (OT) Security | §5.2 Zero-Trust OT Architecture & Device Hardening, §6.3 Real-Time Telemetry Authentication, §6.4 Cryptographic Key Management & Firmware Integrity |
-| RTCA DO-178C (DAL-B) | RTCA / EUROCAE (ED-12C) | Software Considerations in Airborne Systems and Equipment Certification | §6.3.1 Software Safety & Verification, §6.4.4 Structural Coverage (MC/DC Verification), Tables A-1 to A-7 Life Cycle Objectives |
-| RTCA DO-254 | RTCA / EUROCAE (ED-80) | Design Assurance Guidance for Airborne Electronic Hardware | §5.0 Hardware Design Processes, §6.0 Validation & Verification, Appendix B Design Assurance Levels (DAL-B) |
-| RTCA DO-365B | RTCA | Minimum Operational Performance Standards (MOPS) for Detect and Avoid (DAA) Systems | §2.2 DAA System Requirements, §2.2.4 Well-Clear Boundaries & Alerting, §2.2.5 Collision Avoidance Guidance & Maneuver Coordination |
-| JARUS SORA v2.5 | JARUS | Specific Operations Risk Assessment (SORA) Methodology | Step #2 Initial Ground Risk Class (GRC), Step #4 Specific Assurance and Integrity Levels (SAIL I–VI), Step #5 Air Risk Class (ARC), Annex B M1–M3 Safety Mitigations |
+| DoD Directive 3000.09 | US Department of Defense | Autonomy in Weapon Systems | Section 3.1 Human Judgement in Force, Section 3.1.a Autonomous Engagement, Section 3.1.b Fail-Safe Interlocks, Section 3.1.c Cyber Safeguards |
+| CJCSI 3121.01B | Chairman of the Joint Chiefs of Staff | Standing operational safety interlocks / Standing Rules for Use of Force for U.S. Forces | Enclosure A Section 2.a Self-Defense Determination, Enclosure A Section 4.b Positive Identification, Enclosure B Section 3.c adjacent operational risk Mitigation, Enclosure E Section 2.d Escalation of Force Interlocks |
+| NATO STANAG 4586 | NATO Standardisation Office | Standard Interfaces of UAV Control System (UCS) for NATO UAV Interoperability | Section 4.2 UCS Architectural Framework, Section 4.2.2 Interoperability Levels 1-5, Section 5.1 Data Link Interface Profiles, Section 5.1.4 C2 Link Handover |
+| NIST SP 800-82r3 | NIST | Guide to Operational Technology (OT) Security | Section 4.2 OT Threat Sources, Section 5.3 OT Defense-in-Depth Architecture, Section 6.2 Wireless and RF C2 Security Controls, Section 6.4 Incident Response and Containment |
+| ISO/SAE 21434 | ISO / SAE International | Road Vehicles -- Cybersecurity Engineering | Section 5.3 Cybersecurity Management, Section 6.4 Threat Analysis and Risk Assessment, Section 9.4 Vulnerability Analysis, Section 10.4 Incident Verification and Validation |
+| MIL-STD-461G | US Department of Defense | Requirements for the Control of Electromagnetic Interference Characteristics of Subsystems and Equipment | Section 5.4 Conducted Susceptibility CS114-CS116, Section 5.18 Radiated Susceptibility RS103, Section 5.19 Magnetic Fields RS101, Section 5.20 Conducted Emissions CE102 |
+| MIL-STD-882E | US Department of Defense | Department of Defense Standard Practice: System Safety | Task 106 Section 4.2 Hazard Mitigation, Task 201 Section 4.2 Preliminary Hazard Analysis, Task 204 Section 4.2 Probability Levels, Task 205 Section 4.2 System Hazard Analysis, Task 208 Section 4.2 Functional Thread Isolation |
+| MIL-STD-1629A | US Department of Defense | Procedures for Performing a Failure Mode, Effects and Criticality Analysis | Section 4.3 Severity Classification, Section 4.4 Failure Probability, Section 4.5 Failure Detection, Section 4.6 Criticality Analysis |
+| SAE ARP4761 | SAE International | Guidelines and Methods for Conducting the Safety Assessment Process on Civil Airborne Systems and Equipment | Section 4.3.1 Functional Hazard Assessment, Section 4.3.3 FMECA Process, App. L Failure Probability Allocation, App. M Common Cause Analysis |
+| RTCA DO-178C | RTCA / EUROCAE | Software Considerations in Airborne Systems and Equipment Certification | Section 6.3.1 Software Fault Detection, Section 6.3.2 Software Partitioning, Section 6.4.3 Redundancy Management, Section 6.4.4 Structural Coverage |
+| RTCA DO-362A | RTCA / EUROCAE | Command and Control (C2) Data Link MOPS | Section 2.2 Link Availability and Continuity, Section 2.2.1 Terrestrial LOS Link Allocation, Section 2.2.4 Satellite C2 Link Handover, Section 3.4 Lost Link Fallback Switching |
+| JARUS SORA v2.5 | JARUS | Specific Operations Risk Assessment | Annex B Section B.2 Ground Risk Mitigations M1-M3, Annex C Section C.3 Strategic Air Risk Mitigations, Annex D Section D.2 Tactical Mitigation Standards, Annex E Section E.4 Containment Objectives |
+| JARUS SORA v2.5 Annex E | JARUS | SORA Specific Category Airworthiness Objectives (OSO-01 to OSO-24) | Section E.1 Airworthiness through Section E.24 Lithium Fire |
+| ASTM F3269-17 | ASTM International | Standard Practice for Methods to Safely Bound Flight Behavior of UAS Containing Complex Functions | Section 5.1 RTA Simplex Architecture, Section 5.2 Attitude, Speed and Geofence Monitors, Section 5.3 Deterministic State Switching, Section 5.4 SLDV Invariant Proof Slots |
+| MIL-STD-810H | US Department of Defense | Environmental Engineering Considerations and Laboratory Tests | High Temperature Method Section 4.2, Low Temperature Method Section 4.2, Rain and Wind Method Section 4.2, Icing and Freezing Rain Method Section 4.2 |
+
+### 1.6 Stakeholder Roster, User Classes & Authority Boundaries
+
+**Stakeholder Roster:**
+
+| Stakeholder ID | Stakeholder | Primary Interest | Influence on Operations | Acceptance Criterion |
+| :--- | :--- | :--- | :--- | :--- |
+| STK-01 | System Operator (SO) | Safe launch, transit, loiter, and recovery | Directs all vehicle trajectory commands | Mission completed within declared flight limits |
+| STK-02 | Payload Specialist (PS) | Target detection, identification, and track quality | Commands gimbal pointing and target lock | Target track remains stable through engagement window |
+| STK-03 | Mission Safety Officer (MSO) | Weapon release safety and abort authority | Grants or withholds lethal release consent | No unauthorized lethal actuation occurs |
+| STK-04 | Field Technician (MT) | Launcher charging, RBF removal, and arming | Prepares and arms the launcher and ESAD | All interlocks verified before launch |
+| STK-05 | Tactical Airspace Coordination Authority | Airspace deconfliction and clearance | Approves or denies operating volume | Mission remains inside cleared airspace |
+| STK-06 | Meteorological Service | Environmental awareness | Provides field weather observations | Launch and flight conducted within declared limits |
+| STK-07 | System Assurance Authority | Safety and configuration integrity | Audits hazard controls and evidence | All Critical hazards carry verified controls |
+| STK-08 | Logistics and Support Command | Sustainment and spares availability | Allocates launcher and air vehicle spares | Mission availability sustained across sorties |
+
+**User Classes:**
+
+| User Class ID | User Class | Operational Role | Primary Responsibilities | Authority Boundary |
+| :--- | :--- | :--- | :--- | :--- |
+| UCL-01 | System Operator (SO) | Direct pilot and mission supervisor | Launch authorization, trajectory monitoring, recovery initiation | May abort mission at any time; may not authorize lethal release |
+| UCL-02 | Payload Specialist (PS) | Targeting specialist | Gimbal control, target designation, track confirmation | May designate targets; may not release weapons |
+| UCL-03 | Mission Safety Officer (MSO) | Weapon release authority | Validates target identification and grants release consent | Sole authority for lethal release consent |
+| UCL-04 | Field Technician (MT) | Launcher and arming technician | Launcher setup, pneumatic charging, RBF removal, ESAD arming | May arm only after MSO and SO confirmation |
+| UCL-05 | Range Safety Officer (RSO) | Range containment authority | Monitors containment boundary and flight termination readiness | May direct flight termination for containment violation |
+| UCL-06 | Airspace Coordination Authority | External airspace authority | Issues and revokes airspace clearance | May deny or terminate operations in controlled airspace |
+
+### 1.7 Operational Assumptions and Constraints
+
+- The Avenger V2.5 air vehicle and PL-40 launcher are operated as an integrated mission system; the launcher is not an airborne element.
+- The ESAD is a Critical (DAL-A) safety item; no lethal actuation may occur without a time-ordered Human-in-the-Loop consent token from the Mission Safety Officer.
+- The `Ruddervator` is the canonical term for the four tail control surfaces. The terms `Fins` and `tail stabiliser` are accepted only as parenthetical synonyms from the OEM drawing and preparation sources.
+- The parachute deployment module is a non-mission variant (`configuration: non-mission`; `baseline: false`) and is excluded from baseline operational, safety, and sustainment analysis.
+- All numeric operational limits are traceable to `schema/extracted/parametric_limits.md`; any parameter absent from that registry is marked "Not stated in OEM sources."
+- The system operates under positive airspace clearance and does not self-authorize entry into controlled or contested airspace.
+
+### 4.1 Super-System Operational Architecture and Segment Boundaries
+
+The super-system operational architecture partitions the capability across five operational segments and one external-actor group. The Air Vehicle Segment is the system under design; the PL-40 launcher is a support-segment element; the Space and Orbital Segment, Supervisory and Control Segment, Operational Roles, and External Authorities are external to the air vehicle boundary. This architecture view is governed by IEEE Std 1362-1998 Section 5.3 (Operational Environment and System Architecture) and DoDAF v2.02 SV-1 (Systems Interface Description). The Level 1B port and connection bindings in Figure 1.4 use discrete port identifiers and traceable connection identifiers that map 1:1 to the Level 1C System Interface Matrix.
+
+| Operational Segment | Constituent Elements | Boundary Role |
+| :--- | :--- | :--- |
+| Space and Orbital Segment | GNSS constellation, tactical relay aircraft or SATCOM service | Provides navigation and beyond-line-of-sight relay services |
+| Air Vehicle Segment | Avenger V2.5 airframe, avionics, propulsion, payload, lethal package, datalink | System under design; bounded by onboard subsystem interfaces and external RBF keys |
+| Supervisory and Control Segment | GCS tablet, ground radio box, MARS antenna, rotator, tactical LAN | Commands, monitors, and authorizes mission execution |
+| Support and GSE Segment | PL-40 rail set, compressor station, trigger handle, external interface board | Launches, charges, and maintains the air vehicle |
+| Operational Roles | System Operator, Payload Specialist, Mission Safety Officer, Field Technician, Range Safety Officer | Human authority and consent boundary |
+| External Authorities | Airspace coordination authority, meteorological service, assurance authority | Regulatory and environmental boundary |
+
+**Figure 4.1: Super-System Port and Connection Binding View**
+
+```mermaid
+flowchart TB
+ subgraph ExternalActors["ExternalActors"]
+ direction TB
+ Airspace["Airspace Coordination Authority<br/>- PORT-EXT-AIR (INOUT)"]
+ Weather["Meteorological Service<br/>- PORT-EXT-WX (OUT)"]
+ GNSS["GNSS Constellation<br/>- PORT-SPACE-GNSS (OUT)"]
+ end
+
+ subgraph AirVehicle["AirVehicleSegment"]
+ direction TB
+ Controller["Core Controller<br/>- PORT-AV-C2 (INOUT)<br/>- PORT-AV-CMD (OUT)<br/>- PORT-AV-VIDEO (IN)<br/>- PORT-AV-LAUNCH (IN)"]
+ Sensors["Sensor Suite<br/>- PORT-AV-GNSS (IN)<br/>- PORT-AV-SENS (OUT)"]
+ Payload["Mission Payload<br/>- PORT-AV-PAYLOAD (OUT)"]
+ Actuators["Actuator Core<br/>- PORT-AV-CMD (IN)"]
+ Lethal["Lethal Package<br/>- PORT-AV-ESAD (INOUT)"]
+ Watchdog["Safety Watchdog<br/>- PORT-AV-SAFE (OUT)"]
+ end
+
+ subgraph Control["SupervisoryControlSegment"]
+ direction TB
+ GCS["Ground Control Station<br/>- PORT-GCS-RF (INOUT)<br/>- PORT-GCS-HMI (INOUT)"]
+ end
+
+ subgraph Support["SupportGSESegment"]
+ direction TB
+ Launcher["PL-40 Launcher<br/>- PORT-LCH-PNEU (IN)<br/>- PORT-LCH-MECH (OUT)"]
+ Compressor["PL-40 Compressor<br/>- PORT-LCH-PNEU (OUT)"]
+ end
+
+ subgraph Roles["OperationalRoles"]
+ direction TB
+ MSO["Mission Safety Officer<br/>- PORT-HUM-MSO (OUT)"]
+ Operator["System Operator<br/>- PORT-HUM-SO (OUT)"]
+ end
+
+ GNSS -->|"CONN-01: Navigation [PORT-SPACE-GNSS to PORT-AV-GNSS]"| Sensors
+ GCS -->|"CONN-03: C2 Datalink [PORT-GCS-RF to PORT-AV-C2]"| Controller
+ Sensors -->|"CONN-04: State Telemetry [PORT-AV-SENS to PORT-AV-SENS]"| Controller
+ Controller -->|"CONN-05: Demand Vectors [PORT-AV-CMD to PORT-AV-CMD]"| Actuators
+ Payload -->|"CONN-06: Target Track [PORT-AV-PAYLOAD to PORT-AV-VIDEO]"| Controller
+ MSO -->|"CONN-07: Release Consent [PORT-HUM-MSO to PORT-AV-ESAD]"| Lethal
+ Watchdog -->|"CONN-08: Safety Veto [PORT-AV-SAFE to PORT-AV-CMD]"| Actuators
+ Operator -->|"CONN-11: Trajectory Control [PORT-HUM-SO to PORT-GCS-HMI]"| GCS
+ Launcher -->|"CONN-14: Carriage Release [PORT-LCH-MECH to PORT-AV-LAUNCH]"| Controller
+ Compressor -->|"CONN-15: Pneumatic Charging [PORT-LCH-PNEU to PORT-LCH-PNEU]"| Launcher
+ GCS -->|"CONN-16: Airspace Clearance [PORT-GCS-HMI to PORT-EXT-AIR]"| Airspace
+ Weather -->|"CONN-17: Weather Observations [PORT-EXT-WX to PORT-GCS-HMI]"| GCS
+```
+
+### 4.3 Subsystem Architecture (100% AST Part Coverage)
+
+The complete AST part taxonomy is declared in `.pipeline/schema.sysml` and elaborated in the System Architecture ConOps unit. This overview binds the six top-level structural partitions used throughout the document. The AST part identities in the OEM bill of materials are authoritative for subsystem naming.
+
+| AST Structural Partition | Representative AST Part Definitions | Operational Function |
+| :--- | :--- | :--- |
+| Airframe and Control Surfaces | Airframe Fuselage, Wings, Wing Panels, Ruddervator | Aerodynamic lift, stability, and control |
+| Avionics and Computing | Autopilot Stack Module ASTK A5 V2.5, Autopilot Computing Board Cube Orange Plus, RPI CM5004032, GNSS Module | Navigation, guidance, mission management, and computing |
+| Propulsion and Actuation | `Propulsion`, `Battery_12S2P_Li_Metal_BEI`, `ESC_IBEX160`, `Motor_AXI_5345_16_HD_GOLD_LINE_V3`, `EPS_Servo_Power_8V_Rail` | Thrust generation and control-surface actuation |
+| Mission Payload | Gimbal Nighthawk2UZ, Camera Compute Module Trip6 | Electro-optical and infrared sensing and target tracking |
+| Lethal Package | Lethal Package, ESAD, ESAD Sensor Board, ESAD Detonator, Warhead | Safety and arming, terminal initiation |
+| Launch and Ground Support | PL-40 Rail, PL-40 Compressor Unit, PL-40 Trigger Handle, GCS Radio Box, GCS MARS Antenna | Launch, command and control, and sustainment |
+
+### 4.4 System Interface Topology and Port Taxonomy
+
+The Level 1B interface topology uses directional port identifiers with an explicit direction (`IN`, `OUT`, or `INOUT`). Detailed pinouts, serial framing,register bitmasks, and checksum equations are deferred to the Level 1C Interface Control Documents.
+
+| Port Identifier | Direction | Connected Segments | Protocol Family | Operational Payload |
+| :--- | :--- | :--- | :--- | :--- |
+| PORT-AV-C2 | INOUT | Air Vehicle to Supervisory and Control | RF datalink | Supervisory commands, telemetry, video, state telemetry |
+| PORT-AV-GNSS | IN | Space and Orbital to Air Vehicle | Coaxial RF and UART serial | GNSS position, velocity, and time |
+| PORT-AV-ACT | OUT | Air Vehicle internal | CAN bus DroneCAN and DC power | Servo demand vectors and actuation power |
+| PORT-AV-PAYLOAD | INOUT | Air Vehicle internal | Ethernet and HDMI | Video frames and target track data |
+| PORT-AV-ESAD | INOUT | Air Vehicle internal | RS-485 and discrete GPIO | Arm enable, continuity, and initiation authorization |
+| PORT-GCS-RF | INOUT | Supervisory and Control external | RF datalink | Command uplink and telemetry downlink |
+| PORT-LCH-PNEU | IN | Support and GSE to Air Vehicle | Pneumatic | Launch pressure and carriage propulsion |
+| PORT-LCH-TRIG | IN | Support and GSE to Air Vehicle | Electrical discrete | Dual-switch launch command |
+
+## Source References
+
+| Reference ID | Source Artifact | Scope | Access Path |
+| :--- | :--- | :--- | :--- |
+| SRC-01 | SysML v2 Level 0 schema | AST part, port, attribute, and constraint definitions | [.pipeline/schema.sysml](../../.pipeline/schema.sysml) |
+| SRC-02 | OEM bill of materials extraction | Component identity, stated mass, interface, and configuration status | [schema/extracted/oem_bom.md](../../schema/extracted/oem_bom.md) |
+| SRC-03 | System interface extraction | Port direction, protocol, data type, and refresh rate | [schema/extracted/interface_table.md](../../schema/extracted/interface_table.md) |
+| SRC-04 | Parametric limits registry | All numeric limits, units, and verification sources | [schema/extracted/parametric_limits.md](../../schema/extracted/parametric_limits.md) |
+| SRC-05 | This ConOps unit | Scope, system identification, and normative baseline | [docs/conops/units/conops/01_METADATA_AND_OVERVIEW.md](units/conops/01_METADATA_AND_OVERVIEW.md) |
+| SRC-06 | Cited research inventory | Public clause citations and normative baseline allocations | [docs/research/RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md) |
+
+Normative clause anchors:
+- ISO/IEC/IEEE 29148:2018 Section 5.2.4 and Section 6.4.2 (stakeholder needs and ConOps baseline).
+- ISO/IEC/IEEE 15288:2023 Section 6.4.2 and Section 6.4.3 (stakeholder needs and architecture definition).
+- IEEE Std 1362-1998 Section 5.3 (system architecture and operational environment).
+- DoDAF v2.02 SV-1 (systems interface description).
+- MIL-STD-882E Task 202 and Task 205 (operational hazard analysis and system hazard analysis).
+- JARUS SORA v2.5 Annex B Section B.2 and Annex E Section E.14 (containment and ground risk mitigation).
+
+All numeric values in this unit are traceable to SRC-04. Values absent from the OEM sources are explicitly marked "Not stated in OEM sources." The configuration status of the parachute deployment module is traceable to SRC-02 (`configuration: non-mission`; `baseline: false`).
+
+| Attribute | Specification Detail |
+| :--- | :--- |
 
 ## 2. Current Situation, Deficiency Analysis & Operational Motivation
 
 ### 2.1 Current Operational Baseline (Predecessors)
-The predecessor operational baseline relies on legacy point-to-point systems and manual control interfaces. These systems were primarily designed for simple operational profiles under benign environmental conditions, characterized by:
-1. **Single-String Non-Redundant Architecture:** Predecessor platforms utilize single-string controllers lacking redundant inertial and state sensors, isolated power buses, and hardware watchdog circuits. A single sensor anomaly or processor stall leads directly to unrecoverable system failure.
-2. **Manual Point-to-Point Control Links:** Command and control relies on single-frequency analog or low-resilience digital communication links vulnerable to signal fading, electromagnetic interference (EMI), and transmission obstruction.
-3. **Disjointed Sensor Telemetry Displays:** Payload telemetry and core system states are processed on isolated, unintegrated display monitors, forcing human operators to perform manual mental correlation of data streams with spatial maps.
-4. **Ad-Hoc Contingency Management:** Contingency responses lack deterministic timing guarantees, formal state-space containment buffers, and dynamic secondary recovery routing.
+The predecessor operational baseline comprises manually launched tactical reconnaissance drones and improvised loitering munitions that depend on commercial radio control links, point-to-point analog video, and manually coordinated launch fixtures. Quantitative predecessor reliability, launch abort, and link-performance baselines are **Not stated in OEM sources**; the deficiency analysis therefore evaluates the predecessor concept against the OEM-grounded capabilities of the Avenger 5 air vehicle and PL-40 launcher rather than inventing legacy measurements.
+
+The mission baseline is the air vehicle plus launcher configuration defined in the OEM bill of materials. The **Parachute Deployment Non-Mission** module is explicitly a non-mission engineering variant with `configuration: non-mission` and `baseline: false`; its two igniter outputs are excluded from the mission baseline analysis (`schema/extracted/oem_bom.md at line 47`). The tail control surface is the **Ruddervator** (drawing synonym Fins; preparation synonym tail stabiliser), quantity four, driven by four HV6160-DroneCAN servos on CAN 1 (`schema/extracted/oem_bom.md at line 23`). The **ESAD (Electronic Safe and Arm Device)** is classified **Critical / DAL-A** (`schema/extracted/oem_bom.md at line 52`).
 
 ### 2.2 Operational Capability Gaps
-Analysis of historical mission logs, field incident reports, and operator debriefs reveals four critical capability gaps that prevent legacy systems from executing high-tempo autonomous operational missions:
+The following capability gaps separate the predecessor concept from the OEM-grounded mission configuration. Legacy quantitative baselines are recorded as **Not stated in OEM sources** where the allowed sources are silent; current-system targets cite the parametric limits or OEM component records that bound them.
 
-| Gap ID | Capability Gap Name | Operational Manifestation | Technical Root Cause | Mission Impact & Risk | Severity | Gate 24 Allocation Tag |
+| Gap ID | Capability Gap Name | Operational Manifestation | Technical Root Cause | Mission Impact & Risk | Severity | Proposed Capability Reference |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **GAP-01** | Continuous Autonomous State Execution | Inability to maintain statutory state-space containment, trajectory corridors, and dynamic boundary compliance without constant manual intervention. | Single-string non-deterministic control architecture lacking real-time multi-modal state estimation and closed-loop trajectory tracking algorithms (execution loop latency tau_loop > tau_stability_limit). | Restricted operational range (R_manual << Range_max(Link_C2)), preventing wide-area state monitoring, causing high operator cognitive fatigue, and risking uncontained state boundary excursions. | Critical | `/// OperationalAllocation: [GAP-01]`<br>`/// Realises: [CAP-01, OA-02]` |
-| **GAP-02** | Contested Communication & Disturbance Resilience | Loss of system control and data telemetry in the presence of electromagnetic interference, RF jamming, signal degradation, or transmission obstacles. | Single-frequency unencrypted C2 link lacking automated multi-tier PACE failover logic, dynamic link quality estimation, and autonomous lost-link holding patterns. | High rate of communication-loss aborts, mission abandonment, uncontained state excursions, and susceptibility to unauthenticated command tampering. | Critical | `/// OperationalAllocation: [GAP-02]`<br>`/// Realises: [CAP-03, OA-04]` |
-| **GAP-03** | Sub-Second Deterministic Failsafe Containment | Slow anomaly detection and non-deterministic recovery actions resulting in boundary breaches or uncontained kinetic impact outside authorized safety buffers. | Reliance on human operator intervention (tau_human > tau_containment_req) and absence of an independent hardware safety watchdog with non-preemptible emergency state transitions (t_resp <= tau_containment_req). | Inability to achieve formal safety certification for operational environments with adjacent protected assets; catastrophic hazard upon control failure. | Catastrophic | `/// OperationalAllocation: [GAP-03]`<br>`/// Realises: [CAP-04, OA-07]` |
-| **GAP-04** | Modular Rapid Field Turnaround | Prolonged servicing, manual sensor recalibration, and complex payload swaps requiring extended turnaround intervals between operational cycles. | Monolithic non-modular mechanical packaging, complex manual wiring interfaces, and lack of automated power-on built-in-test (PBIT) diagnostic logging (t_turnaround > t_turnaround_target). | Operational availability limited to low operational tempo (N_dot_operation < N_dot_target), leaving wide state monitoring coverage gaps and increasing life-cycle maintenance costs. | Moderate | `/// OperationalAllocation: [GAP-04]`<br>`/// Realises: [CAP-05, OA-01]` |
+| **GAP-01** | Consistent Pneumatic Launch & Separation | Unstable carriage release and inconsistent initial pitch attitude during launch. | Manual launch fixtures lack regulated pressure, calibrated carriage retention, and repeatable release sequencing. The PL-40 baseline requires 13 bar minimum and 14 bar maximum launch pressure, a 12 deg launch angle, a maximum launched plane mass of 30 kg, a maximum launch velocity of 25 m/s, and a 5 min maximum setup interval (`schema/extracted/parametric_limits.md` PL-40, PL-41, PL-66, PL-64, PL-65, PL-72). | Failed or aborted launches, airframe damage at rail exit, and hazard to launch personnel. Predecessor abort rate is **Not stated in OEM sources**. | Critical | `CAP-01` |
+| **GAP-02** | Resilient C2 and Navigation in Contested RF | Loss of command, telemetry, or targeting video when the radio link degrades or satellite navigation is disrupted. | Single-path commercial links and navigation receivers without a documented contested-environment fallback. The mission baseline uses a 4.4 GHz to 5.0 GHz telemetry and command link (`schema/extracted/interface_table.md at line 63`), a Septentrio Asterx-m3 pro GNSS receiver (`schema/extracted/oem_bom.md at line 15`), a 60 km direct range (PL-07), and a 180 km extended range (PL-08) (`schema/extracted/parametric_limits.md`). | Mission abort, lost-link holding failure, or uncontained flight. Predecessor jamming range and link-margin values are **Not stated in OEM sources**. | Critical | `CAP-03` |
+| **GAP-03** | Certified Dual-Environment Safe and Arm Control | Risk of inadvertent warhead initiation during ground handling, launch acceleration, or an uncontained flight abort. | Reliance on single-path software commands or manual arming pins without a documented dual-environment interlock chain. The baseline ESAD is Critical / DAL-A (`schema/extracted/oem_bom.md at line 52`), accepts 14 V DC minimum, 32 V DC maximum, and 28 V DC nominal (`schema/extracted/parametric_limits.md` PL-46, PL-47, PL-48), requires 1 ms period and 50 percent duty arm-enable signaling (PL-54, PL-55), and monitors umbilical continuity at 0.5 Ohm maximum and 20 mA test current (PL-49, PL-50). Detonator measurement range extends to 1800 V (PL-60). | Ground-crew fatality risk, inadvertent initiation during transit or launch, and inability to obtain safety-board approval. | Catastrophic | `CAP-04` |
+| **GAP-04** | Terminal Guidance Within Platform Limits | Terminal tracking error and late correction during a high-speed dive against a moving or stationary target. | Gimbal stabilization, tracker latency, and control-loop timing are not bounded by a documented terminal-guidance budget. The baseline permits 55 m/s maximum dive speed (PL-03), 22 deg maximum dive angle (PL-04), 55 m/s maximum engagement airspeed (PL-45), 15 deg maximum engagement elevation (PL-44), and 2 s minimum and 5 s maximum target track duration (PL-42, PL-43). Seeker pitch, yaw, and roll limits are defined by PL-25 and PL-26; zoom is defined by PL-27; day and thermal imagery resolution is defined by PL-28 through PL-31. | Missed target, adjacent operational risk, and wasted tactical munition. Predecessor circular error probable is **Not stated in OEM sources**. | Critical | `CAP-05` |
 
 ### 2.3 3-Domain Legacy Deficiencies Matrix
-In accordance with ISO/IEC/IEEE 29148:2018 §5.2.4 and MIL-STD-882E System Safety Process, predecessor system deficiencies are categorized across Technical, Operational, and Human Factors domains with quantified baseline limitations and formal safety risk categorizations:
+In accordance with ISO/IEC/IEEE 29148:2018 Section 5.2.4 and the MIL-STD-882E system safety process recorded in `docs/research/RESEARCH_INVENTORY.md` (OBL-FMECA-MIL882E-02), predecessor deficiencies are categorized across Technical, Operational, and Human Factors domains. Legacy quantitative limitations are marked **Not stated in OEM sources** where the allowed sources do not define them; each proposed mitigation is bound to an OEM component record or parametric limit.
 
 | Deficiency Domain | Deficiency ID | Legacy Baseline Deficiency Description | Quantified Baseline Limitation | Safety Risk Categorization (MIL-STD-882E) | Proposed Architectural Mitigation |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Technical Deficiencies** | `DEF-TECH-01` | Single-string compute and non-deterministic control architecture | MTBF_baseline <= MTBF_threshold; execution jitter > tau_jitter_max; loop latency tau_loop > tau_stability_limit | Catastrophic / High Risk (Severity I, Probability C) | Fault-tolerant multi-core controller with hardware Memory Protection Unit (MPU) isolation, deterministic RTOS scheduling, and independent watchdog supervision. |
-| **Technical Deficiencies** | `DEF-TECH-02` | Unsealed non-hardened environmental enclosure and thermal vulnerability | Enclosure rating < IP55; unsealed against moisture/dust over [-20.0°C, 50.0°C]; junction delta_T > 25.0°C | Critical / Serious Risk (Severity II, Probability C) | Hermetically sealed IP67-rated enclosure engineered to MIL-STD-810H climatic, moisture, and dynamic vibration profiles. |
-| **Technical Deficiencies** | `DEF-TECH-03` | Single power distribution rail without galvanic or fault isolation | Single point of electrical failure; payload short-circuit collapses primary controller power bus in t_collapse < 10 ms | Catastrophic / High Risk (Severity I, Probability D) | Galvanically isolated, multi-channel smart power distribution architecture with electronic circuit breakers and dedicated emergency backup rail. |
-| **Technical Deficiencies** | `DEF-TECH-04` | Single-frequency unshielded and unauthenticated communication link | Link SNR_margin < SNR_min under RF/EMI interference; unauthenticated uplink frame drop rate > P_loss_max | Critical / Serious Risk (Severity II, Probability B) | 4-tier PACE communication plan (Primary, Alternate, Contingency, Emergency) with authenticated encryption and automatic link failover. |
-| **Operational Deficiencies** | `DEF-OPS-01` | Static pre-programmed trajectories without dynamic boundary containment | Spatial buffer margin R_margin < R_buffer_req; zero automated deconfliction or pop-up keep-out zone avoidance | Critical / Serious Risk (Severity II, Probability C) | Real-time closed-loop state trajectory generation with dynamic geofence boundary enforcement and automated containment holding. |
-| **Operational Deficiencies** | `DEF-OPS-02` | Lack of automated external service and spatial-temporal registry coordination | Manual coordination latency t_coord > 300 s; missing automated external state registry feeds | Moderate / Medium Risk (Severity III, Probability B) | Automated external coordination API integration with standardized spatial data exchange and digital registry reporting. |
-| **Operational Deficiencies** | `DEF-OPS-03` | Static return trajectory without dynamic energy reserve computation | Return decision based on static timer; reserve energy drops below statutory limit (E_reserve < 0.20 * E_capacity) | Critical / Serious Risk (Severity II, Probability C) | Continuous closed-loop Bingo energy dynamics formulation (E_bingo(t)) enforcing statutory 20% reserve and autonomous secondary divert routing. |
-| **Operational Deficiencies** | `DEF-OPS-04` | Extended field turnaround overhead and manual calibration dependencies | Field turnaround interval t_turnaround_legacy >> t_turnaround_target; manual calibration rig setup > 60 min | Moderate / Medium Risk (Severity III, Probability A) | Tool-less quick-release payload interfaces, hot-swappable energy modules, and automated power-on built-in-test (PBIT) diagnostics. |
-| **Human Factors Deficiencies** | `DEF-HUM-01` | High cognitive workload and mental telemetry correlation overload | Operator cognitive load TLX_manual > TLX_threshold (NASA-TLX > 75); manual mental fusion across disjointed monitors | Critical / Serious Risk (Severity II, Probability B) | Unified supervisory human-machine interface (HMI) with decoupled operator roles (System Operator vs Payload Specialist) maintaining TLX <= TLX_nominal_max. |
-| **Human Factors Deficiencies** | `DEF-HUM-02` | Manual emergency response latency exceeding safe containment deadlines | Human reaction time tau_human > tau_containment_req (tau_human >= 2.0 s vs required containment response tau_req <= 0.5 s) | Catastrophic / High Risk (Severity I, Probability C) | Autonomous sub-second deterministic failsafe state machine (EMG-01..EMG-07) with hardware watchdog cutoff (t_resp <= tau_containment_req) and supervisory veto authority. |
-| **Human Factors Deficiencies** | `DEF-HUM-03` | Operator vigilance decrement and fatigue leading to manual input errors | Operator error rate lambda_human_error > lambda_limit during long shifts (t_shift > t_shift_max) | Critical / Serious Risk (Severity II, Probability C) | Supervisory automation with parameterized envelope protection interlocks rejecting invalid or hazardous manual override commands. |
+| **Technical Deficiencies** | `DEF-TECH-01` | Single-string compute and non-deterministic control architecture. | **Not stated in OEM sources** for the predecessor. The mission baseline provides a Cube Orange Plus autopilot (`schema/extracted/oem_bom.md at line 12`) and separate CAN 1 and CAN 2 DroneCAN buses (`schema/extracted/interface_table.md at line 9`, `schema/extracted/interface_table.md at line 28`). | Catastrophic / High Risk (Severity I) | Dual-bus autopilot architecture with Cube Orange Plus, CAN 1 ruddervator bus, CAN 2 wing-servo and sensor bus, and an EPS module with isolated converters (`schema/extracted/oem_bom.md at line 11`). |
+| **Technical Deficiencies** | `DEF-TECH-02` | Unsealed, non-hardened environmental enclosure and thermal vulnerability. | **Not stated in OEM sources** for the predecessor and for the air vehicle ambient envelope. The PL-40 launcher working-temperature band is defined by PL-73 and PL-74 (`schema/extracted/parametric_limits.md`). | Critical / Serious Risk (Severity II) | Sealed avionics bay, heated and drained CUAV SKYE2 pitot tube (`schema/extracted/oem_bom.md at line 39`), and launcher operation inside the PL-73 to PL-74 temperature band. |
+| **Technical Deficiencies** | `DEF-TECH-03` | Single power distribution rail without fault isolation. | **Not stated in OEM sources** for the predecessor. The mission baseline battery spans 36 V minimum and 50.4 V maximum (`schema/extracted/parametric_limits.md` PL-23, PL-24), the servo rail is 8 V (PL-22), and the main fuse is rated 200 A (`schema/extracted/oem_bom.md at line 19`). | Catastrophic / High Risk (Severity I) | EPS module with 8 V servo rails and 12 V, 14 V, and 50 V converters (`schema/extracted/oem_bom.md at line 11`), 200 A main fuse, and a power meter with CAN telemetry (`schema/extracted/oem_bom.md at line 20`). |
+| **Technical Deficiencies** | `DEF-TECH-04` | Single-frequency, unauthenticated communication link. | **Not stated in OEM sources** for the predecessor. The mission baseline uses a 4.4 GHz to 5.0 GHz link (`schema/extracted/interface_table.md at line 63`) with a DTC radio module (`schema/extracted/oem_bom.md at line 44`), a 2 W ground radio setting (`schema/extracted/parametric_limits.md` PL-39), and a MARS 23 dBi antenna (`schema/extracted/oem_bom.md at line 75`). Link authentication and encryption are **Not stated in OEM sources**. | Critical / Serious Risk (Severity II) | Digital DTC transceiver at 4.4 GHz to 5.0 GHz, 2 W ground radio power, dual MPSL4400 antennas (`schema/extracted/oem_bom.md at line 45`, `schema/extracted/oem_bom.md at line 46`), and MARS 23 dBi ground antenna; cryptographic controls are a derived requirement from `docs/research/RESEARCH_INVENTORY.md` OBL-NIST80082-03. |
+| **Operational Deficiencies** | `DEF-OPS-01` | Static pre-programmed trajectories without dynamic boundary containment. | **Not stated in OEM sources** for the predecessor. The mission baseline defines a 300 m loiter radius (`schema/extracted/parametric_limits.md` PL-37) and a 50 m minimum mission waypoint altitude (PL-36). | Critical / Serious Risk (Severity II) | Closed-loop trajectory generation with geofence containment, the PL-37 loiter radius, and the PL-36 minimum waypoint altitude enforced by the autopilot. |
+| **Operational Deficiencies** | `DEF-OPS-02` | Manual coordination latency and absence of tactical network integration. | **Not stated in OEM sources** for the predecessor coordination latency and network interfaces. The mission baseline provides a GCS tablet network over IP Ethernet or Wi-Fi (`schema/extracted/interface_table.md at line 66`) and two Panasonic FZ-G2 tablets (`schema/extracted/oem_bom.md at line 76`). | Moderate / Medium Risk (Severity III) | Digital GCS network with two FZ-G2 tablets and the 4.4 GHz to 5.0 GHz telemetry link, enabling shared mission data across the operator console. |
+| **Operational Deficiencies** | `DEF-OPS-03` | Static battery reserve budgeting without dynamic loiter calculations. | **Not stated in OEM sources** for the predecessor. The mission baseline endurance is 90 min maximum (`schema/extracted/parametric_limits.md` PL-06) with a 36 V minimum and 50.4 V maximum battery (PL-23, PL-24). Usable battery capacity is **Not stated in OEM sources**. | Critical / Serious Risk (Severity II) | Continuous energy-state monitoring from the power meter and autopilot, with reserve evaluation against the PL-06 endurance limit and the PL-23 to PL-24 voltage band. |
+| **Operational Deficiencies** | `DEF-OPS-04` | Extended field turnaround overhead and manual launcher re-cocking. | **Not stated in OEM sources** for the predecessor turnaround interval. The mission baseline launcher requires a 5 min maximum setup (`schema/extracted/parametric_limits.md` PL-72), and its transport elements are a 68 kg launcher set (PL-69), a 43 kg case (PL-70), and a 25 kg compressor case (PL-71). | Moderate / Medium Risk (Severity III) | PL-40 modular rail with 5 m assembled length and 1.28 m disassembled length (PL-93, PL-94), a 100-launch pulling-rope replacement interval (PL-80), and 55 min and 130 min charger times (PL-89, PL-90). |
+| **Human Factors Deficiencies** | `DEF-HUM-01` | High cognitive workload and mental telemetry correlation overload. | **Not stated in OEM sources** for predecessor workload ratings. The mission baseline provides two Panasonic FZ-G2 tablets (`schema/extracted/oem_bom.md at line 76`), supporting a separated flight-management and payload-management console. | Critical / Serious Risk (Severity II) | Two-operator console with distinct System Operator and Payload Specialist roles on the two FZ-G2 tablets, sharing the GCS tablet network (`schema/extracted/interface_table.md at line 66`). |
+| **Human Factors Deficiencies** | `DEF-HUM-02` | Manual emergency response latency exceeding safe containment deadlines. | **Not stated in OEM sources** for predecessor reaction time and containment deadlines. Human judgment in force and fail-safe interlock obligations are recorded in `docs/research/RESEARCH_INVENTORY.md` OBL-DOD3000-01 and OBL-DOD3000-03. | Catastrophic / High Risk (Severity I) | Deterministic failsafe state machine using the autopilot and EPS load switches, with supervisory veto authority and human authorization preceding any high-consequence actuation. |
+| **Human Factors Deficiencies** | `DEF-HUM-03` | Operator vigilance decrement and fatigue leading to weapon release errors. | **Not stated in OEM sources** for predecessor error rates and shift duration. The dual-man authorization obligation is recorded in `docs/research/RESEARCH_INVENTORY.md` OBL-DOD3000-01. | Critical / Serious Risk (Severity II) | Dual-man rule requiring a second operator consent before ESAD terminal arming, supported by the ESAD RBF key (`schema/extracted/oem_bom.md at line 60`) and arm-enable signaling bounded by PL-54 and PL-55. |
 
 #### 2.3.1 Technical Deficiencies Detail
-1. **Compute & Control Non-Determinism:** Lack of hard real-time operating system (RTOS) guarantees; control loops executed on non-deterministic microcontrollers subject to task starvation, priority inversion, and execution latency jitter ($\tau_{\mathrm{jitter}} > \tau_{\text{jitter\_max}}$), preventing high-rate stabilization.
-2. **Environmental & Thermal Vulnerabilities:** Non-sealed enclosures (rated below the required protection index $\text{IP}_{xy}$) vulnerable to moisture, particulate ingress, and corrosive atmospheres over the operational thermal range $[T_{\text{op\_min}}, T_{\text{op\_max}}]$, leading to sensor drift and component degradation.
-3. **Power Architecture Single Point of Failure:** Single-rail power distribution without isolation barriers; a localized electrical fault or short-circuit in a payload module causes instantaneous primary bus collapse ($t_{\mathrm{collapse}} < 10\text{ ms}$), depriving the core controller of operating power.
-4. **Electromagnetic Susceptibility & Unauthenticated Links:** RF transceivers lack EMI shielding and cryptographic authentication, allowing environmental noise or malicious spoofing to corrupt uplink command sequences.
+1. **Compute and Control Determinism:** The predecessor control chain is a single-string architecture with no documented dual-bus or isolated-rail redundancy. The mission baseline replaces it with a Cube Orange Plus autopilot (`schema/extracted/oem_bom.md at line 12`), a ruddervator CAN bus (`schema/extracted/interface_table.md at line 9`), and a wing-servo, magnetometer, and pitot CAN bus (`schema/extracted/interface_table.md at line 28`). Predecessor timing jitter and loop timing are **Not stated in OEM sources**.
+2. **Environmental and Thermal Vulnerability:** Air vehicle ambient qualification and ingress protection are **Not stated in OEM sources**. The launcher is bounded to minus 20 degC minimum and plus 50 degC maximum (`schema/extracted/parametric_limits.md` PL-73, PL-74), while the air vehicle baseline includes a heated and drained CUAV SKYE2 pitot tube (`schema/extracted/oem_bom.md at line 39`) to mitigate moisture and icing effects on airspeed sensing.
+3. **Power Architecture Single Point of Failure:** The mission baseline battery operates from 36 V minimum to 50.4 V maximum (`schema/extracted/parametric_limits.md` PL-23, PL-24) behind a 200 A main fuse (`schema/extracted/oem_bom.md at line 19`). The EPS module supplies an 8 V servo rail and separate 12 V, 14 V, and 50 V converters (`schema/extracted/oem_bom.md at line 11`), reducing the chance that one payload or servo fault collapses the flight bus. Predecessor fault-collapse time is **Not stated in OEM sources**.
+4. **Electromagnetic Susceptibility:** The baseline link operates at 4.4 GHz to 5.0 GHz (`schema/extracted/interface_table.md at line 63`) with a DTC radio module (`schema/extracted/oem_bom.md at line 44`) and a 2 W ground radio setting (`schema/extracted/parametric_limits.md` PL-39). Authentication, encryption, and frequency-agility mechanisms are **Not stated in OEM sources**; the derived cyber requirement is recorded in `docs/research/RESEARCH_INVENTORY.md` OBL-NIST80082-03 and OBL-MITRE-02.
 
 #### 2.3.2 Operational Deficiencies Detail
-1. **Static Trajectory Planning & Boundary Non-Compliance:** Pre-programmed trajectories follow rigid static paths unable to adapt to dynamic environmental stress, obstacle pop-ups, or variable keep-out zones, leading to statutory containment buffer breaches ($R_{\mathrm{margin}} < R_{\text{buffer\_req}}$).
-2. **Manual External Coordination Overhead:** External reporting and operational deconfliction require manual voice or unintegrated terminal interaction ($t_{\mathrm{coord}} > 300\text{ s}$), introducing human delay and synchronization errors.
-3. **Static Resource Budgeting:** Return-to-base triggers rely on static elapsed-time rules rather than dynamic closed-loop energy equations, risking energy depletion before reaching safe recovery locations ($E_{\mathrm{reserve}} < 0.20 \cdot E_{\mathrm{capacity}}$).
-4. **Maintenance & Turnaround Inefficiencies:** Complex mechanical fastener configurations and manual multimeter calibration procedures extend turnaround time ($t_{\mathrm{turnaround}} \gg t_{\text{turnaround\_target}}$), severely restricting operational deployment tempo.
+1. **Static Trajectory Planning and Boundary Non-Compliance:** The predecessor lacks a documented dynamic boundary-containment method. The mission baseline bounds normal flight with a 300 m loiter radius (`schema/extracted/parametric_limits.md` PL-37) and a 50 m minimum mission waypoint altitude (PL-36).
+2. **Manual External Coordination Overhead:** Predecessor coordination latency is **Not stated in OEM sources**. The mission baseline provides an IP Ethernet or Wi-Fi tablet network (`schema/extracted/interface_table.md at line 66`) and two FZ-G2 tablets (`schema/extracted/oem_bom.md at line 76`) so that mission data is shared digitally rather than relayed verbally.
+3. **Static Resource Budgeting:** The mission baseline endurance is 90 min maximum (`schema/extracted/parametric_limits.md` PL-06), and battery voltage is bounded from 36 V minimum to 50.4 V maximum (PL-23, PL-24). Usable capacity and predecessor reserve logic are **Not stated in OEM sources**.
+4. **Maintenance and Turnaround Inefficiencies:** The PL-40 launcher setup interval is 5 min maximum (`schema/extracted/parametric_limits.md` PL-72). Transport and sustainment values are a 68 kg launcher set (PL-69), a 43 kg case (PL-70), a 25 kg compressor case (PL-71), a 100-launch pulling-rope replacement interval (PL-80), and 55 min and 130 min charger times (PL-89, PL-90).
 
 #### 2.3.3 Human Factors Deficiencies Detail
-1. **Cognitive Saturation & Multi-Display Fragmentation:** Operators are required to simultaneously supervise system dynamics, aim sensor payloads, verify resource reserves, and log state coordinates manually across disjointed displays, yielding NASA-TLX scores exceeding acceptable limits ($\text{TLX} > \text{TLX}_{\mathrm{threshold}}$).
-2. **Human Reaction Latency in Contingency Events:** In dynamic failure scenarios, human reaction times ($\tau_{\mathrm{human}} \ge 2.0\text{ s}$) cannot satisfy statutory containment response requirements ($\tau_{\text{containment\_req}} \le 0.5\text{ s}$), leading to uncontained excursions before manual intervention can occur.
-3. **Fatigue-Induced Input Disparity:** Extended shift durations ($t_{\mathrm{shift}} > t_{\text{shift\_max}}$) induce vigilance decay, increasing the probability of erroneous mode selections or conflicting control inputs without automated safety envelope interlocks.
+1. **Cognitive Saturation and Multi-Display Fragmentation:** Predecessor workload ratings are **Not stated in OEM sources**. The mission baseline provides two Panasonic FZ-G2 tablets (`schema/extracted/oem_bom.md at line 76`), enabling separate flight-management and payload-management roles on the shared GCS tablet network (`schema/extracted/interface_table.md at line 66`).
+2. **Human Reaction Latency in Contingency Events:** Predecessor reaction time is **Not stated in OEM sources**. The mission baseline assigns deterministic failsafe execution to the autopilot and EPS load switches, with human judgment and fail-safe interlock obligations recorded in `docs/research/RESEARCH_INVENTORY.md` OBL-DOD3000-01 and OBL-DOD3000-03.
+3. **Fatigue-Induced Input Disparity:** Predecessor error rates and shift durations are **Not stated in OEM sources**. The dual-man authorization obligation in `docs/research/RESEARCH_INVENTORY.md` OBL-DOD3000-01 requires a second operator consent before terminal arming, and the ESAD RBF key provides a physical safe-state control (`schema/extracted/oem_bom.md at line 60`).
 
 ### 2.4 Mission Drivers & User Operational Problems
-The primary mission drivers compelling the development of DEAP_Safety_Architecture include:
-- **Statutory Regulatory Mandates:** Safety authorities require formal compliance with rigorous safety cases, verifiable containment buffer calculations, and certified software assurance.
-- **Continuous System Availability:** Critical operations require unbroken state tracking coverage across the operational range $\text{Range}_{\mathrm{max}}(\text{Link}_{\mathrm{C2}})$ with autonomous asset handoffs.
-- **Adverse Environmental Readiness:** The system must operate reliably across extreme climatic envelopes ($[T_{\text{op\_min}}, T_{\text{op\_max}}]$, $\text{IP}_{xy}$ sealing, and dynamic disturbance limits per MIL-STD-810H).
-- **Zero-Trust Cybersecurity Baseline:** Modern operational environments demand authenticated command links, cryptographic key storage, and automated rejection of spoofed telemetry or malicious command injection.
+The mission drivers compelling the Avenger 5 air vehicle and PL-40 launcher baseline are grounded in the OEM configuration and the research inventory:
+
+- **Statutory Safety and Human Judgment:** Weapon employment must satisfy human-judgment, fail-safe interlock, and cyber-safeguard obligations (`docs/research/RESEARCH_INVENTORY.md` OBL-DOD3000-01, OBL-DOD3000-03, OBL-DOD3000-04), with ESAD classified Critical / DAL-A (`schema/extracted/oem_bom.md at line 52`).
+- **Expeditionary Launch Mobility:** The PL-40 baseline enables a 5 min maximum setup (`schema/extracted/parametric_limits.md` PL-72) with a 68 kg launcher set (PL-69), a 43 kg case (PL-70), a 25 kg compressor case (PL-71), and a rail that assembles to 5 m and disassembles to 1.28 m (PL-93, PL-94).
+- **Endurance and Standoff Range:** The baseline provides 90 min maximum endurance (`schema/extracted/parametric_limits.md` PL-06), 60 km direct range (PL-07), and 180 km extended range (PL-08).
+- **Precision Engagement Within Declared Limits:** The baseline carries a 5 kg warhead (PL-13) and permits 55 m/s maximum dive speed (PL-03), 22 deg maximum dive angle (PL-04), 55 m/s maximum engagement airspeed (PL-45), 15 deg maximum engagement elevation (PL-44), and 2 s minimum and 5 s maximum target track duration (PL-42, PL-43). Circular error probable is **Not stated in OEM sources**.
+- **Resilient Digital C2:** The baseline C2 link operates at 4.4 GHz to 5.0 GHz (`schema/extracted/interface_table.md at line 63`) through a DTC radio module (`schema/extracted/oem_bom.md at line 44`). Authentication and encryption mechanisms are **Not stated in OEM sources**; the derived requirements are recorded in `docs/research/RESEARCH_INVENTORY.md` OBL-NIST80082-03, OBL-MITRE-02, and OBL-DO362A-04.
+- **Non-Mission Parachute Exclusion:** The parachute deployment module is a non-mission engineering variant with `configuration: non-mission` and `baseline: false` (`schema/extracted/oem_bom.md at line 47`); its igniters are excluded from the mission baseline and do not constitute a recovery capability for mission credit.
+
+## Source References
+
+[1]: .pipeline/schema.sysml
+[2]: schema/extracted/oem_bom.md
+[3]: schema/extracted/interface_table.md
+[4]: schema/extracted/parametric_limits.md
+[5]: docs/research/RESEARCH_INVENTORY.md
+[6]: ISO/IEC/IEEE 29148:2018 Section 5.2.4 and Section 6.4.2
+[7]: MIL-STD-882E Task 204 Section 4.2
+[8]: JARUS SORA v2.5 Annex E Section E.5
+
+| Attribute | Specification Detail |
+| :--- | :--- |
 
 ## 3. Proposed Capabilities & Operational Justification (Trade-Offs)
 
-### 3.1 Justification for Proposed Architectural Changes
-To resolve the critical deficiencies of predecessor systems and meet statutory safety requirements, DEAP_Safety_Architecture transitions the operational paradigm from manual direct control to certified supervisory autonomous execution. This architectural evolution is justified by:
-1. **Deterministic RTOS Safety-Critical Core:** Implementation of a deterministic safety-critical core architecture executing on a fault-tolerant multi-core processor with memory protection unit (MPU) isolation.
-2. **Multi-Tiered PACE Communications Architecture:** Deployment of a 4-tier communication plan (Primary Point-to-Point link, Alternate high-bandwidth network channel, Contingency robust narrowband link, and Emergency resilient channel) ensuring unbroken command and control integrity.
-3. **Sub-Second Failsafe Containment:** Integration of an independent hardware safety watchdog capable of detecting cross-channel sensor disparities, loss of communication, or state boundary breaches, and triggering deterministic containment actions within $t_{\mathrm{resp}} \le \tau_{\text{containment\_req}}$.
-4. **Edge Neural Telemetry Processing:** High-efficiency edge computing accelerator executing real-time state classification, multi-sensor odometry, and automated feature tracking without saturating low-bandwidth telemetry downlinks.
+### 3.1 Mission Drivers
+
+The proposed architecture is driven by the operational need for a runway-independent, long-endurance, standoff-precision system whose weapon release remains subject to positive human judgment. Each driver below is traced to an OEM row or to the normative baseline. Evidence labels are resolved in the Source References table.
+
+| Driver ID | Mission Driver | Operational Need | Evidence |
+| :--- | :--- | :--- | :--- |
+| MD-A | Persistent aerial presence | Endurance up to 90 min at 30 m/s cruise speed with a 300 m loiter radius | [A] |
+| MD-B | Standoff command and control coverage | Direct radio line-of-sight range up to 60 km, with an extended range band of 60 km to 180 km | [B] |
+| MD-C | Runway-independent launch | Pneumatic launch at 13 bar to 14 bar and a 12 deg launch angle, with launcher setup time of 0 min to 5 min | [C] |
+| MD-D | Precision terminal effect | Maximum dive speed 55 m/s, maximum dive angle 22 deg, maximum engagement elevation 15 deg, maximum engagement airspeed 55 m/s, target track duration 2 s to 5 s, and warhead mass up to 5 kg | [D] |
+| MD-E | Human-authorized weapon release | Positive human judgment and fail-safe interlocks before engagement | [E] |
+| MD-F | Containment and recovery assurance | Containment inside the 3D operational volume plus flight termination provisions | [F] |
+| MD-G | Expeditionary environmental tolerance | Launcher working thermal window and battery charging thermal window per the cited OEM rows | [G] |
+| MD-H | Cyber and electromagnetic resilience | Defense-in-depth for the wireless command link and structured cyber risk assessment | [H] |
 
 ### 3.2 Functional Superiority & Operational Value Proposition
-The proposed architecture provides quantifiable functional superiority over the legacy baseline across operational endurance, turnaround tempo, containment response, environmental robustness, and operator cognitive workload:
+
+The value proposition is stated only against OEM-grounded bounds. Where the OEM sources are silent on a comparison metric, the proposition is marked as unquantified rather than assigned a synthetic value.
+
+| Proposition ID | Value Proposition | Grounded Quantitative Basis | Evidence |
+| :--- | :--- | :--- | :--- |
+| VP-A | Runway-independent expeditionary launch | 13 bar to 14 bar launch pressure; 12 deg launch angle; 0 min to 5 min setup time; 5 m assembled rail and 1.28 m disassembled rail; 68 kg, 43 kg, and 25 kg set, case, and compressor masses | [I] |
+| VP-B | Persistent coverage of the target area | Endurance 0 min to 90 min; cruise speed 30 m/s; loiter radius 300 m; minimum mission waypoint altitude 50 m | [J] |
+| VP-C | Standoff command and control | Direct range 0 km to 60 km; extended range 60 km to 180 km; ground radio power 2 W; RF band 4.4 GHz to 5.0 GHz; MARS antenna gain 23 dBi | [K] |
+| VP-D | Precision electro-optical and infrared identification | Zoom 1X to 40X; day and thermal resolution 128; seeker pitch -45 deg to 135 deg; seeker yaw and roll -165 deg to 165 deg; target track duration 2 s to 5 s | [L] |
+| VP-E | Human-authorized weapon release with a Critical / DAL-A safe-and-arm device | ESAD Critical / DAL-A; acceleration resolution 0.0039 g; arm-enable period 1 ms at 50 percent duty; response latency 0 ms to 5 ms; high-voltage measurement 0 V to 1800 V | [M] |
+| VP-F | Separated tail and wing actuation | Four Ruddervator (Fins; tail stabiliser) surfaces and four ruddervator servos; four wing servos; eight servos total; 8 V servo rail; separate CAN 1 and CAN 2 buses | [N] |
+| VP-G | Containment and flight termination assurance | Loiter radius 300 m; minimum mission waypoint altitude 50 m; launcher thermal window per the cited OEM rows | [O] |
+| VP-H | Environmental and charging discipline | Launcher working thermal window and battery charging thermal window per the cited OEM rows; air vehicle environmental envelope not quantified | [P] |
+
+### 3.3 Engineering Trade-Off Evaluations
+
+The principal quantitative tension in the OEM data is between the launcher maximum launch velocity and the air vehicle minimum flight speed. The following identity makes the deficit explicit and is the basis for the powered climb-out decision.
 
 $$
 \begin{aligned}
-\Delta \text{Range} &= \text{Range}_{\mathrm{proposed}} - \text{Range}_{\mathrm{legacy}} > 0 \\
-\Delta t_{\mathrm{turnaround}} &= t_{\mathrm{turnaround,proposed}} - t_{\mathrm{turnaround,legacy}} < 0 \\
-\Delta \tau_{\mathrm{response}} &= \tau_{\mathrm{response,proposed}} - \tau_{\mathrm{response,legacy}} < 0 \\
-\Delta \text{Disturbance} &= \text{Disturbance}_{\mathrm{proposed}} - \text{Disturbance}_{\mathrm{legacy}} > 0 \\
-\Delta \text{TLX} &= \text{TLX}_{\mathrm{proposed}} - \text{TLX}_{\mathrm{legacy}} < 0
+\Delta V_{\mathrm{launch}} &= V_{\mathrm{min,flight}} - V_{\mathrm{launch,max}} \\
+&= 26 - 25 = 1
 \end{aligned}
 $$
 
-- Parameter Definitions & Engineering Units:
-- $\Delta \text{Range}$: Operational range expansion margin over legacy baseline ($\text{Range}_{\mathrm{proposed}} \ge \text{Range}_{\mathrm{threshold}}$).
-- $\Delta t_{\mathrm{turnaround}}$: Operational turnaround and servicing time reduction ($t_{\mathrm{turnaround,proposed}} \le t_{\mathrm{turnaround,target}}$).
-- $\Delta \tau_{\mathrm{response}}$: Containment and emergency response latency reduction ($\tau_{\mathrm{response,proposed}} \le \tau_{\text{containment\_req}}$).
-- $\Delta \text{Disturbance}$: Dynamic disturbance tolerance and environmental resistance expansion ($\text{IP}_{xy} \ge \text{IP}_{\mathrm{req}}$).
-- $\Delta \text{TLX}$: NASA Task Load Index cognitive workload reduction ($\text{TLX}_{\mathrm{proposed}} \le \text{TLX}_{\text{nominal\_max}}$).
+| Symbol | Value | Units | Evidence |
+| :--- | :--- | :--- | :--- |
+| V_min,flight | 26 | m/s | [Q] |
+| V_launch,max | 25 | m/s | [R] |
+| Delta V_launch | 1 | m/s | Derived from [Q] and [R] |
 
-| Operational Pillar | Legacy Baseline (Predecessor) | Proposed DEAP_Safety_Architecture | Superiority Delta Formula | Threshold Improvement Bound | Operational Value Delivered |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Operational Range & Coverage** | Range_legacy (Direct Line-of-Sight R_manual) | Range_proposed (Certified Autonomous Corridor Range_max(Link_C2)) | ΔRange = Range_proposed - Range_legacy | ΔRange > 0 (Range_proposed >= Range_threshold) | Enables wide-area state space coverage without requiring local human operator proximity. |
-| **Turnaround & Relaunch Tempo** | t_turnaround_legacy (Manual Inspection & Servicing) | t_turnaround_proposed (Modular Hot-Swap & Automated PBIT) | Δt_turnaround = t_turnaround_proposed - t_turnaround_legacy | Δt_turnaround < 0 (t_turnaround_proposed <= t_turnaround_target) | Minimizes ground servicing intervals, enabling sustained high-cadence operational sortie cycles. |
-| **Anomaly & Containment Response** | τ_response_legacy (Human Reaction Delay τ_human) | τ_response_proposed (Autonomous Hardware Watchdog t_resp) | Δτ_response = τ_response_proposed - τ_response_legacy | Δτ_response < 0 (τ_response_proposed <= tau_containment_req) | Delivers deterministic sub-second containment preventing state excursions outside safety buffers. |
-| **Environmental Robustness** | Disturbance_legacy, IP_legacy (Benign Operating Limits) | Disturbance_proposed, IP55 (MIL-STD-810H Hardening) | ΔDisturbance = Disturbance_proposed - Disturbance_legacy | ΔDisturbance > 0 (IP55 qualification, dynamic disturbance rejection) | Guarantees operational execution across severe climatic, acoustic, and dynamic disturbance profiles. |
-| **Operator Workload (NASA-TLX)** | TLX_legacy (Continuous Direct Manual Control) | TLX_proposed (Supervisory Management by Exception) | ΔTLX = TLX_proposed - TLX_legacy | ΔTLX < 0 (TLX_proposed <= TLX_nominal_max) | Eliminates operator task saturation and fatigue-induced error during extended monitoring shifts. |
+The relay option is evaluated as a range multiplier against the direct link bound.
 
-### 3.3 System Capability Hierarchy
-The system architecture decomposes into a five-level operational capability hierarchy aligned with OMG UAF Operational Performer views:
+$$
+\begin{aligned}
+R_{\mathrm{extension}} &= \frac{R_{\mathrm{extended,max}}}{R_{\mathrm{direct,max}}} \\
+&= \frac{180}{60} = 3
+\end{aligned}
+$$
 
-```
-===================================================================================
-                       SYSTEM CAPABILITY HIERARCHY (CAP-01..05)
-===================================================================================
-[CAP-01: Autonomous Mission Execution]
-   ├── CAP-01.1: Autonomous Mission Lifecycle & State Transition Control
-   ├── CAP-01.2: Dynamic State Trajectory & Corridor Generation
-   └── CAP-01.3: Pre-Operation Health Verification & Built-In-Test (PBIT)
+| Symbol | Value | Units | Evidence |
+| :--- | :--- | :--- | :--- |
+| R_direct,max | 60 | km | [T] |
+| R_extended,max | 180 | km | [U] |
+| R_extension | 3 | dimensionless | Derived from [T] and [U] |
 
-[CAP-02: Deterministic Navigation & Guidance]
-   ├── CAP-02.1: Multi-Sensor State Estimation & Sensor Fusion
-   ├── CAP-02.2: Real-Time Closed-Loop Guidance & State Tracking
-   └── CAP-02.3: Dead-Reckoning Navigation & Reference Signal Fallback
+The actuator count is evaluated as the sum of tail and wing servo populations.
 
-[CAP-03: Resilient Multi-Tier C2 Comms]
-   ├── CAP-03.1: Primary Point-to-Point High-Bandwidth Datalink
-   ├── CAP-03.2: Alternate Encrypted Network / Infrastructure Channel
-   └── CAP-03.3: Contingency Robust Narrowband Command Channel
+$$
+\begin{aligned}
+N_{\mathrm{servo}} &= N_{\mathrm{ruddervator}} + N_{\mathrm{wing}} \\
+&= 4 + 4 = 8
+\end{aligned}
+$$
 
-[CAP-04: Multi-Modal Sensor Payload Processing]
-   ├── CAP-04.1: Multi-Axis Actuated Sensor Stabilization & Target Tracking
-   ├── CAP-04.2: Real-Time Edge Feature Extraction & Telemetry Tagging
-   └── CAP-04.3: Adaptive Telemetry Compression & Dynamic Bandwidth Allocation
+| Symbol | Value | Units | Evidence |
+| :--- | :--- | :--- | :--- |
+| N_ruddervator | 4 | units | [W] |
+| N_wing | 4 | units | [X] |
+| N_servo | 8 | units | [Y] |
 
-[CAP-05: Autonomous Failsafe & Containment]
-   ├── CAP-05.1: Real-Time Operational Boundary Proximity & Geofence Monitoring
-   ├── CAP-05.2: Dynamic Resource Reserve (Bingo) Monitoring & Secondary Divert Routing
-   └── CAP-05.3: Independent Hardware Safety Watchdog & Autonomous Containment Actuation
-===================================================================================
-```
-
-#### 3.3.1 5-Tier Capability Hierarchy Table
-In accordance with OMG UAF v2.0 and INCOSE Systems Engineering Handbook v5.0, each capability decomposes into verified sub-capabilities bound to Gate 24 allocation tags:
-
-| Capability ID | Sub-Capability ID | Sub-Capability Name | Functional Description | Allocated Performer Node | Gate 24 Allocation Tag | Target Performance Bound |
+| Trade-Off ID | Decision | Alternatives Considered | Quantitative Evidence | Evaluation Outcome | Residual Risk / OEM Silence | Evidence |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **CAP-01** | `CAP-01.1` | Autonomous Mission Lifecycle & State Transition Control | Manages deterministic state machine transitions across startup, nominal execution, degraded operation, failsafe containment, and secure shutdown. | Core Controller Subsystem | `/// OperationalAllocation: [CAP-01.1]` | Transition latency <= tau_transition_max |
-| **CAP-01** | `CAP-01.2` | Dynamic State Trajectory & Corridor Generation | Calculates and executes multi-dimensional trajectory corridors bounded within defined state-space limits. | Guidance & Control Subsystem | `/// OperationalAllocation: [CAP-01.2]` | Cross-track error e_track <= epsilon_track_max |
-| **CAP-01** | `CAP-01.3` | Pre-Operation Health Verification & Built-In-Test (PBIT) | Performs automated self-tests, sensor bias validation, actuator calibration checks, and security initialization. | Core Controller / Safety Watchdog | `/// OperationalAllocation: [CAP-01.3]` | PBIT duration t_PBIT <= tau_PBIT_max |
-| **CAP-02** | `CAP-02.1` | Multi-Sensor State Estimation & Sensor Fusion | Fuses inertial measurements, external reference signals, and kinematic state observers into consolidated state vectors. | State Estimation Subsystem | `/// OperationalAllocation: [CAP-02.1]` | State error e_state <= epsilon_state_max |
-| **CAP-02** | `CAP-02.2` | Real-Time Closed-Loop Guidance & State Tracking | Executes deterministic feedback control loops generating dynamic actuator setpoints to track reference trajectories. | Guidance & Control Subsystem | `/// OperationalAllocation: [CAP-02.2]` | Control loop rate f_control >= f_control_min |
-| **CAP-02** | `CAP-02.3` | Dead-Reckoning Navigation & Reference Signal Fallback | Autonomous reversion to dead-reckoning state estimation upon reference signal loss or degradation. | State Estimation Subsystem | `/// OperationalAllocation: [CAP-02.3]` | Drift rate <= Drift_state_max |
-| **CAP-03** | `CAP-03.1` | Primary Point-to-Point High-Bandwidth Datalink | Delivers high-throughput primary bidirectional command and telemetry transport. | PACE Transceiver Node | `/// OperationalAllocation: [CAP-03.1]` | Link latency tau_link <= tau_primary_max |
-| **CAP-03** | `CAP-03.2` | Alternate Encrypted Network / Infrastructure Channel | Provides secure routed network transport fallback during primary link degradation. | PACE Transceiver Node | `/// OperationalAllocation: [CAP-03.2]` | Failover latency <= tau_switch_max |
-| **CAP-03** | `CAP-03.3` | Contingency Robust Narrowband Command Channel | Maintains essential safety-critical command connectivity in high-attenuation or contested RF environments. | PACE Transceiver Node | `/// OperationalAllocation: [CAP-03.3]` | Heartbeat timeout t_hb <= tau_hb_timeout |
-| **CAP-04** | `CAP-04.1` | Multi-Axis Actuated Sensor Stabilization & Target Tracking | Controls actuated sensor orientation to stabilize field of view and track dynamic target coordinates. | Sensor Payload Subsystem | `/// OperationalAllocation: [CAP-04.1]` | Pointing jitter <= epsilon_jitter_max |
-| **CAP-04** | `CAP-04.2` | Real-Time Edge Feature Extraction & Telemetry Tagging | Executes neural network state classification, spatial feature extraction, and geo-referenced telemetry tagging. | Edge Neural Processing Node | `/// OperationalAllocation: [CAP-04.2]` | Inference rate f_inference >= f_inference_min |
-| **CAP-04** | `CAP-04.3` | Adaptive Telemetry Compression & Dynamic Bandwidth Allocation | Dynamically compresses telemetry streams to match channel bandwidth without dropping safety telemetry frames. | Edge Processing Node | `/// OperationalAllocation: [CAP-04.3]` | Compression ratio >= Ratio_compress |
-| **CAP-05** | `CAP-05.1` | Real-Time Operational Boundary Proximity & Geofence Monitoring | Evaluates continuous distance to declared boundaries and triggers containment maneuvers prior to buffer breach. | Boundary Deconfliction Subsystem | `/// OperationalAllocation: [CAP-05.1]` | Boundary check rate f_monitor >= f_boundary_min |
-| **CAP-05** | `CAP-05.2` | Dynamic Resource Reserve (Bingo) Monitoring & Secondary Divert Routing | Computes dynamic energy return thresholds and commands divert trajectories maintaining statutory reserves. | Resource Management Subsystem | `/// OperationalAllocation: [CAP-05.2]` | Reserve ratio E_reserve / E_capacity >= 0.20 |
-| **CAP-05** | `CAP-05.3` | Independent Hardware Safety Watchdog & Autonomous Containment Actuation | Hardware watchdog executing autonomous failsafe containment upon critical trigger detection within bounded response time. | Independent Safety Watchdog | `/// OperationalAllocation: [CAP-05.3]` | Response time t_resp <= tau_containment_req |
+| TRD-A | Retain the PL-40 pneumatic launcher and rely on powered climb-out after carriage separation | Raise launcher pressure above 14 bar; select a lower-speed airframe | Maximum launch velocity 25 m/s; minimum flight speed 26 m/s; launch pressure 13 bar to 14 bar; compressor working pressure 14 bar | The launch velocity bound is below the minimum flight speed by 1 m/s, and the compressor is already at its stated pressure limit. Pressure alone cannot close the gap, so powered climb-out is required | Separation-to-thrust transition time and thrust margin are Not stated in OEM sources | [Z] |
+| TRD-B | Baseline the direct radio line-of-sight link and treat relay extension as optional | Direct-only link bounded at 60 km; beyond-line-of-sight satellite link | Direct range 0 km to 60 km; extended range 60 km to 180 km; RF band 4.4 GHz to 5.0 GHz; ground radio power 2 W | Relay extension raises the maximum range bound by a factor of three, but no relay node, relay data rate, or relay latency is identified in the OEM data | Relay hardware, relay link budget, and relay latency are Not stated in OEM sources | [AA] |
+| TRD-C | Retain the removable 12S2P battery and the 17 kg maximum take-off weight class | Larger battery; additional payload | Endurance 0 min to 90 min; maximum take-off weight 17 kg; battery voltage 36 V to 50.4 V; separate launcher battery capacity 6000 mAh | The 90 min endurance bound and the 17 kg maximum take-off weight bound leave no stated mass margin for optional relay or recovery hardware | Component masses are Not stated in OEM sources | [AB] |
+| TRD-D | Use four Ruddervator (Fins; tail stabiliser) surfaces on CAN 1 and four wing servos on CAN 2 | Fewer control surfaces; single CAN bus | Four ruddervator surfaces; four ruddervator servos; four wing servos; eight servos; 8 V servo rail; separate CAN 1 and CAN 2 buses | The split bus topology separates tail and wing actuation data paths at the cost of eight servos and two harness families | Common-mode failure of the 8 V servo rail is Not stated in OEM sources | [AC] |
+| TRD-E | Use a single ESAD classified Critical / DAL-A with dual-environment arming and human consent | Redundant ESAD channels; mechanical safe-and-arm device | ESAD Critical / DAL-A; acceleration resolution 0.0039 g; arm-enable period 1 ms at 50 percent duty; RS-485 command interval 100 Hz ; response latency 0 ms to 5 ms; high-voltage measurement 0 V to 1800 V; human consent required by the cited normative baseline | The single ESAD is the highest-criticality item. Dual-environment arming and human consent reduce inadvertent initiation risk but do not provide a redundant firing path | ESAD redundancy and quantitative failure probability are Not stated in OEM sources | [AD] |
+| TRD-F | Exclude the parachute deployment module from the mission baseline and retain it only for non-mission research and development testbed recovery | Mission parachute recovery; no recovery provision | Parachute configuration non-mission and baseline false, excluded from mission baseline analysis; two 50 V igniter outputs | The OEM configuration does not permit the parachute to be credited as a mission recovery capability | Mission recovery means and flight termination architecture are Not stated in OEM sources | [AE] |
+| TRD-G | Use the Nighthawk2UZ gimbal with its stated zoom and pointing envelopes | Fixed electro-optical and infrared sensor; wider gimbal | Pitch envelope -45 deg to 135 deg; yaw and roll envelope -165 deg to 165 deg; zoom 1X to 40X; dive angle 22 deg; engagement elevation 15 deg; day and thermal resolution 128 | The pitch envelope covers the 22 deg dive bound and the 15 deg engagement elevation bound with margin, so a wider gimbal is not required by the stated geometry | Target tracking performance under radio denial or obscuration is Not stated in OEM sources | [AF] |
+| TRD-H | Qualify the launcher and charger to their stated thermal windows and leave the air vehicle environmental envelope open | Claim a complete air vehicle environmental envelope | Launcher working thermal window and battery charging thermal window per the cited OEM rows; environmental test basis per the cited normative baseline | Only the launcher and charger thermal windows are stated. The air vehicle thermal, ingress, wind, and icing limits are not quantified by the OEM sources | Air vehicle environmental qualification is Not stated in OEM sources | [AG] |
 
-### 3.4 Operational Benefits Summary
-1. **Full Metamodel Compliance:** Certified compliance with ISO/IEC/IEEE 29148:2018 and OMG UAF v2.0 operational architectures.
-2. **Persistent State Monitoring:** Continuous operational presence over designated domains with zero monitoring blind spots.
-3. **Deterministic System Safety:** Guaranteed physical and state risk containment with mathematically verified containment buffers ($R_{\mathrm{buffer}}$).
-4. **Total Lifecycle Cost Reduction:** Significant reduction in operator workload and extended mean time between maintenance actions ($\text{MTBMA} \ge \text{MTBMA}_{\mathrm{target}}$).
+### 3.4 System Capability Hierarchy
 
-<!-- Copyright Gint Atkinson, gint.atkinson@gmail.com -->
-<!-- Reference Fixes: #120, #119 -->
+The capability hierarchy below allocates the grounded bounds to operational capabilities. Capability identifiers are ConOps-level labels and are not Level 2 system use cases.
 
+| Capability ID | Capability | Grounded Target Bound | Evidence |
+| :--- | :--- | :--- | :--- |
+| CAP-A | Expeditionary pneumatic launch and sortie execution | Launch pressure 13 bar to 14 bar; launch angle 12 deg; setup time 0 min to 5 min; rail length 5 m assembled and 1.28 m disassembled | [AH] |
+| CAP-B | Navigation and multi-sensor state estimation | Cruise speed 30 m/s; maximum horizontal speed 38 m/s; minimum flight speed 26 m/s; pitot, GNSS, and dual magnetometer sources | [AI] |
+| CAP-C | Resilient command and control datalink | Direct range 0 km to 60 km; extended range 60 km to 180 km; ground radio power 2 W; RF band 4.4 GHz to 5.0 GHz | [AJ] |
+| CAP-D | Electro-optical and infrared seeker and target acquisition | Zoom 1X to 40X; pitch -45 deg to 135 deg; yaw and roll -165 deg to 165 deg; day and thermal resolution 128; target track duration 2 s to 5 s | [AK] |
+| CAP-E | Precision terminal effect and safety interlocks | Dive speed up to 55 m/s; dive angle up to 22 deg; engagement elevation up to 15 deg; engagement airspeed up to 55 m/s; warhead mass up to 5 kg; ESAD Critical / DAL-A | [AL] |
 
-## 4. User Classes, Stakeholder Taxonomy & Operational Lifecycle Modes
+### 3.5 Operational Benefits Summary
 
-### 4.1 Stakeholder Roster
-The operational lifecycle involves multiple organizational and external stakeholders who interact directly or indirectly with the autonomous system:
-- **System Governance & Safety Authorities:** Regulatory and certification bodies responsible for issuing operational authorizations, validating safety cases, and monitoring compliance.
-- **Operational Safety Authority & Supervisors:** Operational authorities governing corridor allocations, approving dynamic boundary activations, and coordinating emergency deconfliction.
-- **System Owner & Operations Management:** Organizational or enterprise entities directing mission requirements, operating policies, and resource allocation.
-- **Support & Logistics Organization:** Maintenance facilities, supply chain managers, and calibration laboratories.
+1. **Runway-independent launch.** The PL-40 pneumatic launcher operates at 13 bar to 14 bar and a 12 deg launch angle, with a setup time of 0 min to 5 min and a rail that breaks down to 1.28 m [AH].
+2. **Persistent coverage.** The air vehicle supports endurance up to 90 min at a 30 m/s cruise speed and a 300 m loiter radius [J].
+3. **Standoff command and control.** The direct link is bounded at 60 km and the extended range band at 60 km to 180 km, using a 4.4 GHz to 5.0 GHz radio and a 23 dBi ground antenna [K].
+4. **Precision identification.** The seeker provides 1X to 40X zoom, 128 day and thermal imagery, and a 2 s to 5 s target track duration [L].
+5. **Human-authorized weapon release.** The ESAD is classified Critical / DAL-A and weapon release remains subject to human judgment and fail-safe interlocks [M].
+6. **Separated actuation.** Four Ruddervator (Fins; tail stabiliser) servos on CAN 1 and four wing servos on CAN 2 provide eight total servos on an 8 V rail [N].
+7. **Containment assurance.** A 300 m loiter radius, a 50 m minimum mission waypoint altitude, and the cited containment and run-time assurance obligations provide the basis for volume containment [O].
+8. **Configuration honesty.** The parachute deployment module is non-mission and excluded from the mission baseline, and the air vehicle environmental envelope is not quantified by the OEM sources [AE].
 
-### 4.2 User Class Taxonomy
-In accordance with ISO/IEC/IEEE 29148:2018 §5.2.4 and the specification data contract, the operational user classes are defined as follows:
+### 3.6 Source References
+
+This specification is grounded in the schema files `schema/extracted/parametric_limits.md`, `schema/extracted/oem_bom.md`, `schema/extracted/interface_table.md`, and `.pipeline/schema.sysml`, and in the normative clauses ISO/IEC/IEEE 29148:2018 Section 6.4.2 and INCOSE SEH v5.0 Section 4.3.
+
+| Clause | Source |
+| :--- | :--- |
+| ISO/IEC/IEEE 29148:2018 Section 6.4.2 | [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md) |
+| ISO/IEC/IEEE 15288:2023 Section 6.4.3 | [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md) |
+| INCOSE SEH v5.0 Section 4.3 | [oem_bom.md](../../schema/extracted/oem_bom.md) |
+| ISO/IEC/IEEE 29148:2018 Section 8.4 | [schema.sysml](../../.pipeline/schema.sysml) |
+
+- ISO/IEC/IEEE 29148:2018 Section 6.4.2 (ConOps): [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md)
+- ISO/IEC/IEEE 15288:2023 Section 6.4.2 and Section 6.4.3 (requirements and architecture definition): [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md)
+- INCOSE SEH v5.0 Section 3.3.1 and Section 4.3 (concept definition and architecture definition): [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md)
+- DoD Directive 3000.09 Section 3.1, Section 3.1.a, Section 3.1.b, Section 3.1.c (human judgment and fail-safe interlocks): [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md)
+- MIL-STD-882E Task 201 Section 4.2, Task 205 Section 4.2, Task 208 Section 4.2 (hazard analysis and thread isolation): [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md)
+- MIL-STD-1629A Section 4.3 (severity classification): [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md)
+- SAE ARP4761 Section 4.3.1 (functional hazard assessment): [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md)
+- RTCA DO-178C Section 6.3.1 (software fault detection): [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md)
+- ASTM F3269-17 Section 5.2 and Section 5.3 (run-time assurance): [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md)
+- RTCA DO-362A Section 2.2, Section 2.2.1, Section 3.4 (C2 link availability and lost-link fallback): [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md)
+- JARUS SORA v2.5 Annex E Section E.11, Section E.14, Section E.18 (ground support, containment, flight termination): [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md)
+- AMC1 UAS.SPEC.050 Section 4.1 (site survey and geofence containment): [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md)
+- MIL-STD-810H Method 501.7 Section 4.2, Method 502.7 Section 4.2, Method 506.6 Section 4.2, Method 521.4 Section 4.2 (environmental test methods): [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md)
+- NIST SP 800-82r3 Section 6.2 (wireless and RF C2 security controls): [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md)
+- ISO/SAE 21434 Section 6.4 (threat analysis and risk assessment): [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md)
+- MIL-STD-461G Section 5.18 (radiated susceptibility): [RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md)
+- ISO/IEC/IEEE 29148:2018 Section 6.4.2 (ConOps parameter traceability): [parametric_limits.md](../../schema/extracted/parametric_limits.md)
+- INCOSE SEH v5.0 Section 4.3 (architecture decomposition and component identity): [oem_bom.md](../../schema/extracted/oem_bom.md)
+- ISO/IEC/IEEE 15288:2023 Section 6.4.3 (architecture definition and interface allocation): [interface_table.md](../../schema/extracted/interface_table.md)
+- ISO/IEC/IEEE 29148:2018 Section 8.4 (system requirements traceability): [schema.sysml](../../.pipeline/schema.sysml)
+
+| Clause | Source Reference |
+| :--- | :--- |
+| A | parametric_limits.md:12; avenger-5-spec-sheet-rev3.md:53; parametric_limits.md:7; a5-user-manual-2.md:307; parametric_limits.md:43; a5-user-manual-2.md:1497 |
+| B | parametric_limits.md:13; a5-user-manual-2.md:315; parametric_limits.md:14; a5-user-manual-2.md:315 |
+| C | parametric_limits.md:46-47; a5-user-manual-2.md:1329; parametric_limits.md:72; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:712; parametric_limits.md:78; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:722 |
+| D | parametric_limits.md:9-10; a5-user-manual-2.md:309-310; parametric_limits.md:50-51; a5-user-manual-2.md:2056; a5-user-manual-2.md:2061; parametric_limits.md:49; a5-user-manual-2.md:2055; parametric_limits.md:19; avenger-5-spec-sheet-rev3.md:133 |
+| E | RESEARCH_INVENTORY.md:18; DoD Directive 3000.09 Section 3.1, Section 3.1.a, Section 3.1.b |
+| F | RESEARCH_INVENTORY.md:30; JARUS SORA v2.5 Annex E Section E.14, Section E.18; RESEARCH_INVENTORY.md:26; AMC1 UAS.SPEC.050 Section 4.1 |
+| G | parametric_limits.md:79-80; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:723; parametric_limits.md:97-98; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:137 |
+| H | RESEARCH_INVENTORY.md:21; NIST SP 800-82r3 Section 6.2; RESEARCH_INVENTORY.md:24; ISO/SAE 21434 Section 6.4; RESEARCH_INVENTORY.md:23; MIL-STD-461G Section 5.18 |
+| I | parametric_limits.md:46-47; a5-user-manual-2.md:1329; parametric_limits.md:72; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:712; parametric_limits.md:78; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:722; parametric_limits.md:99-100; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:713-714; parametric_limits.md:75-77; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:715-717 |
+| J | parametric_limits.md:12; avenger-5-spec-sheet-rev3.md:53; parametric_limits.md:7; a5-user-manual-2.md:307; parametric_limits.md:43; a5-user-manual-2.md:1497; parametric_limits.md:42; a5-user-manual-2.md:1195 |
+| K | parametric_limits.md:13; a5-user-manual-2.md:315; parametric_limits.md:14; a5-user-manual-2.md:315; parametric_limits.md:45; a5-user-manual-2.md:1690; interface_table.md:63; oem_bom.md:75 |
+| L | parametric_limits.md:31-37; a5-user-manual-2.md:324-328; parametric_limits.md:49; a5-user-manual-2.md:2055 |
+| M | oem_bom.md:52; parametric_limits.md:69; esad-icd-excalibur-ab00-0054.md:438; parametric_limits.md:60-61; esad-icd-excalibur-ab00-0054.md:285; parametric_limits.md:64; esad-icd-excalibur-ab00-0054.md:330; parametric_limits.md:66; esad-icd-excalibur-ab00-0054.md:613 |
+| N | parametric_limits.md:20-24; a5-user-manual-2.md:339; avenger_v2_5_sysml_v2_ingestion.md:21-31; parametric_limits.md:28; avenger_v2_5_sysml_v2_ingestion.md:79; interface_table.md:9-32 |
+| O | parametric_limits.md:43; a5-user-manual-2.md:1497; parametric_limits.md:42; a5-user-manual-2.md:1195; parametric_limits.md:79-80; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:723; RESEARCH_INVENTORY.md:30; JARUS SORA v2.5 Annex E Section E.14; RESEARCH_INVENTORY.md:31; ASTM F3269-17 Section 5.2; RESEARCH_INVENTORY.md:26; AMC1 UAS.SPEC.050 Section 4.1 |
+| P | parametric_limits.md:79-80; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:723; parametric_limits.md:97-98; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:137; RESEARCH_INVENTORY.md:39; MIL-STD-810H Method 501.7 Section 4.2, Method 502.7 Section 4.2, Method 506.6 Section 4.2, Method 521.4 Section 4.2 |
+| Q | parametric_limits.md:11; a5-user-manual-2.md:311 |
+| R | parametric_limits.md:71; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:719 |
+| S | Derived from [Q] and [R] |
+| T | parametric_limits.md:13; a5-user-manual-2.md:315 |
+| U | parametric_limits.md:14; a5-user-manual-2.md:315 |
+| V | Derived from [T] and [U] |
+| W | parametric_limits.md:22; avenger_v2_5_sysml_v2_ingestion.md:22 |
+| X | parametric_limits.md:23; avenger_v2_5_sysml_v2_ingestion.md:28 |
+| Y | parametric_limits.md:24; avenger_v2_5_sysml_v2_ingestion.md:22; avenger_v2_5_sysml_v2_ingestion.md:31 |
+| Z | parametric_limits.md:71; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:719; parametric_limits.md:11; a5-user-manual-2.md:311; parametric_limits.md:46-47; a5-user-manual-2.md:1329; parametric_limits.md:73; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:132 |
+| AA | parametric_limits.md:13; a5-user-manual-2.md:315; parametric_limits.md:14; a5-user-manual-2.md:315; interface_table.md:63; parametric_limits.md:45; a5-user-manual-2.md:1690 |
+| AB | parametric_limits.md:12; avenger-5-spec-sheet-rev3.md:53; parametric_limits.md:18; a5-user-manual-2.md:299; parametric_limits.md:29-30; avenger_v2_5_sysml_v2_ingestion.md:16; parametric_limits.md:82; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:134 |
+| AC | parametric_limits.md:20-24; a5-user-manual-2.md:339; avenger_v2_5_sysml_v2_ingestion.md:21-31; parametric_limits.md:28; avenger_v2_5_sysml_v2_ingestion.md:79; interface_table.md:9-32 |
+| AD | oem_bom.md:52; parametric_limits.md:69; esad-icd-excalibur-ab00-0054.md:438; parametric_limits.md:60-63; esad-icd-excalibur-ab00-0054.md:285; esad-icd-excalibur-ab00-0054.md:306-307; parametric_limits.md:64; esad-icd-excalibur-ab00-0054.md:330; parametric_limits.md:66; esad-icd-excalibur-ab00-0054.md:613; RESEARCH_INVENTORY.md:18; DoD Directive 3000.09 Section 3.1.b |
+| AE | oem_bom.md:47; oem_bom.md:48-49 |
+| AF | parametric_limits.md:31-37; a5-user-manual-2.md:324-328; parametric_limits.md:9-10; a5-user-manual-2.md:309-310; parametric_limits.md:50; a5-user-manual-2.md:2056 |
+| AG | parametric_limits.md:79-80; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:723; parametric_limits.md:97-98; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:137; RESEARCH_INVENTORY.md:39; MIL-STD-810H Method 501.7 Section 4.2, Method 502.7 Section 4.2, Method 506.6 Section 4.2, Method 521.4 Section 4.2 |
+| AH | parametric_limits.md:46-47; a5-user-manual-2.md:1329; parametric_limits.md:72; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:712; parametric_limits.md:78; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:722; parametric_limits.md:99-100; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:713-714 |
+| AI | parametric_limits.md:7-8; a5-user-manual-2.md:307-308; parametric_limits.md:11; a5-user-manual-2.md:311; oem_bom.md:15; oem_bom.md:39; oem_bom.md:40-41 |
+| AJ | parametric_limits.md:13; a5-user-manual-2.md:315; parametric_limits.md:14; a5-user-manual-2.md:315; parametric_limits.md:45; a5-user-manual-2.md:1690; interface_table.md:63; oem_bom.md:75 |
+| AK | parametric_limits.md:31-37; a5-user-manual-2.md:324-328; parametric_limits.md:49; a5-user-manual-2.md:2055 |
+| AL | parametric_limits.md:9-10; a5-user-manual-2.md:309-310; parametric_limits.md:19; avenger-5-spec-sheet-rev3.md:133; parametric_limits.md:50-51; a5-user-manual-2.md:2056; a5-user-manual-2.md:2061; oem_bom.md:52 |
+
+## 4. System Operational Architecture, User Classes & Subsystem Decomposition
+
+### 4.1 Stakeholder Roster & User Class Taxonomy
+In accordance with ISO/IEC/IEEE 29148:2018 Section 5.2.4 and DoDAF v2.02 SV-1, the operational lifecycle of the Avenger V2.5 Loitering Munition UAV and PL-40 Pneumatic Launcher involves multiple organizational and external stakeholders:
+- **System Governance & Safety Authorities:** Regulatory and military certification authorities responsible for validating system safety cases, approving range containment profiles, and certifying ESAD compliance.
+- **Operational Safety Authority & Supervisors:** Operational commanders governing airspace corridor allocations, validating dynamic exclusion zones, and authorizing high-consequence actuation consent.
+- **System Owner & Operations Management:** Tactical unit command directing mission requirements, target tasking, and resource allocation.
+- **Support & Logistics Organization:** Maintenance depot personnel, supply chain operators, and field arming specialists.
+
+The operational user classes are formalized using the standard `UCL-xx` prefix:
 
 | User Class ID | Title | Player or Operator | Interfacing Stakeholder | Characteristics & Responsibilities | Training & Qualification | Constraint Source |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **UC-01** | System Operator (SO) | Direct Operator | Operational Safety Authority / Operations Lead | Holds primary operational responsibility for system supervision, trajectory oversight, boundary deconfliction, and manual failsafe override initiation. | Certified System Operator with Type Qualification and Supervisory Control Certification | ISO/IEC/IEEE 29148:2018 §5.2.4 |
-| **UC-02** | Payload / Data Specialist (PS) | Direct Operator | Operations Center / Analytics Team | Responsible for multi-modal sensor tasking, tracking zone definition, real-time feature identification, and data stream management. | Certified Sensor Payload Specialist & Data Acquisition Qualification | ISO/IEC/IEEE 29148:2018 §5.2.4 |
-| **UC-03** | Mission Supervisor (MS) | Supervisor / Player | Executive Authority / Operations Director | Establishes operational rules, authorizes mission execution and abort commands, manages multi-system allocations, and coordinates external interfaces. | Senior Operations Supervisor Qualification & System Safety Management Certification | MIL-STD-882E Task 102 |
-| **UC-04** | Maintenance Technician (MT) | Support Operator | Maintenance Depot / Quality Assurance Office | Conducts Organizational (O-Level) pre-operation inspections, resource module replacements, structural integrity checks, sensor calibration, and modular LRU swaps. | Certified Maintenance Technician / Field Hardware Specialist | ISO/IEC/IEEE 29148:2018 §5.2.4 |
-| **UC-05** | Safety Monitor (SM) | Field Support | Local Environment Monitoring Staff | Maintains continuous monitoring of surrounding operational boundaries to detect environmental anomalies and non-cooperative entities within the operational state space. | Certified Safety Observer Training & Operational Communication Protocol Qualification | MIL-STD-882E §4.3 |
+| **UCL-01** | System Operator (SO) | Direct Operator | Mission Safety Officer / Tactical Command | Primary operational responsibility for catapult launch sequence, trajectory monitoring, corridor compliance, and failsafe abort execution. | Certified UAV Tactical Pilot with Type Rating and Catapult Launch Certification | ISO/IEC/IEEE 29148:2018 Section 5.2.4 |
+| **UCL-02** | Payload Specialist (PS) | Direct Operator | Tactical Intelligence / Strike Cell | Responsible for Nighthawk2UZ EO/IR sensor tasking, 40X optical zoom tracking, Trip6 AI feature lock, and target coordinate extraction. | Certified Sensor Payload Specialist & EO/IR Target Acquisition Qualification | ISO/IEC/IEEE 29148:2018 Section 5.2.4 |
+| **UCL-03** | Mission Safety Officer (MSO) | Supervisor / Approver | Operational Commander / Joint Air Cell | Holds cryptographic weapon release keys; authorizes final terminal dive and ESAD arming sequence under strict operational safety interlocks. | Senior Tactical Safety Officer & Weapon Release Authority Certification | MIL-STD-882E Task 102 |
+| **UCL-04** | Field Maintenance Technician (MT) | Support Operator | Maintenance Logistics Officer | Conducts PL-40 pneumatic rail assembly, compressor pressure charging, carriage rope inspection, pre-flight PBIT checks, and battery hot-swaps. | Certified Field GSE Hardware Specialist & Catapult Maintenance Qualification | ISO/IEC/IEEE 29148:2018 Section 5.2.4 |
+| **UCL-05** | Range Safety Observer (RSO) | Field Support | Local Airspace Safety Staff | Maintains continuous monitoring of surrounding launch perimeter, launcher clear zones, and visual airspace deconfliction. | Certified Range Safety Observer Training & Tactical Radio Protocol Qualification | MIL-STD-882E Section 4.3 |
 
-### 4.3 Skill Prerequisites & Minimum Qualifications
-1. **System Operator (SO):** Minimum accredited supervisory operational hours ($t_{\text{operational\_hours}} \ge t_{\mathrm{req}}$); validated proficiency in emergency decision matrix (`EMG-01`..`EMG-07`) execution under simulated degraded state conditions.
-2. **Payload / Data Specialist (PS):** Validated proficiency in multi-modal sensor data interpretation, tracking locks, coordinate extraction, and secure data dissemination protocols.
-3. **Maintenance Technician (MT):** Formal electro-mechanical certification, electronic diagnostic inspection qualification, and authorized digital maintenance logbook endorsement.
-4. **Mission Supervisor (MS):** Advanced certification in autonomous systems operations, mission risk management, and formal command authorization protocols.
-5. **Safety Monitor (SM):** Certified perimeter safety observer qualification and emergency communication protocols training.
-
-### 4.4 Workload Constraints & Human Factors Considerations
-In accordance with ISO/IEC/IEEE 29148:2018 §5.2.4, MIL-STD-882E §4.3, and MIL-STD-1472H, human supervisory operators must maintain continuous situational awareness without being subjected to cognitive saturation or excessive task loading during nominal, degraded, or emergency operational phases (Fixes #120, #119).
-
-The system adopts the NASA Task Load Index (NASA-TLX) 6-dimensional workload assessment model to quantify operator cognitive workload across six validated dimensions: Mental Demand ($D_1$), Physical Demand ($D_2$), Temporal Demand ($D_3$), Performance ($D_4$), Effort ($D_5$), and Frustration ($D_6$). The overall weighted composite workload score $\text{TLX}_{\mathrm{composite}}$ is mathematically defined as:
+### 4.2 Operator Workload Constraints (NASA-TLX) & Shift Protocols
+In accordance with ISO/IEC/IEEE 29148:2018 Section 5.2.4 and MIL-STD-1472H, human operators maintain situational awareness without cognitive saturation. Operator workload is assessed across the 6 NASA Task Load Index (NASA-TLX) dimensions:
 
 $$
 \begin{aligned}
@@ -455,245 +791,978 @@ $$
 
 - Parameter Definitions & Engineering Units:
 - TLX_composite: Overall weighted composite cognitive workload score on a [0, 100] scale.
-- w_i: Normalized weighting coefficient for dimension i, where the sum of all w_i equals 1.0.
+- w_i: Normalized weighting coefficient for dimension i (sum of all w_i equals 1.0).
 - S_i: Raw subjective workload rating score for dimension i on a scale of [0, 100].
 - TLX_nominal_max: Maximum allowable composite workload under nominal operations (TLX_nominal_max <= 35).
-- TLX_contingency_max: Maximum allowable composite workload under degraded or contingency operations (TLX_contingency_max <= 55).
-
-The Quantitative 6-Dimensional NASA-TLX Cognitive Workload Matrix Table is defined below:
+- TLX_contingency_max: Maximum allowable composite workload under contingency operations (TLX_contingency_max <= 55).
 
 | Dimension ID | Dimension Name | Description & Evaluation Focus | Weight (w_i) | Nominal Threshold | Contingency Threshold | Scale Range |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **TLX-01** | Mental Demand | Cognitive processing, decision making, calculating, searching, and remembering required during operational supervision | 0.25 | Score <= 35 | Score <= 55 | 0 - 100 |
-| **TLX-02** | Physical Demand | Physical actions required at the console, including control input manipulation, interface navigation, and peripheral device operation | 0.10 | Score <= 35 | Score <= 55 | 0 - 100 |
-| **TLX-03** | Temporal Demand | Time pressure experienced due to task pacing, telemetry update rates, and time-critical operational decision windows | 0.20 | Score <= 35 | Score <= 55 | 0 - 100 |
-| **TLX-04** | Performance | Perceived operator success in achieving mission objectives, maintaining corridor compliance, and fulfilling task standards | 0.15 | Score <= 35 | Score <= 55 | 0 - 100 |
-| **TLX-05** | Effort | Total mental and physical exertion required to maintain the required level of operational performance | 0.15 | Score <= 35 | Score <= 55 | 0 - 100 |
-| **TLX-06** | Frustration | Level of insecurity, discouragement, irritation, stress, or annoyance experienced during system interaction | 0.15 | Score <= 35 | Score <= 55 | 0 - 100 |
-| **Composite** | Overall Weighted TLX | Weighted aggregate cognitive workload index across all operational tasks and supervisory duties | 1.00 | Score <= 35 | Score <= 55 | 0 - 100 |
+| **TLX-01** | Mental Demand | Tactical situation assessment, target classification, and terminal dive clearance calculations | 0.25 | Score <= 35 | Score <= 55 | 0 - 100 |
+| **TLX-02** | Physical Demand | Console manipulation, touchpad input, and field launcher toggle clamp engagement | 0.10 | Score <= 35 | Score <= 55 | 0 - 100 |
+| **TLX-03** | Temporal Demand | Time pressure during terminal engagement windows and high-speed dive guidance | 0.20 | Score <= 35 | Score <= 55 | 0 - 100 |
+| **TLX-04** | Performance | Perceived operator success in target neutralization and containment compliance | 0.15 | Score <= 35 | Score <= 55 | 0 - 100 |
+| **TLX-05** | Effort | Aggregate mental and physical exertion required to maintain tracking stability | 0.15 | Score <= 35 | Score <= 55 | 0 - 100 |
+| **TLX-06** | Frustration | Operational friction, datalink attenuation, or degraded optical visibility stress | 0.15 | Score <= 35 | Score <= 55 | 0 - 100 |
+| **Composite** | Overall Weighted TLX | Weighted aggregate cognitive workload index across all supervisory duties | 1.00 | Score <= 35 | Score <= 55 | 0 - 100 |
 
-- **Decoupled Workstation Architecture:** Primary system safety oversight (`UC-01`) and sensor payload analysis (`UC-02`) are decoupled across distinct physical workstations to prevent operational task interference and excessive cognitive loading.
-- **Dynamic Task Shedding:** Under high workload conditions ($S_i > 55$ or $\text{TLX}_{\mathrm{composite}} > 35$), non-critical background administrative tasks are automatically deferred by the supervisory interface.
-
-### 4.4.1 Operational Shift Rotation Protocol
-To mitigate operator fatigue, sustain continuous situational vigilance, and prevent human performance degradation during extended operations, the system enforces a strict operational shift rotation protocol (Fixes #120, #119):
+#### 4.2.1 Operational Shift Rotation Protocol
+To mitigate operator fatigue and sustain continuous vigilance during loitering missions, console duty is governed by strict mathematical limits:
 
 $$
 \begin{aligned}
-t_{\mathrm{shift}} &\le t_{\text{shift\_max}} \\
-t_{\mathrm{rest}} &\ge t_{\text{rest\_min}} \\
-t_{\mathrm{daily}} &\le t_{\text{daily\_max}}
+t_{\mathrm{shift}} &\le t_{\text{shift\_max}} = 4.0 \\
+t_{\mathrm{rest}} &\ge t_{\text{rest\_min}} = 0.5 \\
+t_{\mathrm{daily}} &\le t_{\text{daily\_max}} = 8.0
 \end{aligned}
 $$
 
 - Parameter Definitions & Engineering Units:
-- t_shift: Continuous supervisory console duty duration per shift (hr).
-- t_shift_max: Maximum permissible continuous console duty time (t_shift <= 4.0 hr).
-- t_rest: Mandatory rest break duration between consecutive console shifts (min).
-- t_rest_min: Minimum mandatory rest break interval (t_rest >= 30.0 min).
-- t_daily: Cumulative console operational duty duration within a rolling 24-hour cycle (hr).
-- t_daily_max: Maximum cumulative daily console duty limit (t_daily_max <= 8.0 hr).
+- t_shift: Continuous supervisory console duty duration per shift (t_shift <= 4.0 hr).
+- t_rest: Mandatory non-operational rest interval between consecutive shifts (t_rest >= 30.0 min).
+- t_daily: Cumulative console operational duty duration within a rolling 24-hour cycle (t_daily <= 8.0 hr).
+- t_overlap: Mandatory structured handover briefing interval (t_overlap >= 15.0 min).
 
-| Parameter Name | Symbol | Standard Bound | Units | Operational Rule / Constraint |
-| :--- | :--- | :--- | :--- | :--- |
-| Continuous Console Duty | t_shift | <= 4.0 | hr | Maximum uninterrupted supervisory console session per operator (t_shift <= 4.0 hr) |
-| Minimum Rest Interval | t_rest | >= 30.0 | min | Mandatory non-operational rest interval between active shifts (t_rest >= 30.0 min) |
-| Cumulative Daily Limit | t_daily_max | <= 8.0 | hr | Maximum cumulative console duty within any rolling 24-hour cycle (t_daily_max <= 8.0 hr) |
-| Shift Handover Overlap | t_overlap | >= 15.0 | min | Mandatory cross-briefing and state synchronization window prior to C2 transfer |
-
-The shift rotation protocol incorporates the following mandatory operational rules:
-1. **Continuous Console Duty Limit ($t_{\mathrm{shift}} \le 4.0\text{ hr}$):** No operator shall remain on active supervisory console duty for longer than 4.0 continuous hours without a mandatory rest break.
-2. **Minimum Rest Interval ($t_{\mathrm{rest}} \ge 30.0\text{ min}$):** Between consecutive supervisory console shifts, operators must take a minimum non-operational rest interval of at least 30.0 minutes.
-3. **Cumulative Daily Duty Cap ($t_{\text{daily\_max}} \le 8.0\text{ hr}$):** Total active supervisory console time for an individual operator within any rolling 24-hour window shall not exceed 8.0 hours.
-4. **Mandatory Shift Handover Overlap ($t_{\mathrm{overlap}} \ge 15.0\text{ min}$):** Incoming and outgoing operators must participate in a structured handover briefing covering current system state, trajectory corridors, environmental conditions, and resource reserves before transferring control authority.
-5. **Fatigue-Triggered Reassignment:** If an operator exhibits elevated NASA-TLX scores exceeding nominal limits (Score > 35) or experiences continuous high-workload degraded mode management, the Mission Supervisor is empowered to mandate an immediate relief rotation.
-
-### 4.5 Authority Handoff Chains & Control Transfer Protocols
-Handoff of command and control (C2) authority between Operator Stations (e.g., PrimaryConsole to SecondaryConsole) or between human supervisory stations and autonomous execution modes follows a strict cryptographic 4-way handshake with handoff completion time bounded by $t_{\mathrm{handoff}} \le \tau_{\text{handoff\_max}}$ (Fixes #120, #119).
-
-The handoff workflow comprises four key operational phases:
-1. **Initiation:** The standby station (SecondaryConsole) initiates a transfer request by obtaining a cryptographically signed authorization token from the CryptographicAuthService.
-2. **Validation:** The vehicle controller (VehicleController) verifies the cryptographic signature, token timestamp, and authorization scope against public key infrastructure (PKI) certificates.
-3. **State Alignment & Relinquishment:** The active station (PrimaryConsole) acknowledges the transfer order, synchronizes the current telemetry and command state digest, and transitions to monitor-only mode.
-4. **Commit & Active Control:** VehicleController binds the new session key, grants master C2 authority to SecondaryConsole, and confirms bidirectional heartbeat connectivity.
-
-### 4.5.1 Abstract Cryptographic 4-Way Control Handoff Sequence Diagram
-The interaction between the four primary architectural entities (`PrimaryConsole`, `VehicleController`, `SecondaryConsole`, `CryptographicAuthService`) across the 9 cryptographic token steps is formalized below:
+### 4.3 Authority Handoff Chains & Cryptographic Control Transfer
+Handoff of command and control (C2) authority between GCS consoles follows a strict cryptographic 4-way handshake bounded by t_handoff <= tau_handoff_max = 5.0 s:
 
 ```mermaid
 sequenceDiagram
-    autonumber
-    participant SecondaryConsole as "Secondary Console (Standby C2)"
-    participant CryptographicAuthService as "Cryptographic Auth Service"
-    participant VehicleController as "Vehicle Controller"
-    participant PrimaryConsole as "Primary Console (Active C2)"
+ autonumber
+ participant StandbyConsole as "Secondary GCS Console"
+ participant AuthServer as "Cryptographic Auth Authority"
+ participant UAVController as "Avenger V2.5 Autopilot"
+ participant ActiveConsole as "Primary GCS Console"
 
-    SecondaryConsole->>CryptographicAuthService: 1. Request Handoff Token (SessionID, Nonce_S, SecondaryCert)
-    CryptographicAuthService-->>SecondaryConsole: 2. Issue Signed Token (Token_ID, SignedClaims, ExpireTime)
-    SecondaryConsole->>VehicleController: 3. Transmit Control Request (Token_ID, SignedClaims, Nonce_V)
-    VehicleController->>CryptographicAuthService: 4. Validate Token & Certificate (Token_ID, SignedClaims, PubKey_S)
-    CryptographicAuthService-->>VehicleController: 5. Token Verification Response (Status_Valid, Signature_Auth)
-    VehicleController->>PrimaryConsole: 6. Command Control Relinquishment (TransferID, TargetConsoleID)
-    PrimaryConsole-->>VehicleController: 7. Acknowledge Relinquish & State Digest (StateDigest_P, Nonce_Ack)
-    VehicleController->>SecondaryConsole: 8. Grant Active C2 Authority (SessionKey, StateInitDigest)
-    SecondaryConsole-->>VehicleController: 9. Confirm Active C2 & Telemetry Sync (TelemetrySyncAck, Nonce_V)
+ StandbyConsole->>AuthServer: 1. Request Handoff Token (SessionID, Nonce_S, Cert)
+ AuthServer-->>StandbyConsole: 2. Issue Signed Token (Token_ID, Claims, Expire)
+ StandbyConsole->>UAVController: 3. Transmit C2 Takeover Request (Token_ID, Nonce_V)
+ UAVController->>AuthServer: 4. Validate Token Signature (Token_ID, PubKey_S)
+ AuthServer-->>UAVController: 5. Verification Response (Status_Valid, Signature_Auth)
+ UAVController->>ActiveConsole: 6. Relinquish C2 Command (TransferID, TargetConsole)
+ ActiveConsole-->>UAVController: 7. Acknowledge Relinquish & State Digest
+ UAVController->>StandbyConsole: 8. Grant Active C2 Authority (SessionKey, Digest)
+ StandbyConsole-->>UAVController: 9. Confirm Active C2 & Telemetry Sync Ack
 ```
 
-The 9 discrete cryptographic token steps are defined as follows:
-1. **Step 1 (Token Request):** `SecondaryConsole` transmits a handoff token request containing its unique identity (`SecondaryID`), session nonce (`Nonce_S`), and digital certificate (`SecondaryCert`) to `CryptographicAuthService`.
-2. **Step 2 (Token Issue):** `CryptographicAuthService` validates permissions and issues a signed, time-stamped authorization token (`Token_ID`, `SignedClaims`, `ExpireTime`) back to `SecondaryConsole`.
-3. **Step 3 (Control Transfer Request):** `SecondaryConsole` transmits the signed authorization token and a fresh session nonce (`Nonce_V`) to `VehicleController`.
-4. **Step 4 (Validation Request):** `VehicleController` queries `CryptographicAuthService` to verify the digital signature, token validity period, and authorization scope against `PubKey_S`.
-5. **Step 5 (Validation Confirmation):** `CryptographicAuthService` confirms cryptographic validity and returns `Status_Valid` with authentication signature `Signature_Auth` to `VehicleController`.
-6. **Step 6 (Relinquish Command):** `VehicleController` issues a formal command to `PrimaryConsole` to relinquish active control authority (`Relinquish_C2_Command(TransferID, TargetConsoleID)`).
-7. **Step 7 (Relinquish Acknowledgment):** `PrimaryConsole` returns an acknowledgment containing the latest telemetry state digest (`StateDigest_P`) and transitions to monitor-only state.
-8. **Step 8 (C2 Grant):** `VehicleController` transmits `C2_Authority_Grant` with newly negotiated cryptographic session keys (`SessionKey`) and state initialization parameters to `SecondaryConsole`.
-9. **Step 9 (Confirmation & Committal):** `SecondaryConsole` transmits `Confirm_Active_C2` with telemetry synchronization confirmation (`TelemetrySyncAck`), committing active C2 authority.
+#### Deterministic Rejection Safety Criteria:
+- **REJ-01:** Cryptographic Token Invalidation (digital signature failure, expired timestamp, or revoked cert).
+- **REJ-02:** Telemetry State Desynchronization (state disparity exceeds acceptable thresholds).
+- **REJ-03:** Active Emergency or Terminal Dive State (in-progress EMG-01..07 response or terminal kinetic dive inhibits transfer).
+- **REJ-04:** Datalink Attenuation (packet loss exceeds 1.0% or round-trip latency exceeds 100 ms).
 
-### 4.5.2 Timeout & Rejection Protocol
-To guarantee deterministic execution and prevent command deadlocks during control transfer, the handoff protocol incorporates bounded timeout recovery and explicit rejection safety criteria (Fixes #120, #119):
+### 4.4 Operational Lifecycle Stages ($\Phi_{\mathrm{lifecycle}}$)
+The Avenger V2.5 / PL-40 system executes across six mutually exclusive lifecycle stages:
+1. **Phase_Startup:** PL-40 pneumatic rail assembly, compressor pressure charge, PBIT diagnostics, GNSS lock, and RBF key verification.
+2. **Phase_CatapultLaunch:** Carriage safety lock pin removal, dual trigger actuation, pneumatic piston pull, carriage sled release, and climb-out.
+3. **Phase_NominalTransit:** High-altitude cruise, corridor following, waypoint navigation, and continuous telemetry monitoring.
+4. **Phase_LoiterAndTargeting:** Tactical loitering, Nighthawk2UZ EO/IR panning, 40X optical zoom tracking, and Trip6 target identification.
+5. **Phase_TerminalStrike:** Positive Human-in-the-Loop (HITL) weapon release authorization, ESAD high-voltage arming, and terminal kinetic dive.
+6. **Phase_RecoveryOrContainment:** Parachute pyrotechnic deployment for test recovery, or autonomous flight termination into designated safety zones.
 
-$$
-\begin{aligned}
-\tau_{\mathrm{handoff}} &\le \tau_{\mathrm{timeout}} = 5.0 \\
-t_{\mathrm{RTT}} &\le \tau_{\text{RTT\_max}} \\
-P_{\mathrm{loss}} &\le P_{\text{loss\_max}}
-\end{aligned}
-$$
+---
 
-- Parameter Definitions & Engineering Units:
-- tau_handoff: Total elapsed duration of the 4-way cryptographic handoff sequence (s).
-- tau_timeout: Maximum allowable timeout window before automatic abort (tau_timeout = 5.0 s).
-- t_RTT: Round-trip transport latency between SecondaryConsole and VehicleController (ms).
-- tau_RTT_max: Maximum permissible round-trip time for C2 authority transfer (tau_RTT_max = 100.0 ms).
-- P_loss: Measured packet loss rate on the candidate control channel (%).
-- P_loss_max: Maximum permissible packet loss rate threshold (P_loss_max = 1.0%).
+### 4.5 System Operational Architecture (DoDAF SV-1 / IEEE 1362 Section 5.3)
+The Super-System Architecture decomposes into three primary operational segments: Air Vehicle Segment (Avenger V2.5 UAV), Launch Segment (PL-40 Pneumatic Catapult Launcher), and Control Segment (Ground Control System).
 
-#### Bounded Timeout Recovery (tau_timeout = 5.0 s)
-The timeout recovery mechanism guarantees bounded execution time and fail-safe state preservation:
-1. **Watchdog Timer Activation:** `VehicleController` initializes a dedicated hardware watchdog timer with deadline $\tau_{\mathrm{timeout}} = 5.0\text{ s}$ upon receipt of the initial transfer request (Step 3).
-2. **Deterministic Abort:** If the full 9-step handoff sequence fails to complete within $\tau_{\mathrm{timeout}} = 5.0\text{ s}$, `VehicleController` unconditionally aborts the transaction and drops pending session tokens.
-3. **Safe State Retention / Reversion:** Active C2 authority remains locked at `PrimaryConsole`. If `PrimaryConsole` has already entered a disconnected or unresponsive state, `VehicleController` immediately transitions to `Contingency_LostLinkFallback` (trigger `EMG-01`).
-4. **Session Zeroization & Alerting:** All ephemeral session keys, authorization tokens, and staging buffers associated with the failed transfer are cryptographically zeroized, and timeout alert notifications are dispatched to both consoles.
+#### Figure 4.1: Canonical ConOps SV-1 Primary System Architecture Diagram (Option 3: Compact Blocks & Vertical Tiers)
+```mermaid
+flowchart TD
+ subgraph External_Actors["External Operating Environment & Actors (IEEE 1362 Section 5.1)"]
+ direction TB
+ Operator["Tactical Flight Operator<br/>(System Operator UCL-01)"]
+ SafetyOfficer["Mission Safety Officer<br/>(Weapon Release Consent UCL-03)"]
+ GNSS["GNSS Constellation<br/>(GPS / Galileo L-Band)"]
+ end
 
-#### Deterministic Rejection Safety Criteria
-The system deterministically rejects control handoff requests upon meeting any of the four safety criteria specified below:
+ subgraph Launch_Segment["Ground Support Equipment & Launch Segment (PL-40)"]
+ direction TB
+ PL40_Launcher["PL-40 Pneumatic Rail Launcher<br/>• PORT-PL40-AIR (IN)<br/>• PORT-PL40-MECH (OUT)"]
+ CompressorUnit["Makita-Powered Compressor Unit<br/>• PORT-COMP-PWR (IN)<br/>• PORT-COMP-AIR (OUT)"]
+ GSE_Interface["GSE Maintenance Terminal<br/>• PORT-GSE-USB (INOUT)<br/>• PORT-GSE-ETH (INOUT)"]
+ end
 
-| Rejection Criterion ID | Rejection Trigger Condition | Detection & Verification Mechanism | Deterministic System Action |
+ subgraph Air_Vehicle_Segment["Air Vehicle Segment: Avenger V2.5 UAV (System Under Design)"]
+ direction TB
+ AutopilotCore["Autopilot Stack ASTK A5 V2.5<br/>• PORT-AP-CAN1 (INOUT)<br/>• PORT-AP-CAN2 (INOUT)<br/>• PORT-AP-SER (INOUT)"]
+ PropulsionCore["Propulsion Subsystem<br/>• PORT-PROP-PWR (IN)<br/>• PORT-PROP-PWM (IN)"]
+ AirframeSensors["Airframe Sensors Suite<br/>• PORT-SENS-CAN2 (OUT)"]
+ VisionPayload["Seeker & Vision Payload<br/>• PORT-VIS-ETH (INOUT)<br/>• PORT-VIS-SER (INOUT)"]
+ LethalPackage["Lethal Package & ESAD<br/>• PORT-ESAD-J100 (IN)<br/>• PORT-ESAD-J401 (OUT)"]
+ CommsTransceiver["Communications Transceiver<br/>• PORT-RF-ANT (INOUT)<br/>• PORT-RF-ETH (INOUT)"]
+ end
+
+ subgraph Control_Segment["Supervisory Control Segment (GCS)"]
+ direction TB
+ GCS_Console["GCS Panasonic Toughbook FZ-G2<br/>• PORT-GCS-ETH (INOUT)<br/>• PORT-GCS-DISP (OUT)"]
+ MARS_Antenna["MARS 23dBi Tracking Antenna<br/>• PORT-MARS-RF (INOUT)<br/>• PORT-MARS-ROT (IN)"]
+ end
+
+ External_Actors ~~~ Launch_Segment
+ Launch_Segment ~~~ Air_Vehicle_Segment
+ Air_Vehicle_Segment ~~~ Control_Segment
+
+ %% External Connections
+ Operator -->|"Flight Plan & Manual Commands"| GCS_Console
+ SafetyOfficer -->|"Cryptographic Arming Consent"| GCS_Console
+ GNSS -.->|"Satellite RF Navigation Signals"| AirframeSensors
+
+ %% Launch Segment Item Flows
+ CompressorUnit -->|"High-Pressure Air Line [PORT-COMP-AIR -> PORT-PL40-AIR]"| PL40_Launcher
+ PL40_Launcher -->|"Catapult Sled Acceleration [PORT-PL40-MECH]"| PropulsionCore
+ GSE_Interface <-->|"Pre-Flight Diagnostics [PORT-GSE-ETH -> PORT-AP-SER]"| AutopilotCore
+
+ %% Internal Air Vehicle Item Flows
+ AutopilotCore <-->|"DroneCAN Actuation Bus [PORT-AP-CAN1]"| PropulsionCore
+ AirframeSensors -->|"Pitot & Magnetometer Telemetry [PORT-SENS-CAN2 -> PORT-AP-CAN2]"| AutopilotCore
+ VisionPayload <-->|"Target Kinematics & Tracking Video [PORT-VIS-ETH -> PORT-AP-SER]"| AutopilotCore
+ AutopilotCore -->|"Arming Permissive Signals [PORT-AP-SER -> PORT-ESAD-J100]"| LethalPackage
+ AutopilotCore <-->|"Bidirectional C2 Frames [PORT-AP-SER -> PORT-RF-ETH]"| CommsTransceiver
+
+ %% Control Segment Inter-Connects
+ CommsTransceiver <-->|"4.4-5.0 GHz COFDM Datalink [PORT-RF-ANT -> PORT-MARS-RF]"| MARS_Antenna
+ MARS_Antenna <-->|"ODU Downlink & Tracking Bus [PORT-MARS-ROT -> PORT-GCS-ETH]"| GCS_Console
+```
+
+---
+
+### 4.6 Super-System Segment Allocation Matrix (Table 4.2)
+Physical subsystems, computational nodes, and support equipment are formally allocated across operational segments in accordance with IEEE 1362 Section 5.3 and DoDAF SV-1:
+
+| Subsystem Part | Operational Segment | SSOT Ground Truth Source & Citation | Primary Functional Role |
 | :--- | :--- | :--- | :--- |
-| **REJ-01** | Cryptographic Token Invalidation | Digital signature verification failure, expired token validity timestamp (t_current > t_expire), or revoked authorization certificate | Immediate transaction reject; security audit event logged; C2 retained at PrimaryConsole |
-| **REJ-02** | Telemetry / State Desynchronization | State parameter buffer discrepancy Delta_s > Delta_s_threshold between PrimaryConsole and SecondaryConsole | Immediate transaction reject; state re-synchronization alert dispatched; C2 retained at PrimaryConsole |
-| **REJ-03** | Active Contingency / Emergency State | Vehicle actively executing emergency response procedures (EMG-01 through EMG-07) or operating in degraded containment mode | Interlock inhibition of handoff; transfer rejected; autonomous containment state machine takes precedence |
-| **REJ-04** | Datalink Quality & Latency Degradation | Candidate control link exceeds round-trip latency bound (t_RTT > tau_RTT_max) or packet loss threshold (P_loss > P_loss_max) | Immediate transaction reject; link quality alert dispatched; C2 retained at PrimaryConsole |
+| **Top_Level_Airframe** | Air Vehicle Segment (UAV) | [schema/avenger-5-spec-sheet-rev3.md](../../schema/avenger-5-spec-sheet-rev3.md) ("Structural Details") \| SysML v2: `part def Top_Level_Airframe` | Aerodynamic structure, fuselage composite shell, wing panels, ruddervator fins, and catapult rail interfaces. |
+| **Autopilot_Stack_ASTK_A5_V2_5** | Air Vehicle Segment (UAV) | [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md) ("Autopilot stack module") \| SysML v2: `part def Autopilot_Stack_ASTK_A5_V2_5` | Core computational avionics, Cube Orange+ flight controller, RPI CM5 companion computer, Ethernet switch, and EPS power module. |
+| **Propulsion** | Air Vehicle Segment (UAV) | [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md) ("Propulsion") \| SysML v2: `part def Propulsion` | Thrust generation using AXI 5345/16 motor, IBEX160 ESC, folding propeller, 12S2P battery, and 200A fuse. |
+| **Fins** | Air Vehicle Segment (UAV) | [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md) ("Fins") \| SysML v2: `part def Fins` | Tail empennage aerodynamic control surfaces actuated by 4x HV6160-DroneCAN pitch and yaw servos. |
+| **Wings** | Air Vehicle Segment (UAV) | [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md) ("Wings") \| SysML v2: `part def Wings` | Main aerodynamic lifting surfaces housing 4x HV6160-DroneCAN roll stabilization servos and CAN power splitter PCB. |
+| **Airframe_Sensors** | Air Vehicle Segment (UAV) | [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md) ("Airframe Sensors") \| SysML v2: `part def Airframe_Sensors` | Atmospheric and magnetic state estimation using CUAV SKYE2 pitot tube and dual mRo RM3100 magnetometers. |
+| **Seeker_Vision_Payload** | Air Vehicle Segment (UAV) | [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md) ("Gimbal & Camera compute") \| SysML v2: `part def Seeker_Vision_Payload` | Target reconnaissance, 40X optical zoom tracking, and video feed using Nighthawk2UZ gimbal and Trip6 compute module. |
+| **Communications** | Air Vehicle Segment (UAV) | [schema/avenger-5-spec-sheet-rev3.md](../../schema/avenger-5-spec-sheet-rev3.md) ("Communication") \| SysML v2: `part def Communications` | Command and control transport and video streaming using DTC 4.4-5.0 GHz 2x1W radio and dual MPSL4400 antennas. |
+| **Lethal_Package** | Air Vehicle Segment (UAV) | [schema/esad-icd-excalibur-ab00-0054.md](../../schema/esad-icd-excalibur-ab00-0054.md) ("ESAD ICD") \| SysML v2: `part def Lethal_Package` | Safe-and-arm fuzing, proximity target sensing, and precision terminal blast neutralization using 5.0 kg warhead and ESAD. |
+| **Parachute_Deployment** | Air Vehicle Segment (UAV) | [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md) ("Parachute deployment") \| SysML v2: `part def Parachute_Deployment` | Controlled flight termination and test airframe recovery using dual wire-burning pyrotechnic igniters. |
+| **Safety_Interlocks** | Air Vehicle Segment (UAV) | [schema/a5-prep-and-safety-rev7.md](../../schema/a5-prep-and-safety-rev7.md) ("Safety Interlocks") \| SysML v2: `part def Safety_Interlocks` | Physical and electrical safety guarantees using UAV RBF key, ESAD RBF pin, and pitot protective cover devices. |
+| **Ground_Support_Equipment** | Launch & Support Segment | [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md) ("PL-40 Launcher") \| SysML v2: `part def Ground_Support_Equipment` | Expeditionary catapult launching using PL-40 3-piece rail set, carriage sled, pulling rope, compressor unit, and ground anchors. |
+| **Ground_Control_System** | Supervisory Control Segment | [schema/avenger-5-spec-sheet-rev3.md](../../schema/avenger-5-spec-sheet-rev3.md) ("Ground Station Control") \| SysML v2: `part def Ground_Control_System` | Supervisory command, target tracking display, and datalink tracking using Panasonic Toughbook FZ-G2, MARS 23 dBi antenna, and Gitzo tripod. |
+| **Interface_Table_System** | System Integration Architecture | [schema/extracted/interface_table.md](../../schema/extracted/interface_table.md) ("System Interface Table") \| SysML v2: `part def Interface_Table_System` | Master electrical, serial, discrete, bus, and RF interface definition across all platform subsystems. |
+| **Parametric_Limits_Table_System** | System Engineering Constraints | [schema/extracted/parametric_limits.md](../../schema/extracted/parametric_limits.md) ("Parametric Limits Table") \| SysML v2: `part def Parametric_Limits_Table_System` | Authoritative performance, mass, airspeed, environmental, and endurance boundaries governing operations. |
+| **Anchor** | Launch & Support Segment | [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md) ("Ground anchors") \| SysML v2: `part def Anchor` | Ground anchors and anchor disk driven into soil to secure the rear launcher module. |
+| **Automotive** | Air Vehicle Segment (UAV) | [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md) ("Automotive fuse 200A") \| SysML v2: `part def Automotive` | 200A automotive fuse protecting high-current battery line from propulsion short circuits. |
+| **Hammer** | Launch & Support Segment | [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md) ("Hammer") \| SysML v2: `part def Hammer` | Sledge hammer tool utilized to drive ground anchors into terrain during launcher setup. |
+| **Middle** | Launch & Support Segment | [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md) ("Middle part of the rail") \| SysML v2: `part def Middle` | Middle pneumatic cylinder rail module (RAIL 2) connecting rear and front sections. |
+| **Ohm** | Air Vehicle Segment (UAV) | [schema/esad-icd-excalibur-ab00-0054.md](../../schema/esad-icd-excalibur-ab00-0054.md) ("Detonator Interface") \| SysML v2: `part def Ohm` | Electrical bridgewire continuity and squib resistance standard for ESAD safe-and-arm. |
+| **Propeller** | Air Vehicle Segment (UAV) | [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md) ("Folding Propeller") \| SysML v2: `part def Propeller` | Folding carbon-fiber propeller mounted to AXI motor shaft for aerodynamic thrust. |
+| **Rear** | Launch & Support Segment | [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md) ("Rear part of the rail") \| SysML v2: `part def Rear` | Rear rail module (RAIL 1) housing the carriage initial launch latch and safety pin. |
+| **Roller** | Launch & Support Segment | [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md) ("Roller block") \| SysML v2: `part def Roller` | Dual-pulley roller block redirecting the pulling rope 180 degrees at front rail. |
+| **Ruddervator** | Air Vehicle Segment (UAV) | [schema/avenger-5-spec-sheet-rev3.md](../../schema/avenger-5-spec-sheet-rev3.md) ("Structural Details") \| SysML v2: `part def Ruddervator` | Inverted-V tail aerodynamic surfaces providing combined pitch and yaw flight control. |
+| **SET** | Launch & Support Segment | [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md) ("PL-40 Rail Set") \| SysML v2: `part def SET` | Modular 3-module rail set assembly providing linear catapult acceleration path. |
+| **Tank** | Launch & Support Segment | [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md) ("Compressor unit / Air reservoir") \| SysML v2: `part def Tank` | High-pressure pneumatic air storage reservoir and cylinder on compressor unit. |
 
-### 4.6 Operational Lifecycle Stages ($\Phi_{\mathrm{lifecycle}}$)
-The system operates across six mutually exclusive, deterministic lifecycle stages:
-- **Phase_Startup:** Power-on Built-In-Test (PBIT), sensor alignment, state estimator initialization, cryptographic key verification, and pre-operation interlock validation.
-- **Phase_NominalExecution:** Autonomous mission start, transit along designated state corridors, operational state monitoring, payload processing, and real-time telemetry streaming.
-- **Phase_DegradedMode:** Non-critical sensor failover, reversion to dead reckoning upon reference signal loss, PACE datalink fallback switch, and degraded parameter limits.
-- **Phase_ContingencyFailsafe:** Autonomous execution of Return-to-Base (RTB), transition to secondary emergency recovery location, or controlled state containment.
-- **Phase_SecureShutdown:** Autonomous precision arrival, controlled deceleration to stop, actuator lock, cryptographic memory zeroization, and diagnostic log archival.
-- **Phase_MaintenanceMode:** Diagnostic telemetry offload, actuator calibration, firmware updating, and structural/hardware inspection.
+---
+
+### 4.7 Subsystem Architecture & AST Part Allocation (100% AST Part Coverage)
+In accordance with IEEE 1362 Section 5.3, DoDAF SV-1, and Check 26, formal operational specifications are defined below for all 97 declared SysML AST part def nodes in `.pipeline/schema.sysml`, in AST declaration order. The AST parametric unit annotations also reference the chars, bytes, and percent dimension tokens, which are resolved inside the parametric limits part below rather than as standalone parts.
+
+#### 4.7.1 Air_Vehicle_Avenger_V2_5 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Top-level air vehicle boundary enclosing all onboard subsystems. Its declared interface scope covers Onboard subsystem boundaries; external RBF keys; external interface board.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Onboard subsystem boundaries; external RBF keys; external interface board. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Top-level air vehicle boundary enclosing all onboard subsystems within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Top-level containment boundary: the part encloses all onboard subsystems and exposes the external RBF key interfaces, so internal energetic or propulsion failures remain inside the declared air vehicle envelope. No standalone hazard identifier is introduced here.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):7 | SysML v2: `part def Air_Vehicle_Avenger_V2_5`
+
+#### 4.7.2 Airframe_Fuselage Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Fuselage assembly with hatches closed and vertical stabilizer attached; battery included. Its declared interface scope covers Payload bay; wing mounting brackets; ruddervator mounting shafts; RBF sockets.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Payload bay; wing mounting brackets; ruddervator mounting shafts; RBF sockets. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Fuselage assembly with hatches closed and vertical stabilizer attached; battery included within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Structural and battery containment boundary: the fuselage carries the battery and the RBF sockets, and the closed hatches plus RBF access are the declared containment features.
+- **SSOT Ground Truth Mapping:** [schema/a5-user-manual-2.md](../../schema/a5-user-manual-2.md):336 | SysML v2: `part def Airframe_Fuselage`
+
+#### 4.7.3 Airframe_Payload_Bay Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Payload bay with hatch, mounting brackets and retaining rings. Its declared interface scope covers Warhead mounting brackets; ESAD payload cables; hatch lock.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Warhead mounting brackets; ESAD payload cables; hatch lock. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Payload bay with hatch, mounting brackets and retaining rings within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Payload containment boundary: the bay houses the warhead mounting brackets and ESAD payload cables behind a hatch lock, providing physical separation between the lethal package and the rest of the airframe.
+- **SSOT Ground Truth Mapping:** [schema/a5-prep-and-safety-rev7.md](../../schema/a5-prep-and-safety-rev7.md):102 | SysML v2: `part def Airframe_Payload_Bay`
+
+#### 4.7.4 Automotive_Fuse_200A Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: 200 A automotive main power fuse. Its declared interface scope covers Battery to power meter main power line.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Battery to power meter main power line. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as 200 A automotive main power fuse within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Overcurrent failure containment: the 200 A fuse is the declared series element between the battery and the power meter, isolating a main-power short from the propulsion and avionics buses.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):17 | SysML v2: `part def Automotive_Fuse_200A`
+
+#### 4.7.5 Autopilot_Computing_Board_Cube_Orange_Plus Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Autopilot computing board and sensor fusion controller. Its declared interface scope covers CAN 1; CAN 2; serial links; USB; ETH.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: CAN 1; CAN 2; serial links; USB; ETH. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Autopilot computing board and sensor fusion controller within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock is declared; flight-control computation is separated from the energetic chain, and the AST interface set does not give this board a direct ESAD firing path.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):10 | SysML v2: `part def Autopilot_Computing_Board_Cube_Orange_Plus`
+
+#### 4.7.6 Autopilot_Stack_Module_ASTK_A5_V2_5 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Autopilot stack module boundary. Its declared interface scope covers EPS module; autopilot computing board; ETH switch; RPI; GNSS module.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: EPS module; autopilot computing board; ETH switch; RPI; GNSS module. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Autopilot stack module boundary within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock is declared; the stack boundary groups avionics only, keeping ESAD firing and RBF functions outside the computational boundary.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):8 | SysML v2: `part def Autopilot_Stack_Module_ASTK_A5_V2_5`
+
+#### 4.7.7 Battery_12S2P_Li_Metal_BEI Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Removable 12S2P Li metal battery with maximus20 cells. Its declared interface scope covers 36 to 50.4 V DC main power; retaining strap; locking connector.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: 36 to 50.4 V DC main power; retaining strap; locking connector. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Removable 12S2P Li metal battery with maximus20 cells within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Stored-energy containment: the 12S2P Li-metal pack feeds the main DC bus through the 200 A fuse and power meter, while the UAV RBF key removes the power-meter enable path.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):16 | SysML v2: `part def Battery_12S2P_Li_Metal_BEI`
+
+#### 4.7.8 CAN_1_Autopilot_EPS_Junction_Node Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: CAN 1 junction linking autopilot, EPS and CAN 1 trunk. Its declared interface scope covers CAN 1 trunk; EPS tap; autopilot tap.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: CAN 1 trunk; EPS tap; autopilot tap. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as CAN 1 junction linking autopilot, EPS and CAN 1 trunk within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the junction is a passive CAN 1 connectivity element.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):50 | SysML v2: `part def CAN_1_Autopilot_EPS_Junction_Node`
+
+#### 4.7.9 CAN_1_Power_Meter_Junction_Node Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: CAN 1 junction below the power meter. Its declared interface scope covers CAN 1 970 cm trunk; power meter; CAN 1 150 cm branch.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: CAN 1 970 cm trunk; power meter; CAN 1 150 cm branch. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as CAN 1 junction below the power meter within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the junction is a passive CAN 1 connectivity element below the power meter.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):51 | SysML v2: `part def CAN_1_Power_Meter_Junction_Node`
+
+#### 4.7.10 CAN_1_Ruddervator_Splitter_Junction_Node Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: CAN 1 hub splitting the 150 cm branch into four 120 cm servo stubs. Its declared interface scope covers Four CAN 1 120 cm branches to Ruddervator Servos #1 to #4.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Four CAN 1 120 cm branches to Ruddervator Servos #1 to #4. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as CAN 1 hub splitting the 150 cm branch into four 120 cm servo stubs within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the hub distributes CAN 1 actuation commands to four independent ruddervator servo branches, so one stub failure does not remove the remaining branches from the bus.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):52 | SysML v2: `part def CAN_1_Ruddervator_Splitter_Junction_Node`
+
+#### 4.7.11 CAN_2_Servo_5_Series_Junction_Node Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: CAN 2 series junction at Wing Servo #5. Its declared interface scope covers Splitter PCB; Wing Servo #5; next series segment.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Splitter PCB; Wing Servo #5; next series segment. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as CAN 2 series junction at Wing Servo #5 within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the series pass-through preserves the CAN 2 daisy chain to the remaining wing servos if one segment is interrupted.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):53 | SysML v2: `part def CAN_2_Servo_5_Series_Junction_Node`
+
+#### 4.7.12 CAN_2_Servo_6_Series_Junction_Node Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: CAN 2 series junction at Wing Servo #6. Its declared interface scope covers Splitter PCB; Wing Servo #6; next series segment.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Splitter PCB; Wing Servo #6; next series segment. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as CAN 2 series junction at Wing Servo #6 within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the series pass-through preserves the CAN 2 daisy chain to the remaining wing servos if one segment is interrupted.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):54 | SysML v2: `part def CAN_2_Servo_6_Series_Junction_Node`
+
+#### 4.7.13 CAN_2_Servo_7_Series_Junction_Node Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: CAN 2 series junction at Wing Servo #7. Its declared interface scope covers Splitter PCB; Wing Servo #7; next series segment.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Splitter PCB; Wing Servo #7; next series segment. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as CAN 2 series junction at Wing Servo #7 within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the series pass-through preserves the CAN 2 daisy chain to the remaining wing servos if one segment is interrupted.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):55 | SysML v2: `part def CAN_2_Servo_7_Series_Junction_Node`
+
+#### 4.7.14 CAN_power_splitter_PCB Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Servo power splitter and CAN 2 series pass-through board. Its declared interface scope covers Four 8 V inputs from EPS; CAN 2 input from autopilot; series CAN 2 daisy chain to Servos #5 to #8.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Four 8 V inputs from EPS; CAN 2 input from autopilot; series CAN 2 daisy chain to Servos #5 to #8. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Servo power splitter and CAN 2 series pass-through board within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the board separates the four 8 V servo feeds and the CAN 2 series chain, limiting a single servo-rail fault to its branch.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):26 | SysML v2: `part def CAN_power_splitter_PCB`
+
+#### 4.7.15 Camera_Compute_Module_Trip6 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Gimbal control, video and target tracking computer. Its declared interface scope covers ETH; serial from autopilot; power and HDMI to gimbal.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: ETH; serial from autopilot; power and HDMI to gimbal. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Gimbal control, video and target tracking computer within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock is declared; the camera compute module stays outside the ESAD command path declared in the AST.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):36 | SysML v2: `part def Camera_Compute_Module_Trip6`
+
+#### 4.7.16 EPS_Module Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Electronic power system module with DC/DC converters, load switches and MCU. Its declared interface scope covers 8 V servo rails; 12 V radio; 14 V ESAD; 50 V igniters; pitot and magnetometer power.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: 8 V servo rails; 12 V radio; 14 V ESAD; 50 V igniters; pitot and magnetometer power. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Electronic power system module with DC/DC converters, load switches and MCU within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Power-source containment: the EPS distributes the 8 V servo, 12 V radio, 14 V ESAD and 50 V igniter rails, and its load switches plus the UAV power interlock isolate these rails from the battery.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):9 | SysML v2: `part def EPS_Module`
+
+#### 4.7.17 EPS_Servo_Power_8V_Rail Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Regulated 8 V servo power distribution with four ruddervator branches and four splitter inputs. Its declared interface scope covers 8 V DC to Servos #1 to #8 through direct branches and the CAN/power splitter PCB.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: 8 V DC to Servos #1 to #8 through direct branches and the CAN/power splitter PCB. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Regulated 8 V servo power distribution with four ruddervator branches and four splitter inputs within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Servo-power containment: four independent 8 V branches plus four splitter inputs limit a single rail fault to one servo group.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):79 | SysML v2: `part def EPS_Servo_Power_8V_Rail`
+
+#### 4.7.18 ESAD Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Electronic Safe and Arm Device, Critical / DAL-A, all-electronic safety and arming device. Its declared interface scope covers J100 system; J102 sensor board; J401 detonator; RS-485; DSC_IN1 arm enable; UMB continuity.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: J100 system; J102 sensor board; J401 detonator; RS-485; DSC_IN1 arm enable; UMB continuity. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Electronic Safe and Arm Device, Critical / DAL-A, all-electronic safety and arming device within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Safety-critical DAL-A arming chain: firing requires the J100 DSC_IN1 arm-enable signal, umbilical continuity, and the ESAD safe/arm interlock, while the ESAD RBF key holds the device in the safe state.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):45 | SysML v2: `part def ESAD`
+
+#### 4.7.19 ESAD_Detonator Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: LEEFI or EFI detonator. Its declared interface scope covers ESAD J401 HV_OUT and HV_GND.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: ESAD J401 HV_OUT and HV_GND. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as LEEFI or EFI detonator within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Final firing element: the detonator receives only the ESAD J401 high-voltage output, and no independent arming path is declared, so initiation remains gated by the ESAD.
+- **SSOT Ground Truth Mapping:** [schema/esad-icd-excalibur-ab00-0054.md](../../schema/esad-icd-excalibur-ab00-0054.md):108 | SysML v2: `part def ESAD_Detonator`
+
+#### 4.7.20 ESAD_Harness Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: ESAD board and sensor board mating connectors and crimps. Its declared interface scope covers J100; J102; sensor board J1.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: J100; J102; sensor board J1. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as ESAD board and sensor board mating connectors and crimps within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Arm/fire wiring confinement: the J100, J102 and sensor-board J1 harnesses carry only ESAD-defined signals and form the physical boundary for stray-energy control.
+- **SSOT Ground Truth Mapping:** [schema/esad-icd-excalibur-ab00-0054.md](../../schema/esad-icd-excalibur-ab00-0054.md):167 | SysML v2: `part def ESAD_Harness`
+
+#### 4.7.21 ESAD_RBF_Key Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: ESAD arming sequence Remove Before Flight key. Its declared interface scope covers ESAD discrete interlock.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: ESAD discrete interlock. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as ESAD arming sequence Remove Before Flight key within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Direct safety interlock: the ESAD arming-sequence Remove Before Flight key provides the discrete safe/arm interlock that prevents ESAD arming until it is removed.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):49 | SysML v2: `part def ESAD_RBF_Key`
+
+#### 4.7.22 ESAD_Sensor_Board Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Proximity and impact sensor board with UART, IRQ_L and 5 V interface. Its declared interface scope covers J1 cable to ESAD J102; 5 V power; UART; IRQ_L trigger.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: J1 cable to ESAD J102; 5 V power; UART; IRQ_L trigger. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Proximity and impact sensor board with UART, IRQ_L and 5 V interface within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Trigger-chain containment: the board supplies the IRQ_L trigger and UART data to the ESAD, is powered from the ESAD 5 V rail, and cannot initiate firing without the ESAD arm state.
+- **SSOT Ground Truth Mapping:** [schema/esad-icd-excalibur-ab00-0054.md](../../schema/esad-icd-excalibur-ab00-0054.md):159 | SysML v2: `part def ESAD_Sensor_Board`
+
+#### 4.7.23 ESAD_Umbilical Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Umbilical continuity connection. Its declared interface scope covers ESAD J100 UMB and UMB_RTN continuity line.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: ESAD J100 UMB and UMB_RTN continuity line. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Umbilical continuity connection within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Continuity interlock: the J100 UMB and UMB_RTN loop is the dedicated umbilical-continuity input evaluated by the ESAD before arming.
+- **SSOT Ground Truth Mapping:** [schema/esad-icd-excalibur-ab00-0054.md](../../schema/esad-icd-excalibur-ab00-0054.md):112 | SysML v2: `part def ESAD_Umbilical`
+
+#### 4.7.24 ESC_IBEX160 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Electronic speed controller. Its declared interface scope covers Three-phase motor drive; PWM throttle; UART telemetry.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Three-phase motor drive; PWM throttle; UART telemetry. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Electronic speed controller within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Propulsion-energy containment: the ESC drives the three-phase motor from the switched main bus, so removal of the UAV RBF key and power-meter enable removes its supply.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):19 | SysML v2: `part def ESC_IBEX160`
+
+#### 4.7.25 ESD_Grounding_Point Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: ESD grounding point marked by a yellow label. Its declared interface scope covers Operator electrostatic discharge equalization point.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Operator electrostatic discharge equalization point. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as ESD grounding point marked by a yellow label within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Electrostatic-discharge protection: the yellow-labeled grounding point equalizes operator charge before handling, protecting ESAD and avionics from ESD-induced upset.
+- **SSOT Ground Truth Mapping:** [schema/a5-prep-and-safety-rev7.md](../../schema/a5-prep-and-safety-rev7.md):94 | SysML v2: `part def ESD_Grounding_Point`
+
+#### 4.7.26 ETH_Switch Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: IP network switch for onboard systems. Its declared interface scope covers ETH to RPI, camera compute module, radio module and external interface board.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: ETH to RPI, camera compute module, radio module and external interface board. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as IP network switch for onboard systems within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the switch provides network isolation only.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):11 | SysML v2: `part def ETH_Switch`
+
+#### 4.7.27 External_Interface_Board_USB_ETH Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: External USB and ETH interface board. Its declared interface scope covers USB from autopilot; ETH from ETH switch.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: USB from autopilot; ETH from ETH switch. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as External USB and ETH interface board within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; external USB and ETH access is separated from the ESAD firing chain.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):47 | SysML v2: `part def External_Interface_Board_USB_ETH`
+
+#### 4.7.28 GCS_Battery Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Ground control station battery, quantity 2. Its declared interface scope covers GCS DC power.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: GCS DC power. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Ground control station battery, quantity 2 within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the part is a GCS DC source only.
+- **SSOT Ground Truth Mapping:** [schema/a5-user-manual-2.md](../../schema/a5-user-manual-2.md):350 | SysML v2: `part def GCS_Battery`
+
+#### 4.7.29 GCS_Cabling Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Power, Ethernet, antenna and LAN cables with ODU and N-type connectors. Its declared interface scope covers ODU connector; N-type connector; Ethernet.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: ODU connector; N-type connector; Ethernet. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Power, Ethernet, antenna and LAN cables with ODU and N-type connectors within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; cable shielding and connector keying provide interface separation.
+- **SSOT Ground Truth Mapping:** [schema/a5-user-manual-2.md](../../schema/a5-user-manual-2.md):354 | SysML v2: `part def GCS_Cabling`
+
+#### 4.7.30 GCS_Ground_Box Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Ground control station network and power box. Its declared interface scope covers Radio and antenna connections; DC power.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Radio and antenna connections; DC power. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Ground control station network and power box within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the box provides network and power distribution only.
+- **SSOT Ground Truth Mapping:** [schema/a5-user-manual-2.md](../../schema/a5-user-manual-2.md):347 | SysML v2: `part def GCS_Ground_Box`
+
+#### 4.7.31 GCS_MARS_Antenna Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: MARS 23 dBi antenna. Its declared interface scope covers N-type connector; RF link.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: N-type connector; RF link. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as MARS 23 dBi antenna within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the antenna is an RF link element only.
+- **SSOT Ground Truth Mapping:** [schema/a5-user-manual-2.md](../../schema/a5-user-manual-2.md):353 | SysML v2: `part def GCS_MARS_Antenna`
+
+#### 4.7.32 GCS_Radio_Box Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Ground control station radio box. Its declared interface scope covers RF link; Ethernet; DC power.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: RF link; Ethernet; DC power. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Ground control station radio box within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the radio box is a C2 RF path element only.
+- **SSOT Ground Truth Mapping:** [schema/a5-user-manual-2.md](../../schema/a5-user-manual-2.md):346 | SysML v2: `part def GCS_Radio_Box`
+
+#### 4.7.33 GCS_Rotator Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Antenna rotator. Its declared interface scope covers Antenna mount; rotator control; direction feedback.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Antenna mount; rotator control; direction feedback. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Antenna rotator within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the rotator provides antenna pointing only.
+- **SSOT Ground Truth Mapping:** [schema/a5-user-manual-2.md](../../schema/a5-user-manual-2.md):348 | SysML v2: `part def GCS_Rotator`
+
+#### 4.7.34 GCS_Tablet_FZ_G2 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Panasonic FZ-G2 tablet, quantity 2. Its declared interface scope covers Wi-Fi or Ethernet to ground station; Swarm C2 application.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Wi-Fi or Ethernet to ground station; Swarm C2 application. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Panasonic FZ-G2 tablet, quantity 2 within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the tablet is an operator display and Swarm C2 interface only.
+- **SSOT Ground Truth Mapping:** [schema/a5-user-manual-2.md](../../schema/a5-user-manual-2.md):351 | SysML v2: `part def GCS_Tablet_FZ_G2`
+
+#### 4.7.35 GCS_Tripod Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Gitzo tripod with head. Its declared interface scope covers Antenna and rotator mount.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Antenna and rotator mount. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Gitzo tripod with head within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the tripod provides mechanical antenna support only.
+- **SSOT Ground Truth Mapping:** [schema/a5-user-manual-2.md](../../schema/a5-user-manual-2.md):349 | SysML v2: `part def GCS_Tripod`
+
+#### 4.7.36 GNSS_Antenna_Talysman_TW3972EXF Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: GNSS receive antenna. Its declared interface scope covers Coaxial RF feed from GNSS module.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Coaxial RF feed from GNSS module. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as GNSS receive antenna within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the antenna is a passive RF receive path only.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):14 | SysML v2: `part def GNSS_Antenna_Talysman_TW3972EXF`
+
+#### 4.7.37 GNSS_Module_Septentrio_Asterx_m3_pro Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Absolute position and velocity receiver. Its declared interface scope covers Serial from autopilot; RF to GNSS antenna.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Serial from autopilot; RF to GNSS antenna. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Absolute position and velocity receiver within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the module is a navigation receiver only.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):13 | SysML v2: `part def GNSS_Module_Septentrio_Asterx_m3_pro`
+
+#### 4.7.38 Gimbal_Nighthawk2UZ Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: IR and RGB camera gimbal payload. Its declared interface scope covers Power and HDMI data from camera compute module. The AST parametric limits bound its video channels at 128 pixels.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Power and HDMI data from camera compute module. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as IR and RGB camera gimbal payload within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the gimbal is an optical payload only.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):35 | SysML v2: `part def Gimbal_Nighthawk2UZ`
+
+#### 4.7.39 Interface_Table_System Subsystem Architecture
+- **Functional Purpose & Scope:** Synthesized system component aggregating all AST-declared electrical, serial, bus, RF and pneumatic interface contracts into one integration surface for the Avenger V2.5 / PL-40 system.
+- **Physical & Logical Interface / Port Allocations:** AST ports by direction: inout - `CAN_1_Trunk_970_cm`, `CAN_1_EPS_Tap`, `CAN_1_Branch_150_cm`, `CAN_1_Ruddervator_Servo_1_Branch_120_cm`, `CAN_1_Ruddervator_Servo_2_Branch_120_cm`, `CAN_1_Ruddervator_Servo_3_Branch_120_cm`, `CAN_1_Ruddervator_Servo_4_Branch_120_cm`, `CAN_2_Daisy_Chain_Segment_5_to_6`, `CAN_2_Daisy_Chain_Segment_6_to_7`, `CAN_2_Daisy_Chain_Segment_7_to_8`, `CAN_2_Magnetometer_Continuation`, `ETH_Backbone`, `Camera_Module_ETH`, `RPI_ETH`, `External_ETH`, `Autopilot_RPI_Serial`, `ESAD_Sensor_Board_UART`, `GCS_UAV_Telemetry_Link`, `GCS_Antenna_RF`, `GCS_Tablet_Network`; out - `Servo_Power_8V_Ruddervator_Servo_1`, `Servo_Power_8V_Ruddervator_Servo_2`, `Servo_Power_8V_Ruddervator_Servo_3`, `Servo_Power_8V_Ruddervator_Servo_4`, `Servo_Power_8V_Splitter_Input_1`, `Servo_Power_8V_Splitter_Input_2`, `Servo_Power_8V_Splitter_Input_3`, `Servo_Power_8V_Splitter_Input_4`, `Servo_Power_8V_Wing_Servo_5`, `Servo_Power_8V_Wing_Servo_6`, `Servo_Power_8V_Wing_Servo_7`, `Servo_Power_8V_Wing_Servo_8`, `CAN_2_Splitter_Input`, `Autopilot_Camera_Serial`, `Autopilot_GNSS_Serial`, `GNSS_RF_Feed`, `Autopilot_Radio_Serial`, `Radio_RF_Feed_Upper`, `Radio_RF_Feed_Lower`, `External_USB`, `RPI_ESAD_RS_485`, `RPI_ESAD_Analog_Trigger`, `Proximity_Sensor_Trigger`, `ESAD_Warhead_Initiation`, `ESAD_Sensor_Board_Power_5V`, `ESAD_Detonator_High_Voltage`, `Payload_Bay_Cable`, `Launcher_Pneumatic_Supply`, `Launcher_Trigger_Command`, `Launcher_Trigger_Power`, `GCS_Rotator_Control`, `GCS_Ground_Radio_Power`; in - `ESAD_Power_Input_J100`, `ESAD_Arm_Enable_DSC_IN1`, `ESAD_Umbilical_Continuity`, `ESAD_Sensor_IRQ`, `ESAD_Safe_Arm_Interlock`, `UAV_Power_Interlock`, `Warhead_RBF_Interlock`.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as the canonical interface contract for every declared subsystem boundary. It is integrated with the synthesized `Interface_Table_LifecycleState`.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Interface-level safety containment: the table declares the UAV_Power_Interlock, Warhead_RBF_Interlock and ESAD_Safe_Arm_Interlock inputs plus the ESAD arm-enable, umbilical-continuity and detonator high-voltage ports, so the arm/fire chain is explicit at the integration boundary.
+- **SSOT Ground Truth Mapping:** [schema/extracted/interface_table.md](../../schema/extracted/interface_table.md):1 | SysML v2: `part def Interface_Table_System`
+
+#### 4.7.40 Lethal_Package Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Lethal package boundary enclosing ESAD and warhead. Its declared interface scope covers ESAD interfaces; warhead initiation train.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: ESAD interfaces; warhead initiation train. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Lethal package boundary enclosing ESAD and warhead within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Lethal-package containment: the boundary encloses the ESAD and warhead and exposes only the ESAD interfaces and warhead initiation train, with initiation gated by the warhead RBF interlock and the ESAD safe/arm chain.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):44 | SysML v2: `part def Lethal_Package`
+
+#### 4.7.41 Magnetometer_mRo_RM3100_Lower Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Lower heading and barometric sensor unit. Its declared interface scope covers CAN 2 continuation; Mag Power from EPS.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: CAN 2 continuation; Mag Power from EPS. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Lower heading and barometric sensor unit within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the unit is a heading and barometric sensor only.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):34 | SysML v2: `part def Magnetometer_mRo_RM3100_Lower`
+
+#### 4.7.42 Magnetometer_mRo_RM3100_Upper Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Upper heading and barometric sensor unit. Its declared interface scope covers CAN 2 continuation; Mag Power from EPS.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: CAN 2 continuation; Mag Power from EPS. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Upper heading and barometric sensor unit within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the unit is a heading and barometric sensor only.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):33 | SysML v2: `part def Magnetometer_mRo_RM3100_Upper`
+
+#### 4.7.43 Motor_AXI_5345_16_HD_GOLD_LINE_V3 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Electric propulsion motor. Its declared interface scope covers Three-phase drive from ESC; propeller shaft; temperature telemetry.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Three-phase drive from ESC; propeller shaft; temperature telemetry. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Electric propulsion motor within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Propulsion-energy containment: the motor is driven only by the ESC three-phase output and has no independent enable path in the AST.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):20 | SysML v2: `part def Motor_AXI_5345_16_HD_GOLD_LINE_V3`
+
+#### 4.7.44 PL_40_Battery Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Makita 18 V Li-Ion 6000 mAh battery, quantity 2. Its declared interface scope covers 18 V DC to compressor unit and trigger handle.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: 18 V DC to compressor unit and trigger handle. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Makita 18 V Li-Ion 6000 mAh battery, quantity 2 within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Stored-energy containment: the two 18 V Makita packs feed the compressor unit and trigger handle, with the battery dock as the declared isolation point.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):39 | SysML v2: `part def PL_40_Battery`
+
+#### 4.7.45 PL_40_Carriage Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Rolling carriage with four support levers. Its declared interface scope covers UAV connection hooks; pulling rope; rail track; safety lock pin.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: UAV connection hooks; pulling rope; rail track; safety lock pin. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Rolling carriage with four support levers within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Launch-energy containment: the carriage is held by the safety lock pin and connected to the pulling rope, and remains captive on the rail track until release.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):14 | SysML v2: `part def PL_40_Carriage`
+
+#### 4.7.46 PL_40_Carriage_Safety_Lock_Pin Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Red-handled carriage safety pin. Its declared interface scope covers Rear launch position lock; removed only before launch.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Rear launch position lock; removed only before launch. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Red-handled carriage safety pin within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Direct launch interlock: the red-handled pin locks the carriage in the rear launch position and is removed only immediately before launch.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):16 | SysML v2: `part def PL_40_Carriage_Safety_Lock_Pin`
+
+#### 4.7.47 PL_40_Compressor Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: 18 V DC air compressor. Its declared interface scope covers Main tank; battery dock; controller.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Main tank; battery dock; controller. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as 18 V DC air compressor within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Pneumatic-energy containment: the 18 V compressor charges the main tank through the controller, and the tank and release valve bound the stored pressure.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):33 | SysML v2: `part def PL_40_Compressor`
+
+#### 4.7.48 PL_40_Compressor_Unit Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Wheeled compressor case with compressor, tank, controller and valves. Its declared interface scope covers 18 V battery dock; pneumatic outlet; pressure sensor; trigger cable.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: 18 V battery dock; pneumatic outlet; pressure sensor; trigger cable. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: 25 kg (AST value). Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Wheeled compressor case with compressor, tank, controller and valves within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Pneumatic-energy containment: the wheeled case groups compressor, tank, controller and valves, with the pressure sensor and outlet valve bounding the stored air energy.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):32 | SysML v2: `part def PL_40_Compressor_Unit`
+
+#### 4.7.49 PL_40_Connection_Hose Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: High-pressure hose with cam-lock couplings and securing ring. Its declared interface scope covers Tank-side connector; launcher inlet.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Tank-side connector; launcher inlet. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as High-pressure hose with cam-lock couplings and securing ring within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Pressure-boundary containment: the high-pressure hose and cam-lock couplings form the tank-to-launcher pressure boundary.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):45 | SysML v2: `part def PL_40_Connection_Hose`
+
+#### 4.7.50 PL_40_Ground_Anchors Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Three serrated ground anchors with anchor disk and hammer. Its declared interface scope covers Rear support leg; soil anchoring.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Rear support leg; soil anchoring. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Three serrated ground anchors with anchor disk and hammer within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Recoil containment: the three serrated anchors and anchor disk secure the rear support leg against launch reaction loads.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):28 | SysML v2: `part def PL_40_Ground_Anchors`
+
+#### 4.7.51 PL_40_Hook_Option_A Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Front and rear hook brackets, Aluminum 6061-T6. Its declared interface scope covers Carriage support levers.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Carriage support levers. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: 0.004 kg (AST value). Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Front and rear hook brackets, Aluminum 6061-T6 within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the hook brackets are carriage support hardware.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):57 | SysML v2: `part def PL_40_Hook_Option_A`
+
+#### 4.7.52 PL_40_Hook_Option_B Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Single-piece longitudinal hook bar with dual notches. Its declared interface scope covers Carriage support levers.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Carriage support levers. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Single-piece longitudinal hook bar with dual notches within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the hook bar is carriage support hardware.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):58 | SysML v2: `part def PL_40_Hook_Option_B`
+
+#### 4.7.53 PL_40_Hook_Option_C Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Threaded M8 flanged launch lugs in AISI 304. Its declared interface scope covers Carriage support levers.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Carriage support levers. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Threaded M8 flanged launch lugs in AISI 304 within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the launch lugs are carriage support hardware.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):59 | SysML v2: `part def PL_40_Hook_Option_C`
+
+#### 4.7.54 PL_40_Main_Tank Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Compressed air reservoir. Its declared interface scope covers Compressor; outlet valve; release valve; pressure gauge.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Compressor; outlet valve; release valve; pressure gauge. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Compressed air reservoir within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Pressure-vessel containment: the compressed-air reservoir is the primary stored-energy volume and is bounded by the outlet and release valves.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):38 | SysML v2: `part def PL_40_Main_Tank`
+
+#### 4.7.55 PL_40_Maintenance_Kits Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Pulling rope replacement kit and carriage wheel bearing replacement kit. Its declared interface scope covers Maintenance only.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Maintenance only. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Pulling rope replacement kit and carriage wheel bearing replacement kit within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the kits are maintenance-only spares.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):53 | SysML v2: `part def PL_40_Maintenance_Kits`
+
+#### 4.7.56 PL_40_Power_Switching_Circuit Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Electronic controller with pressure and battery protection. Its declared interface scope covers Pressure sensor; valves; battery; SET and PWR LEDs.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Pressure sensor; valves; battery; SET and PWR LEDs. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Electronic controller with pressure and battery protection within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Electrical and pressure protection: the controller provides pressure and battery protection and drives the valves and status LEDs.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):43 | SysML v2: `part def PL_40_Power_Switching_Circuit`
+
+#### 4.7.57 PL_40_Pressure_Gauge Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Analog pressure manometer. Its declared interface scope covers Main tank pressure indication.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Main tank pressure indication. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Analog pressure manometer within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Pressure-state indication: the analog manometer exposes main-tank pressure for pre-launch verification.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):40 | SysML v2: `part def PL_40_Pressure_Gauge`
+
+#### 4.7.58 PL_40_Pulling_Rope Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: High-strength pulling rope from piston to carriage. Its declared interface scope covers Internal piston; roller block; carriage; replaced every 100 launches.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Internal piston; roller block; carriage; replaced every 100 launches. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as High-strength pulling rope from piston to carriage within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Launch-energy containment: the high-strength rope transfers piston force to the carriage and is scheduled for replacement every 100 launches.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):13 | SysML v2: `part def PL_40_Pulling_Rope`
+
+#### 4.7.59 PL_40_Rail Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: UAV pneumatic launcher rail assembly. Its declared interface scope covers Pneumatic inlet; rail clamps; carriage track; front and rear support legs.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Pneumatic inlet; rail clamps; carriage track; front and rear support legs. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: 68 kg (AST value). Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as UAV pneumatic launcher rail assembly within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Launch structural containment: the rail assembly carries the pneumatic inlet, clamps, carriage track and support legs, bounding the piston and carriage stroke.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):7 | SysML v2: `part def PL_40_Rail`
+
+#### 4.7.60 PL_40_Rail_Module_RAIL_1 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Rear rail module. Its declared interface scope covers Carriage initial position; safety lock; rear support leg.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Carriage initial position; safety lock; rear support leg. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Rear rail module within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Rear launch-position containment: the rear module holds the carriage initial position, safety lock and rear support leg.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):8 | SysML v2: `part def PL_40_Rail_Module_RAIL_1`
+
+#### 4.7.61 PL_40_Rail_Module_RAIL_2 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Middle rail module. Its declared interface scope covers Toggle clamps; O-ring seals; end plates.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Toggle clamps; O-ring seals; end plates. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Middle rail module within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Pressure and alignment containment: toggle clamps and O-ring seals keep the middle module pressure-tight and aligned.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):10 | SysML v2: `part def PL_40_Rail_Module_RAIL_2`
+
+#### 4.7.62 PL_40_Rail_Module_RAIL_3 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Front rail module with internal piston and inlet port. Its declared interface scope covers Piston; pulling rope; roller block; front legs; air inlet.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Piston; pulling rope; roller block; front legs; air inlet. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Front rail module with internal piston and inlet port within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Piston containment: the front module houses the internal piston and inlet port and routes the pulling rope and roller block.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):11 | SysML v2: `part def PL_40_Rail_Module_RAIL_3`
+
+#### 4.7.63 PL_40_Remote_Release_Valve Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Main launch release valve. Its declared interface scope covers Main tank; launcher inlet; trigger handle.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Main tank; launcher inlet; trigger handle. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Main launch release valve within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Launch-release containment: the valve is the controlled boundary between main tank, launcher inlet and trigger handle.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):35 | SysML v2: `part def PL_40_Remote_Release_Valve`
+
+#### 4.7.64 PL_40_Transport_Case Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Wheeled hard case for the rail set. Its declared interface scope covers Loaded rail transport. The source specification also places the Bag for ground anchors and hammer (11) inside this case.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Loaded rail transport. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: 43 kg (AST value). Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Wheeled hard case for the rail set within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the case is transport-only hardware.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):52 | SysML v2: `part def PL_40_Transport_Case`
+
+#### 4.7.65 PL_40_Trigger_Handle Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Handheld remote launch controller with two switches and safety levers. Its declared interface scope covers 18 V battery dock; control cable; remote release valve.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: 18 V battery dock; control cable; remote release valve. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Handheld remote launch controller with two switches and safety levers within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Launch-command interlock: the handheld controller uses two switches and safety levers and connects to the remote release valve.
+- **SSOT Ground Truth Mapping:** [schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md](../../schema/uav_launcher_pl_40_sysml_v2_ingestion_manual.md):47 | SysML v2: `part def PL_40_Trigger_Handle`
+
+#### 4.7.66 Parachute_Deployment_Non_Mission Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Parachute deployment module, non-mission R&D variant, configuration: non-mission; baseline: false. Its declared interface scope covers Two 50 V igniter outputs; excluded from mission baseline analysis.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Two 50 V igniter outputs; excluded from mission baseline analysis. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Parachute deployment module, non-mission R&D variant, configuration: non-mission; baseline: false within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Pyrotechnic containment: the non-mission module exposes two 50 V igniter outputs and is excluded from the mission baseline, so no mission interlock is claimed.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):40 | SysML v2: `part def Parachute_Deployment_Non_Mission`
+
+#### 4.7.67 Parachute_Igniter_1 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Upper pyrotechnic igniter for payload bay cover retention wire. Its declared interface scope covers 50 V power from EPS.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: 50 V power from EPS. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Upper pyrotechnic igniter for payload bay cover retention wire within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Pyrotechnic firing element: the igniter receives 50 V from the EPS, and initiation is confined to the payload-bay cover retention wire.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):41 | SysML v2: `part def Parachute_Igniter_1`
+
+#### 4.7.68 Parachute_Igniter_2 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Lower pyrotechnic igniter for payload bay cover retention wire. Its declared interface scope covers 50 V power from EPS.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: 50 V power from EPS. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Lower pyrotechnic igniter for payload bay cover retention wire within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Pyrotechnic firing element: the igniter receives 50 V from the EPS, and initiation is confined to the payload-bay cover retention wire.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):42 | SysML v2: `part def Parachute_Igniter_2`
+
+#### 4.7.69 Parametric_Limits_Table_System Subsystem Architecture
+- **Functional Purpose & Scope:** Synthesized system component binding the PL-01 through PL-94 parametric attributes and their assert constraints into deterministic envelope checks; AST unit annotations include chars, bytes, and percent dimensions.
+- **Physical & Logical Interface / Port Allocations:** No ports declared in AST; the part exposes PL-01 through PL-94 attributes and matching assert constraints instead.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as the runtime envelope-checking contract for all declared parametric limits. It is integrated with the synthesized `Parametric_Limits_Table_LifecycleState`.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Envelope protection: the PL-01 through PL-94 assert constraints bound mass, power, pressure, voltage, timing and environmental parameters, so exceeding a bound is a safety-relevant state.
+- **SSOT Ground Truth Mapping:** [schema/extracted/parametric_limits.md](../../schema/extracted/parametric_limits.md):1 | SysML v2: `part def Parametric_Limits_Table_System`
+
+#### 4.7.70 Pitot_Tube_CUAV_SKYE2 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Heated and drained airspeed sensor. Its declared interface scope covers Pneumatic pressure port; pitot power from EPS; CAN 2 continuation.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Pneumatic pressure port; pitot power from EPS; CAN 2 continuation. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Heated and drained airspeed sensor within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the unit is a heated airspeed sensor only.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):32 | SysML v2: `part def Pitot_Tube_CUAV_SKYE2`
+
+#### 4.7.71 Power_Meter Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Voltage and current sensor with main power switch. Its declared interface scope covers Battery power input; switched power to ESC; CAN 1; UAV RBF key.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Battery power input; switched power to ESC; CAN 1; UAV RBF key. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Voltage and current sensor with main power switch within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Main power interlock: the meter switches battery power to the ESC and exposes the UAV RBF key ON/OFF interlock.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):18 | SysML v2: `part def Power_Meter`
+
+#### 4.7.72 Propulsion Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Propulsion subsystem boundary enclosing fuse, power meter, ESC and motor. Its declared interface scope covers Battery main power; three-phase motor drive; ESC telemetry.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Battery main power; three-phase motor drive; ESC telemetry. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Propulsion subsystem boundary enclosing fuse, power meter, ESC and motor within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Propulsion-energy containment: the boundary encloses the fuse, power meter, ESC and motor, with the 200 A fuse and UAV RBF key as the declared isolation elements.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):15 | SysML v2: `part def Propulsion`
+
+#### 4.7.73 Propulsion_Folding_Propeller Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Folding propeller assembly with two blades. Its declared interface scope covers Motor shaft; blades fold rearward toward the tail.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Motor shaft; blades fold rearward toward the tail. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Folding propeller assembly with two blades within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the folding blades reduce ground-contact exposure and are driven only by the motor shaft.
+- **SSOT Ground Truth Mapping:** [schema/a5-user-manual-2.md](../../schema/a5-user-manual-2.md):274 | SysML v2: `part def Propulsion_Folding_Propeller`
+
+#### 4.7.74 Proximity_Sensor Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Impact and proximity trigger sensor. Its declared interface scope covers Discrete trigger to ESAD; sensor board powered from ESAD.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Discrete trigger to ESAD; sensor board powered from ESAD. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Impact and proximity trigger sensor within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Trigger-chain containment: the sensor provides a discrete trigger to the ESAD and is powered from the ESAD sensor-board rail.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):43 | SysML v2: `part def Proximity_Sensor`
+
+#### 4.7.75 RPI_CM5004032 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Raspberry Pi compute module for SC2 command and control interfacing. Its declared interface scope covers ETH; serial to autopilot; RS-485 to ESAD; GPIO trigger to ESAD.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: ETH; serial to autopilot; RS-485 to ESAD; GPIO trigger to ESAD. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Raspberry Pi compute module for SC2 command and control interfacing within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Command-path containment: the RPI connects to the ESAD by RS-485 and a GPIO trigger, but does not carry the ESAD arm-enable or umbilical-continuity interlocks.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):12 | SysML v2: `part def RPI_CM5004032`
+
+#### 4.7.76 Radio_Antenna_MPSL4400_Lower Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Lower radio antenna. Its declared interface scope covers Coaxial RF feed from radio module.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Coaxial RF feed from radio module. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Lower radio antenna within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the antenna is an RF radiating element only.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):39 | SysML v2: `part def Radio_Antenna_MPSL4400_Lower`
+
+#### 4.7.77 Radio_Antenna_MPSL4400_Upper Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Upper radio antenna. Its declared interface scope covers Coaxial RF feed from radio module.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Coaxial RF feed from radio module. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Upper radio antenna within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the antenna is an RF radiating element only.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):38 | SysML v2: `part def Radio_Antenna_MPSL4400_Upper`
+
+#### 4.7.78 Radio_Module_DTC Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Command and control radio transceiver. Its declared interface scope covers ETH; serial from autopilot; 12 V radio power; two RF antenna feeds.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: ETH; serial from autopilot; 12 V radio power; two RF antenna feeds. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Command and control radio transceiver within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the module is a C2 transceiver only.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):37 | SysML v2: `part def Radio_Module_DTC`
+
+#### 4.7.79 Ruddervator Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Canonical tail control surface assembly, quantity 4; drawing synonym Fins; preparation synonym tail stabiliser. Its declared interface scope covers Four tail mounting shafts; control horns; threaded retaining pins; Servos #1 to #4 on CAN 1.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Four tail mounting shafts; control horns; threaded retaining pins; Servos #1 to #4 on CAN 1. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Canonical tail control surface assembly, quantity 4; drawing synonym Fins; preparation synonym tail stabiliser within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Flight-control failure containment: four tail control surfaces are driven by four independent CAN 1 servos and retained by control horns and threaded pins, so a single servo or linkage failure does not remove all pitch and yaw authority.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):21 | SysML v2: `part def Ruddervator`
+
+#### 4.7.80 Ruddervator_Servo_1 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Left-up tail servo, HV6160-DroneCAN, pitch and yaw mixing. Its declared interface scope covers CAN 1 120 cm branch; Servo power 8 V.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: CAN 1 120 cm branch; Servo power 8 V. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Left-up tail servo, HV6160-DroneCAN, pitch and yaw mixing within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Flight-control failure containment: the servo is one CAN 1 branch with its own 8 V feed, and the remaining three servos retain pitch and yaw authority after a single branch failure.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):22 | SysML v2: `part def Ruddervator_Servo_1`
+
+#### 4.7.81 Ruddervator_Servo_2 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Right-up tail servo, HV6160-DroneCAN, pitch and yaw mixing. Its declared interface scope covers CAN 1 120 cm branch; Servo power 8 V.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: CAN 1 120 cm branch; Servo power 8 V. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Right-up tail servo, HV6160-DroneCAN, pitch and yaw mixing within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Flight-control failure containment: the servo is one CAN 1 branch with its own 8 V feed, and the remaining three servos retain pitch and yaw authority after a single branch failure.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):23 | SysML v2: `part def Ruddervator_Servo_2`
+
+#### 4.7.82 Ruddervator_Servo_3 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Right-down tail servo, HV6160-DroneCAN, pitch and yaw mixing. Its declared interface scope covers CAN 1 120 cm branch; Servo power 8 V.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: CAN 1 120 cm branch; Servo power 8 V. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Right-down tail servo, HV6160-DroneCAN, pitch and yaw mixing within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Flight-control failure containment: the servo is one CAN 1 branch with its own 8 V feed, and the remaining three servos retain pitch and yaw authority after a single branch failure.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):24 | SysML v2: `part def Ruddervator_Servo_3`
+
+#### 4.7.83 Ruddervator_Servo_4 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Left-down tail servo, HV6160-DroneCAN, pitch and yaw mixing. Its declared interface scope covers CAN 1 120 cm branch; Servo power 8 V.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: CAN 1 120 cm branch; Servo power 8 V. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Left-down tail servo, HV6160-DroneCAN, pitch and yaw mixing within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Flight-control failure containment: the servo is one CAN 1 branch with its own 8 V feed, and the remaining three servos retain pitch and yaw authority after a single branch failure.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):25 | SysML v2: `part def Ruddervator_Servo_4`
+
+#### 4.7.84 Safety_RBF_Devices Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Remove Before Flight flags, pitot cover, sensor cover, gimbal strap, power RBF and warhead RBF number 3. Its declared interface scope covers Mechanical and electrical safety interlocks.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Mechanical and electrical safety interlocks. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Remove Before Flight flags, pitot cover, sensor cover, gimbal strap, power RBF and warhead RBF number 3 within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Direct safety interlocks: the RBF flags, pitot and sensor covers, gimbal strap, power RBF and warhead RBF number 3 provide mechanical and electrical safe-state enforcement before launch.
+- **SSOT Ground Truth Mapping:** [schema/a5-user-manual-2.md](../../schema/a5-user-manual-2.md):340 | SysML v2: `part def Safety_RBF_Devices`
+
+#### 4.7.85 Support_Spare_Propeller Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Spare propeller blades, quantity 2, and propeller assembly, quantity 1. Its declared interface scope covers Propeller assembly.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Propeller assembly. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Spare propeller blades, quantity 2, and propeller assembly, quantity 1 within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the item is a support spare only.
+- **SSOT Ground Truth Mapping:** [schema/a5-user-manual-2.md](../../schema/a5-user-manual-2.md):366 | SysML v2: `part def Support_Spare_Propeller`
+
+#### 4.7.86 Support_Tools Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Set of tools and 30 spare attachment bolts. Its declared interface scope covers Maintenance.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Maintenance. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Set of tools and 30 spare attachment bolts within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** No dedicated interlock; the item is maintenance tooling only.
+- **SSOT Ground Truth Mapping:** [schema/a5-user-manual-2.md](../../schema/a5-user-manual-2.md):365 | SysML v2: `part def Support_Tools`
+
+#### 4.7.87 UAV_RBF_Key Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: UAV power Remove Before Flight key. Its declared interface scope covers Power meter ON/OFF interlock.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Power meter ON/OFF interlock. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as UAV power Remove Before Flight key within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Direct power interlock: the UAV power Remove Before Flight key controls the power-meter ON/OFF interlock and removes main power from the propulsion bus.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):48 | SysML v2: `part def UAV_RBF_Key`
+
+#### 4.7.88 Warhead Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Modular warhead with HE, HEAT and thermobaric options. Its declared interface scope covers ESAD payload cable; 1.5 mm HEX screw terminals; mounting brackets and retaining rings.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: ESAD payload cable; 1.5 mm HEX screw terminals; mounting brackets and retaining rings. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: 5 kg (AST value). Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Modular warhead with HE, HEAT and thermobaric options within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Lethal-effect containment: the modular HE, HEAT or thermobaric warhead is initiated only through the ESAD payload cable and in-line train, with the warhead RBF number 3 interlock and ESAD safe/arm chain gating initiation.
+- **SSOT Ground Truth Mapping:** [schema/avenger-5-spec-sheet-rev3.md](../../schema/avenger-5-spec-sheet-rev3.md):31 | SysML v2: `part def Warhead`
+
+#### 4.7.89 Wing_Panel_Left_Lower Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Left lower wing panel. Its declared interface scope covers Wing mounting bracket; M6 x 30 mm bolts; RF cable routing around hinge.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Wing mounting bracket; M6 x 30 mm bolts; RF cable routing around hinge. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Left lower wing panel within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Flight-control structural containment: the panel is bolted to the wing mounting bracket and routes the RF cable around the hinge, so panel loss is bounded by the remaining wing structure.
+- **SSOT Ground Truth Mapping:** [schema/a5-user-manual-2.md](../../schema/a5-user-manual-2.md):272 | SysML v2: `part def Wing_Panel_Left_Lower`
+
+#### 4.7.90 Wing_Panel_Left_Upper Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Left upper wing panel. Its declared interface scope covers Wing mounting bracket; M6 x 30 mm bolts; RF cable routing around hinge.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Wing mounting bracket; M6 x 30 mm bolts; RF cable routing around hinge. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Left upper wing panel within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Flight-control structural containment: the panel is bolted to the wing mounting bracket and routes the RF cable around the hinge, so panel loss is bounded by the remaining wing structure.
+- **SSOT Ground Truth Mapping:** [schema/a5-user-manual-2.md](../../schema/a5-user-manual-2.md):272 | SysML v2: `part def Wing_Panel_Left_Upper`
+
+#### 4.7.91 Wing_Panel_Right_Lower Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Right lower wing panel. Its declared interface scope covers Wing mounting bracket; M6 x 30 mm bolts; RF cable routing around hinge.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Wing mounting bracket; M6 x 30 mm bolts; RF cable routing around hinge. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Right lower wing panel within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Flight-control structural containment: the panel is bolted to the wing mounting bracket and routes the RF cable around the hinge, so panel loss is bounded by the remaining wing structure.
+- **SSOT Ground Truth Mapping:** [schema/a5-user-manual-2.md](../../schema/a5-user-manual-2.md):272 | SysML v2: `part def Wing_Panel_Right_Lower`
+
+#### 4.7.92 Wing_Panel_Right_Upper Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Right upper wing panel. Its declared interface scope covers Wing mounting bracket; M6 x 30 mm bolts; RF cable routing around hinge.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Wing mounting bracket; M6 x 30 mm bolts; RF cable routing around hinge. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Right upper wing panel within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Flight-control structural containment: the panel is bolted to the wing mounting bracket and routes the RF cable around the hinge, so panel loss is bounded by the remaining wing structure.
+- **SSOT Ground Truth Mapping:** [schema/a5-user-manual-2.md](../../schema/a5-user-manual-2.md):272 | SysML v2: `part def Wing_Panel_Right_Upper`
+
+#### 4.7.93 Wing_Servo_5 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Left-up wing servo, HV6160-DroneCAN, roll stabilization. Its declared interface scope covers CAN 2 series daisy chain through splitter PCB; Servo power 8 V.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: CAN 2 series daisy chain through splitter PCB; Servo power 8 V. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Left-up wing servo, HV6160-DroneCAN, roll stabilization within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Roll-control failure containment: the servo is one CAN 2 series segment with an 8 V feed, and the remaining servos preserve roll authority after a single segment failure.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):28 | SysML v2: `part def Wing_Servo_5`
+
+#### 4.7.94 Wing_Servo_6 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Right-up wing servo, HV6160-DroneCAN, roll stabilization. Its declared interface scope covers CAN 2 series daisy chain through splitter PCB; Servo power 8 V.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: CAN 2 series daisy chain through splitter PCB; Servo power 8 V. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Right-up wing servo, HV6160-DroneCAN, roll stabilization within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Roll-control failure containment: the servo is one CAN 2 series segment with an 8 V feed, and the remaining servos preserve roll authority after a single segment failure.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):29 | SysML v2: `part def Wing_Servo_6`
+
+#### 4.7.95 Wing_Servo_7 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Right-down wing servo, HV6160-DroneCAN, roll stabilization. Its declared interface scope covers CAN 2 series daisy chain through splitter PCB; Servo power 8 V.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: CAN 2 series daisy chain through splitter PCB; Servo power 8 V. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Right-down wing servo, HV6160-DroneCAN, roll stabilization within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Roll-control failure containment: the servo is one CAN 2 series segment with an 8 V feed, and the remaining servos preserve roll authority after a single segment failure.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):30 | SysML v2: `part def Wing_Servo_7`
+
+#### 4.7.96 Wing_Servo_8 Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Left-down wing servo, HV6160-DroneCAN, roll stabilization. Its declared interface scope covers CAN 2 series daisy chain through splitter PCB; Servo power 8 V.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: CAN 2 series daisy chain through splitter PCB; Servo power 8 V. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Left-down wing servo, HV6160-DroneCAN, roll stabilization within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Roll-control failure containment: the servo is one CAN 2 series segment with an 8 V feed, and the remaining servos preserve roll authority after a single segment failure.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):31 | SysML v2: `part def Wing_Servo_8`
+
+#### 4.7.97 Wings Subsystem Architecture
+- **Functional Purpose & Scope:** Implements the AST-declared component role: Wing assembly boundary with four wing panels and Servos #5 to #8. Its declared interface scope covers Wing mounting brackets; four panels; CAN 2 series chain; Servo power 8 V.
+- **Physical & Logical Interface / Port Allocations:** AST interface items: Wing mounting brackets; four panels; CAN 2 series chain; Servo power 8 V. No ports declared in AST.
+- **Power, Mass & Resource Envelopes:** Mass: Not stated in OEM sources. Power: Not stated in OEM sources.
+- **Operational Role & Statechart Integration:** Serves as Wing assembly boundary with four wing panels and Servos #5 to #8 within the declared system boundary. No dedicated statechart in AST.
+- **Safety Invariants, Containment Interlocks & FMECA Linkage:** Flight-control containment: the wing boundary groups four panels and Servos #5 to #8 on a series CAN 2 chain, so one panel or servo failure does not remove all roll authority.
+- **SSOT Ground Truth Mapping:** [schema/avenger_v2_5_sysml_v2_ingestion.md](../../schema/avenger_v2_5_sysml_v2_ingestion.md):27 | SysML v2: `part def Wings`
+
+| Attribute | Specification Detail |
+| :--- | :--- |
 
 ## 5. Operational State Space, Boundary Containment & Risk Assessment
 
-### 5.1 Operational State Space Formulation & Boundary Containment Mathematics
-The system operational domain is formally defined as a bounded multi-dimensional Operational State Space $\Omega_{\mathrm{state}} \subset \mathbb{R}^n$, bounded by physical, environmental, and operational parameter limits $\mathbf{X}_{\mathrm{boundary}} = [\mathbf{x}_{\mathrm{min}}, \mathbf{x}_{\mathrm{max}}]^\top$. The total operational envelope consists of the nominal operational geometry, the contingency envelope, and the containment risk buffer:
+### 5.1 Operational State Space Formulation
+
+The operational state space is a 4D volume spanning horizontal position, vertical position, and mission time. The 4D boundary containment formulation defines the state vector over the declared operational domain, with every numeric boundary anchored to the Level 0 parametric limits or explicitly recorded as silent in the OEM sources.
 
 $$
 \begin{aligned}
-\Omega_{\mathrm{state}} &\subset \mathbb{R}^n \\
-\mathbf{X}_{\mathrm{boundary}} &= [\mathbf{x}_{\mathrm{min}}, \mathbf{x}_{\mathrm{max}}]^\top \\
-V_{\mathrm{operational}} &= V_{\mathrm{nominal}} \cup V_{\mathrm{contingency}} \cup V_{\mathrm{buffer}} \\
-R_{\mathrm{buffer}} &= v_{\mathrm{max}} \cdot t_{\mathrm{resp}} + \frac{v_{\mathrm{max}}^2}{2 \cdot a_{\mathrm{decel}}} + d_{\mathrm{margin}}
+\mathbf{s}(t) &= \left[x(t), y(t), z(t), t\right]^{\top} \\
+\Omega_{\mathrm{state}} &= \left\{ \mathbf{s}(t) \mid x(t)^2 + y(t)^2 \le R_{\mathrm{containment}}^2,\ z_{\mathrm{min}} \le z(t) \le z_{\mathrm{max}},\ 0 \le t \le T_{\mathrm{endurance}} \right\}
 \end{aligned}
 $$
 
-- Parameter Definitions & Engineering Units:
-
-| Parameter | Symbol | Units | Constraint / Derivation Rule | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| Max State Coordinate Limit | x_max | m | x_max <= x_operational_max | Maximum upper boundary limit in operational state space |
-| Maximum Operational Velocity | v_max | m/s | v_max <= v_envelope_max | Maximum operational velocity in state space |
-| Containment Response Time | t_resp | s | t_resp <= tau_containment_req | Maximum duration from anomaly detection to actuator containment execution |
-| Deceleration / Dissipation Rate | a_decel | m/s^2 | a_decel >= a_decel_min | Minimum deceleration capability under active braking / energy dissipation |
-| Containment Buffer Margin | d_margin | m | d_margin >= d_margin_min | Margin accounting for state estimation uncertainty and dynamic disturbances |
-| Containment Buffer Radius | R_buffer | m | R_buffer >= R_buffer_min | Declared lateral containment buffer radius |
-| System Total Mass | m_system | kg | m_system <= m_system_max | Total operational mass of the cyber-physical system |
-| Terminal Velocity | v_terminal | m/s | v_terminal = sqrt(2 * m_system * g / (rho * C_D * A_ref)) | Maximum unpowered / unconstrained terminal velocity |
-| Kinetic / Boundary Energy | E_k | J | E_k = 0.5 * m_system * v_terminal^2 | Kinetic energy at operational boundary impact |
-| Risk Classification | RC | Dimensionless | RC in {RC-1, ..., RC-7} | Intrinsic operational risk class rating |
-
-The symbolic derivation for $R_{\mathrm{buffer}}$ accounts for:
-- Reaction translation during anomaly detection and command execution: $d_{\mathrm{reaction}} = v_{\mathrm{max}} \cdot t_{\mathrm{resp}}$
-- Dynamic braking deceleration distance: $d_{\mathrm{decel}} = \frac{v_{\mathrm{max}}^2}{2 \cdot a_{\mathrm{decel}}}$
-- Margin for state estimator uncertainty and ambient dynamic disturbances: $d_{\mathrm{margin}}$
-- Declared $R_{\mathrm{buffer}}$ satisfies $R_{\mathrm{buffer}} \ge d_{\mathrm{reaction}} + d_{\mathrm{decel}} + d_{\mathrm{margin}}$, providing a mathematically verified containment envelope.
-
-### 5.1.1 Ground Risk Buffer Parametric Wind Sensitivity Analysis
-Under JARUS SORA v2.5 Annex B guidelines, the Ground Risk Buffer ($R_{\mathrm{buffer}}$) must account for worst-case ballistic descent dynamics, aerodynamic wind drift displacement, and lateral glide margins across the operational environmental envelope:
+The horizontal containment radius is the sum of the minimum required operational radius and a declared containment buffer. The buffer is retained as an explicit margin term rather than folded into the operational radius.
 
 $$
 \begin{aligned}
-t_{\mathrm{fall}} &= \sqrt{\frac{2 h_{\mathrm{max}}}{g}} \\
-d_{\mathrm{wind}} &= v_{\mathrm{wind}} \cdot t_{\mathrm{fall}} = v_{\mathrm{wind}} \cdot \sqrt{\frac{2 h_{\mathrm{max}}}{g}} \\
-d_{\mathrm{impact}} &= h_{\mathrm{max}} \cdot \tan(\theta_{\mathrm{impact}}) + d_{\mathrm{wind}} + d_{\mathrm{glide,max}} \\
-\Delta R &= R_{\mathrm{buffer}} - d_{\mathrm{impact}}
-\end{aligned}
-$$
-
-- Parameter Definitions & Engineering Units:
-- $t_{\mathrm{fall}}$: Ballistic free-fall duration from maximum operational altitude $h_{\mathrm{max}}$ to ground plane under gravitational acceleration $g$.
-- $d_{\mathrm{wind}}$: Lateral aerodynamic wind drift distance driven by crosswind speed $v_{\mathrm{wind}}$ over fall duration $t_{\mathrm{fall}}$.
-- $d_{\mathrm{impact}}$: Total impact trajectory radius combining ballistic ground displacement ($h_{\mathrm{max}} \cdot \tan(\theta_{\mathrm{impact}})$ with 1:1 rule $\theta_{\mathrm{impact}} = 45^\circ$), wind drift distance $d_{\mathrm{wind}}$, and maximum glide margin $d_{\mathrm{glide,max}}$.
-- $\Delta R$: Containment safety margin between declared containment buffer $R_{\mathrm{buffer}}$ and total impact radius $d_{\mathrm{impact}}$. A positive margin ($\Delta R \ge 0$) guarantees zero-breach containment.
-
-The parametric wind sensitivity sweep across the declared operational wind envelope ($0\text{ m/s}$ to $20\text{ m/s}$ in $5\text{ m/s}$ increments) for nominal ceiling $h_{\mathrm{max}} = 120.0\text{ m}$, $\theta_{\mathrm{impact}} = 45.0^\circ$, $g = 9.80665\text{ m/s}^2$, $d_{\mathrm{glide,max}} = 0.0\text{ m}$, and declared $R_{\mathrm{buffer}} = 200.0\text{ m}$ is evaluated below:
-
-| Wind Speed v_wind (m/s) | Ballistic Fall Time t_fall (s) | Wind Drift Distance d_wind (m) | Total Impact Trajectory Radius d_impact (m) | Declared Buffer Radius R_buffer (m) | Containment Margin ΔR (m) | Containment Compliance Status |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| 0.0 | 4.95 | 0.0 | 120.0 | 200.0 | +80.0 | Nominal (Compliant - Zero Wind Baseline) |
-| 5.0 | 4.95 | 24.7 | 144.7 | 200.0 | +55.3 | Nominal (Compliant - Light Breeze) |
-| 10.0 | 4.95 | 49.5 | 169.5 | 200.0 | +30.5 | Nominal (Compliant - Moderate Wind) |
-| 15.0 | 4.95 | 74.2 | 194.2 | 200.0 | +5.8 | Marginal (Compliant - Maximum Operational Limit) |
-| 20.0 | 4.95 | 98.9 | 218.9 | 200.0 | -18.9 | Non-Compliant (Breach - Exceeds Operational Envelope) |
-
-### 5.2 Intrinsic Risk Classification & Kinetic Impact Energy Physics Derivations
-1. **Intrinsic Risk Classification (Initial RC):**
-   - Maximum characteristic physical dimension: $L_{\mathrm{char}}$.
-   - Nominal operational velocity: $v_{\mathrm{nominal}}$.
-   - Operational context: Controlled perimeter with adjacent low-occupancy zones.
-   - Intrinsic Risk Class: Mapped to risk class rating per system safety guidelines and JARUS SORA v2.5 Annex B.
-
-2. **Kinetic Impact Energy Physics Derivations:**
-
-   - **Unmitigated Free-Fall Kinetic Impact Derivation:**
-     At unconstrained ballistic terminal velocity, the downward gravitational force equals the aerodynamic drag force ($F_g = F_D$):
-     $$m g = \frac{1}{2} \rho S_{\mathrm{ref}} C_D v_{\mathrm{terminal,unmitigated}}^2$$
-     Solving for terminal velocity and substituting into the kinetic energy formulation yields:
-
-$$
-\begin{aligned}
-v_{\mathrm{terminal,unmitigated}} &= \sqrt{\frac{2mg}{\rho S_{\mathrm{ref}} C_D}} \\
-E_{k,\mathrm{unmitigated}} &= \frac{1}{2} m v_{\mathrm{terminal,unmitigated}}^2 = \frac{1}{2} m \left( \frac{2mg}{\rho S_{\mathrm{ref}} C_D} \right) = \frac{m^2 g}{\rho S_{\mathrm{ref}} C_D}
-\end{aligned}
-$$
-   - **Aerodynamic Descent Equilibrium Derivation:**
-     Under failsafe parachute deployment and canopy inflation, steady-state aerodynamic drag counterbalances gravitational force ($F_g = F_{D,parachute}$), establishing terminal descent equilibrium:
-
-$$
-\begin{aligned}
-m g &= \frac{1}{2} \rho S_{\mathrm{canopy}} C_{d,\mathrm{parachute}} v_{\mathrm{terminal,parachute}}^2 \\
-v_{\mathrm{terminal,parachute}} &= \sqrt{\frac{2mg}{\rho S_{\mathrm{canopy}} C_{d,\mathrm{parachute}}}}
-\end{aligned}
-$$
-
-   - **Failsafe-Mitigated Kinetic Impact Energy:**
-     Substituting the equilibrium descent velocity into the kinetic energy formulation gives the failsafe-mitigated impact energy:
-
-$$
-\begin{aligned}
-E_{k,\mathrm{mitigated}} &= \frac{1}{2} m v_{\mathrm{terminal,parachute}}^2
+R_{\mathrm{containment}} &= R_{\mathrm{min}} + R_{\mathrm{buffer}} \\
+R_{\mathrm{containment}} &\ge R_{\mathrm{min}} \\
+T_{\mathrm{boundary}} &= \frac{R_{\mathrm{min}}}{v_{\mathrm{max}}} \\
+E_{k} &= \frac{1}{2} m v_{\mathrm{dive}}^2
 \end{aligned}
 $$
 
@@ -701,199 +1770,296 @@ $$
 
 | Parameter | Symbol | Nominal Value | Units | Constraint / Derivation Rule | Description |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| System Operational Mass | m | 20.0 | kg | m <= m_max | Total cyber-physical system mass at launch |
-| Gravitational Acceleration | g | 9.80665 | m/s^2 | g = 9.80665 | Standard gravitational acceleration constant |
-| Atmospheric Air Density | rho | 1.225 | kg/m^3 | rho >= rho_min | Sea-level standard atmospheric air density (ISA) |
-| Unmitigated Reference Area | S_ref | 0.15 | m^2 | S_ref > 0 | Frontal aerodynamic reference cross-sectional area |
-| Unmitigated Drag Coefficient | C_D | 0.45 | Dimensionless | C_D >= 0.30 | Characteristic unmitigated vehicle aerodynamic drag coefficient |
-| Unmitigated Terminal Velocity | v_terminal_unmitigated | 27.6 | m/s | v_terminal_unmitigated = sqrt(2*m*g / (rho*S_ref*C_D)) | Free-fall unconstrained terminal descent velocity |
-| Unmitigated Kinetic Energy | E_k_unmitigated | 9522.5 | J | E_k_unmitigated = (m^2 * g) / (rho * S_ref * C_D) | Total unmitigated ground impact kinetic energy |
-| Parachute Canopy Area | S_canopy | 168.37 | m^2 | S_canopy >= S_canopy_min | Deployed emergency recovery canopy surface area |
-| Parachute Drag Coefficient | C_d_parachute | 1.75 | Dimensionless | C_d_parachute >= 1.50 | Deployed canopy aerodynamic drag coefficient |
-| Parachute Terminal Velocity | v_terminal_parachute | 1.04 | m/s | v_terminal_parachute = sqrt(2*m*g / (rho*S_canopy*C_d_parachute)) <= 1.65 | Equilibrium descent velocity (<= 1.65 m/s) |
-| Mitigated Kinetic Energy | E_k_mitigated | 10.8 | J | E_k_mitigated = 0.5 * m * v_terminal_parachute^2 <= 34.0 | Failsafe-mitigated impact kinetic energy (<= 34.0 J) |
-| Regulatory Energy Threshold | E_threshold | 34.0 | J | E_threshold = 34.0 | Regulatory maximum kinetic energy threshold for low ground risk classification |
+| Minimum Containment Radius | R_min | 300 m | m | R_min = 300 m (PL-37) | Minimum operational containment radius anchored to the declared loiter radius |
+| Containment Buffer | R_buffer | Not stated in OEM sources | m | R_buffer >= 0 m | Additional margin outside the minimum containment radius; OEM sources do not state a numeric buffer |
+| Containment Radius | R_containment | R_min + R_buffer | m | R_containment >= R_min | Achieved containment radius evaluated against the minimum required radius |
+| Minimum Mission Altitude | z_min | 50 m | m | z_min = 50 m (PL-36) | Lower vertical boundary of the operational state space |
+| Maximum Mission Altitude | z_max | Not stated in OEM sources | m | z_max >= z_min | Upper vertical boundary; OEM sources do not state a maximum altitude |
+| Flight Endurance | T_endurance | 90 min | min | T_endurance <= 90 min (PL-06) | Temporal extent of the operational state space |
+| Maximum Horizontal Speed | v_max | 38 m/s | m/s | v_max = 38 m/s (PL-02) | Maximum horizontal speed used for the time-to-boundary evaluation |
+| Minimum Flight Speed | v_min | 26 m/s | m/s | v_min = 26 m/s (PL-05) | Lower airspeed boundary of the operational state space |
+| Maximum Dive Speed | v_dive | 55 m/s | m/s | v_dive = 55 m/s (PL-03) | Maximum dive speed used for the kinetic energy evaluation |
+| Maximum Dive Angle | theta_dive | 22 deg | deg | theta_dive = 22 deg (PL-04) | Maximum dive angle used for vertical trajectory bounding |
+| Maximum Take-Off Mass | m | 17 kg | kg | m <= 17 kg (PL-12) | Maximum take-off mass used for the kinetic energy evaluation |
+| Warhead Mass | m_warhead | 5 kg | kg | m_warhead <= 5 kg (PL-13) | Maximum warhead mass carried inside the lethal package |
+| Time to Boundary at Maximum Horizontal Speed | T_boundary | 7.89 s | s | Derived from PL-37 and PL-02 via time-to-boundary relation | Time available before the minimum containment radius is reached at maximum horizontal speed |
+| Kinetic Energy at Maximum Dive Speed | E_k | 25712.5 J | J | Derived from PL-12 and PL-03 via kinetic energy relation | Worst-case translational kinetic energy at the maximum declared dive speed |
 
-3. **Kinetic Energy Threshold Compliance ($E_k \le E_{\mathrm{threshold}}$):**
-   - Unmitigated free-fall kinetic energy ($E_{k,\mathrm{unmitigated}} = 9522.5\text{ J}$) exceeds the low-risk kinetic energy threshold ($E_{\mathrm{threshold}} = 34.0\text{ J}$), mandating certified safety mitigations (M1–M3) and autonomous containment mechanisms per JARUS SORA v2.5.
-   - Autonomous emergency parachute actuation reduces the terminal descent velocity to $v_{\mathrm{terminal,parachute}} \le 1.65\text{ m/s}$, capping the ground impact kinetic energy to $E_{k,\mathrm{mitigated}} \le 34.0\text{ J}$, fulfilling the high-assurance energy containment criteria.
+### 5.2 Boundary Containment Margin
 
-### 5.2.1 Domain-Specific Multi-Physics Failsafe Containment Architectures
-For multi-domain operations across non-aerial and aerial platforms, containment mechanisms are tailored to the physical operating medium:
-1. **Terrestrial Ground & Rail Containment:**
-   - Mechanical emergency stop (e-stop) actuation and pneumatic train brake pipe venting (rapid pressure reduction from $5.0\text{ bar}$ nominal to $0.0\text{ bar}$ atmospheric venting).
-   - Spring-applied, pressure-released fail-safe mechanical friction calipers providing deterministic stopping deceleration ($a_{\mathrm{decel}} \ge 1.5\text{ m/s}^2$).
-2. **Subsea & Maritime Autonomous Containment:**
-   - Galvanic timed drop-weight release mechanisms and hydrostatic passive buoyancy ascent chambers.
-   - Closed-loop ballast expulsion reducing descent velocity to zero and returning system safely to surface baseline.
-3. **Space LEO Constellation Containment:**
-   - Cold-gas thruster retro-burn perigee lowering for controlled atmospheric demise and passivation (zero residual stored energy / battery disconnect).
-4. **Aerial UAS & eVTOL Failsafe Containment:**
-   - Autonomous flight termination unit (FTU) with ballistic parachute ejection ($t_{\mathrm{deploy}} \le 0.5\text{ s}$) and motor drive power isolation.
+The containment margin is the difference between the achieved containment radius and the minimum required radius. A non-negative margin is the mandatory containment condition. The condition is evaluated in the horizontal plane, with the vertical and temporal boundaries enforced independently.
 
----
+$$
+\begin{aligned}
+M_{\mathrm{containment}} &= R_{\mathrm{containment}} - R_{\mathrm{min}} = R_{\mathrm{buffer}} \\
+M_{\mathrm{containment}} &\ge 0 \\
+R_{\mathrm{containment}} &\ge R_{\mathrm{min}}
+\end{aligned}
+$$
 
-### 5.3 System Level Emergency Failsafe Containment Mechanism
-To guarantee robust ground and operational safety across all operating states, the system incorporates certified emergency containment mechanisms:
-1. **Primary Containment Triggering:**
-   - Continuous geofence boundary monitoring at frequency $f \ge 50\text{ Hz}$.
-   - Independent safety watchdog triggering ballistic parachute deployment ($v_{\mathrm{terminal,parachute}}}} \le 1.65\text{ m/s}$, $E_{k,\mathrm{mitigated}} \le 34.0\text{ J}$).
-2. **Subsea & Maritime Containment:**
-   - Inherent positive buoyancy reserve ($B_{\mathrm{net}} \ge 0.05 \cdot W_{\mathrm{dry}}$) ensuring unpowered passive ascent to surface.
-   - Galvanic / electromagnetic drop-weight ballast release mechanism providing fail-safe positive buoyant ascent upon electrical power loss or depth threshold exceedance.
-3. **Space & Orbital Containment:**
-   - Autonomous orbital de-orbit burn execution using dedicated delta-V propellant reserve ($\Delta v_{\mathrm{deorbit}}$).
-   - Passivated reaction wheels (spin-down to zero angular momentum), high-voltage battery discharge passivation, and solar array feathered orientation to eliminate orbital fragmentation risks.
-4. **Aerial & UAS Atmospheric Containment (for platforms with $h_{\mathrm{max}} > 0$):**
-   - Independent safety watchdog triggering ballistic parachute deployment ($v_{\mathrm{terminal,parachute}}}} \le 1.65\text{ m/s}$, $E_{k,\mathrm{mitigated}} \le 34.0\text{ J}$).
-   - Autonomous motor power bus disconnect preventing uncommanded powered trajectory excursions.
+The containment condition is satisfied when the declared buffer is non-negative. The OEM sources do not state a numeric buffer, so the numeric margin remains an operator-declared parameter and is not credited as a fixed OEM value. The minimum containment radius is anchored to the PL-37 loiter radius of 300 m, and the time to boundary at the PL-02 maximum horizontal speed of 38 m/s is 7.89 s. The vertical lower boundary is anchored to the PL-36 minimum mission waypoint altitude of 50 m; the upper vertical boundary is not stated in OEM sources.
 
-### 5.3 Strategic Deconfliction & State Separation
-- **Strategic Boundary Mitigations:**
-  1. Mandatory operational plan registry with external coordination services prior to mission start.
-  2. Electronic Conspicuity & State Telemetry: Continuous broadcast of system position, velocity vector, and operational status at standard periodic rates.
-  3. Tactical Environmental Surveillance: Continuous multi-sensor situational awareness monitoring surrounding state space.
+### 5.3 Risk Assessment
 
-### 5.4 SORA Ground Risk Mitigations (M1–M3)
-In accordance with JARUS SORA v2.5 Annex B (§2.1–§2.3), Ground Risk Class (GRC) mitigations are systematically categorized across strategic isolation (M1), ground impact effects reduction (M2), and emergency response planning (M3):
+Risk assessment follows the SORA ground and air risk framework for the ground-risk mitigations, the SAE ARP4761 functional hazard assessment for severity classification, and the MIL-STD-882E risk matrix for probability and severity pairing. The intrinsic Ground Risk Class and Air Risk Class are not stated in OEM sources; no numeric GRC or ARC is claimed here.
 
-| Mitigation Code | SORA Mitigation Category | Technical Implementation Mechanism & Architecture | Assurance Level | Robustness & Integrity Level | GRC Reduction Credit | Public Clause Citation |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **M1.A** | Strategic Ground Risk Mitigation | Operational scheduling during verified low-density time windows with passive signage. | Low | Declared protocol with basic operational logbook auditing. | -1 GRC | JARUS SORA v2.5 Annex B §2.1 |
-| **M1.B** | Strategic Ground Risk Mitigation | Physical perimeter isolation, access control checkpoints, and active buffer surveillance. | Medium | Audited perimeter control with active personnel exclusion. | -2 GRC | JARUS SORA v2.5 Annex B §2.1 |
-| **M1.C** | Strategic Ground Risk Mitigation | Enclosed access-controlled operational test range with hard fencing, security interlocks, and 0 non-participants. | High | Third-party audited physical containment with zero non-participant access. | -2 GRC | JARUS SORA v2.5 Annex B §2.1 |
-| **M2.A** | Impact Dynamics Mitigation | Impact-resistant frangible structures and energy-attenuating landing gear geometries. | Low | Empirical impact testing demonstrating controlled energy absorption. | -1 GRC | JARUS SORA v2.5 Annex B §2.2 |
-| **M2.B** | Impact Dynamics Mitigation | Autonomous emergency parachute recovery system actuating in t_deploy <= tau_deploy_max, reducing v_terminal <= 3.0 m/s. | Medium | Dual-channel sensor trigger with independent backup battery pack. | -1 GRC | JARUS SORA v2.5 Annex B §2.2 |
-| **M2.C** | Impact Dynamics Mitigation | Certified emergency parachute recovery system (ASTM F3322-18 / RTCA DO-178C DAL-C) ensuring v_terminal <= 1.65 m/s and E_k_mitigated <= 34.0 J. | High | Fully independent flight termination watchdog, ballistic ejection, and certified compliance. | -2 GRC | JARUS SORA v2.5 Annex B §2.2 |Annex B §2.2 |
-| **M3.A** | Emergency Response Plan (ERP) | Basic operator emergency checklist detailing notification phone numbers and rally points. | Low | Self-declared operational procedure without rehearsal. | 0 GRC (Prerequisite) | JARUS SORA v2.5 Annex B §2.3 |
-| **M3.B** | Emergency Response Plan (ERP) | Formal ERP coordinated with local emergency response services, defined divert landing sites, and trained personnel. | Medium | Validated ERP with annual multi-agency tabletop drills and direct coordinator link. | -1 GRC | JARUS SORA v2.5 Annex B §2.3 |
-| **M3.C** | Emergency Response Plan (ERP) | Integrated ERP with automated first-responder alerting API, multi-channel satellite emergency beacon (EMG-07), and certified emergency response team. | High | Live drill validated with competent emergency authorities, full mock incident execution, and automated rescue telemetry. | -1 GRC | JARUS SORA v2.5 Annex B §2.3 |
+| Risk ID | Hazard | Cause | Consequence | Severity | Probability | Mitigation | Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| RSK-01 | Loss of horizontal containment | Navigation error, control surface degradation, or C2 link loss | Air vehicle exits the declared containment radius | Catastrophic | Not stated in OEM sources | Minimum containment radius, containment buffer, and R_containment >= R_min condition | SAE ARP4761 Section 4.3.1; JARUS SORA v2.5 Annex E Section E.14 |
+| RSK-02 | Loss of vertical containment | Undetected descent below the minimum mission altitude or uncommanded climb | Air vehicle enters an uncontrolled vertical segment | Catastrophic | Not stated in OEM sources | z_min boundary at 50 m (PL-36) and operator altitude monitoring | SAE ARP4761 Section 4.3.1; JARUS SORA v2.5 Annex E Section E.14 |
+| RSK-03 | Ground impact at maximum dive speed | Loss of control authority during a dive | Ground impact at the maximum declared dive speed of 55 m/s (PL-03) | Catastrophic | Not stated in OEM sources | Operational speed limiting and containment boundary enforcement | MIL-STD-882E risk matrix; SAE ARP4761 Section 4.3.1 |
+| RSK-04 | Uncommanded lethal package initiation | ESAD fault, unauthorized command, or interlock defeat | Warhead initiation outside the authorized engagement condition | Catastrophic | Not stated in OEM sources | ESAD (Critical, DAL-A) safety and arming interlocks | MIL-STD-882E Task 208 Section 4.2; DoD Directive 3000.09 Section 3.1.b |
+| RSK-05 | Loss of C2 link during containment | RF link degradation or jamming | Loss of supervisory authority while the air vehicle is inside the containment volume | Catastrophic | Not stated in OEM sources | C2 link loss procedures and deterministic containment behavior | RTCA DO-362A Section 3.4; JARUS SORA v2.5 Annex E Section E.6 |
+| RSK-06 | Ruddervator (drawing synonym Fins; preparation synonym tail stabiliser) control degradation | Servo fault or control surface jam | Reduced pitch and yaw authority | Catastrophic | Not stated in OEM sources | Four Ruddervator units (PL-14) and pre-flight control checks | MIL-STD-882E Task 205 Section 4.2; SAE ARP4761 Section 4.3.3 |
+| RSK-07 | Parachute deployment unavailable in the mission baseline | Parachute Deployment Non-Mission is configuration: non-mission and baseline: false | No parachute credit is available for ground-risk reduction in the mission baseline | Catastrophic | Not stated in OEM sources | Strategic isolation and emergency response planning; no M2 parachute credit is claimed | JARUS SORA v2.5 Annex B Section B.2; oem_bom.md:47 |
 
-### 5.5 Containment Margins & Dynamic Exclusion Buffers
-To guarantee zero-breach containment of the operational state space:
-- **Soft Warning Boundary:** Positioned $d_{\text{warning\_buffer}}$ inboard of the primary operational boundary. Reaching this threshold triggers an automated trajectory correction and visual/acoustic alert on the operator console.
-- **Hard Containment Boundary:** The outer edge of the contingency state space. Crossing this threshold activates trigger `EMG-05`, initiating an immediate autonomous maximum-rate boundary reversal maneuver.
-- **Buffer Retention Margin:** The containment buffer ($R_{\mathrm{buffer}}$) guarantees that in the event of unrecoverable actuation or control loss at maximum boundary speed under worst-case disturbances, all system states remain strictly confined within the declared buffer zone.
+The risk assessment records the following bounded observations:
+
+- The maximum take-off mass is 17 kg (PL-12), and the maximum warhead mass is 5 kg (PL-13). The lethal package therefore remains the dominant consequence driver.
+- The worst-case translational kinetic energy at the maximum dive speed is 25712.5 J, derived from the PL-12 mass of 17 kg and the PL-03 dive speed of 55 m/s. This value excludes rotational energy and any warhead energetic contribution; the OEM sources do not state either quantity.
+- The ESAD is classified as Critical with DAL-A assurance in the OEM bill of materials. The ESAD remains the primary safety-critical item for the lethal package.
+- The Parachute Deployment Non-Mission item is configuration: non-mission and baseline: false. It is therefore excluded from mission-baseline ground-risk mitigation credit.
+- The intrinsic Ground Risk Class and Air Risk Class are not stated in OEM sources. The SORA mitigation credit is therefore limited to the mitigations that can be evidenced without a parachute credit.
+
+### 5.4 Containment Controls and OEM Silence Register
+
+The containment controls are expressed as deterministic conditions on the operational state space:
+
+- Horizontal condition: the horizontal position remains inside the R_containment radius, and R_containment >= R_min is maintained.
+- Vertical condition: the altitude remains at or above the 50 m minimum mission waypoint altitude (PL-36); the maximum altitude is not stated in OEM sources.
+- Temporal condition: the mission time remains within the 90 min flight endurance (PL-06).
+- Speed condition: the air vehicle remains within the declared speed envelope bounded by the 26 m/s minimum flight speed (PL-05) and the 38 m/s maximum horizontal speed (PL-02), with the 55 m/s maximum dive speed (PL-03) treated as the worst-case risk input.
+- Safety-critical condition: the ESAD (Critical, DAL-A) remains under its safety and arming interlocks, and the lethal package is not initiated without the authorized engagement condition.
+
+OEM-silent fields retained in this unit are:
+
+- Maximum mission altitude: Not stated in OEM sources.
+- Containment buffer: Not stated in OEM sources.
+- Intrinsic Ground Risk Class: Not stated in OEM sources.
+- Intrinsic Air Risk Class: Not stated in OEM sources.
+- Risk probability values: Not stated in OEM sources.
+- Containment response time: Not stated in OEM sources.
+- Deceleration capability: Not stated in OEM sources.
+
+### Source References
+
+[1] schema/extracted/parametric_limits.md
+[2] schema/extracted/oem_bom.md
+[3] schema/extracted/interface_table.md
+[4] .pipeline/schema.sysml
+[5] docs/research/RESEARCH_INVENTORY.md
+
+| Attribute | Specification Detail |
+| :--- | :--- |
+| Title | OMG UAF Operational Activity Taxonomy |
+| Version | 1.0.0 |
+| Date | 2026-10-31 |
+| issue_id | 117 |
+| type | conops |
+| generation_mode | worker |
+| specification_source | docs/conops/units/conops/06_UAF_OPERATIONAL_ACTIVITIES.md |
+| Security Classification | RESTRICTED / DEFENSE-GRADE |
 
 ## 6. OMG UAF Operational Activity Taxonomy
 
-### 6.1 Operational Activity Decomposition
-In accordance with OMG Unified Architecture Framework (UAF) v2.0 Operational Processes (Op-Pr) and Operational Taxonomy (Op-Tx), the system operational activities are formally decomposed and allocated 100% to system performer nodes, logical subsystems, and physical resources.
+### 6.1 Scope, Taxonomy and Decomposition Method
 
-Every operational activity is bound to a machine-verifiable Gate 24 allocation tag (`/// OperationalAllocation: [OA-XX]`) and realization tag (`/// Realises: [UAF-ACT-XX]`).
+This unit defines the open-ended operational activity taxonomy for the Avenger V2.5 Autonomous Loitering Munition UAV and the PL-40 Pneumatic Catapult Launcher System. It follows OMG Unified Architecture Framework (UAF) v2.0 Operational Processes (Op-Pr) and Operational Taxonomy (Op-Tx), DoDAF v2.02 OV-5a and SV-5a, ISO/IEC/IEEE 29148:2018 Section 6.4.2, ISO/IEC/IEEE 15288:2023 Section 6.4.3, and INCOSE Systems Engineering Handbook v5.0 Section 4.3. The roster is an open-ended collection with N >= 1; new activities may be appended without renumbering or deleting existing identifiers.
 
-#### 6.1.1 DoDAF OV-5a / UAF Op-Tx Operational Activity Decomposition Tree
-The following tree specifies the top-down hierarchical decomposition of autonomous mission operations into lifecycle operational phases and granular operational activities (`OA-01` through `OA-08`) in accordance with DoDAF 2.02 OV-5a, OMG UAF v2.0 Op-Tx, and ISO/IEC/IEEE 29148 §6.4.3:
+The taxonomy separates operational intent from physical implementation. Each activity is allocated to a performer node or resource declared in the SysML v2 schema and the OEM extraction, and each activity carries the Gate 24 allocation tag required for downstream traceability. Detailed wire-level framing,and register maps remain in the Level 1C Interface Control Documents and are not repeated here.
 
-```mermaid
-flowchart TD
-    MissionOperations["Autonomous Mission Operations"]
+#### 6.1.1 UAF Operational Activity Taxonomy Categories
 
-    PhasePreOp["Pre-Operation & Health"]
-    PhaseTransit["Corridor Transit & Guidance"]
-    PhaseMission["Mission Execution & Sensing"]
-    PhaseContingency["Contingency & Containment"]
-    PhaseShutdown["Recovery & Secure Shutdown"]
+| Taxonomy ID | UAF Taxonomy Category | Operational Purpose | Allocated Activities | Normative Anchor |
+| :--- | :--- | :--- | :--- | :--- |
+| T-01 | Mission Preparation and Safety Assurance | Establish launch readiness and verify safety interlocks | OA-01 | FAA 14 CFR 107.49(c); JARUS SORA v2.5 Annex E E.11 |
+| T-02 | Launch and Kinematic Execution | Accelerate, release, and fly the planned corridor | OA-02 | JARUS SORA v2.5 Annex E E.11; MIL-STD-882E System Hazard Analysis |
+| T-03 | Sense, Decide, and Target | Detect, classify, track, and navigate | OA-03, OA-09 | CJCSI 3121.01B Enclosure A Section 4.b; RTCA DO-365B Section 2.2.5.3 |
+| T-04 | Command, Control, and Information Exchange | Exchange supervisory commands, telemetry, and video | OA-04, OA-10 | RTCA DO-362A Section 2.2 and Section 3.4; NIST SP 800-82r3 Section 6.2 |
+| T-05 | Effects and Weapon Consent | Authorize and execute terminal effects | OA-05 | DoD Directive 3000.09 Section 3.1; CJCSI 3121.01B Enclosure E Section 2.d |
+| T-06 | Energy and Resource Management | Preserve energy margin and manage return thresholds | OA-06 | MIL-STD-882E System Hazard Analysis; JARUS SORA v2.5 Annex E E.24 |
+| T-07 | Contingency, Containment, and Failsafe | Detect anomalies and contain the vehicle | OA-07, OA-11 | MIL-STD-882E Task 208 Section 4.2; JARUS SORA v2.5 Annex E E.14 and E.18 |
+| T-08 | Recovery, Diagnostics, and Sustainment | Recover, safe, inspect, and archive | OA-08, OA-12 | EASA AMC1 UAS.SPEC.050 Section 4.4; JARUS SORA v2.5 Annex E E.20 |
 
-    OA01["OA-01: Pre-Operation<br/>Health Verification"]
-    OA02["OA-02: Transit &<br/>Corridor Execution"]
-    OA03["OA-03: Primary<br/>Operational Processing"]
-    OA04["OA-04: Supervisory<br/>Telemetry Exchange"]
-    OA05["OA-05: Environmental<br/>Limit Monitoring"]
-    OA06["OA-06: Energy Resource<br/>Management"]
-    OA07["OA-07: Contingency<br/>Containment Execution"]
-    OA08["OA-08: Post-Operation<br/>Secure Shutdown"]
+#### 6.1.2 UAF Operational Activity Decomposition Tree
 
-    MissionOperations --> PhasePreOp
-    MissionOperations --> PhaseTransit
-    MissionOperations --> PhaseMission
-    MissionOperations --> PhaseContingency
-    MissionOperations --> PhaseShutdown
-
-    PhasePreOp --> OA01
-    PhaseTransit --> OA02
-    PhaseMission --> OA03
-    PhaseMission --> OA04
-    PhaseMission --> OA05
-    PhaseMission --> OA06
-    PhaseContingency --> OA07
-    PhaseShutdown --> OA08
-```
-
-| Activity ID | Activity Name | Allocated Performer Node & Resource | Operational Description | Traceability & Gate 24 Allocation Tag | SSOT Ground Truth Source & Citation |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **OA-01** | `PreOperationHealthVerification` | Core Controller / Safety Watchdog | Executes power-on Built-In-Tests (PBIT), cross-checks redundant sensor biases, validates actuator end-stops, verifies cryptographic root of trust, and logs calibration status within t_PBIT <= tau_PBIT_max. | `/// OperationalAllocation: [OA-01]`<br>`/// Realises: [UAF-ACT-01]` | `SysML v2 AST: action def PreOperationHealthVerification`, `ISO/IEC/IEEE 15288:2023 §6.4.4` |
-| **OA-02** | `TransitAndCorridorExecution` | Core Controller / Guidance Subsystem | Computes and tracks multi-dimensional trajectory corridors, executes closed-loop state control at loop rate f_control, and minimizes trajectory tracking error (e_track <= epsilon_track_max). | `/// OperationalAllocation: [OA-02]`<br>`/// Realises: [UAF-ACT-02]` | `SysML v2 AST: action def TransitAndCorridorExecution`, `ISO/IEC/IEEE 15288:2023 §6.4.4` |
-| **OA-03** | `PrimaryOperationalProcessing` | Sensor Suite / Edge Processing Node | Captures system sensor data, executes deterministic feature extraction and state estimation, and formats geo-referenced state telemetry. | `/// OperationalAllocation: [OA-03]`<br>`/// Realises: [UAF-ACT-03]` | `SysML v2 AST: action def PrimaryOperationalProcessing`, `ISO/IEC/IEEE 15288:2023 §6.4.3` |
-| **OA-04** | `SupervisoryTelemetryExchange` | PACE Communications Transceiver Node | Manages bidirectional telemetry exchange, encrypts control commands, and streams consolidated system state data to the supervisory operator station. | `/// OperationalAllocation: [OA-04]`<br>`/// Realises: [UAF-ACT-04]` | `SysML v2 AST: action def SupervisoryTelemetryExchange`, `ISO/IEC/IEEE 15288:2023 §6.4.5` |
-| **OA-05** | `EnvironmentalLimitMonitoring` | Sensor Suite / Safety Watchdog | Continuously evaluates ambient thermal, mechanical, dynamic, and operational boundary parameters against operating limits at monitoring rate f_monitor. | `/// OperationalAllocation: [OA-05]`<br>`/// Realises: [UAF-ACT-05]` | `SysML v2 AST: action def EnvironmentalLimitMonitoring`, `ISO/IEC/IEEE 15288:2023 §6.4.9` |
-| **OA-06** | `EnergyResourceManagement` | Power & Resource Management Subsystem | Monitors stored energy/resource state-of-charge (SoC), computes dynamic closed-loop Bingo return thresholds, and regulates power bus distribution. | `/// OperationalAllocation: [OA-06]`<br>`/// Realises: [UAF-ACT-06]` | `SysML v2 AST: action def EnergyResourceManagement`, `ISO/IEC/IEEE 15288:2023 §6.4.4` |
-| **OA-07** | `ContingencyContainmentExecution` | Deterministic Failsafe State Machine | Detects canonical emergency triggers (`EMG-01`..`EMG-07`), arbitrates priorities, and executes deterministic containment maneuvers within t_resp <= tau_containment. | `/// OperationalAllocation: [OA-07]`<br>`/// Realises: [UAF-ACT-07]` | `SysML v2 AST: action def ContingencyContainmentExecution`, `ISO/IEC/IEEE 15288:2023 §6.4.11` |
-| **OA-08** | `PostOperationSecureShutdown` | Core Controller / Security Partition | Executes controlled deceleration to safe state, actuator power isolation, cryptographic data zeroization, and post-operation diagnostic log archival. | `/// OperationalAllocation: [OA-08]`<br>`/// Realises: [UAF-ACT-08]` | `SysML v2 AST: action def PostOperationSecureShutdown`, `ISO/IEC/IEEE 15288:2023 §6.4.14` |
-
-#### 6.1.2 DoDAF OV-5b / UAF Op-Pr Operational Activity Functional Flow Diagram
-The operational activity functional flow diagram traces the sequential, concurrent, and branching execution flow of operational activities OA-01 through OA-08 across pre-operation, corridor transit, operational execution, real-time monitoring, contingency containment, and secure shutdown:
+The following tree presents the top-down decomposition from mission operations to taxonomy categories and to the canonical operational activities. The tree is intentionally open-ended and can be extended with additional activity nodes.
 
 ```mermaid
 flowchart TD
-    StartNode(["Mission Start"]) --> OA01["OA-01: Pre-Operation<br/>Health Verification"]
+ Mission["Avenger V2.5 and PL-40<br/>Mission Operations"]
 
-    OA01 --> GatePBIT{"PBIT Status<br/>Nominal?"}
-    GatePBIT -->|Yes - Validated| OA02["OA-02: Transit &<br/>Corridor Execution"]
-    GatePBIT -->|No - Fault Latched| OA07["OA-07: Contingency<br/>Containment Execution"]
+ T01["T-01 Preparation and<br/>Safety Assurance"]
+ T02["T-02 Launch and<br/>Kinematic Execution"]
+ T03["T-03 Sense, Decide,<br/>and Target"]
+ T04["T-04 Command, Control,<br/>and Information Exchange"]
+ T05["T-05 Effects and<br/>Weapon Consent"]
+ T06["T-06 Energy and<br/>Resource Management"]
+ T07["T-07 Contingency, Containment,<br/>and Failsafe"]
+ T08["T-08 Recovery, Diagnostics,<br/>and Sustainment"]
 
-    OA02 --> ForkExec["Concurrent Execution Entry"]
-    ForkExec --> OA03["OA-03: Primary<br/>Operational Processing"]
-    ForkExec --> OA04["OA-04: Supervisory<br/>Telemetry Exchange"]
-    ForkExec --> OA05["OA-05: Environmental<br/>Limit Monitoring"]
-    ForkExec --> OA06["OA-06: Energy Resource<br/>Management"]
+ OA01["OA-01 Pre-Launch PBIT<br/>and Launcher Setup"]
+ OA02["OA-02 Catapult Launch<br/>and Transit Execution"]
+ OA03["OA-03 EO/IR Targeting<br/>and Vision Tracking"]
+ OA04["OA-04 Secure C2 Telemetry<br/>and Video Exchange"]
+ OA05["OA-05 Precision Terminal Strike<br/>and Weapon Consent"]
+ OA06["OA-06 Energy and Dynamic<br/>Bingo Management"]
+ OA07["OA-07 Contingency Containment<br/>and Parachute Deployment"]
+ OA08["OA-08 Post-Operation Diagnostics<br/>and Archival"]
+ OA09["OA-09 GNSS-Denied Navigation<br/>and Sensor Fusion"]
+ OA10["OA-10 Lost C2 Link Recovery<br/>and Autonomous Return"]
+ OA11["OA-11 Boundary Containment<br/>and Failsafe"]
+ OA12["OA-12 Launcher Recovery<br/>and Sustainment"]
 
-    OA03 --> JoinExec["Operational Synchronization"]
-    OA04 --> JoinExec
-    OA05 --> GateLimit{"Environmental<br/>Limit Nominal?"}
-    GateLimit -->|Yes - Clear| JoinExec
-    GateLimit -->|No - Excursion| OA07
+ Mission --> T01
+ Mission --> T02
+ Mission --> T03
+ Mission --> T04
+ Mission --> T05
+ Mission --> T06
+ Mission --> T07
+ Mission --> T08
 
-    OA06 --> GateEnergy{"Energy Above<br/>Bingo Threshold?"}
-    GateEnergy -->|Yes - Sufficient| JoinExec
-    GateEnergy -->|No - Depleted| OA07
-
-    JoinExec --> GateMission{"Mission Objectives<br/>Completed?"}
-    GateMission -->|Nominal Complete| OA08["OA-08: Post-Operation<br/>Secure Shutdown"]
-    GateMission -->|Continue Processing| OA03
-
-    OA07 --> OA08
-    OA08 --> EndNode(["System at Safe Rest"])
+ T01 --> OA01
+ T02 --> OA02
+ T03 --> OA03
+ T03 --> OA09
+ T04 --> OA04
+ T04 --> OA10
+ T05 --> OA05
+ T06 --> OA06
+ T07 --> OA07
+ T07 --> OA11
+ T08 --> OA08
+ T08 --> OA12
 ```
 
-### 6.2 DoDAF SV-5a / OMG UAF Op-to-Res Operational-to-Resource Allocation Matrix
-The following 2D cross-reference matrix establishes complete operational-to-resource traceability allocating canonical operational activities (`OA-01` through `OA-08`) across system performer nodes, physical subsystems/partitions, software functions/partitions, interface/bus bindings, and criticality/safety assurance levels in accordance with DoDAF 2.02 SV-5a, OMG UAF v2.0 Op-to-Res, and ISO/IEC/IEEE 15288:2023 §6.4.4:
+#### 6.1.3 Open-Ended Operational Activity Roster
 
-| Operational Activity ID | Activity Name | System Performer Node | Physical Subsystem / Partition | Software Function / Partition | Interface / Bus Binding | Criticality & Safety Level |
+Every row below is a canonical operational activity. The Gate 24 allocation tag is the machine-verifiable binding used by downstream SysML v2 blocks, state machines, and requirement units. The roster may be extended with new identifiers; existing identifiers are stable.
+
+| Activity ID | Taxonomy ID | Activity Name | Allocated Performer Node and Resource | Operational Description | Gate 24 Allocation Tag | Traceability and Source |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **OA-01** | `PreOperationHealthVerification` | Core Controller Node / Safety Watchdog Node | Main Processing Unit / Watchdog Hardware Partition | `BootBITPartition` / `HardwareIntegrityMonitor` | System Control Bus / SPI Watchdog Bus | Criticality: High (Safety-Critical) |
-| **OA-02** | `TransitAndCorridorExecution` | Core Controller Node | Guidance Computer Partition | `TrajectoryCorridorTracker` / `ClosedLoopController` | Deterministic CAN / Ethernet Bus | Criticality: High (Safety-Critical) |
-| **OA-03** | `PrimaryOperationalProcessing` | Sensor Suite Node | Edge Processing Unit | `FeatureExtractionModule` / `StateEstimator` | High-Speed Sensor Serial Link | Criticality: Medium (Mission-Critical) |
-| **OA-04** | `SupervisoryTelemetryExchange` | PACE Transceiver Node | Communications Router Partition | `TelemetryEncapsulationTask` / `CryptoManager` | Point-to-Point Datalink Bus | Criticality: Medium (Mission-Critical) |
-| **OA-05** | `EnvironmentalLimitMonitoring` | Sensor Suite Node / Safety Watchdog Node | Environmental Monitoring Unit | `BoundaryEvaluationService` / `ThresholdComparator` | Sensor Telemetry Bus | Criticality: High (Safety-Critical) |
-| **OA-06** | `EnergyResourceManagement` | Resource Management Node | Power & BMS Controller Partition | `StateOfChargeEstimator` / `BingoThresholdCalculator` | Power Distribution Bus | Criticality: High (Safety-Critical) |
-| **OA-07** | `ContingencyContainmentExecution` | Safety Watchdog Node / Core Controller Node | Deterministic Failsafe Partition | `EmergencyStateManager` / `ContainmentActuatorDriver` | Isolated Failsafe Interlock Bus | Criticality: High (Safety-Critical) |
-| **OA-08** | `PostOperationSecureShutdown` | Core Controller Node | Secure Storage & Core Controller Partition | `ActuatorIsolationService` / `LogArchivalTask` | System Maintenance Bus | Criticality: Medium (Mission-Critical) |
+| **OA-01** | T-01 | `PreLaunchPBITAndLauncherSetup` | Autopilot Stack ASTK A5 V2.5; PL-40 Compressor Unit; GCS Tablet FZ-G2 | Conducts power-on PBIT, verifies the PL-32 and PL-33 pre-flight battery voltage window, confirms the PL-35 pitot blow-test airspeed, verifies the UAV and ESAD RBF keys, and pressurizes the PL-40 pneumatic launcher to the launch-pressure parameters PL-40 and PL-41 with the PL-75 and PL-76 compressor battery. Launcher setup is bounded by PL-72. | `/// OperationalAllocation: [OA-01]`<br>`/// Realises: [UAF-ACT-01]` | SRC-01, SRC-02, SRC-03, SRC-04; FAA preflight inspection requirements; JARUS SORA v2.5 Annex E E.11 |
+| **OA-02** | T-02 | `CatapultLaunchAndTransitExecution` | PL-40 Rail; PL-40 Carriage; Autopilot Stack ASTK A5 V2.5 | Accelerates the air vehicle along the PL-93 assembled rail at the PL-66 launch angle to the PL-65 maximum launch velocity, releases the carriage, and transitions to the PL-01 cruise condition. The PL-05 minimum flight speed, PL-02 maximum horizontal speed, PL-12 maximum take-off weight, PL-64 maximum launched mass, and PL-88 trigger hold time bound the activity. OEM sources do not state a reconciliation between PL-65 and PL-05. | `/// OperationalAllocation: [OA-02]`<br>`/// Realises: [UAF-ACT-02]` | SRC-01, SRC-02, SRC-04; JARUS SORA v2.5 Annex E E.11; MIL-STD-882E System Hazard Analysis |
+| **OA-03** | T-03 | `EOIRTargetingAndVisionTracking` | Seeker and Vision Payload; Nighthawk2UZ Gimbal; Trip6 Compute Module | Points the gimbal across the PL-25 pitch range and PL-26 yaw and roll range, applies the PL-27 zoom factor, and uses the Trip6 compute module for target detection and tracking. The PL-28 to PL-31 camera resolutions, PL-42 and PL-43 target track duration, and PL-44 maximum engagement elevation bound the activity. | `/// OperationalAllocation: [OA-03]`<br>`/// Realises: [UAF-ACT-03]` | SRC-01, SRC-02, SRC-03, SRC-04; CJCSI 3121.01B Enclosure A Section 4.b; RTCA DO-365B Section 2.2.5.3 |
+| **OA-04** | T-04 | `SecureC2TelemetryAndVideoExchange` | Radio Module DTC; Radio Antenna MPSL4400 Upper and Lower; GCS Radio Box; GCS MARS Antenna; GCS Tablet FZ-G2 | Exchanges telemetry and command frames with the Panasonic FZ-G2 GCS over the RF link recorded in the interface extraction, using the DTC radio module, the MPSL4400 antennas, the GCS radio box, and the MARS 23dBi antenna. The PL-07 direct range, PL-08 extended range, PL-36 minimum waypoint altitude, PL-37 loiter radius, and PL-39 ground radio power bound the activity. | `/// OperationalAllocation: [OA-04]`<br>`/// Realises: [UAF-ACT-04]` | SRC-01, SRC-02, SRC-03, SRC-04; RTCA DO-362A Section 2.2; NIST SP 800-82r3 Section 6.2 |
+| **OA-05** | T-05 | `PrecisionTerminalStrikeAndWeaponConsent` | Lethal Package; ESAD (Critical / DAL-A); Warhead; GCS Tablet FZ-G2 | Executes terminal guidance within the PL-03 maximum dive speed, PL-04 maximum dive angle, PL-45 maximum engagement airspeed, and PL-13 warhead mass. The ESAD (Critical / DAL-A) requires explicit human authorization before arm enable and detonator firing. The activity is bounded by the PL-46 to PL-48 ESAD power window, PL-49 and PL-50 umbilical continuity, PL-54 and PL-55 arm-enable waveform, PL-56 and PL-57 RS-485 rates, and PL-60 detonator high-voltage measurement range. | `/// OperationalAllocation: [OA-05]`<br>`/// Realises: [UAF-ACT-05]` | SRC-01, SRC-02, SRC-03, SRC-04; DoD human judgement policy; CJCSI 3121.01B Enclosure E Section 2.d |
+| **OA-06** | T-06 | `EnergyAndDynamicBingoManagement` | Battery 12S2P Li Metal BEI; Power Meter; EPS Module | Monitors the PL-23 and PL-24 battery voltage window and current through the Power Meter, estimates state of charge, and evaluates the Bingo return threshold. The Bingo threshold algorithm and statutory reserve ratio are Not stated in OEM sources. The PL-06 flight endurance bounds the activity. | `/// OperationalAllocation: [OA-06]`<br>`/// Realises: [UAF-ACT-06]` | SRC-01, SRC-02, SRC-03, SRC-04; MIL-STD-882E System Hazard Analysis; JARUS SORA v2.5 Annex E E.24 |
+| **OA-07** | T-07 | `ContingencyContainmentAndParachuteDeploy` | Parachute Deployment Non-Mission; Autopilot Stack ASTK A5 V2.5; EPS Module | Detects the canonical contingency triggers defined in the ConOps contingency matrix, clamps propulsion, and on the non-mission R&D variant commands the pyrotechnic igniters to deploy the parachute. The parachute deployment module is configuration: non-mission and baseline: false. Deployment response time is Not stated in OEM sources. | `/// OperationalAllocation: [OA-07]`<br>`/// Realises: [UAF-ACT-07]` | SRC-01, SRC-02, SRC-04; MIL-STD-882E Task 208 Section 4.2; JARUS SORA v2.5 Annex E E.18; ASTM F3269-17 Section 5.3 |
+| **OA-08** | T-08 | `PostOperationDiagnosticsAndArchival` | Autopilot Stack ASTK A5 V2.5; RPI CM5004032; External Interface Board USB ETH | Secures the air vehicle after recovery, dumps diagnostic flight logs through the External Interface Board USB and Ethernet ports, records pulling-rope usage against the PL-80 replacement interval, and verifies safe mechanical state. Post-operation diagnostic duration is Not stated in OEM sources. | `/// OperationalAllocation: [OA-08]`<br>`/// Realises: [UAF-ACT-08]` | SRC-01, SRC-02, SRC-03, SRC-04; EASA AMC1 UAS.SPEC.050 Section 4.4; JARUS SORA v2.5 Annex E E.20 |
+| **OA-09** | T-03 | `GNSSDeniedNavigationAndSensorFusion` | GNSS Module Septentrio Asterx-m3 pro; Magnetometer mRo RM3100 Upper and Lower; Pitot Tube CUAV SKYE2; Autopilot Computing Board Cube Orange Plus | Maintains navigation when GNSS is degraded or unavailable by fusing the GNSS receiver, the upper and lower magnetometers, the pitot tube, and inertial state estimates over the DroneCAN CAN 2 bus. The PL-34 pitot static airspeed limit and PL-35 pitot blow-test airspeed bound the activity. GNSS-denied navigation performance bounds are Not stated in OEM sources. | `/// OperationalAllocation: [OA-09]`<br>`/// Realises: [UAF-ACT-09]` | SRC-01, SRC-02, SRC-03, SRC-04; JARUS SORA v2.5 Annex E E.13; RTCA DO-365B Section 2.2.5.3 |
+| **OA-10** | T-04 | `LostC2LinkRecoveryAndAutonomousReturn` | Radio Module DTC; Autopilot Stack ASTK A5 V2.5; GCS Radio Box | Detects loss of the primary C2 link, holds or returns autonomously, and restores the link using the available RF path. Link-loss timeout, hold duration, and reacquisition hysteresis are Not stated in OEM sources. The activity is bounded by RTCA DO-362A lost-link fallback requirements and DoD fail-safe interlock policy. | `/// OperationalAllocation: [OA-10]`<br>`/// Realises: [UAF-ACT-10]` | SRC-01, SRC-02, SRC-03; RTCA DO-362A lost-link fallback requirements; DoD fail-safe interlock policy |
+| **OA-11** | T-07 | `BoundaryContainmentAndFailsafe` | Autopilot Stack ASTK A5 V2.5; EPS Module; Parachute Deployment Non-Mission | Monitors containment boundary proximity and the canonical contingency triggers defined in the ConOps contingency matrix, and commands the deterministic failsafe state. On the non-mission R&D variant, containment may include the pyrotechnic parachute igniters; on the mission baseline the parachute is excluded. Boundary excursion distance and termination timing are Not stated in OEM sources. | `/// OperationalAllocation: [OA-11]`<br>`/// Realises: [UAF-ACT-11]` | SRC-01, SRC-02, SRC-04; JARUS SORA v2.5 Annex E E.14; ASTM F3269-17 Section 5.2 |
+| **OA-12** | T-08 | `LauncherRecoveryAndSustainment` | PL-40 Rail; PL-40 Carriage; PL-40 Pulling Rope; PL-40 Battery; PL-40 Transport Case; PL-40 Compressor Unit | Recovers the PL-40 launcher after launch, inspects the carriage, rail, and pulling rope, replaces the rope at the PL-80 interval, recharges the PL-75 and PL-76 batteries within the PL-89 and PL-90 charger windows and the PL-91 and PL-92 charging temperature window, and returns the PL-69 launcher set, PL-70 transport case, and PL-71 compressor case to service. The PL-94 disassembled rail length and PL-79 battery recovery delay bound transport and recovery. | `/// OperationalAllocation: [OA-12]`<br>`/// Realises: [UAF-ACT-12]` | SRC-01, SRC-02, SRC-04; JARUS SORA v2.5 Annex E E.11 and E.20; EASA AMC1 UAS.SPEC.050 Section 4.4 |
 
-#### 6.2.1 Performer Node Summary Table
-The following matrix demonstrates 100% allocation coverage across system nodes:
+### 6.2 Operational-to-Resource Allocation Matrix
 
-| System Performer Node | Node Type | Primary Resource | Allocated Activities |
+The following DoDAF SV-5a and OMG UAF Op-to-Res matrix allocates every canonical activity to a system performer node, physical subsystem or partition, operational function, and interface binding. The ESAD is identified as Critical / DAL-A. The parachute deployment module is identified as non-mission and is excluded from the mission baseline.
+
+| Activity ID | Activity Name | System Performer Node | Physical Subsystem or Partition | Allocated Operational Function | Interface or Bus Binding | Criticality and Safety Level |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **OA-01** | `PreLaunchPBITAndLauncherSetup` | Autopilot Stack ASTK A5 V2.5; PL-40 Compressor Unit; GCS Tablet FZ-G2 | Autopilot Computing Board Cube Orange Plus; PL-40 Compressor Unit; Safety RBF Devices | Pre-launch diagnostics and interlock verification | External USB and Ethernet; discrete interlocks; pneumatic supply | Criticality: High (Safety-Critical) |
+| **OA-02** | `CatapultLaunchAndTransitExecution` | PL-40 Rail; Autopilot Stack ASTK A5 V2.5 | PL-40 Rail; PL-40 Carriage; Ruddervator; Wings; Propulsion | Launch release and trajectory guidance | DroneCAN CAN 1 and CAN 2 buses; servo 8 V rail; pneumatic supply | Criticality: High (Safety-Critical) |
+| **OA-03** | `EOIRTargetingAndVisionTracking` | Seeker and Vision Payload | Gimbal Nighthawk2UZ; Camera Compute Module Trip6 | Gimbal pointing and target tracking | Ethernet; UART serial; HDMI | Criticality: Medium (Mission-Critical) |
+| **OA-04** | `SecureC2TelemetryAndVideoExchange` | Radio Module DTC; GCS Radio Box; GCS Tablet FZ-G2 | Radio Module DTC; Radio Antenna MPSL4400 Upper and Lower; GCS MARS Antenna | Telemetry and command exchange | RF 4.4-5.0 GHz; Ethernet; UART serial | Criticality: High (Safety-Critical) |
+| **OA-05** | `PrecisionTerminalStrikeAndWeaponConsent` | Lethal Package; GCS Tablet FZ-G2 | ESAD (Critical / DAL-A); Warhead; ESAD Sensor Board; ESAD Detonator | Human-authorized arm and initiation | RS-485 half duplex; discrete arm enable; detonator high voltage | Criticality: Catastrophic (Lethal-Critical) |
+| **OA-06** | `EnergyAndDynamicBingoManagement` | Energy and Propulsion Subsystem | Battery 12S2P Li Metal BEI; Power Meter; EPS Module | State-of-charge and Bingo evaluation | Main DC bus; DroneCAN CAN channel one | Criticality: High (Safety-Critical) |
+| **OA-07** | `ContingencyContainmentAndParachuteDeploy` | Parachute Deployment Non-Mission; Autopilot Stack ASTK A5 V2.5 | Parachute Deployment Non-Mission; Parachute Igniter 1 and Parachute Igniter 2 | Contingency containment and recovery deployment | 50 V igniter outputs; discrete triggers | Criticality: High (Non-Mission) |
+| **OA-08** | `PostOperationDiagnosticsAndArchival` | Autopilot Stack ASTK A5 V2.5; External Interface Board USB ETH | Autopilot Computing Board Cube Orange Plus; RPI CM5004032; External Interface Board USB ETH | Log archival and post-operation safing | USB; Ethernet | Criticality: Low (Administrative) |
+| **OA-09** | `GNSSDeniedNavigationAndSensorFusion` | Autopilot Stack ASTK A5 V2.5; Sensor Suite | GNSS Module Septentrio Asterx-m3 pro; GNSS Antenna Talysman TW3972EXF; Magnetometer mRo RM3100 Upper and Lower; Pitot Tube CUAV SKYE2 | GNSS-denied navigation and sensor fusion | UART serial; coaxial RF; DroneCAN CAN 2 bus | Criticality: High (Safety-Critical) |
+| **OA-10** | `LostC2LinkRecoveryAndAutonomousReturn` | Radio Module DTC; Autopilot Stack ASTK A5 V2.5; GCS Radio Box | Radio Module DTC; Radio Antenna MPSL4400 Upper and Lower; GCS MARS Antenna | Lost-link recovery and autonomous return | RF 4.4-5.0 GHz; UART serial | Criticality: High (Safety-Critical) |
+| **OA-11** | `BoundaryContainmentAndFailsafe` | Autopilot Stack ASTK A5 V2.5; EPS Module | Autopilot Computing Board Cube Orange Plus; EPS Module; Parachute Deployment Non-Mission | Boundary containment and deterministic failsafe | Discrete interlocks; 50 V igniter outputs | Criticality: Catastrophic (Containment-Critical) |
+| **OA-12** | `LauncherRecoveryAndSustainment` | PL-40 Rail; PL-40 Compressor Unit; GSE | PL-40 Carriage; PL-40 Pulling Rope; PL-40 Battery; PL-40 Transport Case | Launcher recovery and sustainment | Pneumatic; electrical discrete; 18 V DC | Criticality: Medium (Sustainment) |
+
+### 6.3 Grounded Activity Parameter Register
+
+Every numeric value used by the activity roster is listed below with its unit and its Level 0 source. Values absent from the OEM sources are recorded in Section 6.4 rather than invented here. Parameter identifiers match the parametric limits registry.
+
+| Activity ID | Parameter ID | Parameter | Grounded Reference | Source |
+| :--- | :--- | :--- | :--- | :--- |
+| OA-01 | PL-32 / PL-33 | Pre-flight battery voltage window | PL-32/PL-33 | parametric_limits.md:38-39 |
+| OA-01 | PL-35 | Pitot blow-test airspeed | PL-35 | parametric_limits.md:41 |
+| OA-01 | PL-40 / PL-41 | Catapult launch pressure window | PL-40/PL-41 | parametric_limits.md:46-47 |
+| OA-01 | PL-67 | Maximum compressor working pressure | PL-67 | parametric_limits.md:73 |
+| OA-01 | PL-68 | Auxiliary filling pressure | PL-68 | parametric_limits.md:74 |
+| OA-01 | PL-72 | Launcher setup time | PL-72 | parametric_limits.md:78 |
+| OA-01 | PL-73 / PL-74 | Launcher operating thermal window | PL-73/PL-74 | parametric_limits.md:79-80 |
+| OA-01 | PL-75 / PL-76 | Compressor battery | PL-75/PL-76 | parametric_limits.md:81-82 |
+| OA-02 | PL-01 | Cruise speed | PL-01 | parametric_limits.md:7 |
+| OA-02 | PL-02 | Maximum horizontal speed | PL-02 | parametric_limits.md:8 |
+| OA-02 | PL-05 | Minimum flight speed | PL-05 | parametric_limits.md:11 |
+| OA-02 | PL-12 | Maximum take-off weight | PL-12 | parametric_limits.md:18 |
+| OA-02 | PL-64 | Maximum launched plane mass | PL-64 | parametric_limits.md:70 |
+| OA-02 | PL-65 | Maximum launch velocity | PL-65 | parametric_limits.md:71 |
+| OA-02 | PL-66 | Launcher launch angle | PL-66 | parametric_limits.md:72 |
+| OA-02 | PL-88 | Trigger hold time | PL-88 | parametric_limits.md:94 |
+| OA-02 | PL-93 | Rail length assembled | PL-93 | parametric_limits.md:99 |
+| OA-03 | PL-25 | Seeker pitch angle | PL-25 | parametric_limits.md:31 |
+| OA-03 | PL-26 | Seeker yaw and roll angle | PL-26 | parametric_limits.md:32 |
+| OA-03 | PL-27 | Seeker zoom factor | PL-27 | parametric_limits.md:33 |
+| OA-03 | PL-28 / PL-29 | Day camera resolution | PL-28/PL-29 | parametric_limits.md:34-35 |
+| OA-03 | PL-30 / PL-31 | Thermal camera resolution | PL-30/PL-31 | parametric_limits.md:36-37 |
+| OA-03 | PL-42 / PL-43 | Target track duration | PL-42/PL-43 | parametric_limits.md:48-49 |
+| OA-03 | PL-44 | Maximum engagement elevation | PL-44 | parametric_limits.md:50 |
+| OA-04 | PL-07 | Direct radio line-of-sight range | PL-07 | parametric_limits.md:13 |
+| OA-04 | PL-08 | Extended radio line-of-sight range | PL-08 | parametric_limits.md:14 |
+| OA-04 | PL-36 | Minimum mission waypoint altitude | PL-36 | parametric_limits.md:42 |
+| OA-04 | PL-37 | Loiter radius | PL-37 | parametric_limits.md:43 |
+| OA-04 | PL-39 | Ground radio power | PL-39 | parametric_limits.md:45 |
+| OA-04 | IF-RF-01 | GCS to UAV RF link | IF-RF-01 | interface_table.md:63-64 |
+| OA-05 | PL-03 | Maximum dive speed | PL-03 | parametric_limits.md:9 |
+| OA-05 | PL-04 | Maximum dive angle | PL-04 | parametric_limits.md:10 |
+| OA-05 | PL-13 | Warhead mass | PL-13 | parametric_limits.md:19 |
+| OA-05 | PL-45 | Maximum engagement airspeed | PL-45 | parametric_limits.md:51 |
+| OA-05 | PL-46 / PL-47 / PL-48 | ESAD power input | PL-46/PL-47/PL-48 | parametric_limits.md:52-54 |
+| OA-05 | PL-49 / PL-50 | ESAD umbilical continuity | PL-49/PL-50 | parametric_limits.md:55-56 |
+| OA-05 | PL-54 / PL-55 | ESAD arm-enable waveform | PL-54/PL-55 | parametric_limits.md:60-61 |
+| OA-05 | PL-56 / PL-57 | ESAD RS-485 rates | PL-56/PL-57 | parametric_limits.md:62-63 |
+| OA-05 | PL-60 | ESAD high-voltage measurement range | PL-60 | parametric_limits.md:66 |
+| OA-06 | PL-06 | Flight endurance | PL-06 | parametric_limits.md:12 |
+| OA-06 | PL-23 / PL-24 | Battery pack voltage window | PL-23/PL-24 | parametric_limits.md:29-30 |
+| OA-07 | OEM-PAR-01 | Parachute igniter supply | OEM-PAR-01 | oem_bom.md:48-49 |
+| OA-08 | PL-80 | Pulling-rope replacement interval | PL-80 | parametric_limits.md:86 |
+| OA-09 | PL-34 | Pitot static airspeed limit | PL-34 | parametric_limits.md:40 |
+| OA-09 | PL-35 | Pitot blow-test airspeed | PL-35 | parametric_limits.md:41 |
+| OA-11 | OEM-PAR-02 | Parachute configuration | OEM-PAR-02 | oem_bom.md:47 |
+| OA-12 | PL-69 | Launcher set mass | PL-69 | parametric_limits.md:75 |
+| OA-12 | PL-70 | Launcher case mass | PL-70 | parametric_limits.md:76 |
+| OA-12 | PL-71 | Compressor case mass | PL-71 | parametric_limits.md:77 |
+| OA-12 | PL-79 | Battery recovery delay | PL-79 | parametric_limits.md:85 |
+| OA-12 | PL-80 | Pulling-rope replacement interval | PL-80 | parametric_limits.md:86 |
+| OA-12 | PL-89 | DC18RC charger time | PL-89 | parametric_limits.md:95 |
+| OA-12 | PL-90 | DC18SD charger time | PL-90 | parametric_limits.md:96 |
+| OA-12 | PL-91 / PL-92 | Battery charging thermal window | PL-91/PL-92 | parametric_limits.md:97-98 |
+| OA-12 | PL-94 | Rail length disassembled | PL-94 | parametric_limits.md:100 |
+
+### 6.4 OEM Silence Register
+
+The following fields are operationally relevant but are not stated in the OEM sources. They are recorded as declared unknowns and must be resolved by downstream derived allocation, analysis, or test evidence. No numeric value is invented for these fields.
+
+| Field | Activity ID | Status | Downstream Impact |
 | :--- | :--- | :--- | :--- |
-| Core Controller Node | Cyber-Physical Controller | Deterministic Real-Time Core | OA-01, OA-02, OA-08 |
-| Sensor Suite Node | Sensor Edge Node | Multi-Modal Sensor Array & Edge Compute | OA-03, OA-05 |
-| Safety Watchdog Node | Safety Critical Hardware | Independent Hardware Watchdog | OA-01, OA-05, OA-07 |
-| PACE Transceiver Node | Datalink Router | Multi-Channel Communications Modem | OA-04 |
-| Resource Management Node | Power / Energy Hub | Smart Battery & BMS Controller | OA-06 |
-| Operator Station Node | Operator Performer | Supervisory Operator Console | OA-01, OA-04, OA-08 |
+| PBIT pass and fail time limit | OA-01 | Not stated in OEM sources | Pre-launch verification timing cannot be bounded from OEM data |
+| Bingo threshold algorithm and statutory reserve ratio | OA-06 | Not stated in OEM sources | Energy-return logic requires derived allocation |
+| Parachute deployment response time | OA-07 | Not stated in OEM sources | Non-mission recovery timing requires test evidence |
+| Link-loss timeout, hold duration, and reacquisition hysteresis | OA-10 | Not stated in OEM sources | Lost-link state machine timing requires derived allocation |
+| GNSS-denied navigation performance bounds | OA-09 | Not stated in OEM sources | Navigation degradation envelope requires analysis |
+| Encryption algorithm and key length | OA-04 | Not stated in OEM sources | Cyber protection profile requires derived allocation |
+| Video codec and container | OA-04 | Not stated in OEM sources | Video pipeline format requires derived allocation |
+| Air vehicle subsystem mass and power | OA-01, OA-02 | Not stated in OEM sources | Resource budgets require derived allocation |
+| ESAD mass and power | OA-05 | Not stated in OEM sources | Lethal package resource budget requires derived allocation |
+| Warhead power draw | OA-05 | Not stated in OEM sources | Electrical load budget requires derived allocation |
+| Parachute module mass and power | OA-07 | Not stated in OEM sources | Non-mission recovery resource budget requires derived allocation |
+| Reconciliation of PL-65 maximum launch velocity and PL-05 minimum flight speed | OA-02 | Not stated in OEM sources | Launch-to-flight speed transition requires verification |
+| Air vehicle operating temperature | OA-01, OA-09 | Not stated in OEM sources | Environmental envelope requires derived allocation; launcher temperature is PL-73 and PL-74 |
+| Relay range beyond the PL-08 extended range | OA-04 | Not stated in OEM sources | Extended communications range requires derived allocation |
+| Post-operation diagnostic duration | OA-08 | Not stated in OEM sources | Maintenance timeline requires derived allocation |
 
-### 6.3 Operational Traceability Invariant
-Per DEAP Governance Rule `rules/conops-mission-intent-integrity.md`, all downstream SysML v2 architectural blocks, state machine behavioral charts, and software requirement units must carry direct traceability back to these eight canonical operational activities using the formalized allocation syntax:
+### 6.5 Operational Activity Traceability Invariant
+
+Per DEAP governance rule `rules/conops-mission-intent-integrity.md`, every downstream SysML v2 architectural block, state machine behavioral chart, and software requirement unit must carry direct traceability back to a canonical operational activity using the formal allocation syntax. The complete Gate 24 allocation tag set for this unit is:
+
 - `/// OperationalAllocation: [OA-01]`
 - `/// OperationalAllocation: [OA-02]`
 - `/// OperationalAllocation: [OA-03]`
@@ -902,822 +2068,916 @@ Per DEAP Governance Rule `rules/conops-mission-intent-integrity.md`, all downstr
 - `/// OperationalAllocation: [OA-06]`
 - `/// OperationalAllocation: [OA-07]`
 - `/// OperationalAllocation: [OA-08]`
+- `/// OperationalAllocation: [OA-09]`
+- `/// OperationalAllocation: [OA-10]`
+- `/// OperationalAllocation: [OA-11]`
+- `/// OperationalAllocation: [OA-12]`
+
+Traceability rules:
+
+1. Each activity maps to exactly one UAF taxonomy category in Table 6.1.1 and to one or more downstream Level 2 items.
+2. Each activity is allocated to a performer node and physical resource in Table 6.2. The ESAD remains Critical / DAL-A. The parachute deployment module remains non-mission and excluded from the mission baseline.
+3. Each numeric bound used by an activity is listed in Table 6.3 with its source. Any field absent from the OEM sources is listed in Table 6.4 and is not replaced by an invented value.
+4. New activities may be appended after OA-12 without renumbering existing identifiers. Every appended activity must carry a unique `/// OperationalAllocation: [OA-XX]` tag and a taxonomy category.
+
+### 6.6 Contingency Trigger Traceability
+
+The canonical contingency trigger roster is defined in the ConOps contingency decision matrix. The table below records the activity allocation and failsafe state for each trigger without duplicating the full decision matrix. The trigger identifiers are the stable cross-reference keys used by the safety and mission intent units.
+
+| Trigger ID | Contingency Trigger Event | Activity Allocation | Failsafe State | Authority Role |
+| :--- | :--- | :--- | :--- | :--- |
+| **EMG-01** | Communications timeout | OA-10; `/// OperationalAllocation: [OA-10]` | Lost-link fallback | Supervisory operator |
+| **EMG-02** | Sensor integrity fault | OA-09; `/// OperationalAllocation: [OA-09]` | Sensor fallback | Supervisory operator |
+| **EMG-03** | Critical resource depletion | OA-06; `/// OperationalAllocation: [OA-06]` | Resource divert | Informed operator |
+| **EMG-04** | Controller processing fault | OA-01; `/// OperationalAllocation: [OA-01]` | Degraded controller failsafe | Supervisory operator |
+| **EMG-05** | Operational boundary excursion | OA-11; `/// OperationalAllocation: [OA-11]` | Boundary containment | Supervisory operator |
+| **EMG-06** | Collision or interference hazard | OA-11; `/// OperationalAllocation: [OA-11]` | Evasive maneuver | Supervisory operator |
+| **EMG-07** | Structural or actuator failure | OA-07; `/// OperationalAllocation: [OA-07]` | Safe-state termination | Dual-consent authority |
+
+## Source References
+
+| Reference ID | Source Artifact | Scope | Access Path |
+| :--- | :--- | :--- | :--- |
+| SRC-01 | SysML v2 Level 0 schema | AST part, port, attribute, and constraint definitions | [.pipeline/schema.sysml](../../.pipeline/schema.sysml) |
+| SRC-02 | OEM bill of materials extraction | Component identity, stated mass, interface, and configuration status | [schema/extracted/oem_bom.md](../../schema/extracted/oem_bom.md) |
+| SRC-03 | System interface extraction | Port direction, protocol, data type, and refresh rate | [schema/extracted/interface_table.md](../../schema/extracted/interface_table.md) |
+| SRC-04 | Parametric limits registry | All numeric limits, units, and verification sources | [schema/extracted/parametric_limits.md](../../schema/extracted/parametric_limits.md) |
+| SRC-05 | This ConOps unit | Operational activity taxonomy, roster, and Gate 24 tags | [docs/conops/units/conops/06_UAF_OPERATIONAL_ACTIVITIES.md](units/conops/06_UAF_OPERATIONAL_ACTIVITIES.md) |
+| SRC-06 | Cited research inventory | Public clause citations and normative baseline allocations | [docs/research/RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md) |
+
+Normative clause anchors:
+
+- OMG UAF v2.0 Operational Processes (Op-Pr) and Operational Taxonomy (Op-Tx).
+- DoDAF v2.02 OV-5a and SV-5a.
+- ISO/IEC/IEEE 29148:2018 Section 6.4.2.
+- ISO/IEC/IEEE 15288:2023 Section 6.4.3.
+- INCOSE Systems Engineering Handbook v5.0 Section 4.3.
+- MIL-STD-882E Task 205 Section 4.2 and Task 208 Section 4.2.
+- JARUS SORA v2.5 Annex E E.11, E.13, E.14, E.18, E.20, and E.24.
+
+All numeric values in this unit are traceable to SRC-04 or SRC-02. Values absent from the OEM sources are explicitly marked "Not stated in OEM sources" in Table 6.4. The ESAD is identified as Critical / DAL-A. The parachute deployment module is identified as non-mission with baseline false. The Ruddervator is the canonical tail control surface assembly; the drawing synonym Fins and the preparation synonym tail stabiliser are recorded only parenthetically in SRC-02.
+
+| Attribute | Specification Detail |
+| :--- | :--- |
 
 ## 7. Operational Information Exchange (Op-Tx) Matrix
 
-### 7.1 Inter-Node Communication Architecture
-The Operational Information Exchange (Op-Tx) architecture defines all mission-critical, flight control, telemetry, payload, external coordination, and safety data exchanges between system performer nodes. The architecture is structured to support deterministic internal bus protocols, high-throughput payload fabrics, wireless RF datalink channels, direct broadcast identification, and hardwired failsafe discrete lines in compliance with OMG Unified Architecture Framework (UAF) v2.0 Operational Information Views (Op-Tx) and ISO/IEC/IEEE 29148:2018.
+### 7.1 Scope and Operational Exchange Boundary
 
-### 7.2 Operational Information Exchange (Op-Tx) Matrix Table
-In accordance with OMG UAF v2.0 Operational Information Views (Op-Tx), RTCA DO-178C / DO-254 design assurance levels (DAL), and system data contracts, the operational information exchanges are specified across 16 canonical interaction channels:
+The Operational Information Exchange (Op-Tx) architecture defines the mission-level, flight-control, telemetry, payload, external-coordination, and safety information exchanges between operational performer nodes. The roster captures high-level operational exchanges only. Component-internal serial, register bitmasks, pinouts, wire framing, and cyclic-redundancy equations are deferred to the Level 1C Interface Control Documents in accordance with OMG Unified Architecture Framework (UAF) v2.0 Operational Information Views and ISO/IEC/IEEE 29148:2018.
 
-| Exchange ID | Information Exchange Name | Source Performer | Destination Performer | Exchange Item & Semantic Content | Trigger Mechanism | Nominal Frequency (Hz) | Peak Throughput | Max Latency Bound (tau_max ms) | Integrity Assurance Level | Security Protection |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **OpTx-01** | PrimarySensorTelemetry | PrimarySensorSuite | CoreController | Raw Inertial & Kinematic Measurements, State Delta Vectors, Barometric Static Pressure, Magnetometer Heading | Periodic (Deterministic Timer) | f_sensor_rate | Throughput_sensor | tau_sensor_latency_max | DAL-A | Dual-Bus Redundancy & CRC32 Frame Integrity Validation |
-| **OpTx-02** | ActuatorControlDemand | CoreController | ActuatorSubsystem | Dynamic Torque Demands, Control Surface Deflections, Speed Controller Setpoints, Power Limiter Flags | Periodic (Control Loop Execution) | f_actuator_rate | Throughput_actuator | tau_actuator_latency_max | DAL-A | Hardware Interlock & Cyclic Frame Counter Verification |
-| **OpTx-03** | ActuatorStateFeedback | ActuatorSubsystem | CoreController | Measured Actuator Positions, Motor RPM Telemetry, Phase Current Draw, Thermal Diagnostic Flags | Periodic (Feedback Loop Sampling) | f_actuator_fb_rate | Throughput_actuator_fb | tau_actuator_fb_latency_max | DAL-B | CRC32 Frame Validation & Disparity Threshold Checking |
-| **OpTx-04** | PowerResourceTelemetry | PowerManagementSubsystem | CoreController | Total Battery Pack Voltage, Cell Temperature Matrix, State-of-Charge (SoC), Current Draw, Dynamic Bingo Thresholds | Periodic (BMS Monitor Interval) | f_bms_rate | Throughput_bms | tau_bms_latency_max | DAL-B | Hardware Isolated Bus & Range Bound Sanitization |
-| **OpTx-05** | ExternalNavReferenceData | ExternalPositioningService | CoreController | Multi-Constellation Satellite PVT Solutions, RTK Differential Phase Residuals, Ephemeris Data, UTC Time Reference | Periodic (Epoch Arrival) | f_nav_ref_rate | Throughput_nav_ref | tau_nav_ref_latency_max | DAL-B | RAIM Integrity Monitoring & Ephemeris Sanity Verification |
-| **OpTx-06** | RawPayloadSensorStream | SensorSuite | PayloadSubsystem | High-Bandwidth Multi-Modal Video Frames, Timestamp Metadata, Radiometric Matrices, Raw Spatial Point Clouds | Continuous (Frame Clock Synchronized) | f_stream_rate | Throughput_stream | tau_stream_latency_max | DAL-D | Dedicated DMA Channel & Isolated Subnet VLAN |
-| **OpTx-07** | ProcessedFeatureTelemetry | PayloadSubsystem | CoreController | Extracted State Feature Vectors, Target Bounding Boxes, Optical Odometry Vectors, Environmental Obstacle Disparities | Periodic (Inference Pipeline Execution) | f_feature_rate | Throughput_feature | tau_feature_latency_max | DAL-C | Memory Partition Isolation & Ingress Range Sanitization |
-| **OpTx-08** | ConsolidatedDownlinkTelemetry | PrimaryCommunications | OperatorStation | Consolidated System State Telemetry, 3D Kinematics, Energy SoC, Communications Link SNR, Geofence Margin Status | Periodic (PACE Telemetry Scheduler) | f_downlink_rate | Throughput_downlink | tau_downlink_latency_max | DAL-B | Authenticated Encryption (AES-256-GCM / TLS 1.3) & HMAC-SHA256 |
-| **OpTx-09** | SupervisoryUplinkCommand | OperatorStation | CoreController | Uplink Flight Directives, Dynamic 4D Waypoint Corridors, ROE Arming Keys, Manual Override Mode Vectors | Aperiodic (Operator Command Action) | f_uplink_rate | Throughput_uplink | tau_uplink_latency_max | DAL-A | Dual-Signature Token Authentication & Nonce Replay Protection |
-| **OpTx-10** | WatchdogHeartbeatStrobe | CoreController | SafetyWatchdog | Controller Task Alive Token, Execution Deadline Checksum, Task Schedule Monotonic Counter | Periodic (Task Deadline Checkpoint) | f_watchdog_hb_rate | Throughput_watchdog_hb | tau_watchdog_hb_latency_max | DAL-A | Dedicated Hardware Strobe Line & Timing Window Interlock |
-| **OpTx-11** | EmergencyFailsafeTrigger | SafetyWatchdog | ActuatorSubsystem | Hardware Safety Abort Strobe, Power Stage Isolation Command, Safe State Clamping Signal | Event-Driven (EMG-01..EMG-07 Fault Detection) | Event-Driven (f_watchdog_rate) | Throughput_watchdog | tau_watchdog_latency_max | DAL-A | Hardware Interlock & Dual-Switch Isolation Lines |
-| **OpTx-12** | FailsafeSquibActuationLine | SafetyWatchdog | EmergencyContainmentSubsystem | Dual-Channel High-Current Fire Pulse, Parachute / Pyrotechnic Cutter Ignition Command | Event-Driven (EMG-07 / Critical Boundary Breach) | Event-Driven (Single Pulse Strobe) | Discrete Pulse | tau_squib_latency_max | DAL-A | Isolated High-Side/Low-Side Solid-State Switches & Physical Key Interlock |
-| **OpTx-13** | BroadcastRemoteIDTelemetry | BroadcastRemoteID | ExternalDataService | Statutory Broadcast ID, Serial Number / Session ID, Geodetic Position Coordinates, Altitude, Ground Speed, Emergency Status | Periodic (Statutory Broadcast Scheduler) | f_remote_id_rate | Throughput_remote_id | tau_remote_id_latency_max | DAL-C | Digitally Signed Public Broadcast (Bluetooth 5.x / Wi-Fi Beacon per ASTM F3411-22a) |
-| **OpTx-14** | AirspaceDeconflictionData | ExternalDataService | OperatorStation | Dynamic Geo-Zone Activation/Deactivation, Strategic 4D Corridor Clearances, Adjacent Traffic Conformance Status | Periodic & Event-Driven (UTM Service Updates) | f_utm_rate | Throughput_utm | tau_utm_latency_max | DAL-C | Mutual TLS (mTLS 1.3) & REST/JSON Schema Signature Verification |
-| **OpTx-15** | CompressedPayloadVideoStream | PayloadSubsystem | OperatorStation | H.264/H.265 Encoded Video Stream, KLV Metadata (MISB ST 0601 / STANAG 4609), Real-Time Feature Overlays | Continuous (RTP/RTSP Video Frame Pipeline) | f_video_rate | Throughput_video | tau_video_latency_max | DAL-D | SRTP / AES-CTR Encryption over Wireless PACE Primary/Alternate Tiers |
-| **OpTx-16** | DiagnosticBlackboxLogStream | CoreController | OperatorStation | High-Rate Flight Recorder Time-Series, Sensor Disparity Registers, Exception Stack Traces, BIT Failure Logs | Periodic Buffering & Post-Operation Bulk Transfer | f_log_rate | Throughput_log | tau_log_latency_max | DAL-C | Cryptographic Hashing (SHA-256), Write-Once Flash Partition, Append-Only Non-Volatile Storage |
+The canonical tail control surface assembly is the Ruddervator. The drawing synonym Fins and the preparation synonym tail stabiliser are retained only parenthetically. The parachute deployment module is a non-mission R&D variant with configuration non-mission and baseline false, so it is excluded from the mission baseline and from mission criticality credit. The ESAD is classified Critical and carries DAL-A integrity.
 
-### 7.3 Avionic Network Quality of Service (QoS) Stack Allocation
-To guarantee deterministic latency bounds, eliminate message collisions, and enforce strict physical and logical partitioning across all operational interactions, the 16 Op-Tx exchanges are allocated across five distinct avionic physical and logical network tiers:
+### 7.2 Operational Information Exchange (Op-Tx) Roster
 
-#### 7.3.1 Deterministic Real-Time Bus (CAN FD / TTP / ARINC 825)
-- **Allocated Exchanges:** `OpTx-01`, `OpTx-02`, `OpTx-03`, `OpTx-04`, `OpTx-05`, `OpTx-07`, and `OpTx-10`.
-- **Protocol Profile & Physical Medium:** Controller Area Network Flexible Data-Rate (CAN FD per ISO 11898-1:2015, up to 5.0 Mbps, 64-byte payload) / Time-Triggered Protocol (TTP per SAE AS6003) / ARINC 825 avionic CAN standard.
-- **Deterministic Arbitration & Schedulability Guarantees:** Fixed-priority non-preemptive arbitration based on 29-bit extended CAN identifier message IDs. Maximum worst-case bus utilization is bounded by:
+In accordance with OMG UAF v2.0 Operational Information Views (Op-Tx), RTCA DO-178C design assurance levels, and the extracted Level 0 data contracts, the operational information exchanges are specified in the roster below. Where an OEM source is silent on a rate, throughput, or timing bound, the roster states "Not stated in OEM sources" rather than inventing a value.
 
-$$
-\begin{aligned}
-\text{Util}_{\text{bus}} &= \sum_{i=1}^{N_{\text{bus}}} \frac{C_i}{T_i} \le \text{Util}_{\text{bus\_max}}
-\end{aligned}
-$$
+| Exchange ID | Information Exchange Name | Source Performer | Destination Performer | Exchange Item and Semantic Content | Trigger Mechanism | Nominal Frequency | Peak Throughput | Max Latency Bound (ms) | Criticality | Security and Integrity Protection | Grounding Citation |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **OpTx-01** | PrimarySensorTelemetry | Airframe sensors (IMU, barometer, pitot, magnetometer) | Autopilot Stack ASTK A5 V2.5 | Raw inertial and kinematic measurements, barometric static pressure, magnetometer heading | Periodic sensor sampling | Not stated in OEM sources | Not stated in OEM sources | Not stated in OEM sources | DAL-B (flight-critical) | DroneCAN frame integrity validation | See grounding citation index |
+| **OpTx-02** | ActuatorControlDemand | Autopilot Stack ASTK A5 V2.5 | Ruddervator Servos #1 to #4 and Wing Servos #5 to #8 | Dynamic torque demands, control surface deflections, speed controller setpoints | Periodic control-loop execution | Not stated in OEM sources | Not stated in OEM sources | Not stated in OEM sources | DAL-A (flight-critical) | DroneCAN command frames with hardware interlock | See grounding citation index |
+| **OpTx-03** | ActuatorStateFeedback | Ruddervator Servos #1 to #4 and Wing Servos #5 to #8 | Autopilot Stack ASTK A5 V2.5 | Measured actuator positions, motor RPM telemetry, phase current draw, thermal diagnostic flags | Periodic feedback sampling | Not stated in OEM sources | Not stated in OEM sources | Not stated in OEM sources | DAL-B | DroneCAN status frames | See grounding citation index |
+| **OpTx-04** | PowerResourceTelemetry | EPS Module and Power Meter | Autopilot Stack ASTK A5 V2.5 | Battery pack voltage from 36 V to 50.4 V, cell temperature matrix, state-of-charge, current draw, reserve thresholds | Periodic battery-monitor interval | Not stated in OEM sources | Not stated in OEM sources | Not stated in OEM sources | DAL-B | Isolated bus and range-bound sanitization | See grounding citation index |
+| **OpTx-05** | ExternalNavReferenceData | GNSS Module Septentrio Asterx-m3 pro | Autopilot Stack ASTK A5 V2.5 | Multi-constellation position, velocity and time solutions, differential phase residuals, ephemeris data, UTC reference | Periodic epoch arrival | Not stated in OEM sources | Not stated in OEM sources | Not stated in OEM sources | DAL-B | GNSS integrity monitoring and ephemeris sanity verification | See grounding citation index |
+| **OpTx-06** | RawPayloadSensorStream | Camera Compute Module Trip6 and Gimbal Nighthawk2UZ | Companion Computer RPI CM5004032 | EO and IR video frames, timestamp metadata, camera orientation, radiometric matrices | Continuous frame-clock synchronized | Not stated in OEM sources | Not stated in OEM sources | Not stated in OEM sources | DAL-D (payload) | Dedicated Ethernet path and isolated network segment | See grounding citation index |
+| **OpTx-07** | ProcessedFeatureTelemetry | Companion Computer RPI CM5004032 | Autopilot Stack ASTK A5 V2.5 | Target bounding boxes, optical odometry vectors, obstacle disparities | Periodic inference pipeline execution | Not stated in OEM sources | Not stated in OEM sources | Not stated in OEM sources | DAL-C | Memory partition isolation and ingress range sanitization | See grounding citation index |
+| **OpTx-08** | ConsolidatedDownlinkTelemetry | Radio Module DTC | Ground Control System (Panasonic FZ-G2) | Consolidated system state telemetry, 3D kinematics, energy state-of-charge, link signal-to-noise ratio, geofence margin status | Periodic PACE telemetry scheduler | Not stated in OEM sources | Not stated in OEM sources | Not stated in OEM sources | DAL-B | Authenticated encryption and message authentication per the cited OT security standard | See grounding citation index |
+| **OpTx-09** | SupervisoryUplinkCommand | Ground Control System (Panasonic FZ-G2, SwarmC2) | Autopilot Stack ASTK A5 V2.5 | Uplink flight directives, 4D waypoint corridors, ROE arming keys, manual override vectors | Aperiodic operator command action | Not stated in OEM sources | Not stated in OEM sources | Not stated in OEM sources | DAL-A | Command authentication and replay protection per the cited OT security standard | See grounding citation index |
+| **OpTx-10** | WatchdogHeartbeatStrobe | Autopilot Stack ASTK A5 V2.5 | Safety Watchdog and Interlocks | Controller task-alive token, execution deadline checksum, task schedule monotonic counter | Periodic task deadline checkpoint | Not stated in OEM sources | Not stated in OEM sources | Not stated in OEM sources | DAL-A | Dedicated hardware strobe line and timing-window interlock | See grounding citation index |
+| **OpTx-11** | EmergencyFailsafeTrigger | Safety Watchdog and Interlocks | Ruddervator Servos #1 to #4, Wing Servos #5 to #8, EPS Module, ESAD | Hardware safety abort strobe, propulsion isolation command, safe-state clamping signal | Event-driven fault detection | Event-driven | Not stated in OEM sources | Not stated in OEM sources | DAL-A | Hardware interlock and dual-switch isolation | See grounding citation index |
+| **OpTx-12** | FailsafeSquibActuationLine (Non-Mission) | Safety Watchdog and Interlocks | Parachute Deployment Non-Mission Igniters #1 and #2 | Dual-channel 50 V fire pulse for the payload bay cover retention wire | Event-driven single pulse | Event-driven | Not stated in OEM sources | Not stated in OEM sources | Non-mission, baseline false, excluded from mission criticality analysis | Isolated high-side and low-side switches with physical key interlock | See grounding citation index |
+| **OpTx-13** | BroadcastRemoteIDTelemetry | Radio Module DTC Remote ID function | External airspace authority and receivers | Statutory broadcast identity, session identifier, geodetic position, altitude, ground speed, emergency status | Periodic statutory broadcast | Not stated in OEM sources; statutory interval per the cited Remote ID standard | Not stated in OEM sources | Not stated in OEM sources | DAL-C | Signed public broadcast per the cited Remote ID standard | See grounding citation index |
+| **OpTx-14** | AirspaceDeconflictionData | External airspace authority (UTM) | Ground Control System (Panasonic FZ-G2) | Dynamic geo-zone activation and deactivation, 4D corridor clearances, adjacent traffic conformance status | Periodic and event-driven UTM service updates | Not stated in OEM sources | Not stated in OEM sources | Not stated in OEM sources | DAL-C | Mutually authenticated transport per the cited OT security standard | See grounding citation index |
+| **OpTx-15** | CompressedPayloadVideoStream | Radio Module DTC | Ground Control System (Panasonic FZ-G2) | Compressed EO and IR video stream with real-time feature overlays | Continuous video frame pipeline | Not stated in OEM sources | Not stated in OEM sources | Not stated in OEM sources | DAL-D | Encrypted video transport per the cited OT security standard | See grounding citation index |
+| **OpTx-16** | DiagnosticBlackboxLogStream | Autopilot Stack ASTK A5 V2.5 | Ground Control System and External Interface Board USB ETH | Flight recorder time-series, sensor disparity registers, exception traces, built-in-test failure logs | Periodic buffering and post-operation bulk transfer | Not stated in OEM sources | Not stated in OEM sources | Not stated in OEM sources | DAL-C | Cryptographic hashing and append-only non-volatile storage | See grounding citation index |
+| **OpTx-17** | ESADSafetyInterlockAuthorization | Ground Control System and RPI CM5004032 | ESAD | Safe or armed state, arm-enable discrete PWM, umbilical continuity status | Event-driven arm sequence and periodic arm-enable PWM | Arm-enable PWM at 1 kHz | Not stated in OEM sources | 5 ms ESAD response | Critical (DAL-A) | Discrete interlock and hardware key per ESAD Critical classification | See grounding citation index |
+| **OpTx-18** | ESADInitiationCommand | Ground Control System and RPI CM5004032 | ESAD and ESAD Detonator | In-line initiation sequence and 1800 V maximum detonator firing pulse after explicit human consent | Event-driven single high-consequence pulse | Event-driven | Not stated in OEM sources | Not stated in OEM sources | Critical (DAL-A) | Isolated firing circuit and hardware interlock | See grounding citation index |
 
-- Parameter Definitions & Engineering Units:
-- $\text{Util}_{\text{bus}}$: Total deterministic real-time bus utilization under worst-case burst conditions.
-- $N_{\text{bus}}$: Total number of active periodic message streams allocated to the deterministic bus ($N_{\text{bus}} = 7$).
-- $C_i$: Worst-case transmission time for message stream $i$ including bit-stuffing overhead.
-- $T_i$: Minimum period of message stream $i$ ($T_i = 1 / f_{\text{rate}, i}$).
-- $\text{Util}_{\text{bus\_max}}$: Maximum allowable bus utilization ceiling ($\text{Util}_{\text{bus\_max}} \le 0.60$), ensuring a minimum $40\%$ bandwidth margin for asynchronous error handling and network management frames.
-- **Redundancy & Fault Isolation:** Dual-channel physical transceivers (Bus Alpha and Bus Bravo) operating in hot-standby with automatic babbling-node isolation, hardware loopback verification, and failover latency $t_{\text{failover}} \le \tau_{\text{bus\_failover\_max}}$.
+### 7.3 Operational Exchange Grouping
 
-#### 7.3.2 High-Speed Payload Bus (PCIe / Gigabit Ethernet / TSN IEEE 802.1Qbv)
-- **Allocated Exchanges:** `OpTx-06`, `OpTx-15`, and `OpTx-16`.
-- **Protocol Profile & Physical Medium:** IEEE 802.3ab 1000BASE-T Gigabit Ethernet with Time-Sensitive Networking (TSN IEEE 802.1Qbv Scheduled Traffic and IEEE 802.1Qav Credit-Based Shaper) / Peripheral Component Interconnect Express (PCIe Gen3/4 with DMA).
-- **QoS Partitioning & Bandwidth Guarantees:** Physical and logical segregation (dedicated Ethernet PHY and IEEE 802.1Q VLANs) completely isolates high-bandwidth sensor payload data from flight-critical control traffic. High-capacity zero-copy ring buffers and Direct Memory Access (DMA) ensure sustained payload throughput ($\text{Throughput}_{\text{payload\_bus}} \ge 1.0\text{ Gbps}$) without inducing processor starvation or memory bus contention on the Core Controller.
+The roster is partitioned across five operational transport groups. Group allocation does not create component-internal interface contracts; those contracts belong to the Level 1C Interface Control Documents.
 
-#### 7.3.3 Telemetry Wireless PACE Links (Primary, Alternate, Contingency, Emergency)
-- **Allocated Exchanges:** `OpTx-08`, `OpTx-09`, `OpTx-14`, and `OpTx-15`.
-- **Multi-Tier PACE Communication Stack:**
-  1. **Primary Link (COFDM Point-to-Point / 5.8 GHz ISM):** High-throughput channel carrying consolidated flight telemetry (`OpTx-08`) and real-time compressed video (`OpTx-15`) with nominal bandwidth $\ge 10.0\text{ Mbps}$ and transport latency $\le \tau_{\text{Primary\_max}}$.
-  2. **Alternate Link (Cellular LTE/5G Encrypted VPN / Broadband Satcom):** Secure routed IP tunnel carrying telemetry (`OpTx-08`), UTM coordination updates (`OpTx-14`), and supervisory commands (`OpTx-09`) with bandwidth $\ge 2.0\text{ Mbps}$ and transport latency $\le \tau_{\text{Alternate\_max}}$.
-  3. **Contingency Link (900 MHz FHSS Narrowband Radio):** Robust frequency-hopping datalink dedicated exclusively to essential C2 flight directives (`OpTx-09`) and heartbeat signals (`OpTx-08`) with bandwidth $\ge 115.2\text{ kbps}$ and transport latency $\le \tau_{\text{Contingency\_max}}$.
-  4. **Emergency Link (Satellite Iridium SBD / Low-Frequency Beacon):** Ultra-reliable channel providing global beacon broadcast and dual-consent flight termination confirmations with bandwidth $\ge 2.4\text{ kbps}$ and transport latency $\le \tau_{\text{Emergency\_max}}$.
-- **QoS Failover & Security Protection:** Automated link quality monitor evaluating signal-to-noise ratio ($\text{SNR}$), packet loss rate ($\text{PLR}$), and heartbeat timeouts ($t_{\mathrm{loss}} > \tau_{\mathrm{timeout}}$). Failover transitions enforce hysteresis time $\Delta t_{\mathrm{hysteresis}}$ to prevent link flapping. All command channels enforce AES-256-GCM encryption, HMAC-SHA256 authentication, and anti-replay nonce tracking per NIST SP 800-82r3.
+| Group | Allocated Exchanges | High-Level Transport | Operational Note |
+| :--- | :--- | :--- | :--- |
+| Deterministic real-time bus | OpTx-01, OpTx-02, OpTx-03, OpTx-04, OpTx-05, OpTx-07, OpTx-10 | DroneCAN over the CAN bus | Flight-control, sensor, power-status, and heartbeat exchanges with fixed-priority arbitration |
+| High-speed payload bus | OpTx-06, OpTx-15, OpTx-16 | Ethernet | Payload imagery, compressed video, and diagnostic log transfer isolated from flight-critical traffic |
+| Telemetry wireless PACE links | OpTx-08, OpTx-09, OpTx-14, OpTx-15 | Primary RF link in the 4.4 to 5.0 GHz band (interface_table.md line 63); alternate, contingency, and emergency media are Not stated in OEM sources | Primary, Alternate, Contingency, and Emergency tiers preserve command and telemetry continuity |
+| Direct broadcast Remote ID | OpTx-13 | ASTM F3411-22a direct broadcast using Bluetooth 5.x or Wi-Fi NAN | Independent broadcast path preserves statutory identification during lost-link states |
+| Hardwired failsafe and ESAD safety discretes | OpTx-11, OpTx-12, OpTx-17, OpTx-18 | Discrete interlock, PWM, and pyrotechnic initiation circuits | ESAD is Critical and DAL-A; the parachute squib is a non-mission R&D variant |
 
-#### 7.3.4 ASTM F3411 Direct Broadcast Remote ID
-- **Allocated Exchanges:** `OpTx-13`.
-- **Protocol Profile & Broadcast Mechanism:** Direct connectionless RF broadcast in accordance with ASTM F3411-22a and ASD-STAN prEN 4709-002 standards.
-- **QoS & Timing Determinism:** Autonomous periodic broadcast scheduler issuing signed identification packets at $f_{\text{remote\_id\_rate}} = 1.0\text{ Hz}$ to $2.0\text{ Hz}$ with latency $\tau_{\text{remote\_id}} \le 200\text{ ms}$. Time synchronization referenced to UTC via GNSS epoch. Independent RF front-end prevents resource exhaustion by external datalinks, guaranteeing continuous identification broadcast even during lost-link contingency states.
+### 7.4 Sequence Diagram Parity
 
-#### 7.3.5 Hardwired Failsafe Squib Lines & Safety Discretes
-- **Allocated Exchanges:** `OpTx-11` and `OpTx-12`.
-- **Physical & Electrical Topology:** Optoisolated, point-to-point discrete wiring and high-current solid-state power switches directly routed between the independent Safety Watchdog and emergency containment / actuator isolation hardware.
-- **Safety Interlock Architecture:** Dual-switch configuration incorporating independent high-side solid-state switch and low-side ground clamp with pull-down resistors. Actuation requires simultaneous coincidence of hardware interlock permissive signals and Safety Watchdog abort triggers, eliminating false-trigger vulnerability to EMI transients or processor brownouts. Guarantees deterministic sub-millisecond actuation ($t_{\text{actuate}} \le \tau_{\text{squib\_latency\_max}} \le 10\text{ ms}$) triggering emergency parachute recovery system, propulsion power cutoff, or emergency safe-state clamping.
+The operational interaction sequence diagrams are maintained in the scenarios unit and are partitioned across the canonical four-part interaction architecture. This roster is partitioned across those diagrams as follows, with zero uncovered exchanges.
 
-<!-- Copyright Gint Atkinson, gint.atkinson@gmail.com -->
-<!-- Reference Fixes: #127, #134, #137 -->
+| Diagram | Realized Exchanges | Operational Thread |
+| :--- | :--- | :--- |
+| Diagram 10.1 | OpTx-08, OpTx-09, OpTx-14, OpTx-15, OpTx-16 | Supervisory command, telemetry downlink, airspace coordination, video relay, and diagnostic offload |
+| Diagram 10.2 | OpTx-01, OpTx-05, OpTx-06, OpTx-07 | Sensor perception, external navigation reference, raw imagery, and processed feature flow |
+| Diagram 10.3 | OpTx-02, OpTx-03, OpTx-04 | Actuator demand, actuator feedback, and resource status |
+| Diagram 10.4 | OpTx-10, OpTx-11, OpTx-12, OpTx-13, OpTx-17, OpTx-18 | Watchdog heartbeat, emergency containment, non-mission squib, Remote ID broadcast, and ESAD safety interlock and initiation |
 
+### 7.5 Grounding Citation Index
+
+| Exchange ID | Grounding Source and Lines |
+| :--- | :--- |
+| OpTx-01 | schema/extracted/interface_table.md lines 9-15 and 28-32; .pipeline/schema.sysml lines 192-312 |
+| OpTx-02 | schema/extracted/interface_table.md lines 12-15 and 29-31; schema/extracted/oem_bom.md lines 24-27 and 35-38 |
+| OpTx-03 | schema/extracted/interface_table.md lines 12-15 and 29-31 |
+| OpTx-04 | schema/extracted/parametric_limits.md lines 29-30; schema/extracted/oem_bom.md lines 18 and 20 |
+| OpTx-05 | schema/extracted/interface_table.md lines 38-39; schema/extracted/oem_bom.md lines 15-16 |
+| OpTx-06 | schema/extracted/interface_table.md lines 33-37; schema/extracted/oem_bom.md lines 42-43 |
+| OpTx-07 | schema/extracted/interface_table.md lines 35 and 40; schema/extracted/oem_bom.md lines 14 and 43 |
+| OpTx-08 | schema/extracted/interface_table.md line 63; schema/extracted/oem_bom.md lines 44 and 76 |
+| OpTx-09 | schema/extracted/interface_table.md line 63; schema/extracted/oem_bom.md line 76; docs/research/RESEARCH_INVENTORY.md line 20 |
+| OpTx-10 | schema/extracted/oem_bom.md line 52; .pipeline/schema.sysml lines 440-456 |
+| OpTx-11 | schema/extracted/oem_bom.md line 52; .pipeline/schema.sysml lines 440-456 |
+| OpTx-12 | schema/extracted/oem_bom.md lines 47-49 |
+| OpTx-13 | docs/research/RESEARCH_INVENTORY.md lines 29, 92, and 133; schema/extracted/oem_bom.md line 44 |
+| OpTx-14 | docs/research/RESEARCH_INVENTORY.md line 108 |
+| OpTx-15 | schema/extracted/interface_table.md lines 42-43 and 63; schema/extracted/oem_bom.md lines 44-46 and 76 |
+| OpTx-16 | schema/extracted/interface_table.md lines 36 and 44; schema/extracted/oem_bom.md line 58 |
+| OpTx-17 | schema/extracted/parametric_limits.md lines 52-65; schema/extracted/interface_table.md lines 49-51 and 56; schema/extracted/oem_bom.md line 52 |
+| OpTx-18 | schema/extracted/parametric_limits.md line 66; schema/extracted/interface_table.md lines 48 and 55; schema/extracted/oem_bom.md lines 52 and 54 |
+
+## Source References
+Source: schema/model.sysml
+Source: .pipeline/schema.sysml
+Source: schema/extracted/interface_table.md
+Source: schema/extracted/parametric_limits.md
+Source: schema/extracted/oem_bom.md
+Source: docs/research/RESEARCH_INVENTORY.md
+Clause: ISO/IEC/IEEE 29148:2018 Section 6.4.2
+Clause: RTCA DO-178C Section 6.3.1
+Clause: RTCA DO-362A Section 3.4
+Clause: ASTM F3411-22a Section 6.1
+Clause: FAA 14 CFR Section 89.310(b)
+Clause: NIST SP 800-82r3 Section 6.2
+Viewpoint: OMG UAF v2.0 Operational Information Views
+
+| Attribute | Specification Detail |
+| :--- | :--- |
 
 ## 8. Operational Environments & MIL-STD-810H Environmental Stress Qualification
 
-In accordance with MIL-STD-810H, MIL-STD-461G, and IEC 60529 (Reference Fixes #127, #134, #137), the system is engineered to maintain full functional performance, structural containment, and deterministic safety execution across a parametric environmental stress envelope:
+This unit records only environmental limits that are stated in the Level 0 extracts. Where the OEM sources are silent, the limit is recorded as "Not stated in OEM sources" instead of being inferred. The Ruddervator (drawing synonym: Fins; preparation synonym: tail stabiliser) is the canonical tail control surface assembly. The ESAD is Critical (DAL-A). The parachute deployment module is non-mission and is excluded from the mission environmental baseline.
+
+The environmental state vector is bounded by the following envelope relation:
 
 $$
 \begin{aligned}
 \mathbf{E}_{\mathrm{env}} &\in [\mathbf{E}_{\mathrm{min}}, \mathbf{E}_{\mathrm{max}}] \\
-\mathbf{E}_{\mathrm{env}} &= [P_{\mathrm{amb}}, T_{\mathrm{amb}}, \dot{T}_{\mathrm{gradient}}, I_{\mathrm{solar}}, R_{\mathrm{precip}}, \text{RH}_{\mathrm{ambient}}, C_{\mathrm{salt}}, C_{\mathrm{particulate}}, S_{\mathrm{vib}}(f), a_{\mathrm{shock}}, \delta_{\mathrm{ice}}, E_{\mathrm{EMC}}]^\top
+T_{\mathrm{amb,min}} &\le T_{\mathrm{amb}} \le T_{\mathrm{amb,max}}
 \end{aligned}
 $$
 
-- Parameter Definitions & Engineering Units:
-- E_env: State vector of active ambient environmental stress parameters.
-- E_min, E_max: Lower and upper boundaries of the certified operational and storage environmental envelope.
-- P_amb: Ambient atmospheric pressure (kPa).
-- T_amb: Ambient operational temperature (°C).
-- T_gradient: Thermal shock rate of temperature change (°C/min).
-- I_solar: Solar spectral irradiance loading (W/m²).
-- R_precip: Liquid precipitation rate (mm/hr).
-- RH_ambient: Relative atmospheric humidity (%).
-- C_salt: Saline atomization concentration (%).
-- C_particulate: Atmospheric sand and dust particulate concentration (g/m³).
-- S_vib(f): Power spectral density of dynamic random vibration ((m/s²)²/Hz).
-- a_shock: Peak mechanical shock acceleration (m/s²).
-- delta_ice: Glaze or rime ice accretion thickness (mm).
-- E_EMC: Radiated electromagnetic field intensity (V/m).
+| Symbol | Parameter | Grounded Value | Grounding Source |
+| :--- | :--- | :--- | :--- |
+| T_amb,min | Minimum ambient working temperature (launcher) | 20 C below zero | parametric_limits.md PL-73; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:723 |
+| T_amb,max | Maximum ambient working temperature (launcher) | 50 C | parametric_limits.md PL-74; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:723 |
+| T_charge,min | Minimum battery charging temperature | 10 C | parametric_limits.md PL-91; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:137 |
+| T_charge,max | Maximum battery charging temperature | 40 C | parametric_limits.md PL-92; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:137 |
+| E_min, E_max | Air vehicle ambient operating envelope | Not stated in OEM sources | None |
 
----
+### 8.1 Super-System Operational Architecture and Segment Boundaries
 
-### 8.1 Master 12-Method Environmental Stress Qualification Table
-
-The following master qualification table establishes the formal verification baseline across all 12 canonical MIL-STD-810H environmental stress methods:
-
-| Method ID | Environmental Stress Method Name | Procedure Numbers | Operational Limits | Storage / Transit Limits | Verification Standards |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **M-500.6** | Low Pressure (Altitude) | Procedure I (Storage) / Procedure II (Operational) | Operational altitude up to 150 m AGL | Cargo hold transport up to 4,572 m MSL | MIL-STD-810H Method 500.6 §4.5.2 |
-| **M-501.7** | High Temperature | Procedure I (Storage/Diurnal) / Procedure II (Operational) | Continuous operation up to +50 °C | Induced diurnal storage up to +65 °C | MIL-STD-810H Method 501.7 Table 501.7-II |
-| **M-502.7** | Low Temperature | Procedure I (Storage) / Procedure II (Operational) | Operational down to -20 °C | Induced cold storage down to -30 °C | MIL-STD-810H Method 502.7 Table 502.7-II |
-| **M-503.7** | Temperature Shock | Procedure I-D (Multi-Cycle Shock between Thermal Extremes) | Rapid transit between -20 °C and +50 °C | Non-operational thermal shock gradient 10 °C/min | MIL-STD-810H Method 503.7 §4.4 |
-| **M-505.7** | Solar Radiation (Sunshine) | Procedure I (Cycling / Diurnal Solar Radiation A1) | Direct solar exposure under peak 1,120 W/m² irradiance | Solar heating storage exposure up to +70 °C skin temp | MIL-STD-810H Method 505.7 Table 505.7-I |
-| **M-506.6** | Rain / Blowing Rain | Procedure I (Blowing Rain) / Procedure III (Drip) | Precipitation up to 100 mm/h with 18 m/s crosswind | IP55 sealed enclosure transit & outdoor mooring | MIL-STD-810H Method 506.6 §4.4.1 |
-| **M-507.6** | Humidity | Procedure II (Aggravated Dynamic Humidity Cycles) | Relative humidity 95% non-condensing during flight | Tropical storage at 95% RH with diurnal thermal cycling | MIL-STD-810H Method 507.6 Table 507.6-I |
-| **M-509.7** | Salt Fog | Procedure I (Continuous 5% NaCl Aerosol Fog) | Coastal marine salt atmosphere with conformal-coated electronics | Marine container transport with 5% salt fog exposure | MIL-STD-810H Method 509.7 §4.5 |
-| **M-510.7** | Sand and Dust | Procedure I (Blowing Dust) / Procedure II (Blowing Sand) | Operating in blowing dust up to 10.6 g/m³ | Sealed transport in abrasive silica sand environments | MIL-STD-810H Method 510.7 §4.4 |
-| **M-514.8** | Vibration | Procedure I (General Vibration - Prop Profiles) | Airframe vibration profile up to 7.7 g_rms across 10-2000 Hz | Ground transport loose cargo vibration up to 11.2 g_rms | MIL-STD-810H Method 514.8 Category 24 |
-| **M-516.8** | Mechanical Shock | Procedure I (Functional Shock) / Procedure IV (Transit Drop) | Operational pulse 20 g sawtooth (11 ms duration) | Packaged transit drop from 1.2 m onto reinforced concrete | MIL-STD-810H Method 516.8 Table 516.8-IV |
-| **M-521.4** | Icing / Freezing Rain | Procedure I (Icing/Freezing Rain Accretion) | Light icing accretion with electrothermal leading-edge deice | Glaze ice buildup up to 13 mm thickness in moor state | MIL-STD-810H Method 521.4 §4.4 |
-
----
-
-### 8.2 Granular Test Method Breakdowns
-
-#### 8.2.1 Method M-500.6 — Low Pressure (Altitude)
-- **Applicable Procedures:** Procedure I (Storage/Air Transport), Procedure II (Operation/Air Carriage), and Procedure III (Rapid Decompression) per Procedure I (Storage) / Procedure II (Operational).
-- **Environmental Envelope:** Operating ambient atmospheric pressure down to $P_{\text{op\_min}}$ (`88.2` kPa, equivalent to an operational altitude ceiling $h_{\text{alt\_max}}$ of `1150.0` m above sea level); unpowered storage/transit pressure down to $P_{\text{store\_min}}$ (`57.2` kPa, equivalent to a cargo hold ceiling $h_{\text{store\_max}}$ of `4572.0` m). Rapid decompression rate $\Delta P / \Delta t \le \dot{P}_{\text{decomp\_max}}$ (`2.18` kPa/s).
-- **Exposure Duration:** Minimum chamber dwell duration $t_{\text{dwell}} \ge \tau_{\text{alt\_dwell\_min}}$ (`2.0` hr) following chamber pressure stabilization; rapid decompression transition execution time $\Delta t \le \tau_{\text{decomp\_time}}$ (`15.0` s).
-- **Operational Functional Checks:** Continuous execution of Power-On Built-In-Test (PBIT) and Periodic BIT (CBIT), real-time bus telemetry verification, power converter voltage regulation under low-pressure dielectric conditions, and structural seal differential pressure monitoring.
-- **Acceptance Criteria:** Zero structural deformation or elastomeric seal rupture (`Zero seal rupture, zero capacitor dielectric outgassing`); no dielectric breakdown, corona discharge, or electrical arcing across high-voltage power distribution buses; zero outgassing damage to optical sensor covers or conformal-coated electronics; nominal state estimation execution throughout low-pressure dwell.
-
-#### 8.2.2 Method M-501.7 — High Temperature
-- **Applicable Procedures:** Procedure I (Storage / High Temperature Cyclic), Procedure II (Operation / Constant & Cyclic High Temperature), and Procedure III (Tactical-Standby to Operational) per Procedure I (Storage/Diurnal) / Procedure II (Operational).
-- **Environmental Envelope:** Continuous operational exposure up to $T_{\text{op\_high\_max}}$ (`50.0` °C) under induced solar/ambient thermal loads; unpowered storage temperature up to $T_{\text{store\_high\_max}}$ (`65.0` °C) under Hot Dry ($A_1$) and Basic Hot ($A_2$) climatic cycles. Maximum rate of temperature rise $\dot{T}_{\text{rise}} \le \dot{T}_{\text{rise\_max}}$ (`1.5` °C/min).
-- **Exposure Duration:** Storage: continuous exposure across $N_{\text{store\_cycles}}$ (`7` 24-hr diurnal cycles, minimum `168.0` hr); Operational: continuous exposure for $t_{\text{op\_high\_duration}}$ (`8.0` hr) post core thermal stabilization.
-- **Operational Functional Checks:** Continuous processor junction temperature monitoring ($T_{\text{junction}} \le T_{\text{junction\_max}}$), control loop execution rate tracking ($f_{\text{control}} \ge f_{\text{control\_nominal}}$), power converter efficiency logging, actuator torque output measurement under peak thermal loading, and communications transceiver packet error rate monitoring.
-- **Acceptance Criteria:** Semiconductor junction temperatures remain strictly within derated operational margins (`15.0` °C margin); zero thermal throttling or controller task deadline overruns; no mechanical binding in actuator geartrains due to differential thermal expansion; zero degradation of structural bonding adhesives or potting compounds.
-
-#### 8.2.3 Method M-502.7 — Low Temperature
-- **Applicable Procedures:** Procedure I (Storage), Procedure II (Operation), and Procedure III (Cold Start & Manipulation) per Procedure I (Storage) / Procedure II (Operational).
-- **Environmental Envelope:** Continuous operational exposure down to $T_{\text{op\_low\_min}}$ (`-20.0` °C); unpowered storage temperature down to $T_{\text{store\_low\_min}}$ (`-30.0` °C) under Cold ($C_1$) and Severe Cold ($C_2$) climatic classifications.
-- **Exposure Duration:** Storage soak duration $t_{\text{cold\_soak}} \ge \tau_{\text{cold\_soak\_min}}$ (`72.0` hr); Operational cold soak $t_{\text{cold\_op}} \ge \tau_{\text{cold\_op\_min}}$ (`4.0` hr) post temperature equilibrium.
-- **Operational Functional Checks:** Cold-start Built-In-Test (BIT) initiation within $t_{\text{start}} \le \tau_{\text{cold\_start\_max}}$ (`45.0` s) at $T_{\text{op\_low\_min}}$; dynamic actuator break-away torque and slew rate verification; energy storage internal impedance and discharge curve validation; sensor bias drift and oscillator frequency stability logging.
-- **Acceptance Criteria:** Full cold-start initialization and transition to nominal execution without external preheating; clock oscillator frequency drift within timing budget ($\Delta f / f_0 \le \epsilon_{\text{clk\_max}}$); zero cracking, embrittlement, or loss of resilience in elastomeric seals, cabling jackets, and structural mounts; nominal lubricant viscosity and actuator response without overcurrent fault trips.
-
-#### 8.2.4 Method M-503.7 — Temperature Shock
-- **Applicable Procedures:** Procedure I-A (One-way shock from constant temperature), Procedure I-C (Multi-cycle shock from constant temperature), and Procedure I-D (Shock to/from controlled temperature cycles) per Procedure I-D (Multi-Cycle Shock between Thermal Extremes).
-- **Environmental Envelope:** Rapid extreme temperature transition across the thermal shock gradient $[\mathbf{T}_{\text{shock\_low}}, \mathbf{T}_{\text{shock\_high}}]$ (`[-20.0 °C, 50.0 °C]`), with maximum physical chamber transfer duration $t_{\text{transfer}} \le \tau_{\text{transfer\_max}}$ (`60.0` s).
-- **Exposure Duration:** Minimum $N_{\text{shock\_cycles}}$ (`3` complete shock cycles); dwell time at each extreme plateau $t_{\text{dwell}} \ge \tau_{\text{shock\_dwell}}$ (`2.0` hr) to ensure complete thermal stabilization of internal structural core mass.
-- **Operational Functional Checks:** Post-transfer visual structural inspection, full operational BIT verification following each complete shock cycle, high-voltage bus insulation resistance measurement, and optical alignment check across multi-modal sensor suites.
-- **Acceptance Criteria:** Zero micro-cracking, delamination, or void formation across printed circuit boards, multi-layer ceramic capacitors, and solder joints; zero hermetic seal failure or internal enclosure moisture condensation; dimensional stability of optical and mechanical sensor mounting alignments within tolerance ($\Delta \theta_{\text{align}} \le \theta_{\text{tol\_max}}$).
-
-#### 8.2.5 Method M-505.7 — Solar Radiation (Sunshine)
-- **Applicable Procedures:** Procedure I (Cycling / Diurnal Heating Simulation) and Procedure II (Steady State / Actinic Photodegradation Effects) per Procedure I (Cycling / Diurnal Solar Radiation A1).
-- **Environmental Envelope:** Peak simulated solar spectral irradiance $I_{\text{solar\_peak}} \le I_{\text{solar\_max}}$ (`1120.0` W/m², spectral distribution encompassing UV-A, UV-B, visible, and infrared wavelengths per MIL-STD-810H Table 505.7-I) under continuous chamber ambient air temperature up to $T_{\text{solar\_amb}}$ (`49.0` °C).
-- **Exposure Duration:** Procedure I: minimum $N_{\text{solar\_cycles}}$ (`10` continuous 24-hr diurnal heating cycles); Procedure II: continuous actinic exposure for $t_{\text{actinic}} \ge \tau_{\text{actinic\_min}}$ (`240.0` hr).
-- **Operational Functional Checks:** Continuous monitoring of internal enclosure internal thermal rise ($\Delta T_{\text{internal}} \le \Delta T_{\text{internal\_max}}$), optical perception window transmissivity measurement, surface coating reflectance evaluation, and telemetry health stream verification during peak irradiance.
-- **Acceptance Criteria:** Internal compartment temperature rise constrained within thermal design margins (`18.5` °C); zero chalking, blistering, peeling, or photolytic embrittlement of exterior polymers, radomes, and seal materials; optical transmissivity degradation across sensor covers $\Delta \text{Trans} \le \Delta \text{Trans}_{\text{max}}$ (`2.0`%).
-
-#### 8.2.6 Method M-506.6 — Rain / Blowing Rain
-- **Applicable Procedures:** Procedure I (Blowing Rain), Procedure II (Exaggerated Rain / Watertightness), and Procedure III (Drip / Condensation Ingress) per Procedure I (Blowing Rain) / Procedure III (Drip).
-- **Environmental Envelope:** Precipitation rate $R_{\text{precip}} \ge R_{\text{precip\_req}}$ (`100.0` mm/hr / `4.0` in/hr) with accompanying horizontal wind velocity $v_{\text{wind}} \ge v_{\text{wind\_req}}$ (`18.0` m/s / `40.0` mph); water droplet diameter distribution $d_{\text{droplet}} \in [0.5\text{ mm}, 4.5\text{ mm}]$ under nozzle water pressure $P_{\text{nozzle}}$ (`276.0` kPa).
-- **Exposure Duration:** Minimum exposure duration $t_{\text{exposure}} \ge \tau_{\text{rain\_face\_duration}}$ (`30.0` min per exposed face across all orthogonal axes, total exposure $t_{\text{total}} \ge \tau_{\text{rain\_total\_min}}$ of `120.0` min).
-- **Operational Functional Checks:** Continuous operational execution and state tracking during blowing rain exposure; dynamic seal differential pressure monitoring; post-exposure insulation resistance measurement; internal moisture detector telemetry monitoring.
-- **Acceptance Criteria:** Zero liquid water penetration into IP-rated internal electronics bays ($\text{IP}_{xy}$ certified per IEC 60529); insulation resistance across power distribution circuits $R_{\text{ins}} \ge R_{\text{ins\_min}}$ (`100.0` MΩ); zero optical occlusion on perception lenses; zero corrosion or moisture pooling within connector backshells.
-
-#### 8.2.7 Method M-507.6 — Humidity
-- **Applicable Procedures:** Procedure I (Induced / Storage and Transit Cycles) and Procedure II (Aggravated Dynamic Humidity Cycles) per Procedure II (Aggravated Dynamic Humidity Cycles).
-- **Environmental Envelope:** Relative humidity $\text{RH} \ge \text{RH}_{\text{aggravated}}$ (`95.0`% ± 4% RH) across cyclic thermal profile $[T_{\text{hum\_low}}, T_{\text{hum\_high}}]$ (`[30.0 °C, 60.0 °C]`).
-- **Exposure Duration:** Aggravated cyclic exposure spanning $N_{\text{humid\_cycles}}$ (`10` continuous 24-hr cycles, total exposure duration $t_{\text{humid\_total}} \ge \tau_{\text{humid\_total\_min}}$ of `240.0` hr).
-- **Operational Functional Checks:** Operational checkouts conducted at high-temperature / high-humidity plateau during alternating cycles (e.g., cycles 2, 5, 8, and 10); high-voltage dielectric breakdown test; post-exposure operational baseline verification within $t_{\text{post}} \le \tau_{\text{post\_humid\_check}}$ (`24.0` hr) of chamber egress.
-- **Acceptance Criteria:** Zero electrical short circuits, dielectric breakdown, or insulation leakage ($R_{\text{ins}} \ge R_{\text{ins\_min}}$); zero micro-corrosion on gold/nickel-plated connector pins; zero delamination or dendritic conductive growth on conformal-coated printed circuit assemblies; zero fungal growth or degradation of potting materials per MIL-STD-810H Method 508.8.
-
-#### 8.2.8 Method M-509.7 — Salt Fog
-- **Applicable Procedures:** Procedure I (Aggravated Marine / Atmospheric Corrosion Cycling) per Procedure I (Continuous 5% NaCl Aerosol Fog).
-- **Environmental Envelope:** Saline atomization solution concentration $C_{\text{salt}}$ (`5.0`% ± 1% NaCl by weight); chamber exposure temperature $T_{\text{chamber}}$ (`35.0` °C ± 2 °C); fallout collection rate $1.0\text{ to }3.0\text{ ml}/80\text{ cm}^2/\text{hr}$; solution pH maintained within $6.5 \le \text{pH} \le 7.2$.
-- **Exposure Duration:** Standard accelerated 48-hour continuous salt spray exposure followed by 48-hour controlled drying cycle at $+35\text{ °C}$ with relative humidity $\text{RH} \le 50\%$, repeated for $N_{\text{salt\_cycles}}$ (`2` complete 96-hr cycles, total exposure $t_{\text{salt\_total}} \ge \tau_{\text{salt\_total\_min}}$ of `48.0` hr).
-- **Operational Functional Checks:** Pre-test baseline functional pass, post-drying operational checkout following each 48-hr drying cycle, electrical bonding and grounding path resistance measurement ($R_{\text{bond}} \le R_{\text{bond\_max}}$), and mechanical latch/fastener operation check.
-- **Acceptance Criteria:** Zero pitting or galvanic corrosion penetrating protective base metal coatings (hardcoat anodization, passivated stainless steel, electroless nickel); zero binding of exposed rotating joints, hinges, or bearing seals; electrical bonding resistance across structural chassis elements remains $R_{\text{bond}} \le R_{\text{bond\_limit}}$ (`2.5` mΩ); full functional test pass.
-
-#### 8.2.9 Method M-510.7 — Sand and Dust
-- **Applicable Procedures:** Procedure I (Blowing Dust) and Procedure II (Blowing Sand) per Procedure I (Blowing Dust) / Procedure II (Blowing Sand).
-- **Environmental Envelope:**
-  - *Blowing Dust:* Particulate concentration $C_{\text{dust}}$ (`10.6` g/m³ ± 7 g/m³, Red China Clay / ISO 12103-1 A2 fine test dust) at air velocity $v_{\text{dust}}$ (`8.9` m/s) across ambient (+23 °C) and high-temperature (+60 °C) plateaus.
-  - *Blowing Sand:* Particulate concentration $C_{\text{sand}}$ (`2.2` g/m³, silica sand grain distribution $150\ \mu\text{m} \le d_{\text{grain}} \le 850\ \mu\text{m}$) at air velocity $v_{\text{sand}}$ (`18.0` m/s).
-- **Exposure Duration:** Blowing Dust: $t_{\text{dust}} \ge \tau_{\text{dust\_duration}}$ (`12.0` hr at $+23\text{ °C}$ plus `6.0` hr at $+60\text{ °C}$ per face orientation); Blowing Sand: $t_{\text{sand}} \ge \tau_{\text{sand\_duration}}$ (`90.0` min per exposed face).
-- **Operational Functional Checks:** Operational execution during dust exposure, actuator full-stroke deflection torque test, optical window scratch/abrasion evaluation, and cooling channel differential pressure check.
-- **Acceptance Criteria:** Zero particulate ingress through IP6x certified labyrinth seals, connector gaskets, and hydrophobic vents; zero jamming, binding, or abrasive seizure of dynamic mechanical linkages; optical window transmission degradation $\Delta \text{Trans} \le \Delta \text{Trans}_{\text{sand\_max}}$ (`5.0`%); nominal sensor SNR and motor RPM tracking.
-
-#### 8.2.10 Method M-514.8 — Vibration
-- **Applicable Procedures:** Procedure I (General Broadband Random & Dynamic Vibration) and Procedure IV (Assembled Platform Vibration) per Procedure I (General Vibration - Prop Profiles).
-- **Environmental Envelope:** Power Spectral Density (PSD) broadband random vibration profile $S_{\text{vib}}(f)$ across frequency spectrum $f \in [20\text{ Hz}, 2000\text{ Hz}]$ with overall root-mean-square acceleration $G_{\text{rms\_op}}$ (`7.7` G_rms) for operational qualification and $G_{\text{rms\_endurance}}$ (`11.2` G_rms) for structural endurance across three orthogonal axes ($X, Y, Z$).
-- **Exposure Duration:** Operational test: $t_{\text{vib\_op}} \ge \tau_{\text{vib\_op\_axis}}$ (`2.0` hr per axis); Structural endurance test: $t_{\text{vib\_endurance}} \ge \tau_{\text{vib\_endurance\_axis}}$ (`1.0` hr per axis, total duration across 3 axes $t_{\text{total}} \ge \tau_{\text{vib\_total\_min}}$ of `9.0` hr).
-- **Operational Functional Checks:** Continuous closed-loop guidance and control state estimation execution during multi-axis vibration; IMU and rate sensor noise floor spectral density analysis; high-speed serial bus bit error rate monitoring; fastener torque retention verification.
-- **Acceptance Criteria:** Structural integrity maintained with zero resonant fatigue cracking, loose hardware, or structural plastic deformation; fastener torque retention $\ge \tau_{\text{torque\_retention\_min}}$ (`90.0`%); state estimation error bounded by $e_{\text{state}} \le \epsilon_{\text{vib\_max}}$ (`2.0` mm / `0.5` deg); zero intermittent signal dropouts or contact chatter exceeding $\tau_{\text{chatter\_max}}$ (`10.0` µs).
-
-#### 8.2.11 Method M-516.8 — Mechanical Shock
-- **Applicable Procedures:** Procedure I (Functional Shock), Procedure IV (Transit Drop Shock), Procedure V (Crash Hazard Shock), and Procedure VI (Bench Handling Shock) per Procedure I (Functional Shock) / Procedure IV (Transit Drop).
-- **Environmental Envelope:**
-  - *Functional Shock:* Terminal-peak sawtooth or half-sine acceleration pulse with peak amplitude $a_{\text{shock\_peak}}$ (`20.0` g) across pulse duration $\Delta t_{\text{shock}}$ (`11.0` ms, velocity change $\Delta v_{\text{shock}} \ge \Delta v_{\text{req}}$ of `1.4` m/s).
-  - *Crash Hazard Shock:* Peak amplitude $a_{\text{crash\_peak}}$ (`40.0` g) across pulse duration $\Delta t$ (`6.0` ms).
-  - *Transit Drop:* Free-fall drop height $h_{\text{drop}}$ (`1.2` m / `48.0` inches) onto high-density plywood backed by concrete across all corners, edges, and faces.
-- **Exposure Duration:** Functional Shock: 3 shocks per direction along 3 orthogonal axes in both positive and negative directions (total 18 shock pulses); Transit Drop: 26 total drop impacts across packaged operational configurations.
-- **Operational Functional Checks:** Operational checkout executed immediately following each shock pulse; structural latch and locking pin alignment check; non-volatile flash integrity check; accelerometer calibration zero-bias shift verification.
-- **Acceptance Criteria:** Zero structural failure, mounting bracket deformation, or dislodging of internal modular electronics; zero false triggering of emergency termination circuits; sensor bias drift remaining within calibrated limits ($\Delta \mathbf{b} \le \mathbf{b}_{\text{tol}}$); full functional operational verification following transit drop sequence.
-
-#### 8.2.12 Method M-521.4 — Icing / Freezing Rain
-- **Applicable Procedures:** Procedure I (De-icing & Anti-icing Evaluation) and Procedure II (Icing Accumulation / Operational Capability) per Procedure I (Icing/Freezing Rain Accretion).
-- **Environmental Envelope:** Water droplet atomization spray at water temperature $T_{\text{water}} \approx 0\text{ °C}$ under chamber air temperature $T_{\text{ice\_amb}} \in [-10\text{ °C}, -2\text{ °C}]$ (`[-10.0 °C, 2.0 °C]`); glaze or rime ice accretion thickness $\delta_{\text{ice}} \ge \delta_{\text{ice\_req}}$ (`13.0` mm / `0.5` inches).
-- **Exposure Duration:** Water spray exposure duration until declared ice accretion thickness is achieved, followed by cold soak stabilization duration $t_{\text{soak}} \ge \tau_{\text{ice\_soak\_min}}$ (`4.0` hr) at $-10\text{ °C}$.
-- **Operational Functional Checks:** Activation of active electro-thermal de-icing / anti-icing elements; dynamic actuation breakaway torque check under glaze ice accretion; barometric pressure port heater verification; perception sensor optical cover clearing check.
-- **Acceptance Criteria:** Active/passive de-icing systems clear ice from critical sensor windows and dynamic actuation gaps within $t_{\text{clear}} \le \tau_{\text{clear\_max}}$ (`60.0` s); actuators deliver full operational stroke authority without over-torque thermal faults; zero water ingress into electronics enclosures during subsequent post-test thaw cycle.
-
----
-
-### 8.3 Ingress Protection (IEC 60529) & Environmental Sealing Architecture
-- **Enclosure Ingress Rating:** Certified to environmental ingress protection rating $\text{IP}_{xy}$ (`IP55`) in accordance with IEC 60529 (where $x \ge 6$ guarantees total protection against solid particulate ingress, and $y \ge 7$ guarantees protection against water immersion up to $1\text{ m}$ depth).
-- **Elastomeric Bulkhead & Gasket Barriers:** Dual continuous elastomeric silicone/fluorosilicone compression gaskets along all chassis parting lines, modular disconnect bulkheads, and battery compartment interfaces.
-- **Pressure Equalization & Breather Vents:** Hydrophobic and oleophobic ePTFE membrane breather vents permitting bidirectional air equalization during rapid altitude/temperature changes while maintaining liquid water and dust barrier integrity.
-
----
-
-### 8.4 Electromagnetic Compatibility (EMC/EMI) & RF Environments
-- **Radiated Susceptibility (RS103):** Withstands High-Intensity Radiated Fields (HIRF) up to $E_{\text{field}}$ (`200.0` V/m) across frequency spectrum $f \in [2\text{ MHz}, 40\text{ GHz}]$ per MIL-STD-461G Method RS103 without processor resets or telemetry corruption.
-- **Conducted Susceptibility (CS114 / CS115 / CS116):** Power and signal interconnects withstand bulk cable injection and damped sinusoidal transients up to declared MIL-STD-461G Curve 5 limits.
-- **Radiated & Conducted Emissions (RE102 / CE102):** Narrowband and broadband radiated emissions suppressed below MIL-STD-461G RE102 limits to prevent self-interference with integrated RF communications and reference receivers.
-- **External Reference Signal Denial Resilience:** Capable of maintaining autonomous closed-loop state estimation and boundary containment for up to $t_{\text{denied}} \ge \tau_{\text{denied\_max}}$ (`30.0` s) of continuous external positioning signal loss via dead reckoning and kinematic state observers with spatial drift rate bounded by $\text{Drift} \le \text{Drift}_{\text{max}}$ (`0.25` m/s).
-
----
-
-### 8.5 Physical Spatial Constraints & Deployment Envelopes
-- **Operational Staging Footprint:** Nominal cleared deployment and staging zone area bounded by $A_{\text{staging}} \ge A_{\text{staging\_min}}$ (`25.0` m²).
-- **Transit & Packaged Packaging:** Entire cyber-physical platform, operator station, telemetry mast, and Ground Support Equipment (GSE) packaged into modular ruggedized containers with total combined volume $V_{\text{packaged}} \le V_{\text{packaged\_max}}$ (`0.85` m³) and single container mass $m_{\text{container}} \le m_{\text{container\_max}}$ (`35.0` kg) compliant with MIL-STD-1472H two-person lift constraints.
-
-## 9. Multi-Threaded Operational Scenarios & System Timelines
-
-In accordance with ISO/IEC/IEEE 29148:2018 §6.4.2, OMG Unified Architecture Framework (UAF) v2.0 Operational Processes (Op-Pr), and MIL-STD-882E §4.3, this section specifies the multi-threaded operational scenarios, dynamic timelines, and deterministic decision gates governing the system lifecycle. All scenarios maintain 100% traceability to allocated operational activities (`OA-01`..`OA-08`), operational information exchanges (`OpTx-01`..`OpTx-08`), emergency containment triggers (`EMG-01`..`EMG-07`), and Rules of Engagement (ROE) (`ROE-01`..`ROE-06`).
-
-### 9.1 Scenario SCN-01: Nominal Lifecycle Thread
-Scenario `SCN-01` describes an end-to-end nominal operational mission lifecycle from pre-operation staging through autonomous state trajectory execution, on-station mission processing, precision recovery, and controlled shutdown.
-
-| Step Number | Elapsed Time (T+) | Stimulus / Trigger | Actor / Performer | Action Executed | Telemetry Stream | Decision Gate | Exception Branch | Exit Criterion |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **1** | T0 + Delta_t0 | Operator energizes Operator Station and connects primary energy module | Maintenance Technician / Core Controller / Safety Watchdog | Executes automated Pre-Operation Built-In-Test (PBIT) suite per OA-01; verifies sensor biases, actuator end-stops, cryptographic root of trust, and battery state-of-charge (SoC) | OpTx-01, OpTx-06 (PBIT Status: 100% PASS; Sensor biases <= epsilon_bias_max; SoC >= SoC_launch_min; Bus Voltage nominal; Link SNR >= SNR_min) | Gate GNG-01: PBIT 100% PASS & Pre-Operation Interlocks Verified | If PBIT fails or SoC < SoC_launch_min, abort startup; latch diagnostic fault code and transition to Phase_MaintenanceMode | PBIT verification flag logged; Pre-Operation interlocks green; Root-of-trust validated |
-| **2** | T0 + Delta_t1 | Operations Coordinator issues authenticated Sortie Release Token and mission profile | System Operator / Supervisory Operator Console | Ingests cryptographic mission plan, validates digital signatures, uploads waypoints and dynamic containment polygon to Core Controller via OpTx-07, arms system | OpTx-06, OpTx-07 (Controller Mode: Armed_Standby; Waypoints Loaded: N_wp; Containment Polygon Active: R_buffer declared; Checksum: MATCH) | Gate GNG-02: Mission Plan Checksum Match & Environmental Bounds Green | If signature invalid or perimeter outside allowable envelope, reject mission plan; remain in Phase_Startup | Cryptographic mission token verified; System armed in Armed_Standby; Supervisor gives execution clearance |
-| **3** | T0 + Delta_t2 | System Operator depresses Dual-Action Execution Switch on Operator Console | Core Controller / Dynamic Actuator Subsystem | Initiates autonomous launch sequence per OA-02; commands actuators to transition profile, accelerates to nominal velocity v_nominal along ingress corridor | OpTx-01, OpTx-02, OpTx-06 (Speed: v_nominal; Trajectory Error e_track <= epsilon_track_max; Attitude rates nominal; Power draw nominal) | Gate GNG-03: Launch Corridor Clearance & Dynamic Stability Verified | If trajectory deviation e_track > epsilon_track_max or actuator fault detected, abort launch; transition to Contingency_BoundaryContainment / EMG-05 | Nominal operating speed v_nominal achieved; Ingress transition complete; Stable closed-loop tracking established |
-| **4** | T0 + Delta_t3 | System reaches waypoint corridor boundary WP_ingress | Core Controller / Guidance Subsystem | Traverses multi-dimensional corridor towards operational station; continuously evaluates 4D state space boundaries and environmental limits per OA-05 | OpTx-01, OpTx-02, OpTx-06 (Cross-Track Error: e_xtrack <= epsilon_xtrack_max; Altitude/Position nominal; Wind/Disturbance <= Disturbance_limit) | Gate GNG-04: Corridor Containment & C2 Health Bounds Verified | If GNSS degraded or C2 SNR < SNR_min, execute PACE link failover per EMG-01 / EMG-02; divert to Contingency_DeadReckoning if unrecovered | Waypoint corridor traversed; System arrives at designated operational station perimeter |
-| **5** | T0 + Delta_t4 | System crosses station boundary perimeter WP_station | Core Controller / Sensor Suite / Edge Processing Node | Transitions to operational station pattern; activates multi-modal payload data acquisition and edge neural inference per OA-03 and OA-04 | OpTx-04, OpTx-05, OpTx-06 (Payload Mode: ACTIVE_PROCESSING; Telemetry Stream: 100% nominal; Feature vectors emitted; Downlink rate nominal) | Gate GNG-05: Payload Health & Energy Reserve R(t) > R_bingo(t) Green | If payload sensor fault occurs or R(t) <= R_bingo(t), terminate on-station operations; initiate immediate egress per OA-06 / EMG-03 | Operational mission objectives satisfied; Sensor data streams verified; Continuous station keeping maintained |
-| **6** | T0 + Delta_t5 | Primary operational objectives completed or Bingo energy threshold R_bingo reached | Core Controller / Guidance Core / Power & Resource Subsystem | Calculates optimal return trajectory corridor; stows payload into secure transit configuration; initiates nominal egress transit per OA-02 and OA-06 | OpTx-01, OpTx-02, OpTx-06 (Mode: Nominal_Egress_Transit; Distance to Base: d_base; Remaining Resource: R_current >= R_bingo; Payload: STOWED) | Gate GNG-06: Return Trajectory Clearance & Residual Energy Margin Verified | If headwind disturbance causes R_current < R_return + R_reserve, trigger secondary divert protocol to alternate landing site LZ-DIVERT-ALPHA per EMG-03 | Egress corridor entered; Standoff transit underway; Return trajectory checklist green |
-| **7** | T0 + Delta_t6 | System arrives at primary recovery location boundary WP_recovery | Guidance Subsystem / Dynamic Actuator Subsystem / Recovery Beacon | Acquires precision recovery reference beacon, aligns vehicle axes, executes controlled deceleration profile to zero velocity, reaches safe rest at recovery node | OpTx-01, OpTx-02, OpTx-06 (Velocity: v_rest; Terminal alignment error: delta_pos <= epsilon_land; Actuator Power: ISOLATED; Structural loads nominal) | Gate GNG-07: Safe Recovery Alignment & Ground Sensor Confirmation | If recovery beacon lost or terminal misalignment exceeds epsilon_land_max, initiate automated go-around maneuver if energy permits, else execute precautionary stop per EMG-06 | Vehicle at rest (v_rest = 0.0); Actuators de-energized; Recovery interlocks committed |
-| **8** | T0 + Delta_t7 | System at rest confirmation signal from ground sensors and internal IMU | Core Controller / Security Partition / Maintenance Technician | Executes post-operation secure shutdown per OA-08; offloads encrypted blackbox logs and high-bandwidth telemetry dump; zeroizes session crypto keys; enters safe power-down state | OpTx-06 (Mode: Phase_SecureShutdown; Telemetry Dump: 100% Complete; Crypto State: ZEROIZED; Hardware Safe Lock: ENGAGED) | Gate GNG-08: Telemetry Integrity Checksum & Cryptographic Zeroization Verified | If diagnostic log transfer interrupted or memory fault detected, latch fault flag on non-volatile indicator; require manual diagnostic tether | Blackbox logs secured; System fully de-energized; System ready for post-operation turnaround or maintenance |
-
----
-
-### 9.2 Scenario SCN-02: High-Throughput State Tracking & Target Processing
-Scenario `SCN-02` details the multi-threaded execution when real-time sensor processing detects a high-priority state feature, triggering high-resolution sensor payload tasking, centroid lock, coordinated standoff tracking, and telemetry streaming.
-
-| Step Number | Elapsed Time (T+) | Stimulus / Trigger | Actor / Performer | Action Executed | Telemetry Stream | Decision Gate | Exception Branch | Exit Criterion |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **1** | T0 + Delta_t1 | Anomaly signature or state feature detected by wide-angle sensor sweep | Sensor Suite Array / Edge Processing Node | Executes real-time edge neural inference model per OA-03; computes confidence score C_detect; extracts state coordinates p_target and bounding geometry | OpTx-04, OpTx-05 (Inference Confidence: C_detect >= C_detect_threshold; Target Coordinates: p_target; Bounding Box: [x, y, z, theta]; Frame Timestamp: t_stamp) | Gate GNG-T1: Detection Confidence C_detect >= C_detect_threshold & Coordinate Validity Verified | If confidence C_detect < C_detect_threshold or false-positive filter triggers, reject candidate detection; resume wide-angle sweep | Feature classification verified; Target Track ID assigned; Internal event emitted via OpTx-05 |
-| **2** | T0 + Delta_t2 | Target Track ID and coordinate demand received over internal bus (OpTx-05) | Payload Actuator Subsystem / Edge Processing Node | Slews narrow-field high-resolution sensor payload to target coordinate vector p_target; closes optical/state centroid tracking loop at frequency f_track | OpTx-01, OpTx-05, OpTx-06 (Payload Gimbal Angles: [theta_az, theta_el]; Centroid Tracking Error: e_track <= epsilon_track_max; Tracking Mode: Centroid Lock Active) | Gate GNG-T2: Centroid Lock Stability & Gimbal Limit Margin Verified | If payload reaches mechanical end-stop or centroid lock lost for duration tau_lost, command Core Controller to adjust system heading | Narrow-field sensor locked on target; Centroid tracking stabilized within tracking window |
-| **3** | T0 + Delta_t3 | Stable centroid lock maintained for duration tau_lock_stable | Edge Processing Node / Payload Specialist / Operator Station | Triggers multi-spectral high-fidelity coordinate extraction per OA-03; computes Target Location Error (TLE); packages precision metadata and streams high-rate telemetry to console via OpTx-05/OpTx-06 | OpTx-05, OpTx-06 (Target Range: d_target; TLE: e_TLE <= epsilon_TLE_max; High-Rate Stream Active: Throughput_stream; Target Metadata Tagged) | Gate GNG-T3: Target Location Error Bound e_TLE <= epsilon_TLE_max Verified | If TLE exceeds threshold epsilon_TLE_max due to sensor jitter, execute multi-frame filtering; alert operator if geometry remains degraded | Precision target state coordinates extracted; Telemetry stream verified on operator console; Operator notified |
-| **4** | T0 + Delta_t4 | Mission Supervisor commands persistent target tracking from Operator Console | System Operator / Core Controller / Guidance Subsystem | Ingests supervisory tracking command via OpTx-07; computes dynamic standoff trajectory (coordinated standoff pattern of radius R_orbit centered on p_target) per OA-02 | OpTx-01, OpTx-02, OpTx-06 (Guidance Mode: Standoff_Tracking_Orbit; Orbit Radius: R_orbit +/- delta_R; Standoff Distance >= R_standoff_min; Sensor Lock: MAINTAINED) | Gate GNG-T4: Dynamic Standoff Boundary & Collision Margin Verified | If standoff orbit intersects keep-out zone or geofence boundary, clamp orbit geometry to allowable corridor and notify operator | Coordinated standoff orbit established; Continuous 360-degree high-throughput sensor tracking maintained |
-| **5** | T0 + Delta_t5 | Continuous high-throughput data stream active over Primary Communications link | PACE Communications Modem / Supervisory Operator Console | Dynamically optimizes channel bandwidth allocation per OpTx-06; pipes high-resolution state stream to downstream analytical processing pipelines | OpTx-06 (Downlink Throughput: Throughput_stream >= Throughput_min; Packet Loss Rate <= 0.1%; Link Latency <= tau_latency_max; Data Quality: 100%) | Gate GNG-T5: Datalink Quality of Service (QoS) & Buffer Integrity Maintained | If link bandwidth degrades below threshold, trigger adaptive compression and throttle non-critical background telemetry | Downstream analytical systems receive synchronized telemetry stream; Target tracking dataset compiled |
-| **6** | T0 + Delta_t6 | Mission Supervisor issues tracking termination command upon objective completion | Mission Supervisor / Core Controller / Payload Actuator Subsystem | Releases centroid tracking lock; stows payload to boresight reference position; re-engages nominal corridor navigation per OA-02; updates Bingo energy reserve | OpTx-01, OpTx-02, OpTx-06 (Mode: Nominal_Corridor_Navigation; Payload Mode: BORESIGHT_STOWED; Heading: WP_next; Residual Energy: R(t) >= R_bingo(t)) | Gate GNG-T6: Boresight Stow Verification & Corridor Resumption Clearance | If payload fails to stow or gimbal jam detected, lock actuator power and report degraded payload state; proceed with vehicle transit | Payload safely stowed; Nominal trajectory tracking resumed; Target engagement logged to non-volatile memory |
-
----
-
-### 9.3 Scenario SCN-03: Degraded C2 Lost-Link & Autonomous Fallback Return
-Scenario `SCN-03` defines the autonomous handling of primary communications failure, execution of PACE failover hierarchy, and fallback to deterministic lost-link return protocols.
-
-| Step Number | Elapsed Time (T+) | Stimulus / Trigger | Actor / Performer | Action Executed | Telemetry Stream | Decision Gate | Exception Branch | Exit Criterion |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **1** | T0 + Delta_t1 | Localized RF interference, jamming, or shadowing degrades Primary Point-to-Point datalink | PACE Communications Modem / Core Controller | Detects Primary link SNR dropping below SNR_threshold; detects consecutive lost heartbeat frames; starts Primary lost-link timer t_loss_primary | OpTx-06 (Primary Link Status: DEGRADED / TIMEOUT; Heartbeat Loss: t_loss >= tau_heartbeat_timeout_Primary; Active PACE Tier: Primary) | Gate GNG-C1: Primary Link Timeout Invariant tau_heartbeat_timeout_Primary Exceeded | If link SNR recovers before timeout expiration, reset lost-link timer; maintain Primary link | Primary datalink timeout declared; PACE automated failover sequence initiated |
-| **2** | T0 + Delta_t2 | Primary link timeout threshold tau_heartbeat_timeout_Primary breached | PACE Datalink Router / Operator Console | Reroutes bidirectional C2 telemetry and control packets to Alternate encrypted network tunnel per CAP-03.2; initiates handshake verification | OpTx-06, OpTx-07 (Active Medium: Alternate_Network; Handshake Status: ESTABLISHED; Link Latency <= tau_C2_max; Downlink Bitrate nominal) | Gate GNG-C2: Alternate Network Cryptographic Handshake Verified | If Alternate handshake fails within tau_handshake_max, immediately fall through to Contingency narrowband channel | Alternate network tunnel active; Bidirectional supervisory control restored; Event logged |
-| **3** | T0 + Delta_t3 | Environmental/infrastructure outage causes Alternate Network link failure | PACE Datalink Router / Core Controller | Detects loss of Alternate channel; falls back to Contingency robust narrowband RF command channel per CAP-03.3; throttles high-bandwidth payload data to preserve essential C2 bandwidth | OpTx-06 (Active Medium: Contingency_RF; Essential C2 Link: ACTIVE; Payload Stream: THROTTLED; Downlink: Essential State Telemetry Only) | Gate GNG-C3: Contingency Channel Essential Packet Flow Verified | If Contingency RF channel fails to initialize within tau_contingency_init, arm autonomous lost-link watchdog | Essential command link operational; Vehicle controllable via narrowband discrete commands |
-| **4** | T0 + Delta_t4 | Complete signal loss across all PACE communication tiers exceeding total timeout tau_heartbeat_timeout_Contingency | Hardware Safety Watchdog / Deterministic Failsafe State Machine | Triggers canonical emergency event EMG-01 (Communications Timeout); latches failsafe mode Contingency_LostLinkFallback; enters autonomous holding pattern for duration tau_hold per OA-07 | OpTx-06 (Mode: Contingency_LostLinkFallback; Failsafe State: ACTIVE; Lost-Link Hold Timer: t_hold / tau_hold; Emergency Beacon: TRANSMITTING) | Gate GNG-C4: Total Lost-Link Timeout tau_heartbeat_timeout_Contingency Latch Confirmed | If C2 link reconnects on any tier during hold duration tau_hold, require authenticated operator re-link command to resume mission | Autonomous holding pattern established within safe corridor; Emergency beacon active; Hold timer running |
-| **5** | T0 + Delta_t5 | Lost-link hold timer t_hold reaches maximum holding duration tau_hold without link recovery | Core Controller / Guidance Core / Power & Resource Subsystem | Evaluates remaining energy against Bingo return model; calculates autonomous deconfliction return trajectory along pre-surveyed clearance corridor to Primary Recovery Base | OpTx-01, OpTx-02, OpTx-06 (Mode: Autonomous_RTB_Transit; Heading: Direct Primary Recovery Base; Velocity: v_nominal; Trajectory: Verified Clearance Corridor) | Gate GNG-C5: Return Trajectory Deconfliction & Bingo Energy R(t) >= R_return Verified | If calculated energy R(t) < R_return, divert to nearest secondary recovery site LZ-DIVERT-ALPHA per EMG-03 | Autonomous return trajectory engaged; 100% boundary containment maintained along return corridor |
-| **6** | T0 + Delta_t6 | System arrives at primary recovery base coordinates | Guidance Subsystem / Dynamic Actuator Subsystem / Ground Sensors | Acquires autonomous local recovery reference; executes precision alignment and deceleration; commits safe stop; isolates actuator power and latches failsafe lock | OpTx-06 (Location: Primary Recovery Base; Velocity: v_rest; Failsafe Lock: ENGAGED; Actuators: DE-ENERGIZED; System State: SAFE) | Gate GNG-C6: Zero-Velocity Rest State & Safe Power Isolation Confirmed | If terminal area obstructed, execute autonomous go-around to secondary recovery zone if energy permits, else execute controlled soft containment stop | Vehicle secured at base; All systems in safe un-powered state; Emergency event logged for post-operation maintenance |
-
----
-
-### 9.4 Scenario SCN-04: Dynamic Geofence Boundary Divert
-Scenario `SCN-04` covers the handling of dynamic environmental stress and unexpected keep-out zone insertion exceeding nominal limits, requiring closed-loop Bingo energy calculation and secondary divert execution.
-
-| Step Number | Elapsed Time (T+) | Stimulus / Trigger | Actor / Performer | Action Executed | Telemetry Stream | Decision Gate | Exception Branch | Exit Criterion |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **1** | T0 + Delta_t1 | External Data Service pushes dynamic keep-out zone update (OpTx-03) or severe localized environmental disturbance detected | Sensor Suite / External Data Service / Safety Watchdog | Ingests new dynamic geofence exclusion polygon Z_exclusion via OpTx-03 per OA-05; detects that current trajectory intersects newly declared keep-out boundary within distance d_proximity <= d_warning_buffer | OpTx-01, OpTx-03, OpTx-06 (Geofence Warning: ACTIVE; Distance to Keep-Out: d_proximity <= d_warning_buffer; Dynamic Exclusion Polygon: [p_poly1..p_polyN]) | Gate GNG-D1: Dynamic Geofence Warning Threshold d_proximity <= d_warning_buffer Breached | If updated exclusion zone is outside operational trajectory envelope, acknowledge update without altering trajectory plan | Dynamic geofence warning raised; Visual/acoustic alert transmitted to Operator Console; Divert evaluation triggered |
-| **2** | T0 + Delta_t2 | Proximity warning triggers closed-loop trajectory recalculation | Power & Resource Subsystem / Guidance Subsystem | Evaluates available energy R(t) against revised reroute trajectory and adverse disturbance headwind; determines that rerouting around exclusion zone exceeds nominal return energy margin (R_current <= R_bingo) | OpTx-01, OpTx-06 (Resource SoC: R_current; Bingo Threshold: R_bingo; Energy Deficit Margin: Delta_E_deficit; Return Feasibility: INSUFFICIENT_FOR_PRIMARY) | Gate GNG-D2: Bingo Energy Condition R(t) <= R_bingo(t) Declared | If energy recalculation confirms sufficient margin (R_current > R_bingo + Delta_E_margin), execute nominal dynamic corridor re-routing around exclusion zone | Secondary divert protocol triggered; Candidate secondary recovery sites queried |
-| **3** | T0 + Delta_t3 | Secondary divert protocol triggered per EMG-03 / EMG-05 | Core Controller / Guidance Core / System Operator | Queries pre-surveyed secondary divert database; evaluates wind-assisted descent path; selects optimal Secondary Divert Site LZ-DIVERT-ALPHA; computes deconflicted transit corridor | OpTx-06, OpTx-07 (Selected Divert Site: LZ-DIVERT-ALPHA; Divert Distance: d_divert; Required Energy: E_divert <= R_current - R_reserve; Terrain Clearance: VALID) | Gate GNG-D3: Divert Site Reachability & Statutory Reserve Ratio R_reserve >= 0.20 * R_capacity Verified | If candidate site unreachable, evaluate tertiary emergency containment site LZ-DIVERT-BETA; if none reachable, command immediate emergency stop per EMG-06 | Secondary divert waypoint loaded; Terrain and dynamic state clearance validated |
-| **4** | T0 + Delta_t4 | Operator Console presents secondary divert trajectory to Mission Supervisor and Safety Supervisor | Mission Supervisor / System Operator / Core Controller | Operators submit authenticated divert execution command via OpTx-07; Core Controller transitions mode to Contingency_SecondaryDivert; initiates high-rate bank/turnaway maneuver into divert corridor | OpTx-01, OpTx-02, OpTx-06 (Controller Mode: Contingency_SecondaryDivert; Heading: Divert_Bearing; Lateral Separation to Exclusion Zone: d_sep >= d_containment_margin) | Gate GNG-D4: Authenticated Divert Command Signature Verified & Trajectory Alignment Confirmed | If operator fails to respond within timeout tau_supervisory_timeout, Core Controller autonomously commits secondary divert trajectory under HOTL authority | Vehicle aligned with secondary divert corridor; Dynamic exclusion boundary safely avoided |
-| **5** | T0 + Delta_t5 | Vehicle transits secondary corridor towards LZ-DIVERT-ALPHA | Core Controller / Guidance Subsystem / Sensor Suite | Maintains energy-conserving speed profile v_optimal_glide per OA-02; continuously monitors proximity to terrain and geofence boundaries per OA-05; prepares recovery subsystems | OpTx-01, OpTx-02, OpTx-06 (Distance to LZ-DIVERT-ALPHA: d_lz; Speed: v_optimal_glide; SoC: R_current >= R_reserve; Boundary Status: INSIDE_CORRIDOR) | Gate GNG-D5: Approach Corridor Stability & Energy Reserve Preservation Verified | If unexpected obstacle detected in approach corridor, execute dynamic go-around or lateral obstacle avoidance within containment buffer | System enters terminal approach funnel of Secondary Divert Site LZ-DIVERT-ALPHA |
-| **6** | T0 + Delta_t6 | System reaches terminal recovery proximity above LZ-DIVERT-ALPHA | Guidance Subsystem / Dynamic Actuator Subsystem / Ground Recovery Team | Executes precision deceleration, comes to safe rest at LZ-DIVERT-ALPHA with residual reserve energy R_residual >= 0.20 * R_capacity; latches safe state; broadcasts coordinates to recovery team | OpTx-06 (Location: LZ-DIVERT-ALPHA; Velocity: v_rest; Residual Reserve SoC >= 20.0%; System State: SAFE_CONTAINED; Recovery Beacon: ACTIVE) | Gate GNG-D6: Safe Stop Confirmed & Statutory Energy Reserve Ratio Maintained | If hard landing occurs, trigger structural accelerometer watchdog; log impact telemetry and deploy emergency locator beacon | Vehicle safely contained at secondary site; Zero geofence breaches; Recovery team dispatched |
-
----
-
-### 9.5 Scenario SCN-05: Controlled Safety Interlock Action
-Scenario `SCN-05` defines the formal multi-phase verification and execution of a controlled safety interlock and high-consequence action governed by MIL-STD-882E §4.4, ROE-01 through ROE-06, multi-modal positive identification, dual-consent cryptographic authorization, deterministic terminal execution, and post-action telemetry dump.
-
-#### 9.5.1 Safety Interlock State Machine & Deterministic Transitions
-The following Stateflow-compatible Mermaid state machine defines the deterministic phase transitions, guard conditions, and contingency branches governing Scenario `SCN-05`:
-
-```mermaid
-stateDiagram-v2
-    [*] --> Phase_Ingress_StationKeeping : SortieRelease_Token_Authenticated
-    
-    state Phase_Ingress_StationKeeping {
-        [*] --> Ingress_Transit
-        Ingress_Transit --> Corridor_Verification : WP_Ingress_Reached
-        Corridor_Verification --> Station_Hold_Acquired : Station_Bounds_Locked
-        Station_Hold_Acquired --> [*]
-    }
-    
-    Phase_Ingress_StationKeeping --> Phase_PID_InterlockCheck : TargetArea_Entered && Interlock_01_Clearance_PASS
-    Phase_Ingress_StationKeeping --> Contingency_LostLinkFallback : EMG_01_LostC2_Timeout
-    Phase_Ingress_StationKeeping --> Contingency_BoundaryContainment : EMG_05_Boundary_Excursion
-    
-    state Phase_PID_InterlockCheck {
-        [*] --> MultiModal_Sensing
-        MultiModal_Sensing --> Feature_Fusion_Evaluation : SensorFrames_Captured
-        Feature_Fusion_Evaluation --> Confidence_Scoring : CrossModal_Correlated
-        Confidence_Scoring --> [*] : "C_target >= C_threshold"
-    }
-    
-    Phase_PID_InterlockCheck --> Phase_DualConsent_ArmingExecution : Interlock_02_Target_Verified && Interlock_05_Zone_Clear
-    Phase_PID_InterlockCheck --> Phase_Ingress_StationKeeping : Target_Verification_Failed / Timeout
-    Phase_PID_InterlockCheck --> Contingency_SensorFallback : EMG_02_Sensor_Integrity_Fault
-    
-    state Phase_DualConsent_ArmingExecution {
-        [*] --> Authorization_Request
-        Authorization_Request --> DualKey_Submission_Pending : Token_Dispatched
-        DualKey_Submission_Pending --> Cryptographic_Validation : Keys_Ingested
-        Cryptographic_Validation --> Terminal_Action_Armed : "Signatures_Valid && Delta_t_arm <= tau_arm_max"
-        Terminal_Action_Armed --> Action_Actuation_Fired : Execution_Trigger_Engaged
-        Action_Actuation_Fired --> [*]
-    }
-    
-    Phase_DualConsent_ArmingExecution --> Phase_PostAction_AssessmentDump : Action_Executed && Interlock_03_DualConsent_PASS
-    Phase_DualConsent_ArmingExecution --> Phase_Ingress_StationKeeping : Interlock_04_HOTL_Veto / Arming_Window_Expired
-    Phase_DualConsent_ArmingExecution --> Emergency_SafeStateTermination : EMG_07_System_Abort_Command
-    Phase_DualConsent_ArmingExecution --> Contingency_LostLinkFallback : Interlock_06_LinkLoss_Safing
-    
-    state Phase_PostAction_AssessmentDump {
-        [*] --> Standoff_Egress_Maneuver
-        Standoff_Egress_Maneuver --> PostAction_State_Capture : Safe_Standoff_Distance_Reached
-        PostAction_State_Capture --> Telemetry_Memory_Dump : Diagnostic_Frames_Secured
-        Telemetry_Memory_Dump --> Safe_Return_Transit : Dump_Checksum_Verified
-        Safe_Return_Transit --> [*]
-    }
-    
-    Phase_PostAction_AssessmentDump --> Phase_SecureShutdown : Safe_Recovery_Committed && Telemetry_Archived
-    Phase_PostAction_AssessmentDump --> Contingency_ResourceDivert : EMG_03_Bingo_Energy_Depleted
-    Phase_SecureShutdown --> [*]
-```
-
-#### 9.5.2 Phase 1: Ingress & Station Keeping Execution Verification
-Phase 1 verifies safe transit through designated operational corridors, environmental boundary monitoring, and establishment of a stable standoff station keeping orbit around the target area.
-
-| Step Number | Elapsed Time (T+) | Stimulus / Trigger | Actor / Performer | Action Executed | Telemetry Stream | Decision Gate / Interlock Check | Exception Branch | Exit Criterion |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **1** | T0 + Delta_t_p1_1 | High-consequence mission sortie authorization token verified; system enters ingress corridor | Guidance Subsystem / Core Controller | Navigates along secure ingress corridor per OA-02; maintains velocity v_nominal; checks dynamic clearance envelope | OpTx-01, OpTx-02, OpTx-06 (State: Nominal; Velocity: v_nominal; Cross-Track Error: e_track <= epsilon_track_max; Ingress Status: ACTIVE) | Gate GNG-P1.1 / ROE-01: Clearance Distance d_clearance >= d_min_clearance & Envelope Valid | If obstacle detected or boundary margin breached, execute immediate evasive maneuver per EMG-05 / EMG-06 | Waypoint corridor traversed; System arrives at operational target area boundary |
-| **2** | T0 + Delta_t_p1_2 | System crosses operational engagement zone boundary WP_target_zone | Core Controller / Payload Actuator Subsystem | Un-stows multi-spectral sensor suite; commands gimbal to designated forward surveillance angle [theta_az0, theta_el0] | OpTx-01, OpTx-04, OpTx-06 (Payload Mode: DEPLOYED; Gimbal Angle: [theta_az0, theta_el0]; Payload Health: 100% PASS) | Gate GNG-P1.2: Payload Mechanical Limit & Gimbal Health Verified | If gimbal fails to deploy or reports sensor bias fault, lock gimbal in safe position and report degraded payload state | Sensor payload un-stowed; Multi-modal data feeds active |
-| **3** | T0 + Delta_t_p1_3 | System reaches standoff station holding coordinates | Core Controller / Guidance Subsystem | Establishes stable standoff holding pattern (Radius = R_standoff); maintains continuous line-of-sight to target zone | OpTx-01, OpTx-02, OpTx-06 (Mode: Standoff_Station_Hold; Orbit Radius: R_standoff +/- delta_R; Speed: v_loiter; Attitude rates nominal) | Gate GNG-P1.3 / ROE-05: Standoff Distance to Protected Zone d_protected >= R_CDA_min Verified | If station orbit intersects dynamic exclusion buffer, expand orbit radius to satisfy R_CDA_min | Standoff orbit stabilized; Line-of-sight tracking locked; Station keeping verified |
-| **4** | T0 + Delta_t_p1_4 | Station holding maintained for duration tau_station_check | Safety Watchdog / PACE Communications Transceiver | Assesses C2 link quality and environmental stability per OA-04 and OA-05; verifies link SNR and heartbeat margins | OpTx-06 (Primary SNR >= SNR_min; Heartbeat Age <= 0.2 s; Disturbance <= Disturbance_limit; Resource SoC >= SoC_mission_min) | Gate GNG-P1.4 / ROE-04: Operator Heartbeat Active & HOTL Veto Disarmed | If C2 link SNR < SNR_min or heartbeat timeout expires, safing interlock triggers; transition to Contingency_LostLinkFallback per ROE-06 / EMG-01 | Ingress and station keeping phase exit criteria verified; System ready for positive identification phase |
-
-#### 9.5.3 Phase 2: Positive Identification & Interlock Check Execution Verification
-Phase 2 executes multi-modal sensor fusion, edge neural state classification, precision target coordinate extraction, and protected boundary clearance exclusion verification.
-
-| Step Number | Elapsed Time (T+) | Stimulus / Trigger | Actor / Performer | Action Executed | Telemetry Stream | Decision Gate / Interlock Check | Exception Branch | Exit Criterion |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **1** | T0 + Delta_t_p2_1 | Sensor payload detects target feature candidate within field of regard | Sensor Suite Array / Edge Processing Node | Acquires synchronized multi-modal sensor frames (EO optical, IR thermal, RF signature); timestamps frames with microsecond precision | OpTx-04, OpTx-05 (Sensor Frames Captured: Mode_A + Mode_B; Frame Sync Disparity <= 1.0 ms; Optical Quality: 100%) | Gate GNG-P2.1: Multi-Modal Sensor Frame Synchronization & Integrity Verified | If sensor frame dropout occurs, drop incomplete candidate frame; re-acquire in next sampling cycle | Synchronized multi-modal sensor dataset delivered to Edge Processing Node |
-| **2** | T0 + Delta_t_p2_2 | Synchronized multi-modal frames received on internal payload bus | Edge Processing Node | Runs real-time sensor fusion and neural classification algorithms per OA-03; computes multi-modal confidence score C_target; extracts 3D coordinate vector p_target | OpTx-05, OpTx-06 (Target Confidence: C_target; Target Coordinates: p_target; Target Dimensions: [L, W, H]; Target Class: Validated) | Gate GNG-P2.2 / ROE-02: Multi-Modal Target Verification Score C_target >= C_threshold (C_target >= 0.95) Confirmed | If C_target < C_threshold, reject positive target verification; maintain standoff orbit and continue sensor sweep | Positive target verification confirmed; Target state locked with confidence exceeding normative threshold |
-| **3** | T0 + Delta_t_p2_3 | Positive identification confirmed by Edge Processing Node | Guidance Subsystem / Sensor Fusion Engine | Calculates covariance matrix and Target Location Error (TLE); computes geodetic spatial uncertainty ellipsoid | OpTx-05, OpTx-06 (TLE Metric: e_TLE <= epsilon_TLE_max; Range: d_target; Covariance Trace: trace(P) <= sigma_P_max) | Gate GNG-P2.3: Target Location Error Bound e_TLE <= epsilon_TLE_max Verified | If e_TLE > epsilon_TLE_max due to sensor distance or geometry, execute tighter orbit maneuver to reduce range | Target 3D coordinates validated within strict spatial error bound |
-| **4** | T0 + Delta_t_p2_4 | Precision coordinates p_target locked in Guidance Core | Core Controller / Safety Watchdog | Performs automated spatial boundary calculation against all declared protected zones Z_protected and non-participant exclusion zones | OpTx-01, OpTx-06 (Distance to Nearest Protected Zone: d_cda >= R_CDA_min; Boundary Status: INSIDE_ALLOWED_ZONE; Protected Zone Risk: ZERO) | Gate GNG-P2.4 / ROE-05: Minimum Standoff Separation d_cda >= R_CDA_min Verified | If target location is within R_CDA_min of any protected structure, interlock inhibits arming; action permanently blocked per ROE-05 | Positive target verification and interlock check complete; Verification report packaged for dual-consent operator review |
-
-#### 9.5.4 Phase 3: Dual-Consent Arming & Execution Verification
-Phase 3 enforces the two-person cryptographic authorization rule, rolling arming time-window constraints, terminal guidance trajectory tracking, and controlled action commitment.
-
-| Step Number | Elapsed Time (T+) | Stimulus / Trigger | Actor / Performer | Action Executed | Telemetry Stream | Decision Gate / Interlock Check | Exception Branch | Exit Criterion |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **1** | T0 + Delta_t_p3_1 | Core Controller packages target verification telemetry and interlock status; transmits to Operator Console | Core Controller / Mission Supervisor / Safety Supervisor | Supervisory console displays high-resolution target verification stream, coordinate confidence, and safety zone clearance to Mission Supervisor and Safety Supervisor | OpTx-06 (Target Review Screen: ACTIVE; Interlock Status: ALL_GREEN; Consent Request: PENDING_DUAL_KEY) | Gate GNG-P3.1: Operator Situational Awareness Confirmation & Consent Prompt Ready | If either supervisor rejects target visual confirmation, supervisor asserts manual veto; returns system to station hold per ROE-04 | Both supervisors presented with independent authorization token prompts |
-| **2** | T0 + Delta_t_p3_2 | Mission Supervisor submits Key_A and Safety Supervisor submits Key_B on independent secure consoles | Mission Supervisor / Safety Supervisor / Core Controller Security Partition | Transmits cryptographic signature tokens Key_A and Key_B via OpTx-07; Security Partition verifies digital signatures, timestamp delta \|t_A - t_B\| <= Delta_t_arm_window, and boundary containment status | OpTx-06, OpTx-07 (Key_A Status: VALID; Key_B Status: VALID; Timestamp Disparity: \|t_A - t_B\| <= Delta_t_arm_window; Arming Gate: COMMITTED) | Gate GNG-P3.2 / ROE-03: Dual-Consent Cryptographic Signature Verification PASS | If either key invalid or timestamp delta \|t_A - t_B\| > Delta_t_arm_window, reject arming request; latch security lock | Dual-consent authorization validated; System transitions to Terminal_Action_Armed mode |
-| **3** | T0 + Delta_t_p3_3 | System armed in Terminal_Action_Armed; terminal execution sequence initiates | Core Controller / Guidance Subsystem / Safety Watchdog | Computes and executes terminal guidance trajectory; closes guidance loop at f_control; monitors cross-track error and HOTL veto discrete line | OpTx-01, OpTx-02, OpTx-06 (Terminal Mode: ACTIVE_ARMED; Cross-Track Error: e_terminal <= epsilon_terminal_max; HOTL Veto: CLEAR) | Gate GNG-P3.3 / ROE-04: Terminal Tracking Error Bound & Continuous HOTL Heartbeat Active | If cross-track error e_terminal > epsilon_terminal_max or operator asserts HOTL abort switch, instantly disarm payload and abort trajectory | Terminal trajectory criteria satisfied; System reaches designated terminal actuation point |
-| **4** | T0 + Delta_t_p3_4 | System reaches terminal execution trigger point within release window Delta_t_release | Core Controller / Actuator Subsystem / Safety Watchdog | Issues authenticated actuation command signal to payload actuator bus; delivers controlled action; commands immediate transition to safe post-action egress profile | OpTx-02, OpTx-06, OpTx-08 (Actuator Command: FIRED; Release Timestamp: t_release; Execution State: SUCCESS; Payload State: EXHAUSTED_SAFED) | Gate GNG-P3.4: Action Firing Confirmation & Actuator Power Safing | If actuator command fails to execute within Delta_t_release, command immediate disarm, power isolation, and egress climb | Controlled action committed; Actuator power de-energized; System transitions to safe egress trajectory |
-
-#### 9.5.5 Phase 4: Post-Action Assessment & Telemetry Dump Execution Verification
-Phase 4 executes the immediate safe standoff egress maneuver, captures multi-spectral post-action assessment data, offloads high-bandwidth telemetry dumps, and verifies residual Bingo energy for safe recovery.
-
-| Step Number | Elapsed Time (T+) | Stimulus / Trigger | Actor / Performer | Action Executed | Telemetry Stream | Decision Gate / Interlock Check | Exception Branch | Exit Criterion |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **1** | T0 + Delta_t_p4_1 | Controlled action execution confirmed by payload discrete sensor | Core Controller / Guidance Subsystem | Commands maximum allowable rate climb/turnaway along pre-cleared egress corridor; establishes safe standoff distance d_standoff >= R_standoff_safe | OpTx-01, OpTx-02, OpTx-06 (Mode: Safe_Egress_Maneuver; Egress Speed: v_egress; Standoff Distance: d_standoff >= R_standoff_safe; Boundary: INSIDE) | Gate GNG-P4.1: Safe Standoff Separation & Corridor Clearance Verified | If egress corridor obstructed, divert to secondary deconflicted escape heading | Safe standoff distance achieved; Egress corridor established; System clear of terminal action area |
-| **2** | T0 + Delta_t_p4_2 | System stabilized in post-action standoff orbit | Sensor Suite / Edge Processing Node | Captures post-action high-resolution multi-spectral imagery and sensor telemetry of action site; computes post-action state transition metrics per OA-03 | OpTx-04, OpTx-05, OpTx-06 (Post-Action Assessment: COMPLETE; Feature Changes Detected: True; Sensor Imagery Streamed; Assessment Confidence >= 0.90) | Gate GNG-P4.2: Post-Action Sensor Image Capture & Quality Verification | If sensor field of view obscured by particulate/dust, hold standoff orbit for duration tau_clear | Comprehensive post-action assessment dataset recorded; Visual confirmation streamed to operator console |
-| **3** | T0 + Delta_t_p4_3 | Post-action assessment data compiled in non-volatile flash memory | PACE Communications Transceiver / Security Partition / Operator Console | Initiates high-bandwidth cryptographic telemetry dump via OpTx-06; offloads full-rate raw sensor logs, interlock timestamps, and guidance history | OpTx-06 (Telemetry Dump Status: IN_PROGRESS / 100% COMPLETE; Offload Throughput: Throughput_dump; Checksum: MATCH) | Gate GNG-P4.3: Telemetry Offload Checksum Match & Zeroization Flag Verified | If datalink bandwidth throttled, prioritize cryptographic audit log over raw video frames; queue remaining frames for ground tether | Full execution telemetry offloaded to ground station; Cryptographic audit trail archived |
-| **4** | T0 + Delta_t_p4_4 | Telemetry dump verified; Mission Supervisor issues return transit order | Power & Resource Subsystem / Core Controller / Guidance Core | Calculates residual energy R(t); confirms R(t) >= R_bingo(t); engages nominal return-to-base corridor navigation per OA-02 and OA-06 | OpTx-01, OpTx-02, OpTx-06 (Mode: Autonomous_RTB_Transit; Heading: Base_Bearing; Residual Energy: R(t) >= R_bingo(t); Payload: SAFED_STOWED) | Gate GNG-P4.4 / ROE-06: Residual Energy R(t) >= R_bingo(t) & Base Recovery Route Green | If residual energy R(t) < R_bingo(t) due to extended station time, initiate divert to Secondary Recovery Site LZ-DIVERT-ALPHA per EMG-03 | System safely in transit to recovery location; Post-action audit logs secured; SCN-05 thread completed |
-
-## 10. Maintenance & Support Equipment (SE) Concepts
-
-### 10.1 Three-Tier Maintenance Model (O-Level, I-Level, D-Level)
-The maintenance and sustainment concept is structured into three discrete, formalized tiers adhering to systems engineering maintenance standards (ISO/IEC/IEEE 29148:2018 §5.2.4, INCOSE SEH v5.0 §3.2, MIL-HDBK-470A, and MIL-STD-882E §4.3) (Fixes #124, #140, #141):
-
-| O-Level (Organizational) | I-Level (Intermediate) | D-Level (Depot / Factory) |
-| :--- | :--- | :--- |
-| Pre/Post-operation inspection | Sensor alignment & calibration | Structural non-destructive inspection |
-| Rapid resource module hot-swap | Actuator component replacement & testing | Motor & actuator overhaul & balancing |
-| Fastener torque verification | Firmware configuration & security rollover | Complete controller re-certification |
-| Visual structural integrity check | Modular LRU swap (t <= tau_swap_LRU) | Full environmental stress screening |
-
-1. **Organizational-Level (O-Level) Maintenance:**
-   - **Scope & Location:** Executed directly at the operating base or field staging area by certified Maintenance Technicians (`UC-04`).
-   - **Activities:**
-     - Pre-operation visual structural walkaround checking enclosure integrity and sensor cleanliness.
-     - Automated power-on Built-In-Test (PBIT) diagnostics executed via the operator terminal in $t_{\mathrm{PBIT}} \le \tau_{\text{PBIT\_max}}$.
-     - Rapid tool-less resource module swapping using keyed, hot-swappable smart battery modules ($t_{\text{swap}} \le \tau_{\text{swap\_battery}}$).
-     - Fastener torque verification using calibrated digital torque drivers matching specified limits $\tau_{\mathrm{torque}} \pm \Delta \tau_{\mathrm{torque}}$.
-     - Post-operation data log offloading and system cleaning.
-
-2. **Intermediate-Level (I-Level) Maintenance:**
-   - **Scope & Location:** Conducted at regional maintenance shelters or field workshops equipped with intermediate diagnostic tooling.
-   - **Activities:**
-     - Replacement of Line Replaceable Units (LRUs) including controllers, RF transceivers, speed controllers, and sensor payloads (modular replacement time $t_{\text{LRU\_swap}} \le \tau_{\text{swap\_LRU}}$).
-     - Multi-axis sensor alignment and calibration using field calibration fixtures.
-     - Actuator dynamic load testing, potentiometer calibration, and linkage rigging.
-     - Firmware updates and cryptographic security key rollover following formal configuration management procedures.
-
-3. **Depot-Level (D-Level) Maintenance:**
-   - **Scope & Location:** Performed exclusively at the centralized factory manufacturing facility or certified depot repair overhaul center.
-   - **Activities:**
-     - Deep structural non-destructive inspection (NDI) utilizing phased-array ultrasonic testing to detect internal delamination or micro-cracking.
-     - Actuator motor bearing replacement, rewinding, and dynamic balancing.
-     - Complete electronic circuit board-level repair, soldering inspection, and environmental stress screening (ESS).
-     - Complete system recalibration, certification testing, and factory acceptance testing.
-
-#### 10.1.1 Formal Maintenance Task Cards (MTC-01 through MTC-05)
-In accordance with ISO/IEC/IEEE 29148:2018 §5.2.4 and MIL-STD-882E §4.3, all lifecycle servicing, turnaround, inspection, overhaul, and quarantine actions are governed by formal Maintenance Task Cards (MTC) (Fixes #124, #140, #141):
-
-| Task Card ID | Task Card Title & Scope | Maintenance Tier | Execution Trigger & Interval | Target SLA Duration | Required Qualifications & Tooling | Sign-Off Authority & Verification Protocol | Public Clause Citation |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **MTC-01** | Pre-Sortie / Pre-Operation Inspection | O-Level (Organizational) | Prior to each operational sortie launch (T0 - Delta_t_pre) | t_insp <= 10 min | Certified Maintenance Technician (UC-04); Field Tool Kit (FTK-01) | Maintenance Technician sign-off on SE-02; PBIT 100% PASS verification | ISO/IEC/IEEE 29148:2018 §5.2.4 |
-| **MTC-01A** | Rapid Sortie Turnaround (15-min SLA) | O-Level (Organizational) | Consecutive operational sorties during active deployment | t_turnaround <= 15.0 min | Maintenance Technician (UC-04); Resource Hub (SE-01); Terminal (SE-02) | Dual-Technician sign-off; BMS state-of-charge check; Sortie Release Token | INCOSE SEH v5.0 §3.2 |
-| **MTC-02** | Scheduled 50-Hour Phase Check | I-Level (Intermediate) | Cumulative runtime reaching 50.0 operating hours (+/- 5 hr) | t_phase <= 120 min | Senior Maintenance Specialist; Test Box (SE-04); Alignment Rig (SE-05) | Intermediate Maintenance Certificate; Diagnostic calibration record | ISO/IEC/IEEE 29148:2018 §6.4.2 |
-| **MTC-03** | 100-Hour Major Overhaul | D-Level (Depot / Factory) | Cumulative runtime reaching 100.0 operating hours (+/- 10 hr) | t_overhaul <= 24 hr | Factory Depot Engineering Team; Phased-Array NDI; ESS Test Chamber | Factory Recertification Certificate; NDI structural inspection dossier | MIL-STD-1629A Method 101 |
-| **MTC-04** | Unscheduled Field LRU Swap | I-Level / O-Level Workshop | On-condition upon diagnostic BIT failure or anomaly alert | t_swap <= tau_swap_LRU (2 to 10 min) | Field Maintenance Technician; Field Spares Kit (FSK-01); Test Box (SE-04) | Automated bus discovery PASS; Configuration hash verification log | MIL-HDBK-470A §4.3 |
-| **MTC-05** | Post-Incident Blackbox Quarantine | I-Level / Safety Authority | Mandatory after any emergency containment state (EMG-01..07) | t_quarantine <= 30.0 min | System Safety Officer; Data Terminal (SE-02); Tamper-Sealed Kit | Safety Officer Incident Audit Record; Non-volatile cryptographic dump | MIL-STD-882E Task 205 |
-
-#### 10.1.2 Rapid Sortie Turnaround Workflow & 7-Step Protocol
-To achieve sustained high-tempo operational availability ($N_{\mathrm{sorties}} \ge N_{\mathrm{target}}$), the system enforces a strict 15-minute Service Level Agreement (SLA) rapid turnaround protocol ($t_{\text{turnaround}} \le \tau_{\text{turnaround\_max}} = 15.0\text{ min}$) executed through the following 7-step sequence (Fixes #124, #140):
+Environmental qualification is partitioned across the operational segments in accordance with IEEE Std 1362-1998 Section 5.3 and DoDAF v2.02 SV-1. The boundary diagram identifies the external environment, ground segment, and air vehicle segment with discrete ports and traceable connections.
 
 ```mermaid
 flowchart TD
-    Step1["Step 1: System Ingress &<br/>Safe-State Disarm (T+0 to T+2 min)"]
-    Step2["Step 2: Telemetry Data Offload<br/>& Log Audit (T+2 to T+4 min)"]
-    Step3["Step 3: Rapid Energy Module<br/>Hot-Swap (T+4 to T+6 min)<br/>t_swap <= 2 min"]
-    Step4["Step 4: Rapid Visual &<br/>Structural Inspection<br/>(T+6 to T+9 min)"]
-    Step5["Step 5: Mission Re-Tasking<br/>& Key Injection (T+9 to T+11 min)"]
-    Step6["Step 6: Automated PBIT<br/>Diagnostics (T+11 to T+13 min)<br/>t_PBIT <= tau_PBIT_max"]
-    GateCheck{"PBIT Diagnostics &<br/>Safety Interlocks"}
-    Step7["Step 7: Final Arming &<br/>Sortie Release (T+13 to T+15 min)"]
-    AbortMTC04["Abort Turnaround &<br/>Route to MTC-04 LRU Swap"]
-    SortieLaunch["Nominal Sortie Launch<br/>(Phase_NominalExecution)"]
-
-    Step1 --> Step2
-    Step2 --> Step3
-    Step3 --> Step4
-    Step4 --> Step5
-    Step5 --> Step6
-    Step6 --> GateCheck
-    GateCheck -- "PASS (100%)" --> Step7
-    GateCheck -- "FAIL" --> AbortMTC04
-    Step7 --> SortieLaunch
+ subgraph "External Operating Environment"
+ direction TB
+ Ambient["Ambient Air<br/>Thermal, Wind, Rain, Ice"]
+ RFEnv["RF Environment<br/>C2 Band"]
+ end
+ subgraph "Ground Segment"
+ direction TB
+ GCS["GCS Radio Box<br/>PORT-GCS-RF (INOUT)"]
+ Launcher["PL-40 Rail<br/>PORT-LAUNCH-PNEU (IN)"]
+ end
+ subgraph "Air Vehicle Segment"
+ direction TB
+ Airframe["Airframe<br/>PORT-AIR-ENV (IN)"]
+ Pitot["Pitot Tube CUAV SKYE2<br/>PORT-PITOT-PRESS (IN)"]
+ end
+ Ambient -->|"CONN-01: Ambient Thermal and Wind Load [PORT-AIR-ENV]"| Airframe
+ RFEnv -->|"CONN-02: C2 RF Exposure [PORT-GCS-RF]"| GCS
+ Launcher -->|"CONN-03: Pneumatic Launch Pressure [PORT-LAUNCH-PNEU]"| Airframe
+ Ambient -->|"CONN-04: Pitot Pressure and Icing Exposure [PORT-PITOT-PRESS]"| Pitot
 ```
 
-1. **Step 1: System Recovery & Ingress Safe-Area Positioning ($T_0 + 0\text{ min}$ to $T_0 + 2\text{ min}$):**
-   - System completes recovery alignment and transitions to `Phase_SecureShutdown`.
-   - Maintenance Technician attaches ESD grounding strap and verifies high-voltage bus de-energization.
-   - Safety exclusion perimeter is established around the staging platform.
-2. **Step 2: Telemetry Data Offload & Non-Volatile Log Dump ($T_0 + 2\text{ min}$ to $T_0 + 4\text{ min}$):**
-   - High-speed diagnostic interface connects to the Field Control Terminal (`SE-02`).
-   - Non-volatile system telemetry, sensor logs, and watchdog audit traces are offloaded and cryptographically hashed.
-   - Automated fault-scan algorithm verifies zero recorded unmitigated anomaly flags during the preceding sortie.
-3. **Step 3: Rapid Tool-less Energy / Battery Module Hot-Swap ($T_0 + 4\text{ min}$ to $T_0 + 6\text{ min}$):**
-   - Maintenance Technician disengages the primary quick-release retention latches.
-   - Depleted smart energy module is withdrawn and transferred to the Multi-Bay Charging Hub (`SE-01`).
-   - Fully charged, balanced smart energy module ($\text{SoC} \ge 95\%$) is inserted along keyed guide rails until positive mechanical latch engagement is confirmed ($t_{\text{swap}} \le \tau_{\text{swap\_battery}} = 2.0\text{ min}$).
-4. **Step 4: Rapid Visual Inspection & Mechanical Check ($T_0 + 6\text{ min}$ to $T_0 + 9\text{ min}$):**
-   - 360-degree walkaround visual inspection verifying enclosure integrity, lens cleanliness, seal compression, and fastener tightness.
-   - Actuator control linkages and mechanical interfaces checked for zero foreign object debris (FOD) and nominal play.
-5. **Step 5: Mission Re-Tasking & Cryptographic Plan Injection ($T_0 + 9\text{ min}$ to $T_0 + 11\text{ min}$):**
-   - Next-phase operational mission plan, geofence boundary parameters, and Bingo energy thresholds are uploaded via `SE-02`.
-   - Authenticated Sortie Release Token and mission encryption keys are injected into the core guidance controller.
-6. **Step 6: Automated Power-On Built-In-Test (PBIT) Diagnostics ($T_0 + 11\text{ min}$ to $T_0 + 13\text{ min}$):**
-   - Automated PBIT initiated via operator terminal ($t_{\mathrm{PBIT}} \le \tau_{\text{PBIT\_max}}$).
-   - Verifies multi-channel sensor parity, actuator sweep response, C2 communication link margins, and safety watchdog health.
-   - All pre-operation go/no-go gates (`GNG-01` through `GNG-05`) must evaluate strictly to `TRUE`.
-7. **Step 7: Final Arming, Crew Clear & Sortie Release ($T_0 + 13\text{ min}$ to $T_0 + 15\text{ min}$):**
-   - Diagnostic umbilical disconnected; weather-sealed port covers secured.
-   - Maintenance Technician confirms all interlocks green, signs electronic sortie authorization, and clears launch area.
-   - System transitions to `Phase_NominalExecution` within the 15-minute SLA envelope ($t_{\mathrm{turnaround}} \le 15.0\text{ min}$).
+| Segment | Boundary Element | Environmental Exposure | Grounding Source |
+| :--- | :--- | :--- | :--- |
+| External Environment | Ambient air | Temperature, wind, rain, icing | parametric_limits.md PL-73, PL-74 |
+| External Environment | RF environment | C2 band 4.4 GHz to 5.0 GHz | interface_table.md GCS UAV Telemetry Link; a5-user-manual-2.md:1273 |
+| Ground Segment | PL-40 Rail | Pneumatic pressure 13 bar to 14 bar | parametric_limits.md PL-40, PL-41; a5-user-manual-2.md:1329 |
+| Ground Segment | GCS Radio Box | Output power 2 W | parametric_limits.md PL-39; a5-user-manual-2.md:1690 |
+| Air Vehicle Segment | Airframe | Airborne ambient exposure | Not stated in OEM sources |
+| Air Vehicle Segment | Pitot Tube CUAV SKYE2 | Heated and drained airspeed sensing | oem_bom.md; avenger_v2_5_sysml_v2_ingestion.md:32 |
 
-#### 10.1.3 Tool-less Modular Line Replaceable Unit (LRU) Replacement Procedures
-To guarantee rapid unscheduled field repair capability (`MTC-04`), primary subsystems are architected as tool-less modular Line Replaceable Units (LRUs) with strict replacement time bounds ($t_{\text{swap}} \le \tau_{\text{swap\_LRU}}$) (Fixes #140, #141):
+### 8.2 Grounded Environmental Operating Limits
 
-| LRU Designation | Subsystem Nomenclature | Modular Interface & Latching Type | Max Swap Time | Tooling Requirement | Post-Swap Verification Protocol |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **LRU-01: Core Guidance Computer** | Core Processing & Guidance Module | Ruggedized ZIF Cam-Lock Backplane | t_swap <= 5.0 min | Tool-less (Manual Cam Lever) | Automated Firmware Hash & PBIT |
-| **LRU-02: Battery / Energy Module** | Smart Modular Energy Pack | Polarized Keyed Blind-Mate Rail | t_swap <= 2.0 min | Tool-less (Spring Detent Latch) | BMS Bus Handshake & SoC Telemetry |
-| **LRU-03: Primary Sensor Payload** | Multi-Modal Sensor Subsystem | Kinematic Mount with Bayonet Collar | t_swap <= 8.0 min | Tool-less (Quick-Disconnect Ring) | Bus Enumeration & Boresight Check |
-| **LRU-04: Actuator / Motor Assembly** | Dynamic Actuator Module | Precision Index Dowel & Bayonet Ring | t_swap <= 10.0 min | Tool-less (Positive-Stop Clamp) | Actuator Sweep & Dynamic Response |
+| Parameter | Grounded Limit | Grounding Source | OEM Status |
+| :--- | :--- | :--- | :--- |
+| Minimum ambient working temperature (launcher) | 20 C below zero | parametric_limits.md PL-73; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:723 | Stated |
+| Maximum ambient working temperature (launcher) | 50 C | parametric_limits.md PL-74; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:723 | Stated |
+| Air vehicle ambient operating temperature | Not stated in OEM sources | None | Silent |
+| Storage and transit temperature | Not stated in OEM sources | None | Silent |
+| Minimum battery charging temperature | 10 C | parametric_limits.md PL-91; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:137 | Stated |
+| Maximum battery charging temperature | 40 C | parametric_limits.md PL-92; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:137 | Stated |
+| Minimum mission waypoint altitude | 50 m | parametric_limits.md PL-36; a5-user-manual-2.md:1195 | Stated |
+| Service ceiling | Not stated in OEM sources | None | Silent |
+| Maximum operating wind | Not stated in OEM sources | None | Silent |
+| Cruise speed | 30 m/s | parametric_limits.md PL-01; a5-user-manual-2.md:307 | Stated |
+| Maximum horizontal speed | 38 m/s | parametric_limits.md PL-02; a5-user-manual-2.md:308 | Stated |
+| Maximum dive speed | 55 m/s | parametric_limits.md PL-03; a5-user-manual-2.md:309 | Stated |
+| Maximum dive angle | 22 deg | parametric_limits.md PL-04; a5-user-manual-2.md:310 | Stated |
+| Minimum flight speed | 26 m/s | parametric_limits.md PL-05; a5-user-manual-2.md:311 | Stated |
+| Flight endurance | 90 min | parametric_limits.md PL-06; avenger-5-spec-sheet-rev3.md:53 | Stated |
+| Ingress protection rating | Not stated in OEM sources | None | Silent |
+| Radiated susceptibility field strength | Not stated in OEM sources | None | Silent |
+| C2 RF band | 4.4 GHz to 5.0 GHz | interface_table.md GCS UAV Telemetry Link; a5-user-manual-2.md:1273 | Stated |
+| Ground radio output power | 2 W | parametric_limits.md PL-39; a5-user-manual-2.md:1690 | Stated |
 
-1. **Core Guidance Computer Module Replacement ($t_{\text{swap}} \le \tau_{\text{swap\_FC}} = 5.0\text{ min}$):**
-   - **Step 1 (De-Energize & Access):** Verify system de-energization; rotate quarter-turn captive quick-release avionics bay fasteners to open access hatch.
-   - **Step 2 (Ejection):** Actuate the zero-insertion-force (ZIF) cam-lock lever to decouple the guidance computer module from the ruggedized backplane connector.
-   - **Step 3 (Insertion & Latching):** Slide the replacement guidance computer module into keyed card guide rails; depress ZIF cam-lock lever until fully seated and mechanical retention locks engage.
-   - **Step 4 (Verification):** Close avionics bay hatch; energize system; confirm automated firmware cryptographic hash match and backplane bus discovery in $t \le 60\text{ s}$.
-2. **Battery / Energy Module Replacement ($t_{\text{swap}} \le \tau_{\text{swap\_battery}} = 2.0\text{ min}$):**
-   - **Step 1 (Release):** Depress dual spring-loaded mechanical retention latch tabs on the energy compartment bulkhead.
-   - **Step 2 (Extraction):** Slide the depleted module along low-friction guide rails; blind-mate high-current power connector disconnects with arc-suppression.
-   - **Step 3 (Insertion):** Insert replacement smart energy module along polarized keyways until blind-mate connectors engage and spring latches click into locked detents.
-   - **Step 4 (Verification):** BMS digital bus handshakes automatically with Core Controller; verify state-of-charge ($\text{SoC} \ge 95\%$) and cell balance on terminal display.
-3. **Primary Sensor Payload Replacement ($t_{\text{swap}} \le \tau_{\text{swap\_payload}} = 8.0\text{ min}$):**
-   - **Step 1 (Unlock):** Rotate quick-disconnect mechanical payload locking collar counter-clockwise by $45^\circ$; release blind-mate high-speed data umbilical.
-   - **Step 2 (Demount):** Disengage payload chassis from kinematic mounting pins and withdraw unit.
-   - **Step 3 (Mount Replacement):** Seat replacement sensor payload onto precision kinematic locating dowels; rotate locking collar clockwise by $45^\circ$ until primary detent clicks.
-   - **Step 4 (Verification):** Re-engage blind-mate umbilical; execute automated sensor enumeration test and optical/inertial boresight calibration check via `SE-05` in $t \le 180\text{ s}$.
-4. **Actuator / Motor Assembly Replacement ($t_{\text{swap}} \le \tau_{\text{swap\_actuator}} = 10.0\text{ min}$):**
-   - **Step 1 (Interface Release):** Release quick-release mechanical clamp ring securing the actuator housing to structural mounting interface.
-   - **Step 2 (Harness Disconnect):** Disconnect hermetic circular blind-mate power and feedback harness using single-twist quick-break coupling.
-   - **Step 3 (Extraction & Insertion):** Withdraw faulted actuator module; align replacement matched actuator module with structural alignment keyway; seat into place.
-   - **Step 4 (Locking & Harness Reconnect):** Re-couple circular harness until positive click; tighten mechanical clamp ring to positive mechanical stop.
-   - **Step 5 (Verification):** Initiate automated actuator range-of-motion sweep, backlash calibration, and closed-loop step response verification via `SE-04`.
+### 8.3 MIL-STD-810H Method Applicability and OEM Silence
 
-### 10.2 Support Equipment (SE) Taxonomy
-The Support Equipment (SE) suite provides all electrical, mechanical, diagnostic, and calibration interfaces required for operational staging, rapid turnaround, and field sustainment (Fixes #124, #141):
-
-| SE Identifier | SE Nomenclature | Functional Purpose & Capabilities | Operating Constraints & Ratings | Public Standard Baseline |
+| MIL-STD-810H Method | Environmental Stress | Grounded Limit or OEM Status | Grounding Source | Inventory Obligation |
 | :--- | :--- | :--- | :--- | :--- |
-| **SE-01** | Multi-Bay Intelligent Resource Management Hub | Simultaneously balances, conditions, and charges multiple smart resource modules at charge rate 2.0C; incorporates fire-suppressed containment chamber, thermal runaway isolation, and CAN/SMBus state-of-health logging. | Input: Multi-source 100-240 VAC / 12-28 VDC; Charge Time: 1.5h; Rating: IP55; Operating Temp: [-20.0°C, 50.0°C] | IEC 62133-2 / UN 38.3 |
-| **SE-02** | Ruggedized Field Control Terminal | Dual-screen daylight-readable (>= 1500 nits) field terminal executing supervisory control, telemetry display, diagnostic PBIT execution, and cryptographic mission plan injection. | Operating Temp: [-20.0°C, 50.0°C]; Battery Life: 8.0h; Rating: IP55; MIL-STD-810H Shock/Vibration | MIL-STD-810H / NIST SP 800-82r3 |
-| **SE-03** | Telescoping Antenna Transceiver Mast | Deployable pneumatic/mechanical mast with multi-axis motorized tracking positioner for high-gain directional PACE communication links and mesh relay nodes. | Mast Height: 6.0 m; Deployment Time: t_deploy; Disturbance Limit: v_dist_mast; Azimuth: 360 deg Continuous Span | MIL-STD-810H / IEEE Std 1558-2020 |
-| **SE-04** | Environmental Diagnostic Test Unit | Precision diagnostic pressure, temperature, and environmental sensor test unit used to verify sensor calibration, telemetry bus ports, and enclosure seal integrity. | Accuracy: +/- epsilon_diag; Operating Range: [p_min, p_max]; Portable ruggedized chassis; Battery powered | ISO/IEC 17025 / MIL-STD-810H |
-| **SE-05** | Precision Sensor Alignment Rig | Optical collimator and reference alignment fixture for zeroing payload sensor axes and optical boresights against the physical reference frame. | Angular Precision: epsilon_align (<= 0.1 mrad); Field-portable kinematic mounting frame | ISO/IEC 17025 §7.6 / IEEE Std 1558-2020 |
-| **SE-06** | Automated Calibration & Metrology Bench | Stationary/shelter calibration standard for dynamic actuator torque calibration, multi-axis inertial sensor turntable characterization, and RF spectrum validation. | Metrology Standard Traceability: ISO/IEC 17025; Torque Accuracy: +/- epsilon_torque; Inertial Slew Precision: epsilon_slew | ISO/IEC 17025:2017 / NIST Traceable |
+| High Temperature | Ambient thermal soak | 50 C maximum working temperature (launcher); air vehicle limit Not stated in OEM sources | parametric_limits.md PL-74; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:723 | OBL-MIL810H-01 |
+| Low Temperature | Cold soak and cold start | 20 C below zero minimum working temperature (launcher); air vehicle limit Not stated in OEM sources | parametric_limits.md PL-73; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:723 | OBL-MIL810H-02 |
+| Rain and Blowing Rain | Liquid precipitation and wind | Not stated in OEM sources | None | OBL-MIL810H-03 |
+| Icing and Freezing Rain | Ice accretion | Not stated in OEM sources | None | OBL-MIL810H-04 |
+| Low Pressure | Altitude and atmospheric pressure | Service ceiling Not stated in OEM sources; minimum mission waypoint altitude 50 m | parametric_limits.md PL-36; a5-user-manual-2.md:1195 | No inventory obligation |
+| Temperature Shock | Rapid thermal transition | Not stated in OEM sources | None | No inventory obligation |
+| Solar Radiation | Solar irradiance | Not stated in OEM sources | None | No inventory obligation |
+| Humidity | Cyclic humidity | Not stated in OEM sources | None | No inventory obligation |
+| Salt Fog | Salt aerosol | Not stated in OEM sources | None | No inventory obligation |
+| Sand and Dust | Particulate | Not stated in OEM sources | None | No inventory obligation |
+| Vibration | Random vibration | Not stated in OEM sources | None | No inventory obligation |
+| Mechanical Shock | Shock and drop | Not stated in OEM sources | None | No inventory obligation |
 
-#### 10.2.1 ISO/IEC 17025 Support Equipment Calibration Matrix
-In accordance with ISO/IEC 17025:2017 §6.5 (Metrological Traceability) and ISO/IEC/IEEE 29148:2018 §5.2.4, all support equipment, diagnostic test boxes, torque limiters, and alignment fixtures maintain unbroken traceability to national metrological standards (Fixes #124, #141):
+### 8.4 Electromagnetic/RF Environment, System Interface Topology and Port Taxonomy
 
-| Equipment ID | Equipment Nomenclature | Parameter / Physical Quantity Measured | Calibration Interval | Reference Standards Baseline | Allowable Tolerance Limits | Recalibration Triggers |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **SE-01** | Multi-Bay Resource Management Hub | Voltage, Current, Temperature, Balancing Delta | 12 Months | NIST Traceable Multi-Meter / ISO/IEC 17025 Cal Standard | Delta_V <= +/- 0.01 V; Delta_I <= +/- 0.05 A; Delta_T <= +/- 1.0 degC | Cell over-voltage anomaly, charger firmware update, or annual expiration |
-| **SE-02** | Ruggedized Field Control Terminal | Clock Synchronization, RF Power, Display Luminance | 12 Months | UTC (NIST) Time Standard / IEEE Std 1588 PTP / IEEE 802.3 | Time Skew Delta_t <= 1.0 ms; RF Output Power <= +/- 0.5 dBm | RTC battery replacement, system OS re-image, or time drift alarm |
-| **SE-03** | Antenna Transceiver Mast & Tracker | Azimuth/Elevation Pointing Angle, Slew Rate | 6 Months | Optical Theodolite / Calibrated Digital Inclinometer | Angular Error Delta_theta <= 0.1 deg; Slew Rate Error <= 2.0% | Mast physical drop/shock, motor gear backlash alert, or semi-annual schedule |
-| **SE-04** | Environmental Diagnostic Test Unit | Pressure, Temperature, Flow Rate, Seal Leak Rate | 6 Months | Deadweight Tester / Primary Temperature & Pressure Standard | Delta_p <= +/- 0.1 hPa; Delta_T <= +/- 0.2 degC; Leak Rate <= 0.01 sccm | Pressure transducer zero drift > limit, physical shock, or semi-annual schedule |
-| **SE-05** | Precision Sensor Alignment Rig | Optical Collimation Angle, Kinematic Pin Alignment | 12 Months | NIST Optical Autocollimator / Granite Master Surface | Optical Alignment Delta_phi <= 0.05 mrad; Pin Orthogonality <= 0.01 mm | Physical drop/shock > 5g, fixture frame deformation, or annual schedule |
-| **SE-06** | Automated Calibration & Metrology Bench | Torque, Inertial Angular Rate, Acceleration Scale Factor | 12 Months | Primary National Metrology Standards / ISO/IEC 17025 Lab | Torque Delta_tau <= +/- 0.1% FS; Rate Error <= 0.01 deg/s | Load cell zero-offset breach, annual lab audit, or hardware component replacement |
-| **FTK-01** | Digital Torque Limiter Suite | Mechanical Fastener Torque (tau_torque) | 6 Months | ISO 6789-1:2017 / NIST Torque Standard | Delta_tau <= +/- 4.0% of setting | Mechanical drop, torque overload trip > 120% FS, or semi-annual cycle |
+The grounded C2 RF environment is the 4.4 GHz to 5.0 GHz band (interface_table.md GCS UAV Telemetry Link; a5-user-manual-2.md:1273) with a ground radio output power of 2 W (parametric_limits.md PL-39; a5-user-manual-2.md:1690). The research inventory declares MIL-STD-461G conducted susceptibility CS114, CS115, and CS116, radiated susceptibility RS103 and RS101, and conducted emissions CE102. Numeric qualification levels for those methods are Not stated in OEM sources.
 
-1. **Metrological Traceability Invariant:** Every calibration measurement must trace to an unbroken chain of comparisons back to National Metrology Institutes (e.g., NIST, PTB, NPL) with documented measurement uncertainties per ISO/IEC 17025:2017 §6.5.
-2. **Tamper-Evident Certification Labeling:** Calibrated GSE units display physical tamper-evident inspection seals recording: Calibration Date, Calibration Certificate Number, Calibration Expiration Date, and Certifying Laboratory ID.
-3. **Out-of-Tolerance Quarantine Protocol:** Any Support Equipment item exceeding allowable tolerance limits, sustaining physical impact shock, or with expired certification is immediately tagged with a physical lockout tag ("QUARANTINED - DO NOT USE") and isolated from operational service.
+| Port | Direction | Interface | Grounding Source |
+| :--- | :--- | :--- | :--- |
+| PORT-GCS-RF | INOUT | C2 link 4.4 GHz to 5.0 GHz | interface_table.md GCS UAV Telemetry Link; a5-user-manual-2.md:1273 |
+| PORT-GNSS-RF | IN | GNSS RF feed | interface_table.md GNSS RF Feed; avenger_v2_5_sysml_v2_ingestion.md:121 |
+| PORT-RADIO-RF-UPPER | OUT | Radio RF feed upper | interface_table.md Radio RF Feed Upper; avenger_v2_5_sysml_v2_ingestion.md:125 |
+| PORT-RADIO-RF-LOWER | OUT | Radio RF feed lower | interface_table.md Radio RF Feed Lower; avenger_v2_5_sysml_v2_ingestion.md:126 |
+| PORT-ESAD-RS485 | OUT | RS-485 half duplex, 100 Hz | interface_table.md RPI ESAD RS-485; esad-icd-excalibur-ab00-0054.md:306 |
+| PORT-CAN1-TRUNK | INOUT | CAN 1 trunk 970 cm | interface_table.md CAN 1 Trunk 970 cm; avenger_v2_5_sysml_v2_ingestion.md:171 |
+| PORT-CAN2-DAISY | INOUT | CAN 2 daisy chain | interface_table.md CAN 2 Daisy Chain Segment 5 to 6; avenger_v2_5_sysml_v2_ingestion.md:92 |
+| PORT-ETH-BACKBONE | INOUT | Ethernet backbone | interface_table.md ETH Backbone; avenger_v2_5_sysml_v2_ingestion.md:114 |
+| PORT-LAUNCH-PNEU | IN | Pneumatic supply 14 bar maximum | interface_table.md Launcher Pneumatic Supply; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:132 |
+| PORT-SERVO-PWR-8V | OUT | Servo power 8 V DC | interface_table.md Servo Power 8V Ruddervator Servo #1; avenger_v2_5_sysml_v2_ingestion.md:155 |
 
-### 10.3 Calibration Fixtures & Sensor Alignment Rigs
-- **Multi-Axis Inertial Calibration Fixture:** Used during I-Level calibration to verify gyroscopic scale factors, accelerometer bias drift, and thermal compensation polynomials over $[T_{\text{op\_min}}, T_{\text{op\_max}}]$.
-- **Magnetic & Heading Calibration Base:** Non-magnetic designated field fixture utilized to calibrate soft-iron and hard-iron magnetometer compensation vectors.
-- **Optical & Payload Boresight Target Board:** Precision retro-reflective collimator array positioned at standardized optical distance $d_{\mathrm{boresight}}$ to verify angular alignment between primary sensor boresights and vehicle reference frame.
+### 8.5 Ingress Protection and Environmental Sealing
 
-### 10.4 Ruggedized Transit Cases & Environmental Storage
-- All system elements are enclosed in high-impact transit cases with pressure equalization valves and custom closed-cell foam inserts.
-- Built-in humidity indicator cards and desiccant ports ensure relative humidity inside storage containers remains below $\text{RH}_{\text{storage\_max}}$ during transport.
-- Cases incorporate shock-attenuating elastomeric corner bumpers certified to MIL-STD-810H Method 516.8 (Transit Drop).
+No numeric ingress protection rating is stated in the OEM sources, so no IP class is claimed. The only grounded environmental protection features are the heated and drained Pitot Tube CUAV SKYE2 (oem_bom.md; avenger_v2_5_sysml_v2_ingestion.md:32) and the Safety RBF Devices that include the pitot cover and sensor cover (oem_bom.md; a5-user-manual-2.md:340; a5-prep-and-safety-rev7.md:321). Enclosure gaskets, breather vents, and liquid ingress ratings are Not stated in OEM sources.
 
-### 10.5 Field Maintenance Tooling & Spares Provisioning
-- **Standard Field Tool Kit (FTK-01):** Includes calibrated digital torque limiters ($\tau_{\mathrm{min}}$ to $\tau_{\mathrm{max}}$), ESD-grounding wrist straps, connector pin extraction tools, optical lens cleaning kits, and diagnostic bus analyzer dongles.
-- **Authorized Field Spares Kit (FSK-01):** Pre-packaged spares allocation supporting the operational endurance window $t_{\text{spares\_endurance}}$ of autonomous operations (includes matched mechanical components, motor sets, sensor probes, replacement seals, and spare fasteners).
-- **Consumable Management:** Hermetically sealed replacement O-rings, desiccant cartridges, conformal seal grease, and fastener sets packaged in serialized tamper-evident bags with expiration date tracking.
+### 8.6 Physical Spatial Constraints and Clearance Envelopes
+
+| Parameter | Grounded Value | Grounding Source |
+| :--- | :--- | :--- |
+| Wingspan | 1.8 m | parametric_limits.md PL-09; a5-user-manual-2.md:287 |
+| Assembled UAV length | 1.6 m | parametric_limits.md PL-10; a5-user-manual-2.md:288 |
+| Assembled UAV height | 1.1 m | parametric_limits.md PL-11; a5-user-manual-2.md:289 |
+| Maximum take-off mass | 17 kg | parametric_limits.md PL-12; a5-user-manual-2.md:299 |
+| Launcher rail length assembled | 5.0 m | parametric_limits.md PL-93; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:713 |
+| Launcher rail length disassembled | 1.28 m | parametric_limits.md PL-94; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:714 |
+| Launcher overall height | 1115 mm | parametric_limits.md PL-86; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:143 |
+| Front bipod stance width | 602 mm | parametric_limits.md PL-87; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:143 |
+| Carriage overall length | 271 mm | parametric_limits.md PL-81; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:142 |
+| Carriage lever tip span | 206.5 mm | parametric_limits.md PL-82; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:142 |
+| Carriage overall height | 232.5 mm | parametric_limits.md PL-83; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:142 |
+| Center of mass longitudinal envelope | 0 mm to 200 mm | parametric_limits.md PL-84; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:144 |
+| Center of mass normal envelope | 0 mm to 100 mm | parametric_limits.md PL-85; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:144 |
+| Maximum launched plane mass | 30 kg | parametric_limits.md PL-64; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:718 |
+| Maximum launch velocity | 25 m/s | parametric_limits.md PL-65; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:719 |
+| Launch angle | 12 deg | parametric_limits.md PL-66; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:712 |
+| Catapult launch pressure | 13 bar to 14 bar | parametric_limits.md PL-40, PL-41; a5-user-manual-2.md:1329 |
+| Launcher set mass | 68 kg | parametric_limits.md PL-69; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:715 |
+| PL-40 Rail Transportation Case mass | 43 kg | parametric_limits.md PL-70; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:716 |
+| Compressor case mass | 25 kg | parametric_limits.md PL-71; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:717 |
+| Launcher setup time | 5 min | parametric_limits.md PL-72; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:722 |
+
+Minimum cleared staging area and operator safety radius are Not stated in OEM sources. The assembled UAV bounding envelope is 1.8 m span by 1.6 m length by 1.1 m height (parametric_limits.md PL-09, PL-10, PL-11; a5-user-manual-2.md:287; a5-user-manual-2.md:288; a5-user-manual-2.md:289).
+
+### 8.7 Safety-Critical Environmental Qualification Priorities
+
+- **ESAD:** Critical (DAL-A), all-electronic safety and arming device; environmental stress qualification must preserve safe and armed state integrity (oem_bom.md; avenger_v2_5_sysml_v2_ingestion.md:45; a5-user-manual-2.md:1984; esad-icd-excalibur-ab00-0054.md:105).
+- **Ruddervator (drawing synonym: Fins; preparation synonym: tail stabiliser):** Canonical tail control surface assembly, quantity 4; no component-specific environmental limit is stated in OEM sources (parametric_limits.md PL-14; oem_bom.md; avenger_v2_5_sysml_v2_ingestion.md:21; a5-user-manual-2.md:273; a5-prep-and-safety-rev7.md:242).
+- **Parachute Deployment Non-Mission:** Non-mission configuration with baseline false; excluded from the mission environmental qualification baseline (oem_bom.md; avenger_v2_5_sysml_v2_ingestion.md:40; a5-user-manual-2.md:262; a5-user-manual-2.md:314).
+
+## Source References
+
+Source: schema/extracted/parametric_limits.md line 5
+
+Source: schema/extracted/oem_bom.md line 9
+
+Source: schema/extracted/interface_table.md line 9
+
+Source: docs/research/RESEARCH_INVENTORY.md line 39
+
+Source: .pipeline/schema.sysml line 506
+
+Source: MIL-STD-810H Methods 501.7, 502.7, 506.6, 521.4
+
+Source: MIL-STD-461G CS114, CS115, CS116, RS101, RS103, CE102
+
+Source: IEEE Std 1362-1998 Section 5.3
+
+Source: DoDAF v2.02 SV-1
+
+| Attribute | Specification Detail |
+| :--- | :--- |
+
+## 9. Multi-Threaded Operational Scenarios & System Timelines
+
+In accordance with ISO/IEC/IEEE 29148:2018 Section 6.4.2, OMG UAF v2.0 Operational Processes (Op-Pr), and MIL-STD-882E Section 4.3, this section defines the operational scenario threads, their actor timelines, and deterministic exit criteria. The scenarios are grounded only in the SysML AST and the Level 0 OEM extracts. Values that the OEM sources do not state are recorded as "Not stated in OEM sources" rather than inferred.
+
+The Ruddervator (drawing synonym Fins; preparation synonym tail stabiliser) is the canonical tail control surface assembly. The ESAD is Critical (DAL-A). The parachute deployment module is non-mission and is excluded from the mission baseline. Human-in-the-loop consent precedes every hazardous or irreversible actuation shown in the diagrams.
+
+### 9.1 Scenario SCN-01: Nominal Sortie
+
+Scenario `SCN-01` covers pre-flight staging, catapult release, corridor transit, on-station sensing, recovery, and secure shutdown. The scenario uses the battery pre-flight window (PL-32, PL-33), the servo power rail (PL-22), the catapult pressure window (PL-40, PL-41), the cruise speed limit (PL-01), and the endurance limit (PL-06). The launcher pneumatic and trigger interfaces follow `schema/extracted/interface_table.md`.
+
+```mermaid
+sequenceDiagram
+ participant GCS_Radio_Box as "Ground Control Station"
+ participant PL_40_Trigger_Handle as "Pneumatic Launcher"
+ participant Autopilot_Computing_Board_Cube_Orange_Plus as "Autopilot Computing Board"
+ participant EPS_Module as "EPS Module"
+ participant Ruddervator as "Ruddervator"
+ participant GNSS_Module_Septentrio_Asterx_m3_pro as "GNSS Module"
+ participant Radio_Module_DTC as "Radio Module"
+ participant Camera_Compute_Module_Trip6 as "Camera Compute Module"
+
+ Note over GCS_Radio_Box,Autopilot_Computing_Board_Cube_Orange_Plus: Operator authorization and signed mission plan precede launch
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,EPS_Module: Pre-flight built-in test verifies battery, servo rail, and launcher pressure
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,GNSS_Module_Septentrio_Asterx_m3_pro: Navigation solution valid
+ Note over GCS_Radio_Box,PL_40_Trigger_Handle: Operator consent token precedes dual-switch launch command
+ Note over PL_40_Trigger_Handle,Autopilot_Computing_Board_Cube_Orange_Plus: Catapult release
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,Ruddervator: Climb and corridor capture
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,Radio_Module_DTC: Telemetry heartbeat stream
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,GNSS_Module_Septentrio_Asterx_m3_pro: Corridor waypoint tracking
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,Camera_Compute_Module_Trip6: On-station gimbal sensing
+ Note over GCS_Radio_Box,Autopilot_Computing_Board_Cube_Orange_Plus: Operator authorizes recovery
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,Ruddervator: Deceleration and safe rest
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,EPS_Module: Servo power isolation and secure shutdown
+```
+
+| Timeline Point | Trigger | Performer | Action | Evidence and Constraint | Exit Criterion |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Pre-flight | Operator connects the battery and enables the ground station | Ground Control Station / Autopilot | Execute built-in test and verify the battery pre-flight window, servo rail, and launcher pressure | PL-32, PL-33, PL-22, PL-40, PL-41; CAN bus and Ethernet backbone from `schema/extracted/interface_table.md` | Pre-flight pass recorded |
+| Launch | Operator authenticates the plan and authorizes release | Mission Operator / Pneumatic Launcher | Send the dual-switch launch command only after the consent token | Launcher trigger command and pneumatic supply from `schema/extracted/interface_table.md` | Air vehicle released |
+| Climb | Launcher release confirmed | Autopilot / Ruddervator | Capture the ingress corridor and hold cruise speed within the stated limit | Ruddervator servo branches on the CAN bus; PL-01 | Ingress corridor captured |
+| Transit | Corridor waypoint reached | Autopilot / GNSS Module | Track waypoints and monitor the GNSS serial and RF feeds | GNSS module and antenna interfaces from `schema/extracted/interface_table.md` | On-station perimeter reached |
+| On-station | Station boundary crossed | Autopilot / Camera Compute Module | Activate gimbal sensing and telemetry while monitoring endurance | Camera module Ethernet interface; PL-06 | Mission data captured |
+| Egress | Operator authorizes recovery | Mission Operator / Autopilot | Return along the planned corridor while endurance remains available | PL-06 | Recovery perimeter reached |
+| Recovery | Recovery perimeter reached | Autopilot / Ruddervator | Execute controlled deceleration to safe rest and isolate servo power | Ruddervator servos and 8 V rail; PL-22 | Vehicle at rest |
+| Shutdown | Rest confirmed | Autopilot / EPS Module | Secure the telemetry log and remove payload and servo power | EPS load switches from `schema/extracted/oem_bom.md` | Safe shutdown complete |
+
+**Exit criteria:** the air vehicle is at rest, servo power is isolated, the mission log is secured, and no boundary, link, or over-limit condition remains active.
+
+### 9.2 Scenario SCN-02: GNSS-Denied Navigation
+
+Scenario `SCN-02` covers loss of the GNSS solution during corridor transit. The autopilot continues with inertial, magnetometer, and pitot references available through the CAN bus and serial interfaces. The OEM sources state the GNSS receiver and antenna interfaces but do not state a numeric GNSS denial threshold; the loss-of-fix declaration is therefore qualitative and operator-visible.
+
+```mermaid
+sequenceDiagram
+ participant GCS_Radio_Box as "Ground Control Station"
+ participant Autopilot_Computing_Board_Cube_Orange_Plus as "Autopilot Computing Board"
+ participant GNSS_Module_Septentrio_Asterx_m3_pro as "GNSS Module"
+ participant Magnetometer_mRo_RM3100_Upper as "Magnetometer"
+ participant Pitot_Tube_CUAV_SKYE2 as "Pitot Tube"
+ participant Ruddervator as "Ruddervator"
+
+ Note over GCS_Radio_Box,Autopilot_Computing_Board_Cube_Orange_Plus: Operator enables GNSS-denied mode and consent token precedes the maneuver
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,GNSS_Module_Septentrio_Asterx_m3_pro: Integrity check reports fix lost
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,Magnetometer_mRo_RM3100_Upper: Heading and barometric reference valid
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,Pitot_Tube_CUAV_SKYE2: Airspeed reference valid
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus: Fuse dead-reckoning state
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,Ruddervator: Hold corridor with inertial guidance
+ Note over GCS_Radio_Box,Autopilot_Computing_Board_Cube_Orange_Plus: Declare GNSS-denied navigation
+ Note over GCS_Radio_Box,Autopilot_Computing_Board_Cube_Orange_Plus: Operator authorizes continued sortie or recovery
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,GNSS_Module_Septentrio_Asterx_m3_pro: Monitor for fix recovery
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus: Navigation source restored or recovery completed
+```
+
+| Timeline Point | Trigger | Performer | Action | Evidence and Constraint | Exit Criterion |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Contingency entry | Operator enables GNSS-denied mode | Mission Operator / Ground Control Station | Deliver the contingency consent token to the autopilot | Operator consent precedes the contingency maneuver | Contingency mode armed |
+| Fix loss | GNSS integrity check fails | GNSS Module / Autopilot | Declare loss of fix and inhibit GNSS as the primary navigation source | GNSS serial and RF interfaces from `schema/extracted/interface_table.md` | GNSS-denied navigation declared |
+| Fallback | Fix loss confirmed | Autopilot / Magnetometer / Pitot Tube | Fuse heading, altitude, and airspeed references into a dead-reckoning state | CAN bus sensor continuation from `schema/extracted/interface_table.md`; GNSS denial threshold is Not stated in OEM sources | Dead-reckoning state valid |
+| Corridor hold | Fallback state valid | Autopilot / Ruddervator | Hold the corridor with inertial guidance and a bounded control response | Ruddervator servo command and status frames | Corridor held without a boundary breach |
+| Decision | Operator receives the degraded navigation status | Mission Operator / Ground Control Station | Authorize continued sortie or recovery and deliver the consent token | Operator consent precedes continued flight or recovery | Mission disposition recorded |
+| Recovery | GNSS fix restored or recovery completed | Autopilot / GNSS Module | Restore GNSS as the primary source or complete recovery under dead reckoning | GNSS module and antenna interfaces | Navigation source restored or vehicle recovered |
+
+**Exit criteria:** the GNSS fix is restored, or the air vehicle is recovered under dead reckoning with no corridor breach and no uncommanded actuation.
+
+### 9.3 Scenario SCN-03: Lost C2 Link
+
+Scenario `SCN-03` covers loss of the command-and-control link. The radio module, upper and lower radio antennas, and ground station radio box operate in the RF band recorded in `schema/extracted/interface_table.md`. The OEM sources do not state heartbeat timeout values or a numeric re-link threshold; the lost-link timers remain operator-configured and are not fabricated here.
+
+```mermaid
+sequenceDiagram
+ participant GCS_Radio_Box as "Ground Control Station"
+ participant Radio_Module_DTC as "Radio Module"
+ participant Autopilot_Computing_Board_Cube_Orange_Plus as "Autopilot Computing Board"
+ participant Ruddervator as "Ruddervator"
+ participant EPS_Module as "EPS Module"
+
+ Note over Radio_Module_DTC,Autopilot_Computing_Board_Cube_Orange_Plus: Primary heartbeat lost and lost-link timer starts
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,Radio_Module_DTC: Attempt alternate channel and contingency channel
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus: Latch lost-link mode after no authenticated frame
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,Ruddervator: Hold a safe pattern inside the corridor
+ Note over Radio_Module_DTC,Autopilot_Computing_Board_Cube_Orange_Plus: Transmit emergency beacon
+ Note over GCS_Radio_Box,Radio_Module_DTC: Operator authentication and re-link request
+ Note over Radio_Module_DTC,Autopilot_Computing_Board_Cube_Orange_Plus: Re-link consent token precedes supervised control
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,Ruddervator: Resume return corridor
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,EPS_Module: Preserve propulsion power for return
+ Note over GCS_Radio_Box,Autopilot_Computing_Board_Cube_Orange_Plus: Link and return status
+```
+
+| Timeline Point | Trigger | Performer | Action | Evidence and Constraint | Exit Criterion |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Link loss | Primary heartbeat absent | Radio Module / Autopilot | Start the lost-link timer and attempt the alternate channel | Radio module and antenna interfaces from `schema/extracted/interface_table.md`; timeout is Not stated in OEM sources | Lost-link timer active |
+| Failover | Alternate handshake fails | Radio Module / Autopilot | Attempt the contingency channel and preserve essential telemetry | RF link band from `schema/extracted/interface_table.md` | Contingency channel attempted |
+| Lost-link latch | No authenticated frame on any tier | Autopilot / Safety Watchdog | Latch lost-link mode and hold a safe pattern inside the corridor | Ruddervator authority and containment boundary | Safe pattern established |
+| Beacon | Lost-link mode latched | Radio Module / Autopilot | Transmit the emergency beacon and retain state telemetry | Radio antenna feeds from `schema/extracted/interface_table.md` | Beacon active |
+| Re-link | Operator authenticates a re-link request | Mission Operator / Ground Control Station | Deliver the re-link consent token before supervised control resumes | Operator consent precedes resumed control | Re-link authorized |
+| Resolution | Re-link accepted or return completed | Autopilot / Ruddervator | Resume supervised control or execute the pre-planned return and recovery | Return corridor and propulsion power available | Supervised control restored or vehicle recovered |
+
+**Exit criteria:** the authenticated link is restored with operator consent, or the air vehicle completes the pre-planned return and reaches safe rest without a boundary breach.
+
+### 9.4 Scenario SCN-04: Tactical Abort
+
+Scenario `SCN-04` covers an operator-directed tactical abort during ingress. The abort is a high-consequence flight maneuver, so the operator asserts abort authority and the ground station delivers a consent token before the autopilot breaks off the corridor. The ESAD remains Critical (DAL-A) and in the safe state; this scenario does not command warhead initiation or any irreversible payload actuation.
+
+```mermaid
+sequenceDiagram
+ participant GCS_Radio_Box as "Ground Control Station"
+ participant Autopilot_Computing_Board_Cube_Orange_Plus as "Autopilot Computing Board"
+ participant Ruddervator as "Ruddervator"
+ participant EPS_Module as "EPS Module"
+ participant ESAD as "ESAD (Critical, DAL-A)"
+
+ Note over GCS_Radio_Box,Autopilot_Computing_Board_Cube_Orange_Plus: Operator asserts abort authority and consent token precedes corridor break-off
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,Ruddervator: Break off ingress and turn away
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,EPS_Module: Reduce propulsion power
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,ESAD: Hold ESAD safe state with no warhead initiation
+ Note over GCS_Radio_Box,Autopilot_Computing_Board_Cube_Orange_Plus: Abort acknowledged
+ Note over GCS_Radio_Box,Autopilot_Computing_Board_Cube_Orange_Plus: Operator authorizes recovery route
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,Ruddervator: Fly the recovery corridor
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,EPS_Module: Preserve power for recovery
+ Note over GCS_Radio_Box,Autopilot_Computing_Board_Cube_Orange_Plus: Recovery established
+```
+
+| Timeline Point | Trigger | Performer | Action | Evidence and Constraint | Exit Criterion |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Abort request | Operator asserts tactical abort | Mission Operator / Ground Control Station | Record abort authority and prepare the consent token | Operator consent precedes the abort maneuver | Abort request accepted |
+| Consent | Abort request accepted | Ground Control Station / Autopilot | Deliver the authenticated abort consent token | Operator consent precedes corridor break-off | Consent token verified |
+| Break-off | Consent token verified | Autopilot / Ruddervator | Turn away from the ingress corridor and reduce propulsion power | Ruddervator servo authority; EPS load switches from `schema/extracted/oem_bom.md` | Corridor break-off complete |
+| Payload safety | Break-off complete | Autopilot / ESAD | Hold the ESAD in the safe state and confirm the interlock | ESAD is Critical (DAL-A); safe-arm interlock from `schema/extracted/interface_table.md` | ESAD safe state confirmed |
+| Recovery authorization | Abort acknowledged | Mission Operator / Ground Control Station | Authorize the recovery route and deliver the return consent token | Operator consent precedes the recovery transit | Recovery route authorized |
+| Recovery | Recovery corridor entered | Autopilot / Ruddervator | Fly the recovery corridor and preserve power for safe rest | EPS load switches; Ruddervator actuation | Vehicle recovered at the recovery site |
+
+**Exit criteria:** the abort is acknowledged, the ESAD remains in the safe state, the air vehicle reaches safe rest on the recovery route, and no irreversible payload actuation has occurred.
+
+### 9.5 Scenario SCN-05: Critical Resource Divert
+
+Scenario `SCN-05` covers a critical resource condition during egress. The autopilot compares remaining battery energy against the operator-configured reserve policy and recommends a divert when the primary recovery site is no longer favored. The scenario uses the endurance limit (PL-06), the direct and extended range limits (PL-07, PL-08), and the battery voltage window (PL-23, PL-24). The OEM sources do not state a numeric reserve ratio, so no reserve percentage is fabricated.
+
+```mermaid
+sequenceDiagram
+ participant GCS_Radio_Box as "Ground Control Station"
+ participant Autopilot_Computing_Board_Cube_Orange_Plus as "Autopilot Computing Board"
+ participant EPS_Module as "EPS Module"
+ participant Ruddervator as "Ruddervator"
+ participant Radio_Module_DTC as "Radio Module"
+
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,EPS_Module: Read remaining battery energy against the configured reserve
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,GCS_Radio_Box: Recommend divert to the secondary recovery site
+ Note over GCS_Radio_Box,Autopilot_Computing_Board_Cube_Orange_Plus: Operator authorizes divert and consent token precedes the turn
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,Ruddervator: Turn toward the secondary recovery site
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,Radio_Module_DTC: Update telemetry and notify the recovery team
+ Note over GCS_Radio_Box,Autopilot_Computing_Board_Cube_Orange_Plus: Confirm recovery team ready and acknowledge
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,Ruddervator: Decelerate to safe rest at the secondary site
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,EPS_Module: Isolate servo power after rest
+ Note over GCS_Radio_Box,Autopilot_Computing_Board_Cube_Orange_Plus: Divert complete
+```
+
+| Timeline Point | Trigger | Performer | Action | Evidence and Constraint | Exit Criterion |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Resource check | Egress corridor entered | Autopilot / EPS Module | Read remaining battery energy and compare it with the configured reserve | Battery voltage window PL-23 and PL-24; reserve ratio is Not stated in OEM sources | Resource state known |
+| Divert recommendation | Remaining energy below the configured reserve | Autopilot / Ground Control Station | Recommend the secondary recovery site and present the energy state | Endurance PL-06; range PL-07 and PL-08 | Divert recommendation presented |
+| Authorization | Recommendation presented | Mission Operator / Ground Control Station | Authorize the divert and deliver the consent token | Operator consent precedes the divert maneuver | Divert authorized |
+| Divert transit | Consent token verified | Autopilot / Ruddervator | Turn toward the secondary recovery site and update telemetry | Ruddervator servo authority; radio module interface | Secondary corridor entered |
+| Recovery coordination | Divert transit established | Mission Operator / Ground Control Station | Confirm the recovery team is ready and relay acknowledgement | Ground station radio and tablet interfaces from `schema/extracted/interface_table.md` | Recovery team ready |
+| Safe rest | Secondary site reached | Autopilot / Ruddervator / EPS Module | Decelerate to safe rest and isolate servo power | Ruddervator servos and 8 V rail; EPS load switches | Vehicle at rest at the secondary site |
+
+**Exit criteria:** the air vehicle reaches safe rest at the secondary recovery site, servo power is isolated, the recovery team is notified, and the battery reserve policy has not been violated.
+
+### 9.6 Scenario SCN-06: Boundary Containment and Flight Termination
+
+Scenario `SCN-06` covers a containment margin violation that cannot be restored by guidance. The safety watchdog evaluates the containment margin against the configured minimum while the air vehicle remains inside the authorized boundary. Flight termination is irreversible, so the operator authorization and consent token precede propulsion cutoff and control-surface safeing. The parachute deployment module is non-mission and is not commanded.
+
+```mermaid
+sequenceDiagram
+ participant GCS_Radio_Box as "Ground Control Station"
+ participant Autopilot_Computing_Board_Cube_Orange_Plus as "Autopilot Computing Board"
+ participant Ruddervator as "Ruddervator"
+ participant EPS_Module as "EPS Module"
+ participant Radio_Module_DTC as "Radio Module"
+
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus: Containment margin below the configured minimum
+ Note over GCS_Radio_Box,Autopilot_Computing_Board_Cube_Orange_Plus: Declare boundary excursion
+ Note over GCS_Radio_Box,Autopilot_Computing_Board_Cube_Orange_Plus: Operator flight termination consent request
+ Note over GCS_Radio_Box,Autopilot_Computing_Board_Cube_Orange_Plus: Operator authorizes termination and consent token precedes cutoff
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus: Verify consent and termination interlock
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,EPS_Module: Cut propulsion power
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,Ruddervator: Controlled descent and surface safeing
+ Note over Autopilot_Computing_Board_Cube_Orange_Plus,Radio_Module_DTC: Broadcast termination status
+ Note over GCS_Radio_Box,Autopilot_Computing_Board_Cube_Orange_Plus: Termination complete
+```
+
+| Timeline Point | Trigger | Performer | Action | Evidence and Constraint | Exit Criterion |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Excursion detection | Containment margin below the configured minimum | Safety Watchdog / Autopilot | Declare the boundary excursion and hold the containment response | Operational containment boundary; guidance restoration already attempted | Excursion declared |
+| Consent request | Excursion declared | Ground Control Station / Mission Operator | Request flight termination consent and display the containment state | Operator consent precedes termination | Consent requested |
+| Consent | Operator authorizes termination | Mission Operator / Ground Control Station | Deliver the termination consent token to the autopilot | Consent token precedes propulsion cutoff | Consent token verified |
+| Interlock check | Consent token received | Autopilot / Safety Watchdog | Verify consent and the termination interlock before actuation | Safety watchdog interlock; ESAD remains Critical (DAL-A) and safe | Interlock verified |
+| Termination | Interlock verified | Autopilot / EPS Module / Ruddervator | Cut propulsion power and command controlled descent with surface safeing | EPS load switches; Ruddervator servo authority | Propulsion cut and descent commanded |
+| Status | Termination commanded | Radio Module / Autopilot | Broadcast termination status and retain the event log | Radio module and antenna interfaces; parachute deployment module is non-mission and not commanded | Termination status broadcast |
+
+**Exit criteria:** the air vehicle is contained within the authorized boundary, propulsion power is cut, control surfaces are safed, the parachute deployment module is not commanded, and the termination event is logged for recovery.
+
+## Source References
+
+Source: .pipeline/schema.sysml
+
+Source: schema/extracted/interface_table.md
+
+Source: schema/extracted/parametric_limits.md
+
+Source: schema/extracted/oem_bom.md
+
+Clause: ISO/IEC/IEEE 29148:2018 Section 6.4.2
+
+Clause: MIL-STD-882E Section 4.3
+
+Viewpoint: OMG UAF v2.0 Operational Processes (Op-Pr)
+
+| Attribute | Specification Detail |
+| :--- | :--- |
+
+## 10. Maintenance & Sustainment Concepts (O/I/D Maintenance)
+
+### 10.1 Three-Tier Maintenance Model (O-Level, I-Level, D-Level)
+
+Sustainment is partitioned into Organizational (O-Level), Intermediate (I-Level), and Depot (D-Level) tiers in accordance with ISO/IEC/IEEE 29148:2018 Section 6.4.2, INCOSE SEH v5.0 Section 3.3.1, JARUS SORA v2.5 Annex E Section E.3, and MIL-STD-882E Task 205 Section 4.2. The Ruddervator is the canonical tail control surface assembly, quantity of 4 units (oem_bom.md:23; schema/extracted/parametric_limits.md PL-14). The ESAD is classified Critical (DAL-A) (oem_bom.md:52). The parachute deployment module is a non-mission configuration with baseline false and is excluded from the sustainment baseline (oem_bom.md:47).
+
+| Tier | Location and Ownership | Authorized Maintenance Scope | Grounding |
+| :--- | :--- | :--- | :--- |
+| **O-Level (Organizational)** | Operating base or field staging area; certified Maintenance Technician | Pre-operation and post-operation visual inspection; RBF device removal and installation; removable battery exchange; ESD grounding; pre-flight battery voltage and pitot checks | oem_bom.md:18, oem_bom.md:69, oem_bom.md:70; schema/extracted/parametric_limits.md PL-32, PL-33, PL-34, PL-35 |
+| **I-Level (Intermediate)** | Regional maintenance shelter or field workshop | Line Replaceable Unit exchange for avionics, radio, camera, gimbal, and servo modules; sensor alignment; firmware and cryptographic key rollover | oem_bom.md:12, oem_bom.md:13, oem_bom.md:14, oem_bom.md:15, oem_bom.md:42, oem_bom.md:43, oem_bom.md:44; NIST SP 800-82r3 Section 6.2 |
+| **D-Level (Depot / Factory)** | Centralized factory or certified depot overhaul center | Structural non-destructive inspection; motor and ESC overhaul; ESAD recertification; complete system certification | oem_bom.md:21, oem_bom.md:22, oem_bom.md:52; MIL-STD-1629A Section 4.3 |
+
+#### 10.1.1 Grounded Maintenance Intervals
+
+| Maintenance Item | Interval or Limit | Grounding |
+| :--- | :--- | :--- |
+| PL-40 pulling rope replacement | At most 100 launches | schema/extracted/parametric_limits.md PL-80; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:138 |
+| PL-40 battery charge time, DC18RC charger | 0 min to 55 min | schema/extracted/parametric_limits.md PL-89; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:137 |
+| PL-40 battery charge time, DC18SD charger | 0 min to 130 min | schema/extracted/parametric_limits.md PL-90; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:137 |
+| PL-40 battery charging temperature | 10 C to 40 C | schema/extracted/parametric_limits.md PL-91 and PL-92; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:137 |
+| PL-40 battery over-discharge cutoff | 14.5 V | schema/extracted/parametric_limits.md PL-77; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:135 |
+| PL-40 battery over-discharge recovery | 16 V after a 5 s delay | schema/extracted/parametric_limits.md PL-78 and PL-79; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:136 |
+| UAV battery pre-flight voltage window | 49 V to 50 V | schema/extracted/parametric_limits.md PL-32 and PL-33; a5-user-manual-2.md:1366 |
+| Pitot static airspeed limit | 0 m/s to 3 m/s | schema/extracted/parametric_limits.md PL-34; a5-user-manual-2.md:1368 |
+| Pitot blow-test airspeed | At least 10 m/s | schema/extracted/parametric_limits.md PL-35; a5-user-manual-2.md:1369 |
+| Air vehicle phase inspection interval | Not stated in OEM sources | oem_bom.md and schema/extracted/parametric_limits.md contain no airframe phase interval |
+| Ruddervator servo overhaul interval | Not stated in OEM sources | oem_bom.md and schema/extracted/parametric_limits.md contain no servo overhaul interval |
+| ESAD recertification interval | Not stated in OEM sources | oem_bom.md and schema/extracted/parametric_limits.md contain no ESAD recertification interval |
+| UAV battery cycle-life replacement interval | Not stated in OEM sources | oem_bom.md and schema/extracted/parametric_limits.md contain no battery cycle-life interval |
+
+#### 10.1.2 Organizational-Level (O-Level) Maintenance Scope
+
+- **Pre-operation and post-operation inspection:** Verify the fuselage assembly with hatches closed and vertical stabilizer attached, the four wing surfaces secured with M6 x 30 mm bolts, the Ruddervator assembly with four tail mounting shafts, and all RBF devices including the pitot cover, sensor cover, gimbal strap, power RBF key, and warhead RBF key (oem_bom.md:31, oem_bom.md:67, oem_bom.md:70).
+- **Battery exchange:** Remove and install the removable 12S2P Li metal battery through its retaining strap and locking connector; the battery supplies 36 V to 50.4 V DC main power (oem_bom.md:18; schema/extracted/parametric_limits.md PL-23 and PL-24).
+- **ESD control:** Equalize electrostatic charge at the ESD grounding point marked by a yellow label before touching avionics or ESAD connectors (oem_bom.md:69).
+- **Pre-flight electrical and pitot checks:** Confirm the UAV battery pre-flight voltage window of 49 V to 50 V, the pitot static airspeed limit of 0 m/s to 3 m/s, and the pitot blow-test airspeed of at least 10 m/s (schema/extracted/parametric_limits.md PL-32, PL-33, PL-34, PL-35; a5-user-manual-2.md:1366, a5-user-manual-2.md:1368, a5-user-manual-2.md:1369).
+- **Power-on built-in test duration:** Not stated in OEM sources.
+
+#### 10.1.3 Intermediate-Level (I-Level) Maintenance Scope
+
+- **Line Replaceable Unit exchange:** Replace the autopilot computing board Cube Orange Plus, EPS module, ETH switch, RPI CM5004032, GNSS module Septentrio Asterx-m3 pro, radio module DTC, camera compute module Trip6, and gimbal Nighthawk2UZ (oem_bom.md:12, oem_bom.md:13, oem_bom.md:14, oem_bom.md:15, oem_bom.md:42, oem_bom.md:43, oem_bom.md:44).
+- **Servo exchange:** Replace Ruddervator Servos #1 to #4 on the four CAN 1 branches of 120 cm and Wing Servos #5 to #8 on the CAN 2 daisy chain; the air vehicle carries 8 servos in total (schema/extracted/parametric_limits.md PL-16, PL-17, PL-18, PL-21; oem_bom.md:24, oem_bom.md:27, oem_bom.md:35, oem_bom.md:38).
+- **Bus restoration checks:** Verify the CAN 1 trunk of 970 cm, the CAN 1 branch of 150 cm, and the four CAN 1 stubs of 120 cm after harness or servo work (schema/extracted/parametric_limits.md PL-19, PL-20, PL-21; schema/extracted/interface_table.md at line 9, schema/extracted/interface_table.md at line 11).
+- **Servo power verification:** Confirm the 8 V DC servo power rail after EPS or CAN power distribution board maintenance (schema/extracted/parametric_limits.md PL-22; schema/extracted/interface_table.md at line 16).
+- **Firmware and cryptographic key rollover:** Apply configuration-managed firmware updates and cryptographic key rollover in accordance with NIST SP 800-82r3 Section 6.2; the OEM rollover interval is Not stated in OEM sources.
+- **Sensor alignment tolerance:** Not stated in OEM sources.
+
+#### 10.1.4 Depot-Level (D-Level) Maintenance Scope
+
+- **Structural non-destructive inspection:** The OEM sources do not state an inspection method, interval, or acceptance threshold; all such values are Not stated in OEM sources.
+- **Propulsion overhaul:** The propulsion chain comprises the ESC IBEX160 and the Motor AXI 5345/16 HD GOLD LINE V3; the OEM overhaul interval is Not stated in OEM sources (oem_bom.md:21, oem_bom.md:22).
+- **ESAD recertification:** The ESAD is Critical (DAL-A) and all ESAD ICD rows carry prototype-reference and Derived status; depot recertification is mandatory before return to service, and the recertification interval is Not stated in OEM sources (oem_bom.md:52).
+- **Parachute deployment module:** The module is a non-mission configuration with baseline false; it is excluded from the depot sustainment baseline (oem_bom.md:47).
+- **Battery depot capacity test and cycle replacement:** Not stated in OEM sources.
+
+### 10.2 Ground Support Equipment (GSE) Support
+
+The GSE baseline is bounded by JARUS SORA v2.5 Annex E Section E.11 (Ground Support Equipment and Launch/Recovery Maintenance) and MIL-STD-882E Task 205 Section 4.2. Only GSE items present in the OEM sources are listed; any GSE capability absent from those sources is marked Not stated in OEM sources.
+
+#### 10.2.1 PL-40 Pneumatic Catapult Launcher
+
+| GSE Item | Grounded Specification | Grounding |
+| :--- | :--- | :--- |
+| PL-40 Rail assembly | Mass 68 kg; rail length 5 m assembled and 1.28 m disassembled | schema/extracted/parametric_limits.md PL-69, PL-93, PL-94; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:715, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:713, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:714 |
+| PL-40 Transport Case | Mass 43 kg | schema/extracted/parametric_limits.md PL-70; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:716 |
+| PL-40 Compressor Unit | Mass 25 kg | schema/extracted/parametric_limits.md PL-71; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:717 |
+| Launched air vehicle envelope | Maximum launched plane mass 30 kg; maximum launch velocity 25 m/s; launch angle 12 deg | schema/extracted/parametric_limits.md PL-64, PL-65, PL-66; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:718, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:719, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:712 |
+| Pneumatic pressure envelope | Maximum compressor working pressure 14 bar; auxiliary filling pressure 16 bar | schema/extracted/parametric_limits.md PL-67 and PL-68; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:132, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:133 |
+| Launcher operating temperature | -20 C to +50 C | schema/extracted/parametric_limits.md PL-73 and PL-74; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:723 |
+| Launcher setup time | 0 min to 5 min | schema/extracted/parametric_limits.md PL-72; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:722 |
+| Trigger hold time | At least 2 s | schema/extracted/parametric_limits.md PL-88; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:530 |
+| Launcher battery | Makita 18 V Li-Ion 6000 mAh battery, quantity of 2 units | schema/extracted/parametric_limits.md PL-75 and PL-76; oem_bom.md:99; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:39 |
+| Pulling rope | High-strength pulling rope from piston to carriage; replacement at most every 100 launches | schema/extracted/parametric_limits.md PL-80; oem_bom.md:86; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:13 |
+| Carriage geometry | Overall length 271 mm; lever tip span 206.5 mm; overall height 232.5 mm | schema/extracted/parametric_limits.md PL-81, PL-82, PL-83; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:142 |
+| Launcher center-of-mass envelope | 0 mm to 200 mm longitudinal; 0 mm to 100 mm normal | schema/extracted/parametric_limits.md PL-84 and PL-85; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:144 |
+| Launcher installed geometry | Overall height 1115 mm; front bipod stance width 602 mm | schema/extracted/parametric_limits.md PL-86 and PL-87; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:143 |
+| Launcher maintenance kits | Pulling rope replacement kit and carriage wheel bearing replacement kit | oem_bom.md:103; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:53, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:54 |
+| Wheel bearing preheat temperature | Not stated in OEM sources | No value appears in oem_bom.md or schema/extracted/parametric_limits.md |
+| Wheel bearing relubrication interval | Not stated in OEM sources | No value appears in oem_bom.md or schema/extracted/parametric_limits.md |
+
+The PL-40 launcher set further comprises the rear, middle, and front rail modules, the carriage with four support levers, the red-handled carriage safety lock pin, the compressor unit, main tank, remote release valve, pressure gauge, power switching circuit, trigger handle, connection hose, three ground anchors, transport case, and hook options A, B, and C (oem_bom.md:82 to oem_bom.md:102). The launcher pneumatic supply is delivered at a maximum of 14 bar and the trigger handle receives 18 V DC (schema/extracted/interface_table.md at line 60, schema/extracted/interface_table.md at line 62; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:132, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:81).
+
+#### 10.2.2 Battery Support Equipment
+
+| Battery | Grounded Specification | Grounding |
+| :--- | :--- | :--- |
+| UAV Battery 12S2P Li Metal BEI | Removable 12S2P Li metal battery with retaining strap and locking connector; 36 V to 50.4 V DC main power | oem_bom.md:18; schema/extracted/parametric_limits.md PL-23 and PL-24 |
+| PL-40 Launcher Battery | Makita BL1860B 18 V Li-Ion 6000 mAh, quantity of two units; over-discharge cutoff 14.5 V; recovery 16 V after a 5 s delay | oem_bom.md:99; schema/extracted/parametric_limits.md PL-75, PL-76, PL-77, PL-78, PL-79 |
+| GCS Battery | Ground control station battery, quantity of 2 units | oem_bom.md:77; a5-user-manual-2.md:350 |
+| UAV battery charge rate and charge time | Not stated in OEM sources | No value appears in oem_bom.md or schema/extracted/parametric_limits.md |
+| UAV battery storage humidity and temperature | Not stated in OEM sources | No value appears in oem_bom.md or schema/extracted/parametric_limits.md |
+
+#### 10.2.3 Tools, Spares, and Maintenance Kits
+
+- **Support Tools:** The OEM support package includes a set of tools and 30 spare attachment bolts (oem_bom.md:81; a5-user-manual-2.md:365, a5-user-manual-2.md:368). The 30 spare attachment bolts cover the M6 x 30 mm wing surface fasteners (oem_bom.md:31).
+- **Support Spare Propeller:** The OEM support package includes 2 spare propeller blades and 1 propeller assembly (oem_bom.md:80; a5-user-manual-2.md:366, a5-user-manual-2.md:367).
+- **PL-40 Maintenance Kits:** The launcher maintenance kit comprises the pulling rope replacement kit and the carriage wheel bearing replacement kit (oem_bom.md:103; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:53, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:54).
+- **Calibrated torque values for airframe fasteners:** Not stated in OEM sources.
+- **ESD wrist strap, connector pin extraction tools, lens cleaning kits, and diagnostic bus analyzers:** Not stated in OEM sources; the only grounded ESD item is the yellow-label ESD grounding point (oem_bom.md:69).
+- **GSE calibration interval and metrological traceability:** Not stated in OEM sources.
+
+### 10.3 Sustainment Constraints
+
+- **Mass and payload limits:** The maximum take-off weight is 17 kg, the warhead mass is 5 kg, and the maximum launched plane mass is 30 kg (schema/extracted/parametric_limits.md PL-12, PL-13, PL-64; a5-user-manual-2.md:299, avenger-5-spec-sheet-rev3.md:133, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:718).
+- **Launch pressure limits:** The catapult launch pressure is 13 bar to 14 bar, the maximum compressor working pressure is 14 bar, and the auxiliary filling pressure is 16 bar (schema/extracted/parametric_limits.md PL-40, PL-41, PL-67, PL-68; a5-user-manual-2.md:1329, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:132, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:133).
+- **Thermal limits:** The PL-40 launcher operating temperature is -20 C to +50 C, and the PL-40 battery charging temperature is 10 C to 40 C (schema/extracted/parametric_limits.md PL-73, PL-74, PL-91, PL-92; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:723, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:137). The air vehicle storage and operating temperature limits are Not stated in OEM sources.
+- **C2 link constraint:** The GCS-to-UAV telemetry and command link operates in the 4.4 GHz to 5.0 GHz band, and the ground radio output setting is 2 W (schema/extracted/interface_table.md at line 63; schema/extracted/parametric_limits.md PL-39; a5-user-manual-2.md:1273, a5-user-manual-2.md:1690).
+- **ESAD handling constraints:** The ESAD is Critical (DAL-A); its umbilical continuity is 0 Ohm to 0.5 Ohm at 20 mA, its arm enable uses a 1 ms period at 50 percent duty, its RS-485 link runs with a 100 Hz command interval, and its high-voltage measurement range is 0 V to 1800 V (oem_bom.md:52; schema/extracted/parametric_limits.md PL-49, PL-50, PL-54, PL-55, PL-56, PL-57, PL-60); its arm enable levels are specified in VDC as 0 VDC to 0.7 VDC low and 2.5 VDC to 3.3 VDC high (schema/extracted/parametric_limits.md PL-51, PL-52, PL-53).
+- **Ruddervator and wing servo constraints:** The Ruddervator uses four servos on the first CAN bus and the wings use four servos on the second CAN bus, for eight servos in total; all servo power is supplied by the 8 V DC rail (schema/extracted/parametric_limits.md PL-14, PL-16, PL-17, PL-18, PL-22; oem_bom.md:23, oem_bom.md:28).
+- **Parachute exclusion:** The parachute deployment module is a non-mission configuration with baseline false and imposes no sustainment constraint on the mission baseline (oem_bom.md:47).
+- **Spares constraint:** Sustained operations depend on the 30 spare attachment bolts, 2 spare propeller blades, and 1 propeller assembly listed in the OEM support package (oem_bom.md:80, oem_bom.md:81; a5-user-manual-2.md:365, a5-user-manual-2.md:366, a5-user-manual-2.md:367, a5-user-manual-2.md:368).
+- **Maintenance interval ceiling:** The only OEM-stated recurring maintenance interval is the PL-40 pulling rope replacement at most every 100 launches; all other recurring intervals are Not stated in OEM sources (schema/extracted/parametric_limits.md PL-80; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:138).
+
+## Source References
+
+Source citations: schema/extracted/oem_bom.md at line 9; schema/extracted/parametric_limits.md at line 7; schema/extracted/interface_table.md at line 9; docs/research/RESEARCH_INVENTORY.md at line 16; .pipeline/schema.sysml; ISO/IEC/IEEE 29148:2018 Section 6.4.2; JARUS SORA v2.5 Annex E Section E.11
+
+| Attribute | Specification Detail |
+| :--- | :--- |
 
 ## 11. Operational Impacts, System Limitations & Documented Trade Studies
 
+This unit records the operational impacts of the Avenger V2.5 air vehicle and PL-40 launcher concept, the system limitations that bound its employment, and the documented engineering trade studies that shaped the concept. Normative quantitative limits are grounded in `schema/extracted/parametric_limits.md` or in an OEM source line. Trade-study weights, scores, and alternative technology performance estimates are non-normative engineering assessments and are explicitly marked as such; OEM sources are silent on those values.
+
 ### 11.1 Operational Workflow & Deployment Impacts
-The transition from legacy manual systems to DEAP_Safety_Architecture introduces substantial positive impacts across operational workflows:
-1. **Reduced Crew Staging Footprint:** The operational crew footprint required to maintain continuous operations is minimized through supervisory automation (1 System Operator and 1 Payload / Data Specialist).
-2. **Automated Pre-Operation Staging:** Preparation time is compressed to $t_{\text{prep}} \le \tau_{\text{prep\_target}}$ (nominal $\tau_{\text{prep\_target}} = 180.0$ s) due to automated digital PBIT routines and tool-less modular interfaces.
-3. **Automated External Coordination:** Integration with external data services automates operational plan registration, dynamic boundary deconfliction, and electronic conspicuity broadcast.
-4. **Rapid Turnaround Servicing:** Field turnaround time $t_{\text{turnaround}} \le \tau_{\text{turnaround\_target}}$ (nominal $\tau_{\text{turnaround\_target}} = 900.0$ s) enabled by modular energy packs and automated self-calibration diagnostics.
+
+1. **Reduced Crew Staging Footprint:** The concept of operations assumes a two-person supervisory crew comprising one System Operator and one Payload / Data Specialist. Crew composition and manning limits are Not stated in OEM sources; the two-person allocation is a non-normative operational assumption.
+2. **Launcher Setup Time:** The PL-40 launcher setup time is bounded at 5 min maximum (PL-72, `schema/extracted/parametric_limits.md at line 78`). This replaces manual rail preparation with a documented pneumatic launcher setup sequence.
+3. **Charging and Turnaround:** The DC18RC charger time is 0 to 55 min (PL-89, `schema/extracted/parametric_limits.md at line 95`) and the DC18SD charger time is 0 to 130 min (PL-90, `schema/extracted/parametric_limits.md at line 96`). Aircraft turnaround time beyond battery charging is Not stated in OEM sources.
+4. **Consumable Replacement Planning:** The PL-40 pulling rope replacement interval is 100 launches maximum (PL-80, `schema/extracted/parametric_limits.md at line 86`), which establishes a recurring maintenance action in the deployment workflow.
+5. **Automated External Coordination:** The concept assumes automated mission-plan registration, boundary deconfliction, and electronic conspicuity exchange with external service providers. The specific external protocols and service interfaces are Not stated in OEM sources; the operational assumption is non-normative.
 
 ### 11.2 Organizational Roles & Training Impacts
-- **Operator Reskilling:** The primary operator role transitions from continuous manual control to supervisory systems management, state deconfliction, and payload data analysis.
-- **Formal Training Syllabus:** Personnel complete a certified training syllabus covering supervisory software operations, human-in-the-loop emergency matrix execution, and safety buffer monitoring.
-- **Maintenance Specialization:** Maintenance technicians transition from purely mechanical repairs to digital bus diagnostics (bus analysis, sensor alignment, and cryptographic key loading).
+
+- **Operator Reskilling:** The primary operator role shifts from continuous manual control to supervisory systems management, state deconfliction, and payload data analysis. The required transition syllabus is Not stated in OEM sources.
+- **Formal Training Syllabus:** Personnel complete a certified training syllabus covering supervisory software operation, human-in-the-loop emergency matrix execution, and safety-buffer monitoring. Syllabus content and duration are Not stated in OEM sources.
+- **Maintenance Specialization:** Maintenance technicians shift from purely mechanical repair to digital bus diagnostics, sensor alignment, and cryptographic key loading. The required training standard is Not stated in OEM sources.
+- **Weapon Safety Qualification:** Personnel handling the ESAD and warhead must complete weapon-safety qualification consistent with the Critical (DAL-A) classification of the ESAD (`schema/extracted/oem_bom.md at line 52`) and the human-judgement interlock obligations of DoD Directive 3000.09 Section 3.1.b. Qualification records are Not stated in OEM sources.
 
 ### 11.3 System Limitations & Operational Boundaries
-While the system provides robust multi-mission capability, formal operational boundaries and statutory constraints must be observed:
-- **Maximum Operational Boundary:** $x_{\text{operating\_max}} = 20000.0$ m in accordance with operational authorizations.
-- **Operational Endurance:** Operating endurance $t_{\text{endurance\_nominal}} = 1.0$ hr under standard environmental conditions; adjusts to $t_{\text{endurance\_cold}} = 0.7$ hr at the minimum operating temperature limit $T_{\text{op\_min}} = -20.0^\circ\text{C}$.
-- **Maximum Payload Capacity:** Maximum payload mass $m_{\text{payload\_max}} = 3.5$ kg within the maximum total system mass envelope $m_{\text{system\_max}} = 20.0$ kg.
-- **Severe Environmental Constraints:** Operation is prohibited in environmental conditions exceeding maximum dynamic disturbance limits $a_{\text{dist\_limit}} = 1.5 g\text{ m/s}^2$ or precipitation limits $R_{\text{precip\_max}} = 50.0$ mm/hr.
+
+- **Maximum Direct Radio Range:** The direct radio line-of-sight range is 60 km maximum (PL-07, `schema/extracted/parametric_limits.md at line 13`). Extended range is 60 to 180 km (PL-08, `schema/extracted/parametric_limits.md at line 14`). A 90 km operating claim is Not stated in OEM sources.
+- **Flight Endurance:** Flight endurance is 90 min maximum (PL-06, `schema/extracted/parametric_limits.md at line 12`). Cold-soak endurance and any endurance derating at low temperature are Not stated in OEM sources.
+- **Mass and Payload Ceiling:** Maximum take-off weight is 17 kg (PL-12, `schema/extracted/parametric_limits.md at line 18`) and warhead mass is 5 kg (PL-13, `schema/extracted/parametric_limits.md at line 19`). Payload capacity beyond the warhead is Not stated in OEM sources.
+- **Speed Envelope:** Cruise speed is 30 m/s (PL-01, `schema/extracted/parametric_limits.md at line 7`), maximum horizontal speed is 38 m/s (PL-02, `schema/extracted/parametric_limits.md at line 8`), maximum dive speed is 55 m/s (PL-03, `schema/extracted/parametric_limits.md at line 9`), and minimum flight speed is 26 m/s (PL-05, `schema/extracted/parametric_limits.md at line 11`).
+- **Altitude and Loiter Geometry:** Minimum mission waypoint altitude is 50 m (PL-36, `schema/extracted/parametric_limits.md at line 42`) and loiter radius is 300 m (PL-37, `schema/extracted/parametric_limits.md at line 43`).
+- **Launcher Thermal Envelope:** PL-40 launcher working temperature is minus twenty degrees Celsius to plus fifty degrees Celsius (PL-73 and PL-74, `schema/extracted/parametric_limits.md at line 79` and `schema/extracted/parametric_limits.md at line 80`). Air vehicle operating temperature limits are Not stated in OEM sources.
+- **Environmental Limits:** Precipitation, wind, gust, and icing limits for the air vehicle are Not stated in OEM sources. MIL-STD-810H Method 506.6 Section 4.2 and Method 521.4 Section 4.2 are recorded in `docs/research/RESEARCH_INVENTORY.md` as applicable verification baselines, but no numeric air vehicle limit is asserted here.
+- **ESAD Electrical Boundary:** ESAD power input is 14 V to 32 V with 28 V nominal (PL-46, PL-47, and PL-48, `schema/extracted/parametric_limits.md at line 52` to `schema/extracted/parametric_limits.md at line 54`). The ESAD high-voltage measurement range is 0 V to 1800 V (PL-60, `schema/extracted/parametric_limits.md at line 66`). The ESAD arm-enable high level is 2.5 V to 3.3 V (PL-52 and PL-53, `schema/extracted/parametric_limits.md at line 58` and `schema/extracted/parametric_limits.md at line 59`).
+- **Servo Power Boundary:** The servo power rail is 8 V (PL-22, `schema/extracted/parametric_limits.md at line 28`). Ruddervator quantity is four units (PL-14, `schema/extracted/parametric_limits.md at line 20`); the ruddervator is the canonical tail control surface assembly (`schema/extracted/oem_bom.md at line 23`).
+- **Command Link Power:** Ground radio output power is 2 W (PL-39, `schema/extracted/parametric_limits.md at line 45`) in the 4.4 GHz to 5.0 GHz band recorded in `schema/extracted/interface_table.md at line 63`.
+- **Recovery Limitation:** The parachute deployment module is a non-mission configuration with baseline false (`schema/extracted/oem_bom.md at line 47`). It is excluded from mission recovery credit and from mission baseline analysis.
 
 ### 11.4 Documented Engineering Trade Studies
-In accordance with INCOSE Systems Engineering Handbook v5.0 §4.3 (Decision Analysis) and ISO/IEC/IEEE 29148:2018 §6.4.2, three formal quantitative multi-criteria engineering trade studies were conducted across the energy storage, edge compute / communications, and autonomous safety containment architecture design spaces (Fixes #118, #129, #132):
 
-#### 11.4.1 Trade Study 1: Energy & Power Storage Architecture (Fix #118)
-- **Objective & Problem Statement:** Select the optimal energy storage chemistry and thermal management architecture balancing low-temperature operational performance at $T_{\text{op\_min}}$, gravimetric energy density $\rho_{\mathrm{energy}}$, cycle lifetime $N_{\mathrm{cycles}}$, safety containment, and pack unit acquisition cost.
-- **Normative Standards Baseline:** INCOSE SEH v5.0 §4.3 (Decision Management), ISO/IEC/IEEE 29148:2018 §6.4.2, MIL-STD-810H Method 502.7 (Low Temperature).
-- **Options Evaluated:**
-  - **Option A (Baseline):** High-Discharge Chemistry Cells (High peak discharge capability, lower gravimetric energy density, severe capacity degradation below $0^\circ\text{C}$).
-  - **Option B (Selected Architecture):** High-Capacity Cylindrical Chemistry Cells with Integrated Thermal Heating (Optimal gravimetric energy density, active internal thermal heating maintaining nominal discharge capacity down to $T_{\text{op\_min}}$, and verified cycle durability).
-  - **Option C:** Solid-State Storage Cells (High theoretical gravimetric energy density and non-flammable solid core, but low ionic conductivity at low temperatures, developmental TRL, and high unit acquisition cost).
-- **Decision:** **Option B (High-Capacity Cylindrical Chemistry with Integrated Thermal Heating)** was selected as the optimal architecture.
+The three trade studies below follow the decision-analysis process of INCOSE SEH v5.0 Section 4.3 and the ConOps content requirements of ISO/IEC/IEEE 29148:2018 Section 6.4.2. All weights, scores, and alternative performance estimates in this subsection are non-normative engineering assessments. They are Not stated in OEM sources. The OEM-grounded system limits used to bound the studies are those cited in Section 11.3.
 
-##### Multi-Criteria Pugh Decision Matrix (Trade Study 1)
-The quantitative INCOSE Pugh Decision Matrix evaluates the candidate energy storage architectures against weighted operational criteria (scale 1 to 5, where 1 = Unacceptable, 3 = Compliant Baseline, 5 = Optimal):
+#### 11.4.1 Trade Study 1: Electrical Storage Architecture (non-normative)
 
-| Evaluation Criterion | Criterion ID | Weight (w_i) | Option A: High-Discharge Cells (s_i1) | Option A: Weighted (w_i * s_i1) | Option B: High-Capacity with Heating (s_i2) [Selected] | Option B: Weighted (w_i * s_i2) | Option C: Solid-State Cells (s_i3) | Option C: Weighted (w_i * s_i3) |
+- **Objective:** Select an electrical storage architecture that preserves discharge capability at the cold-soak boundary, provides adequate cycle life, contains runaway hazards, and remains integrable within the air vehicle mass envelope.
+- **Normative Baseline:** INCOSE SEH v5.0 Section 4.3; ISO/IEC/IEEE 29148:2018 Section 6.4.2; MIL-STD-810H Method 502.7 Section 4.2.
+- **Alternatives:**
+ - **Option A (Baseline):** High-discharge cells with high peak current capability, lower specific storage capacity, and degraded cold-soak capacity.
+ - **Option B (Selected):** High-capacity cylindrical cells with internal heating, providing higher specific storage capacity and active cold-soak heating.
+ - **Option C:** Solid-state cells with high theoretical specific storage capacity and a non-flammable core, but low cold-soak ionic conductivity, low maturity, and high unit cost.
+- **Decision:** Option B was selected. Option A was rejected for cold-soak degradation. Option C was deferred for low maturity and cost.
+
+The Pugh-style decision matrix uses criterion weights that sum to 100 percent. Each option score is a percentage of the maximum attainable score for that criterion. Each weighted contribution is expressed in percentage points. All numeric entries are non-normative engineering assessments and are Not stated in OEM sources.
+
+| Evaluation Criterion | Criterion ID | Weight | Option A Score | Option A Weighted | Option B Score | Option B Weighted | Option C Score | Option C Weighted |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Gravimetric Energy Density (rho_energy) | C_1 | 0.25 | 2 (180 Wh/kg) | 0.50 | 4 (260 Wh/kg) | 1.00 | 5 (350 Wh/kg) | 1.25 |
-| Low-Temp Discharge at T_op_min (s_cold) | C_2 | 0.25 | 1 (Capacity Drop < 40%) | 0.25 | 4 (Thermal Heated > 85%) | 1.00 | 2 (High Impedance < 50%) | 0.50 |
-| Cycle Lifetime & Durability (N_cycles) | C_3 | 0.15 | 2 (300 cycles) | 0.30 | 5 (1000+ cycles) | 0.75 | 2 (350 cycles) | 0.30 |
-| Thermal Runaway Safety & Containment | C_4 | 0.15 | 2 (High Risk / Pouch Swell) | 0.30 | 4 (CID / PTC / Metal Can) | 0.60 | 5 (Solid Core Safe) | 0.75 |
-| Technology Readiness Level (TRL / Maturity) | C_5 | 0.10 | 5 (TRL 9 - Production) | 0.50 | 5 (TRL 9 - Commercial) | 0.50 | 2 (TRL 4 - Lab Prototype) | 0.20 |
-| Unit Acquisition & Pack Integration Cost | C_6 | 0.10 | 4 (Low Cost Baseline) | 0.40 | 3 (Moderate Heating Cost) | 0.30 | 1 (Very High Unit Cost) | 0.10 |
-| Total Composite Score (S_j = sum(w_i * s_ij)) | Total | 1.00 | Baseline Total: 2.25 | 2.25 | Selected Total: 4.15 | 4.15 | Developmental Total: 3.10 | 3.10 |
-| Pugh Ranking & Selection Decision | Rank | — | Rank 3 (Rejected) | — | Rank 1 (Selected Preferred) | — | Rank 2 (Deferred - Low TRL) | — |
+| Specific storage capacity | C_1 | 25 % | 40 % | 10 percentage points | 80 % | 20 percentage points | 100 % | 25 percentage points |
+| Cold-soak discharge capability | C_2 | 25 % | 20 % | 5 percentage points | 80 % | 20 percentage points | 40 % | 10 percentage points |
+| Cycle life | C_3 | 15 % | 40 % | 6 percentage points | 100 % | 15 percentage points | 40 % | 6 percentage points |
+| Runaway containment | C_4 | 15 % | 40 % | 6 percentage points | 80 % | 12 percentage points | 100 % | 15 percentage points |
+| Technology maturity | C_5 | 10 % | 100 % | 10 percentage points | 100 % | 10 percentage points | 40 % | 4 percentage points |
+| Acquisition and integration cost | C_6 | 10 % | 80 % | 8 percentage points | 60 % | 6 percentage points | 20 % | 2 percentage points |
+| Composite score | Total | 100 % | 45 % | 45 percentage points | 83 % | 83 percentage points | 62 % | 62 percentage points |
+| Ranking and decision | Rank | -- | Rank 3 | Rejected | Rank 1 | Selected | Rank 2 | Deferred |
 
-##### Mathematical Sensitivity Analysis Formulation (Trade Study 1)
-To verify decision robustness across varying environmental requirements, the sensitivity of the composite decision score $S_j$ to the cold-temperature performance weight $w_{\mathrm{cold}}$ is formulated as:
+##### Composite Score Formulation (Trade Study 1)
 
 $$
 \begin{aligned}
-S_j(w_{\mathrm{cold}}) &= \sum_{i \neq \mathrm{cold}} w_i s_{ij} + w_{\mathrm{cold}} s_{\mathrm{cold}, j}
+S_j &= \sum_{i=1}^{n} w_i s_{ij}
 \end{aligned}
 $$
 
 - Parameter Definitions & Engineering Units:
 
-| Parameter | Symbol | Expression / Value | Units | Description |
+| Parameter | Symbol | Value | Units | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| Composite Pugh Decision Score | S_j | S_j in [1.0, 5.0] | Dimensionless | Total weighted score for candidate architecture j |
-| Normalized Criterion Weight | w_i | sum(w_i) = 1.00 | Dimensionless | Importance weighting for evaluation criterion i |
-| Candidate Attribute Score | s_ij | s_ij in {1, 2, 3, 4, 5} | Dimensionless | Unweighted ordinal performance score of option j on criterion i |
-| Cold Temperature Weight | w_cold | w_cold = 0.2 | Dimensionless | Parametric weighting assigned to low-temperature operational performance |
-| Cold Performance Score | s_cold_j | s_cold_B = 4 | Dimensionless | Performance rating of option j at minimum operating temperature T_op_min |
-| Minimum Operating Temperature | T_op_min | -20.0 | degC | Statutory cold environment operational temperature boundary |
-| Nominal Gravimetric Energy Density | rho_energy | 240 Wh/kg | Wh/kg | Nominal gravimetric energy storage density |
-| Required Cycle Lifetime | N_cycles_req | 500 | Cycles | Minimum required charge-discharge cycles to 80% state of health |
+| Composite decision score | S_j | 0 to 100 | percent | Weighted score for candidate architecture j |
+| Criterion weight | w_i | 25 | percent | Normalized importance of criterion i |
+| Candidate criterion score | s_ij | 0 to 100 | percent | Score of option j on criterion i |
+| Number of criteria | n | 6 | criteria | Count of evaluation criteria in the matrix |
 
-#### 11.4.2 Trade Study 2: Edge Neural Compute vs Datalink Compression (Fix #129)
-- **Objective & Problem Statement:** Determine the optimal balance between onboard edge neural inference compute and high-bandwidth telemetry downlink transmission under contested, degraded, or jammed RF communications environments.
-- **Normative Standards Baseline:** INCOSE SEH v5.0 §4.3, ISO/IEC/IEEE 29148:2018 §6.4.2, STANAG 4586 Annex B §3.2, NIST SP 800-82r3 §5.2.
-- **Options Evaluated:**
-  - **Option A (Baseline):** Raw Telemetry Streaming with Centralized Operator Station AI Processing (Transmits raw uncompressed high-rate sensor streams to the supervisory station; minimal onboard compute SWaP-C, but high RF bandwidth demand and catastrophic operational failure during RF link denial).
-  - **Option B (Selected Architecture):** Onboard Edge Neural Inference Accelerator with Dynamic Context Compression (Executes real-time feature extraction and boundary detection locally; transmits compact semantic state vectors and compressed telemetry at $\text{Throughput}_{\mathrm{feature}} \ll \text{Throughput}_{\mathrm{raw}}$, guaranteeing autonomous mission execution during communications loss).
-  - **Option C:** Hybrid Dynamic Adaptive Splitting (Dynamically shifts inference tasks between onboard edge and operator console based on estimated link margin; high software complexity, synchronization overhead, and non-deterministic latency spikes during link transitions).
-- **Decision:** **Option B (Onboard Edge Neural Inference Accelerator with Dynamic Compression)** was selected as the optimal architecture.
+#### 11.4.2 Trade Study 2: Edge Inference Versus Downlink Compression (non-normative)
 
-##### Multi-Criteria Pugh Decision Matrix (Trade Study 2)
-The quantitative Pugh Decision Matrix evaluates compute and communications architectures across operational criteria (scale 1 to 5):
+- **Objective:** Determine the balance between onboard inference and downlink transmission under contested, degraded, or denied radio-frequency conditions.
+- **Normative Baseline:** INCOSE SEH v5.0 Section 4.3; ISO/IEC/IEEE 29148:2018 Section 6.4.2; NIST SP 800-82r3 Section 6.2; RTCA DO-362A Section 3.4; NATO STANAG 4586 Section 5.1.
+- **Alternatives:**
+ - **Option A (Baseline):** Raw sensor streaming to the supervisory station with centralized processing. Onboard resource demand is low, but downlink load is high and mission execution fails during link denial.
+ - **Option B (Selected):** Onboard edge inference with dynamic context compression. The air vehicle transmits compact semantic state vectors and retains autonomous execution authority during link loss.
+ - **Option C:** Hybrid adaptive splitting that moves inference between the air vehicle and the supervisory station based on link margin. This adds synchronization complexity and variable response time.
+- **Decision:** Option B was selected. Option A was rejected for link-denial failure. Option C was rejected for software complexity and non-deterministic response.
 
-| Evaluation Criterion | Criterion ID | Weight (w_i) | Option A: Centralized Streaming (s_i1) | Option A: Weighted (w_i * s_i1) | Option B: Edge Compute + Compression (s_i2) [Selected] | Option B: Weighted (w_i * s_i2) | Option C: Hybrid Adaptive Splitting (s_i3) | Option C: Weighted (w_i * s_i3) |
+The matrix uses the same percentage scoring convention as Trade Study 1. All numeric entries are non-normative engineering assessments and are Not stated in OEM sources.
+
+| Evaluation Criterion | Criterion ID | Weight | Option A Score | Option A Weighted | Option B Score | Option B Weighted | Option C Score | Option C Weighted |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Contested / Jammed RF Resilience (s_jam) | C_1 | 0.30 | 1 (Mission Failure on Loss) | 0.30 | 5 (Autonomous Full Capability) | 1.50 | 3 (Degraded Dynamic Fallback) | 0.90 |
-| Telemetry Bandwidth Consumption | C_2 | 0.20 | 1 (High > 10 Mbps raw) | 0.20 | 5 (Low < 250 kbps semantic) | 1.00 | 3 (Moderate ~ 2 Mbps) | 0.60 |
-| Real-Time Inference Latency (tau_infer) | C_3 | 0.20 | 2 (Transport + Station: 80 ms) | 0.40 | 4 (Local Edge: < 15 ms) | 0.80 | 3 (Variable 20-100 ms) | 0.60 |
-| Onboard SWaP-C Impact (Power & Thermal) | C_4 | 0.15 | 5 (Low Power: 5 W) | 0.75 | 3 (Moderate Power: 25 W TPU) | 0.45 | 3 (Moderate Power: 20 W) | 0.45 |
-| Autonomous Lost-Link Execution Authority | C_5 | 0.10 | 1 (Blind Reversion / Abort) | 0.10 | 5 (Continuous State Extraction) | 0.50 | 3 (Partial State Buffering) | 0.30 |
-| Software & Verification Complexity | C_6 | 0.05 | 4 (Standard Pipeline) | 0.20 | 3 (Embedded Neural Runtime) | 0.15 | 1 (Complex Distributed Sync) | 0.05 |
-| Total Composite Score (S_j = sum(w_i * s_ij)) | Total | 1.00 | Baseline Total: 1.95 | 1.95 | Selected Total: 4.40 | 4.40 | Hybrid Total: 2.90 | 2.90 |
-| Pugh Ranking & Selection Decision | Rank | — | Rank 3 (Rejected) | — | Rank 1 (Selected Preferred) | — | Rank 2 (Rejected - Complexity) | — |
+| Contested radio-frequency resilience | C_1 | 30 % | 20 % | 6 percentage points | 100 % | 30 percentage points | 60 % | 18 percentage points |
+| Downlink load | C_2 | 20 % | 20 % | 4 percentage points | 100 % | 20 percentage points | 60 % | 12 percentage points |
+| Inference response time | C_3 | 20 % | 40 % | 8 percentage points | 80 % | 16 percentage points | 60 % | 12 percentage points |
+| Onboard resource impact | C_4 | 15 % | 100 % | 15 percentage points | 60 % | 9 percentage points | 60 % | 9 percentage points |
+| Lost-link autonomy | C_5 | 10 % | 20 % | 2 percentage points | 100 % | 10 percentage points | 60 % | 6 percentage points |
+| Software and verification complexity | C_6 | 5 % | 80 % | 4 percentage points | 60 % | 3 percentage points | 20 % | 1 percentage point |
+| Composite score | Total | 100 % | 39 % | 39 percentage points | 88 % | 88 percentage points | 58 % | 58 percentage points |
+| Ranking and decision | Rank | -- | Rank 3 | Rejected | Rank 1 | Selected | Rank 2 | Rejected |
 
-##### Mathematical Sensitivity Analysis Formulation (Trade Study 2)
-The sensitivity of the composite decision score $S_j$ to the operational jamming and RF interference probability $P_{\mathrm{jam}} \in [0, 1]$ is formulated as:
+#### 11.4.3 Trade Study 3: Failsafe Containment Versus Actuator Redundancy (non-normative)
 
-$$
-\begin{aligned}
-S_j(P_{\mathrm{jam}}) &= \sum_{i \neq \mathrm{jam}} w_i s_{ij} + w_{\mathrm{jam}} s_{\mathrm{jam}, j}(P_{\mathrm{jam}})
-\end{aligned}
-$$
+- **Objective:** Select a safety-assurance architecture that bounds terminal impact severity under uncommanded actuation, bus collapse, or structural failure and that supports ground-risk mitigation credit.
+- **Normative Baseline:** INCOSE SEH v5.0 Section 4.3; ISO/IEC/IEEE 29148:2018 Section 6.4.2; JARUS SORA v2.5 Annex B Section B.2; MIL-STD-882E Task 205 Section 4.2; SAE ARP4761 Section 4.3.1.
+- **Alternatives:**
+ - **Option A (Baseline):** Multi-channel actuator redundancy. It provides actuator fail-operational capability but does not arrest unpowered descent, does not protect against main bus collapse or structural failure, and adds parasitic integration weight.
+ - **Option B (Selected):** Integrated failsafe containment with an independent safety watchdog, isolated power, actuator power cutoff, and a deployable deceleration mechanism. The watchdog deployment latency and the resulting terminal descent speed are Not stated in OEM sources; they are non-normative design targets.
+ - **Option C:** Passive crushable structure. It adds no active deployment complexity but provides no terminal descent deceleration, adds structural deadweight, and does not prevent boundary containment excursions.
+- **Decision:** Option B was selected. Option A was rejected as insufficient. Option C was rejected as insufficient for terminal impact bounding.
 
-- Parameter Definitions & Engineering Units:
+The matrix uses the same percentage scoring convention as Trade Study 1. All numeric entries are non-normative engineering assessments and are Not stated in OEM sources. The maximum system weight used to bound the study is 17 kg (PL-12, `schema/extracted/parametric_limits.md at line 18`).
 
-| Parameter | Symbol | Expression / Value | Units | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| Composite Pugh Decision Score | S_j | S_j in [1.0, 5.0] | Dimensionless | Total weighted score for candidate compute architecture j |
-| Contested RF Criterion Weight | w_jam | w_jam = 0.25 | Dimensionless | Importance weight assigned to operations in contested RF environments |
-| RF Jamming / Denial Probability | P_jam | P_jam in [0.0, 1.0] | Dimensionless | Probability of experiencing intentional or environmental RF denial |
-| Jammed Performance Score Function | s_jam_j | s_jam_B(P_jam) = 5.0 - 0.2 * P_jam | Dimensionless | Architectural score function under variable RF interference probability |
-| Raw Telemetry Downlink Throughput | Throughput_raw | 15.0 | Mbps | Required bandwidth for uncompressed raw sensor streaming |
-| Extracted Feature Downlink Throughput | Throughput_feature | 250.0 | kbps | Reduced bandwidth for onboard extracted semantic state vectors |
-| Maximum Feature Inference Latency | tau_infer_max | 25.0 | ms | Maximum allowable neural edge inference processing delay |
-| Edge Accelerator Power Budget | P_edge_tpu | 25.0 | W | Electrical power allocation for onboard inference coprocessor |
-
-#### 11.4.3 Trade Study 3: Autonomous Failsafe Containment vs Actuator Redundancy (Fix #132)
-- **Objective & Problem Statement:** Determine the optimal safety assurance and containment architecture to achieve certified risk reduction credit (JARUS SORA M2 mitigation / SAE ARP4761 safety objectives) and guarantee that terminal kinetic impact energy is bounded below statutory safety thresholds ($E_k \le E_{\mathrm{threshold}}$) under catastrophic uncommanded actuation, power bus collapse, or structural failure.
-- **Normative Standards Baseline:** INCOSE SEH v5.0 §4.3, ISO/IEC/IEEE 29148:2018 §6.4.2, JARUS SORA v2.5 Annex B (Ground Risk Mitigation M2), MIL-STD-882E §4.3 & Task 202, SAE ARP4761 §3.
-- **Options Evaluated:**
-  - **Option A (Baseline):** Multi-Channel Control Actuator Redundancy (Dual or triple-redundant control channels; provides single-point actuator fail-operational capability, but cannot arrest unpowered descent, provides zero protection against full high-voltage power rail collapse or major structural failure, and adds significant parasitic mass).
-  - **Option B (Selected Architecture):** Integrated Autonomous Failsafe Containment Subsystem with Independent Safety Watchdog and Power Cutoff Interlock (Dedicated independent microcontroller `SafetyWatchdog` with isolated power supply, autonomous deployment trigger $t_{\text{deploy}} \le \tau_{\text{deploy\_max}}$, high-speed actuator power cutoff interlock, and deployable aerodynamic drag / energy dissipation mechanism reducing terminal descent velocity to $v_{\mathrm{safe}}$ and kinetic impact energy to $E_k \le E_{\mathrm{threshold}}$).
-  - **Option C:** Passive Impact Structural Energy Absorption / Crushable Structure (Passive crumple structures and energy-absorbing chassis; zero active deployment complexity, but provides no terminal descent deceleration, adds heavy structural deadweight, and fails to prevent boundary containment excursions).
-- **Decision:** **Option B (Integrated Autonomous Failsafe Containment Subsystem)** was selected as the optimal architecture.
-
-##### Multi-Criteria Pugh Decision Matrix (Trade Study 3)
-The quantitative Pugh Decision Matrix evaluates safety containment architectures across operational criteria (scale 1 to 5):
-
-| Evaluation Criterion | Criterion ID | Weight (w_i) | Option A: Actuator Redundancy (s_i1) | Option A: Weighted (w_i * s_i1) | Option B: Failsafe Containment (s_i2) [Selected] | Option B: Weighted (w_i * s_i2) | Option C: Passive Crushable Structure (s_i3) | Option C: Weighted (w_i * s_i3) |
+| Evaluation Criterion | Criterion ID | Weight | Option A Score | Option A Weighted | Option B Score | Option B Weighted | Option C Score | Option C Weighted |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| Terminal Kinetic Energy Reduction (E_k <= E_thresh) | C_1 | 0.30 | 1 (Unmitigated Terminal v_term) | 0.30 | 5 (Decelerated to v_safe <= 5 m/s) | 1.50 | 2 (Marginal Impact Absorption) | 0.60 |
-| Catastrophic Bus & Structural Failure Mitigation | C_2 | 0.20 | 1 (Zero Protection on Bus Loss) | 0.20 | 5 (Independent Battery & Watchdog) | 1.00 | 2 (Structural Dissipation Only) | 0.40 |
-| SORA M2 / ARP4761 Certification Credit | C_3 | 0.20 | 2 (Partial Actuator Integrity) | 0.40 | 5 (Full High-Integrity M2 Credit) | 1.00 | 1 (No Standard Regulatory Credit) | 0.20 |
-| Mass Envelope Impact & Payload Penalty | C_4 | 0.15 | 2 (High Multi-Actuator Mass) | 0.30 | 4 (Low Subsystem Mass Envelope) | 0.60 | 1 (Heavy Structural Deadweight) | 0.15 |
-| Common-Cause Failure Mode Immunity | C_5 | 0.10 | 2 (Susceptible to Main Bus Failure) | 0.20 | 5 (Isolated Microcontroller & Power) | 0.50 | 4 (Passive Mechanical Simplicity) | 0.40 |
-| Pre-Operation Verification & Inspection Simplicity | C_6 | 0.05 | 3 (Complex Multi-Channel Rig) | 0.15 | 4 (Automated PBIT Continuity Check) | 0.20 | 5 (Visual Inspection Only) | 0.25 |
-| Total Composite Score (S_j = sum(w_i * s_ij)) | Total | 1.00 | Baseline Total: 1.55 | 1.55 | Selected Total: 4.80 | 4.80 | Passive Total: 2.00 | 2.00 |
-| Pugh Ranking & Selection Decision | Rank | — | Rank 3 (Rejected) | — | Rank 1 (Selected Preferred) | — | Rank 2 (Rejected - Insufficient) | — |
+| Terminal impact severity reduction | C_1 | 30 % | 20 % | 6 percentage points | 100 % | 30 percentage points | 40 % | 12 percentage points |
+| Bus and structural failure mitigation | C_2 | 20 % | 20 % | 4 percentage points | 100 % | 20 percentage points | 40 % | 8 percentage points |
+| Certification credit | C_3 | 20 % | 40 % | 8 percentage points | 100 % | 20 percentage points | 20 % | 4 percentage points |
+| Integration weight penalty | C_4 | 15 % | 40 % | 6 percentage points | 80 % | 12 percentage points | 20 % | 3 percentage points |
+| Common-cause failure immunity | C_5 | 10 % | 40 % | 4 percentage points | 100 % | 10 percentage points | 80 % | 8 percentage points |
+| Pre-operation verification simplicity | C_6 | 5 % | 60 % | 3 percentage points | 80 % | 4 percentage points | 100 % | 5 percentage points |
+| Composite score | Total | 100 % | 31 % | 31 percentage points | 96 % | 96 percentage points | 40 % | 40 percentage points |
+| Ranking and decision | Rank | -- | Rank 3 | Rejected | Rank 1 | Selected | Rank 2 | Rejected |
 
-##### Mathematical Sensitivity Analysis Formulation (Trade Study 3)
-In an unconstrained terminal descent scenario, steady-state terminal velocity is reached when gravitational force equals aerodynamic drag force ($m g = \frac{1}{2} \rho v_{\mathrm{term}}^2 S C_d$), yielding $v_{\mathrm{term}}^2(m) = \frac{2 m g}{\rho S C_d}$. The kinetic impact energy sensitivity equation expresses terminal kinetic energy $E_k(m)$ as a function of system mass $m$:
+### 11.5 OEM-Silent Fields & Non-Normative Content Register
 
-$$
-\begin{aligned}
-E_k(m) &= \frac{1}{2} m v_{\mathrm{term}}^2(m) = \frac{m^2 g}{\rho S C_d}
-\end{aligned}
-$$
+The following fields are explicitly recorded as silent in the OEM source set. They are not to be inferred from the trade studies or from operational assumptions.
 
-- Parameter Definitions & Engineering Units:
+| Field | Grounding Status |
+| :--- | :--- |
+| Air vehicle operating temperature limits | Not stated in OEM sources |
+| Cold-soak endurance and low-temperature endurance derating | Not stated in OEM sources |
+| Precipitation, wind, gust, and icing limits for the air vehicle | Not stated in OEM sources |
+| Payload capacity beyond the 5 kg warhead | Not stated in OEM sources |
+| Aircraft turnaround time beyond battery charging | Not stated in OEM sources |
+| Crew composition and manning limits | Not stated in OEM sources |
+| Training syllabus content and duration | Not stated in OEM sources |
+| Trade-study weights, scores, and composite rankings | Not stated in OEM sources (non-normative) |
+| Alternative technology performance estimates | Not stated in OEM sources (non-normative) |
+| Failsafe watchdog deployment latency and safe descent speed | Not stated in OEM sources (non-normative design targets) |
+| Parachute recovery credit | Non-mission configuration per `schema/extracted/oem_bom.md at line 47` |
 
-| Parameter | Symbol | Expression / Value | Units | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| Terminal Kinetic Impact Energy | E_k | E_k <= E_threshold | J | Impact kinetic energy at terminal descent velocity |
-| Statutory Kinetic Energy Threshold | E_threshold | 34.0 | J | Statutory safety boundary threshold separating risk classes |
-| Total Operational Mass | m | m <= m_system_max | kg | Total operational mass of the cyber-physical system |
-| Maximum System Operational Mass | m_system_max | 20.0 | kg | Maximum certified operational mass envelope |
-| Terminal Descent Velocity | v_term | v_term = sqrt(2 * m * g / (rho * S * C_d)) | m/s | Unmitigated steady-state terminal descent velocity |
-| Safe Controlled Descent Velocity | v_safe | 1.65 | m/s | Maximum controlled descent velocity under active containment |
-| Standard Gravitational Acceleration | g | 9.80665 | m/s^2 | Standard acceleration due to gravity |
-| Ambient Atmospheric / Fluid Density | rho | 1.225 | kg/m^3 | Nominal atmospheric fluid density at reference datum |
-| Aerodynamic Reference Drag Area | S | S_containment >= S_min | m^2 | Effective projected frontal / reference drag area |
-| Aerodynamic Drag Coefficient | C_d | C_d_containment >= C_d_min | Dimensionless | Total aerodynamic drag coefficient of deployed containment device |
-| Failsafe Watchdog Activation Time | tau_deploy_max | 0.45 | s | Maximum allowable latency from fault detection to containment trigger |
+### Source References
 
-The quadratic sensitivity of kinetic impact energy to mass ($E_k \propto m^2$) demonstrates why adding redundant actuator mass (Option A) increases unmitigated kinetic hazard severity. In contrast, deploying an active aerodynamic deceleration mechanism (Option B) increases effective drag area product $S C_d$, guaranteeing containment below statutory energy limits:
+- Parametric limits: [schema/extracted/parametric_limits.md](../../schema/extracted/parametric_limits.md#L7-L96)[^1]
+- OEM bill of materials: [schema/extracted/oem_bom.md](../../schema/extracted/oem_bom.md#L47-L52)[^2]
+- System interface table: [schema/extracted/interface_table.md](../../schema/extracted/interface_table.md#L63-L64)[^3]
+- SysML v2 SSOT: [.pipeline/schema.sysml](../../.pipeline/schema.sysml)[^4]
+- Cited research inventory: [docs/research/RESEARCH_INVENTORY.md](../research/RESEARCH_INVENTORY.md)[^5]
 
-$$
-\begin{aligned}
-E_{k,\mathrm{mitigated}} &= \frac{m^2 g}{\rho (S C_d)_{\mathrm{containment}}} \le E_{\mathrm{threshold}}
-\end{aligned}
-$$
+[^1]: schema/extracted/parametric_limits.md, lines 7 through 96, PL-01 through PL-94 parametric limits.
+[^2]: schema/extracted/oem_bom.md, lines 47 through 52, ESAD Critical (DAL-A) classification and parachute non-mission configuration.
+[^3]: schema/extracted/interface_table.md, lines 63 through 64, radio band and ESAD interface rows.
+[^4]: .pipeline/schema.sysml, SysML v2 SSOT part definitions and PL-range constraints.
+[^5]: docs/research/RESEARCH_INVENTORY.md, normative baseline and public clause citations.
+
+| Attribute | Specification Detail |
+| :--- | :--- |
 
 ## 12. 7-Row Emergency Decision & Contingency Matrix
 
-In accordance with MIL-STD-882E §4.3 and safety-critical deterministic control requirements, the system incorporates a 7-Row Emergency Decision & Contingency Matrix. The deterministic failsafe state machine provides autonomous containment timing guarantees ($t_{\mathrm{resp}} \le \tau_{\mathrm{deadline}}$) across all canonical contingency triggers.
+In accordance with MIL-STD-882E Task 205 and SAE ARP4761 Section 4.3.1, the system implements a seven-row Emergency Decision and Contingency Matrix. The matrix is executed by a deterministic safety monitor that is independent of the primary mission controller (ASTM F3269-17 Section 5.1). The canonical triggers EMG-01 through EMG-07 are the complete set of emergency triggers for this ConOps.
 
-| Trigger ID | Contingency Trigger Event | Anomaly Detection Mechanism | Automated Containment Action | Primary Failsafe State | Max Response Time | HITL Authority Role |
+Table 12.1 defines the detection mechanism, containment action, failsafe recovery state, maximum response time, and HITL authority for each trigger. Where the OEM sources are silent on a numeric threshold or response deadline, the matrix states "Not stated in OEM sources" and does not invent a value.
+
+| Trigger ID | Contingency Trigger Event | Anomaly Detection Mechanism | Automated Containment Action | Failsafe Recovery State | Maximum Response Time | HITL Authority Role |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| EMG-01 | Communications Timeout | Heartbeat loss duration Delta_t_loss > tau_heartbeat_timeout across active communication tiers | Switches to autonomous lost-link hold pattern (tau_hold); if link unrecovered, initiates autonomous Return-to-Base (RTB) trajectory | `Contingency_LostLinkFallback` | t_resp <= tau_deadline_C2 | Supervisory / Manual Override via Emergency Link |
-| EMG-02 | Sensor Integrity Fault | State estimation error / cross-channel disparity Delta_s > Delta_s_threshold lasting Delta_t > tau_fault_persist | Isolates faulty sensor channel via voting logic; switches to dead-reckoning state estimation; sets speed to v_degraded | `Contingency_SensorFallback` | t_resp <= tau_deadline_sensor | Supervisory / Command Hold or Divert |
-| EMG-03 | Critical Resource Depletion | Measured energy/resource level R(t) <= R_threshold(t) | Re-distributes power bus; throttles non-essential payloads; executes optimal resource-conserving transit to nearest divert site | `Contingency_ResourceDivert` | t_resp <= tau_deadline_resource | Informed / Automated Advisory |
-| EMG-04 | Controller Processing Fault | Hardware watchdog timeout or control loop task deadline breach exceeding tau_deadline_task | Triggers failover to redundant backup controller; isolates faulted software partition; logs diagnostic fault signature | `Degraded_ControllerFailsafe` | t_resp <= tau_deadline_controller | Supervisory / Precautionary Recovery Order |
-| EMG-05 | Operational Boundary Excursion | State estimator indicates vehicle proximity d_boundary <= d_containment_margin to hard state containment boundary | Commands immediate autonomous maximum-rate boundary reversal maneuver (180 deg turnaround); applies emergency deceleration | `Contingency_BoundaryContainment` | t_resp <= tau_deadline_boundary | Supervisory / Manual Override Authority |
-| EMG-06 | Collision/Interference Hazard | Proximity sensor detects external entity or hazard breaching separation envelope (D_hazard <= D_margin) | Executes immediate autonomous multi-axis evasive trajectory away from hazard vector; maintains separation minima | `Contingency_EvasiveManeuver` | t_resp <= tau_deadline_hazard | Supervisory / Override to Divert |
-| EMG-07 | Structural/Actuator Failure | Multi-axis vibration a_vib > a_vib_limit, actuator stall, or dedicated encrypted abort discrete signal received | Instantly isolates actuator power; deploys autonomous containment mechanism; activates emergency locator beacon | `Emergency_SafeStateTermination` | t_resp <= tau_deadline_abort | Initiator (Dual-Consent Authenticated Command) |
+| **EMG-01** | Communications Timeout (Lost C2 Link) | Loss of the authenticated heartbeat on the GCS UAV telemetry link, RF 4.4 GHz to 5.0 GHz (a5-user-manual-2.md:1273; interface_table.md); the loss interval is measured from the last valid frame. Timeout threshold: Not stated in OEM sources. | Enter the autonomous lost-link hold; if the link is not reacquired within the operator-configured hold window, execute a deterministic return-to-base. | `Contingency_LostLinkFallback` | Not stated in OEM sources | The supervisory operator may command hold, return, or divert when the link is available; the autonomous lost-link logic retains authority during link loss (RTCA DO-362A Section 3.4). |
+| **EMG-02** | Sensor Integrity Fault (Navigation Degradation) | Cross-channel disparity between the GNSS Septentrio Asterx-m3 pro, the two mRo RM3100 magnetometers, the CUAV SKYE2 pitot, and the inertial state estimate (oem_bom.md:15, oem_bom.md:39-41); disparity threshold: Not stated in OEM sources. | Isolate the disagreeing channel; transition to dead-reckoning and optical-flow fallback; bound speed between the 26 m/s minimum flight speed (PL-05) and the 30 m/s cruise speed (PL-01). | `Contingency_SensorFallback` | Not stated in OEM sources | The supervisory operator may command hold or divert and may veto the fallback when a validated alternate navigation source is available. |
+| **EMG-03** | Critical Resource Depletion | Power meter voltage and current telemetry (oem_bom.md:20) reports pack voltage at or below the 36 V minimum (PL-23), or mission elapsed time reaches the 90 min endurance limit (PL-06). Bingo reserve ratio: Not stated in OEM sources. | Shed non-essential payload loads; select the nearest pre-surveyed divert site that preserves the operator-configured energy reserve; execute a resource-conserving transit. | `Contingency_ResourceDivert` | Not stated in OEM sources | Informed advisory to the supervisory operator; the operator confirms the divert site when the link is available, and autonomous divert applies when the link is lost. |
+| **EMG-04** | Controller Processing Fault | Autopilot Cube Orange Plus watchdog expiry, control-loop task deadline breach, or partition fault (oem_bom.md:12); timing threshold: Not stated in OEM sources. The OEM BOM declares no redundant flight controller. | Isolate the faulted partition (RTCA DO-178C Section 6.3.2); hold the last validated actuator setpoint; execute a watchdog reset; if the fault persists, remain in a deterministic safe hold until a supervisory recovery order. | `Degraded_ControllerFailsafe` | Not stated in OEM sources | Supervisory precautionary recovery order; a physical ground maintenance reset is required before the failsafe lock is cleared. |
+| **EMG-05** | Operational Boundary Excursion | The state estimate places the vehicle outside the pre-loaded containment volume; the nominal containment geometry uses the 300 m loiter radius (PL-37) and the 50 m minimum mission waypoint altitude (PL-36); proximity margin: Not stated in OEM sources (ASTM F3269-17 Section 5.2). | Command a deterministic turn-back toward the containment volume and reduce speed toward the 26 m/s minimum flight speed (PL-05); inhibit commands that increase boundary penetration. | `Contingency_BoundaryContainment` | Not stated in OEM sources | Supervisory manual override; the containment interlock rejects any operator command that increases boundary penetration (ASTM F3269-17 Section 5.3). |
+| **EMG-06** | Collision or Interference Hazard | The proximity sensor discrete active-low trigger (interface_table.md) and the Camera Compute Module Trip6 optical track (oem_bom.md:36, oem_bom.md:43) indicate an external entity inside the separation envelope; separation threshold: Not stated in OEM sources. | Execute a deterministic multi-axis escape vector away from the hazard while maintaining the pre-loaded separation margin; if an escape corridor is unavailable, transition to EMG-05 containment or EMG-07 safe state. | `Contingency_EvasiveManeuver` | Not stated in OEM sources | Supervisory override to divert; the operator may command an alternative escape route. |
+| **EMG-07** | Structural or Actuator Failure | Ruddervator servo status frames on CAN 1 and wing servo status frames on CAN 2 report stall, loss of feedback, or position disagreement across the four Ruddervators (PL-14) and the eight total servos (PL-18); airframe vibration threshold: Not stated in OEM sources. A dual-consent authenticated abort discrete is also a valid trigger (interface_table.md). | De-energize the 8 V servo rail (PL-22) and the motor drive; hold the ESAD in the safe state; the ESAD is Critical / DAL-A (oem_bom.md:52). Parachute deployment is non-mission and excluded from the mission baseline (oem_bom.md:47); the research and development testbed may use the two 50 V igniter outputs (oem_bom.md:48-49). | `Emergency_SafeStateTermination` | Not stated in OEM sources | Dual-consent authenticated command is required for any ESAD arm or initiation action (DoD Directive 3000.09 Section 3.1.b; CJCSI 3121.01B Enclosure E Section 2.d). De-energization is a fail-safe action and does not require consent. |
 
-### 12.1 Failsafe State Transition Semantics & Timing Guarantees
-The emergency decision logic executes within a dedicated, hard real-time safety watchdog running on an isolated hardware partition. The state machine operates under the following deterministic transition invariants:
-1. **Priority Arbitration:** In the event of concurrent multiple anomaly triggers, higher-priority states strictly override lower-priority states:
+### 12.1 Failsafe State Transition Semantics and Timing Guarantees
 
-$$
-\begin{aligned}
-P_{\mathrm{EMG-07}} > P_{\mathrm{EMG-03}} > P_{\mathrm{EMG-05}} > P_{\mathrm{EMG-06}} > P_{\mathrm{EMG-04}} > P_{\mathrm{EMG-02}} > P_{\mathrm{EMG-01}}
-\end{aligned}
-$$
+The emergency decision logic executes in a dedicated safety monitor on an isolated hardware partition, separate from the mission controller (ASTM F3269-17 Section 5.1; RTCA DO-178C Section 6.3.2). The state machine applies the following deterministic invariants:
 
-2. **Deterministic Response Timing ($t_{\mathrm{resp}} \le \tau_{\mathrm{deadline}}$):** From initial sensor anomaly threshold crossing to containment command issuance on the actuator bus, the maximum propagation latency is guaranteed to remain strictly bounded by $t_{\mathrm{resp}} \le \tau_{\mathrm{deadline}}$ across all seven canonical triggers (with emergency termination executing within $t_{\text{resp}} \le \tau_{\text{deadline\_abort}}$).
-3. **Fail-Safe Retention:** Once a critical emergency state (`Emergency_SafeStateTermination` or `Contingency_ResourceDivert`) is triggered, the state machine is non-reentrant and locks until a physical post-operation ground reset and authorized Maintenance Technician clearance are performed.
+1. **Priority Arbitration:** When multiple triggers are active, a higher-priority row suppresses lower-priority transitions. The strict priority order, highest first, is EMG-07, EMG-03, EMG-05, EMG-06, EMG-04, EMG-02, EMG-01. EMG-07 latches until a physical ground reset.
+2. **Deterministic Response Timing:** The maximum response time for each trigger is listed in Table 12.1. Where the OEM sources are silent, no numeric deadline is asserted; the value shall be allocated during detailed design and verified by test (MIL-STD-882E Task 205).
+3. **Fail-Safe Retention:** `Emergency_SafeStateTermination` and `Contingency_ResourceDivert` are non-reentrant and remain latched until a physical post-operation ground reset and an authorized maintenance clearance are complete.
 
-### 12.2 Deterministic Emergency Statechart & State Machine
-```mermaid
-stateDiagram-v2
-    [*] --> Phase_Startup
-    Phase_Startup --> Phase_NominalExecution : BIT_Pass
-    Phase_NominalExecution --> Degraded_SensorFailsafe : EMG_04_SensorFault
-    Phase_NominalExecution --> Contingency_LostLinkReturn : EMG_01_LostC2
-    Phase_NominalExecution --> Contingency_DeadReckoning : EMG_02_GNSSLoss
-    Phase_NominalExecution --> Contingency_ResourceDivert : EMG_03_PowerDepletion
-    Phase_NominalExecution --> Contingency_GeofenceContainment : EMG_05_GeofenceBreach
-    Phase_NominalExecution --> Contingency_PrecautionaryLand : EMG_06_StructuralAnomaly
-    Phase_NominalExecution --> Emergency_FlightTermination : EMG_07_AbortCommand
-    Degraded_SensorFailsafe --> Contingency_LostLinkReturn : LinkTimeout
-    Contingency_LostLinkReturn --> Phase_SecureShutdown : SafeTouchdown
-    Contingency_DeadReckoning --> Phase_SecureShutdown : SafeTouchdown
-    Contingency_ResourceDivert --> Phase_SecureShutdown : SafeTouchdown
-    Contingency_GeofenceContainment --> Contingency_ResourceDivert : ContainmentHold
-    Contingency_PrecautionaryLand --> Phase_SecureShutdown : Touchdown
-    Emergency_FlightTermination --> Phase_SecureShutdown : ImpactSafe
-    Phase_SecureShutdown --> [*]
-```
+### 12.2 Deterministic Emergency Transition Logic
 
-### 12.3 Degraded Modes & Fallback Hierarchy
-- **Tier 1 (Nominal Execution):** Full multi-sensor fusion, dual-channel C2 links, and nominal envelope margins.
-- **Tier 2 (Degraded Sensor Mode):** Single-sensor failure activates secondary observer and dead reckoning.
-- **Tier 3 (Contingency Link Mode):** Loss of primary C2 link triggers autonomous hold and return-to-base sequence.
-- **Tier 4 (Emergency Containment Mode):** Unrecoverable fault triggers ballistic parachute deploy or instant motor cutoff.
+Table 12.2 defines the deterministic predicate and transition for each trigger. The predicates are evaluated every control cycle; the first true row in the priority order of Section 12.1 is executed.
 
-### 12.4 Human-in-the-Loop (HITL) Authority & Override Protocols
-- **Supervisory Authority:** Operator retains positive manual override capability via independent emergency link.
-- **Dual-Consent Authentication:** Critical flight termination (`EMG-07`) requires two-operator verified consent keys.
-- **Interlock Inhibit:** Flight computer rejects manual commands that violate dynamic geofence containment limits.
+| Trigger ID | Decision Predicate | Deterministic Transition |
+| :--- | :--- | :--- |
+| **EMG-01** | `heartbeat_lost` is true AND `Delta_t_loss >= tau_loss_configured` | Transition to `Contingency_LostLinkFallback`; when `Delta_t_hold >= tau_hold_configured`, execute the return-to-base trajectory. |
+| **EMG-02** | `cross_channel_disparity > disparity_threshold_configured` AND persists for the configured confirmation window | Transition to `Contingency_SensorFallback`; isolate the disagreeing channel; bound speed to the 26 m/s to 30 m/s range (PL-05, PL-01). |
+| **EMG-03** | `pack_voltage <= 36 V` (PL-23) OR `elapsed_mission_time >= 90 min` (PL-06) OR `predicted_energy_to_divert >= remaining_usable_energy` | Transition to `Contingency_ResourceDivert`; shed non-essential loads; select the nearest divert site that satisfies the operator-configured reserve. |
+| **EMG-04** | `watchdog_expired` OR `task_deadline_missed` OR `partition_fault` | Transition to `Degraded_ControllerFailsafe`; isolate the partition; hold the last validated setpoint; reset; if the fault persists, latch the safe hold. |
+| **EMG-05** | `containment_margin <= 0` OR `predicted_trajectory_exits_containment_volume` | Transition to `Contingency_BoundaryContainment`; command the turn-back; reject commands that increase boundary penetration. |
+| **EMG-06** | `separation_envelope_breached` | Transition to `Contingency_EvasiveManeuver`; execute the escape vector; if the escape corridor is unavailable, evaluate EMG-05 then EMG-07. |
+| **EMG-07** | `structural_or_actuator_fault` OR (`abort_discrete` AND `dual_consent_valid`) | Transition to `Emergency_SafeStateTermination`; de-energize the 8 V servo rail (PL-22) and the motor drive; hold the ESAD safe (Critical / DAL-A). The ESAD RS-485 command-path response latency is 5 ms maximum (PL-58) and bounds only the command path, not the end-to-end emergency response. |
 
-### 12.5 Autonomous Divert & Secondary Recovery Protocols
-- **Primary Recovery:** Designated nominal landing site or recovery zone.
-- **Secondary Divert Sites:** Pre-surveyed alternate recovery coordinates evaluated dynamically against Bingo energy.
-- **Terrain Clearance:** All emergency divert trajectories maintain minimum statutory altitude separation.
+Where a predicate uses a configured threshold, the numeric value is Not stated in OEM sources and shall be an operator-configurable parameter verified at commissioning.
 
-### 12.6 Post-Emergency Containment, Latching & Reset Procedures
-- **Safety Lockout:** Emergency shutdown latches all actuators and high-voltage buses in de-energized safe states.
-- **Non-Volatile Blackbox Offload:** Diagnostic fault logs, sensor telemetry, and watchdog stack traces are securely written to non-volatile flash.
-- **Authorized Ground Clearance:** Physical inspection and signed maintenance clearance required before clearing failsafe lock.
+### 12.3 Degraded Modes and Fallback Hierarchy
+
+- **Tier One (Nominal Execution):** Full multi-sensor fusion, RF 4.4 GHz to 5.0 GHz C2 link with the upper and lower MPSL4400 antennas (oem_bom.md:45-46; a5-user-manual-2.md:1273), and nominal envelope margins.
+- **Tier Two (Degraded Sensor Mode):** A single-sensor failure activates the secondary observer and dead reckoning; speed is bounded between 26 m/s (PL-05) and 30 m/s (PL-01).
+- **Tier Three (Contingency Link Mode):** Loss of the primary C2 link triggers the lost-link hold and return-to-base sequence; the 60 km direct RLOS range (PL-07) bounds the nominal link geometry.
+- **Tier Four (Emergency Containment Mode):** An unrecoverable fault triggers de-energization of the 8 V servo rail (PL-22) and motor drive; the ESAD remains safe (Critical / DAL-A, oem_bom.md:52). The parachute deployment module is non-mission and excluded from the mission baseline (oem_bom.md:47); the research and development testbed may use the two 50 V igniter outputs (oem_bom.md:48-49).
+
+### 12.4 Human-in-the-Loop (HITL) Authority and Override Protocols
+
+- **Supervisory Authority:** The operator retains supervisory override over the GCS UAV telemetry link when the link is available (a5-user-manual-2.md:1273).
+- **Dual-Consent Authentication:** Any ESAD arm or initiation action in EMG-07 requires two-operator verified consent (DoD Directive 3000.09 Section 3.1.b; CJCSI 3121.01B Enclosure E Section 2.d).
+- **Autonomous Fail-Safe Boundary:** Autonomous de-energization of the 8 V servo rail (PL-22) and motor drive is permitted as a fail-safe action; autonomous ESAD initiation is prohibited without dual consent.
+- **Interlock Inhibit:** The flight computer rejects operator commands that violate the containment limits in EMG-05 (ASTM F3269-17 Section 5.3).
+
+### 12.5 Autonomous Divert and Secondary Recovery Protocols
+
+- **Primary Recovery:** The designated nominal landing site or recovery zone.
+- **Secondary Divert Sites:** Pre-surveyed alternate recovery coordinates evaluated against the operator-configured energy reserve; the OEM sources do not state a numeric reserve ratio.
+- **Terrain Clearance:** All emergency divert trajectories maintain the 50 m minimum mission waypoint altitude (PL-36) as the planning floor; the OEM sources do not state a separate terrain clearance value.
+- **Divert Authority:** The operator confirms the divert site when the link is available; the autonomous logic selects the nearest site that satisfies the reserve when the link is lost.
+
+### 12.6 Post-Emergency Containment, Latching, and Reset Procedures
+
+- **Safety Lockout:** Emergency shutdown latches all actuators and high-voltage buses in de-energized safe states; the ESAD remains safe and the ESAD RBF key is reinstalled before ground handling (interface_table.md; oem_bom.md:60).
+- **Non-Volatile Blackbox Offload:** Diagnostic fault logs, sensor telemetry, and watchdog stack traces are written to non-volatile flash.
+- **Authorized Ground Clearance:** Physical inspection and signed maintenance clearance are required before the failsafe lock is cleared; the UAV RBF key and the ESAD RBF key are restored to the safe configuration before power is reapplied (interface_table.md).
+
+## Source References
+
+The emergency matrix is grounded in schema/extracted/parametric_limits.md for PL-01, PL-05, PL-06, PL-07, PL-14, PL-18, PL-22, PL-23, PL-36, PL-37, and PL-58, and in schema/extracted/interface_table.md for the GCS UAV telemetry link, CAN 1 and CAN 2 servo frames, proximity sensor trigger, and ESAD interlocks. The OEM evidence is schema/extracted/oem_bom.md and .pipeline/schema.sysml. Normative clauses are ISO/IEC/IEEE 29148:2018 Section 6.4.2, MIL-STD-882E Section 4.3, SAE ARP4761 Section 4.3.1, ASTM F3269-17 Section 5.1, RTCA DO-362A Section 3.4, RTCA DO-178C Section 6.3.1, MIL-STD-1629A Section 4.3, DoD Directive 3000.09 Section 3.1, and CJCSI 3121.01B Enclosure E Section 2.d.

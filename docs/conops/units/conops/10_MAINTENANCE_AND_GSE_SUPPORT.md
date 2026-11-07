@@ -1,185 +1,127 @@
-| Attribute | Value |
+| Attribute | Specification Detail |
 | :--- | :--- |
-| **Title** | Maintenance & Support Equipment (SE) Concepts |
-| **Version** | 1.0.0 |
-| **Date** | 2026-09-03 |
-| **Traceability References** | Fixes #124, #140, #141 |
+| **Title** | Maintenance & Sustainment Concepts (O/I/D Maintenance) |
+| **Version** | 1.1.0 |
+| **Date** | 2026-10-31 |
+| **issue_id** | 124 |
+| **type** | conops |
+| **generation_mode** | manual |
+| **specification_source** | docs/conops/units/conops/10_MAINTENANCE_AND_GSE_SUPPORT.md |
+| **Traceability References** | #124, #140, #141 |
 
-## 10. Maintenance & Support Equipment (SE) Concepts
+## 10. Maintenance & Sustainment Concepts (O/I/D Maintenance)
 
 ### 10.1 Three-Tier Maintenance Model (O-Level, I-Level, D-Level)
-The maintenance and sustainment concept is structured into three discrete, formalized tiers adhering to systems engineering maintenance standards (ISO/IEC/IEEE 29148:2018 §5.2.4, INCOSE SEH v5.0 §3.2, MIL-HDBK-470A, and MIL-STD-882E §4.3) (Fixes #124, #140, #141):
 
-| O-Level (Organizational) | I-Level (Intermediate) | D-Level (Depot / Factory) |
+Sustainment is partitioned into Organizational (O-Level), Intermediate (I-Level), and Depot (D-Level) tiers in accordance with ISO/IEC/IEEE 29148:2018 Section 6.4.2, INCOSE SEH v5.0 Section 3.3.1, JARUS SORA v2.5 Annex E Section E.3, and MIL-STD-882E Task 205 Section 4.2. The Ruddervator is the canonical tail control surface assembly, quantity of 4 units (oem_bom.md:23; schema/extracted/parametric_limits.md PL-14). The ESAD is classified Critical (DAL-A) (oem_bom.md:52). The parachute deployment module is a non-mission configuration with baseline false and is excluded from the sustainment baseline (oem_bom.md:47).
+
+| Tier | Location and Ownership | Authorized Maintenance Scope | Grounding |
+| :--- | :--- | :--- | :--- |
+| **O-Level (Organizational)** | Operating base or field staging area; certified Maintenance Technician | Pre-operation and post-operation visual inspection; RBF device removal and installation; removable battery exchange; ESD grounding; pre-flight battery voltage and pitot checks | oem_bom.md:18, oem_bom.md:69, oem_bom.md:70; schema/extracted/parametric_limits.md PL-32, PL-33, PL-34, PL-35 |
+| **I-Level (Intermediate)** | Regional maintenance shelter or field workshop | Line Replaceable Unit exchange for avionics, radio, camera, gimbal, and servo modules; sensor alignment; firmware and cryptographic key rollover | oem_bom.md:12, oem_bom.md:13, oem_bom.md:14, oem_bom.md:15, oem_bom.md:42, oem_bom.md:43, oem_bom.md:44; NIST SP 800-82r3 Section 6.2 |
+| **D-Level (Depot / Factory)** | Centralized factory or certified depot overhaul center | Structural non-destructive inspection; motor and ESC overhaul; ESAD recertification; complete system certification | oem_bom.md:21, oem_bom.md:22, oem_bom.md:52; MIL-STD-1629A Section 4.3 |
+
+#### 10.1.1 Grounded Maintenance Intervals
+
+| Maintenance Item | Interval or Limit | Grounding |
 | :--- | :--- | :--- |
-| Pre/Post-operation inspection | Sensor alignment & calibration | Structural non-destructive inspection |
-| Rapid resource module hot-swap | Actuator component replacement & testing | Motor & actuator overhaul & balancing |
-| Fastener torque verification | Firmware configuration & security rollover | Complete controller re-certification |
-| Visual structural integrity check | Modular LRU swap (t <= tau_swap_LRU) | Full environmental stress screening |
+| PL-40 pulling rope replacement | At most 100 launches | schema/extracted/parametric_limits.md PL-80; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:138 |
+| PL-40 battery charge time, DC18RC charger | 0 min to 55 min | schema/extracted/parametric_limits.md PL-89; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:137 |
+| PL-40 battery charge time, DC18SD charger | 0 min to 130 min | schema/extracted/parametric_limits.md PL-90; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:137 |
+| PL-40 battery charging temperature | 10 C to 40 C | schema/extracted/parametric_limits.md PL-91 and PL-92; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:137 |
+| PL-40 battery over-discharge cutoff | 14.5 V | schema/extracted/parametric_limits.md PL-77; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:135 |
+| PL-40 battery over-discharge recovery | 16 V after a 5 s delay | schema/extracted/parametric_limits.md PL-78 and PL-79; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:136 |
+| UAV battery pre-flight voltage window | 49 V to 50 V | schema/extracted/parametric_limits.md PL-32 and PL-33; a5-user-manual-2.md:1366 |
+| Pitot static airspeed limit | 0 m/s to 3 m/s | schema/extracted/parametric_limits.md PL-34; a5-user-manual-2.md:1368 |
+| Pitot blow-test airspeed | At least 10 m/s | schema/extracted/parametric_limits.md PL-35; a5-user-manual-2.md:1369 |
+| Air vehicle phase inspection interval | Not stated in OEM sources | oem_bom.md and schema/extracted/parametric_limits.md contain no airframe phase interval |
+| Ruddervator servo overhaul interval | Not stated in OEM sources | oem_bom.md and schema/extracted/parametric_limits.md contain no servo overhaul interval |
+| ESAD recertification interval | Not stated in OEM sources | oem_bom.md and schema/extracted/parametric_limits.md contain no ESAD recertification interval |
+| UAV battery cycle-life replacement interval | Not stated in OEM sources | oem_bom.md and schema/extracted/parametric_limits.md contain no battery cycle-life interval |
 
-1. **Organizational-Level (O-Level) Maintenance:**
-   - **Scope & Location:** Executed directly at the operating base or field staging area by certified Maintenance Technicians (`UC-04`).
-   - **Activities:**
-     - Pre-operation visual structural walkaround checking enclosure integrity and sensor cleanliness.
-     - Automated power-on Built-In-Test (PBIT) diagnostics executed via the operator terminal in $t_{\mathrm{PBIT}} \le \tau_{\text{PBIT\_max}}$.
-     - Rapid tool-less resource module swapping using keyed, hot-swappable smart battery modules ($t_{\text{swap}} \le \tau_{\text{swap\_battery}}$).
-     - Fastener torque verification using calibrated digital torque drivers matching specified limits $\tau_{\mathrm{torque}} \pm \Delta \tau_{\mathrm{torque}}$.
-     - Post-operation data log offloading and system cleaning.
+#### 10.1.2 Organizational-Level (O-Level) Maintenance Scope
 
-2. **Intermediate-Level (I-Level) Maintenance:**
-   - **Scope & Location:** Conducted at regional maintenance shelters or field workshops equipped with intermediate diagnostic tooling.
-   - **Activities:**
-     - Replacement of Line Replaceable Units (LRUs) including controllers, RF transceivers, speed controllers, and sensor payloads (modular replacement time $t_{\text{LRU\_swap}} \le \tau_{\text{swap\_LRU}}$).
-     - Multi-axis sensor alignment and calibration using field calibration fixtures.
-     - Actuator dynamic load testing, potentiometer calibration, and linkage rigging.
-     - Firmware updates and cryptographic security key rollover following formal configuration management procedures.
+- **Pre-operation and post-operation inspection:** Verify the fuselage assembly with hatches closed and vertical stabilizer attached, the four wing surfaces secured with M6 x 30 mm bolts, the Ruddervator assembly with four tail mounting shafts, and all RBF devices including the pitot cover, sensor cover, gimbal strap, power RBF key, and warhead RBF key (oem_bom.md:31, oem_bom.md:67, oem_bom.md:70).
+- **Battery exchange:** Remove and install the removable 12S2P Li metal battery through its retaining strap and locking connector; the battery supplies 36 V to 50.4 V DC main power (oem_bom.md:18; schema/extracted/parametric_limits.md PL-23 and PL-24).
+- **ESD control:** Equalize electrostatic charge at the ESD grounding point marked by a yellow label before touching avionics or ESAD connectors (oem_bom.md:69).
+- **Pre-flight electrical and pitot checks:** Confirm the UAV battery pre-flight voltage window of 49 V to 50 V, the pitot static airspeed limit of 0 m/s to 3 m/s, and the pitot blow-test airspeed of at least 10 m/s (schema/extracted/parametric_limits.md PL-32, PL-33, PL-34, PL-35; a5-user-manual-2.md:1366, a5-user-manual-2.md:1368, a5-user-manual-2.md:1369).
+- **Power-on built-in test duration:** Not stated in OEM sources.
 
-3. **Depot-Level (D-Level) Maintenance:**
-   - **Scope & Location:** Performed exclusively at the centralized factory manufacturing facility or certified depot repair overhaul center.
-   - **Activities:**
-     - Deep structural non-destructive inspection (NDI) utilizing phased-array ultrasonic testing to detect internal delamination or micro-cracking.
-     - Actuator motor bearing replacement, rewinding, and dynamic balancing.
-     - Complete electronic circuit board-level repair, soldering inspection, and environmental stress screening (ESS).
-     - Complete system recalibration, certification testing, and factory acceptance testing.
+#### 10.1.3 Intermediate-Level (I-Level) Maintenance Scope
 
-#### 10.1.1 Formal Maintenance Task Cards (MTC-01 through MTC-05)
-In accordance with ISO/IEC/IEEE 29148:2018 §5.2.4 and MIL-STD-882E §4.3, all lifecycle servicing, turnaround, inspection, overhaul, and quarantine actions are governed by formal Maintenance Task Cards (MTC) (Fixes #124, #140, #141):
+- **Line Replaceable Unit exchange:** Replace the autopilot computing board Cube Orange Plus, EPS module, ETH switch, RPI CM5004032, GNSS module Septentrio Asterx-m3 pro, radio module DTC, camera compute module Trip6, and gimbal Nighthawk2UZ (oem_bom.md:12, oem_bom.md:13, oem_bom.md:14, oem_bom.md:15, oem_bom.md:42, oem_bom.md:43, oem_bom.md:44).
+- **Servo exchange:** Replace Ruddervator Servos #1 to #4 on the four CAN 1 branches of 120 cm and Wing Servos #5 to #8 on the CAN 2 daisy chain; the air vehicle carries 8 servos in total (schema/extracted/parametric_limits.md PL-16, PL-17, PL-18, PL-21; oem_bom.md:24, oem_bom.md:27, oem_bom.md:35, oem_bom.md:38).
+- **Bus restoration checks:** Verify the CAN 1 trunk of 970 cm, the CAN 1 branch of 150 cm, and the four CAN 1 stubs of 120 cm after harness or servo work (schema/extracted/parametric_limits.md PL-19, PL-20, PL-21; schema/extracted/interface_table.md at line 9, schema/extracted/interface_table.md at line 11).
+- **Servo power verification:** Confirm the 8 V DC servo power rail after EPS or CAN power distribution board maintenance (schema/extracted/parametric_limits.md PL-22; schema/extracted/interface_table.md at line 16).
+- **Firmware and cryptographic key rollover:** Apply configuration-managed firmware updates and cryptographic key rollover in accordance with NIST SP 800-82r3 Section 6.2; the OEM rollover interval is Not stated in OEM sources.
+- **Sensor alignment tolerance:** Not stated in OEM sources.
 
-| Task Card ID | Task Card Title & Scope | Maintenance Tier | Execution Trigger & Interval | Target SLA Duration | Required Qualifications & Tooling | Sign-Off Authority & Verification Protocol | Public Clause Citation |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **MTC-01** | Pre-Sortie / Pre-Operation Inspection | O-Level (Organizational) | Prior to each operational sortie launch (T0 - Delta_t_pre) | t_insp <= 10 min | Certified Maintenance Technician (UC-04); Field Tool Kit (FTK-01) | Maintenance Technician sign-off on SE-02; PBIT 100% PASS verification | ISO/IEC/IEEE 29148:2018 §5.2.4 |
-| **MTC-01A** | Rapid Sortie Turnaround (15-min SLA) | O-Level (Organizational) | Consecutive operational sorties during active deployment | t_turnaround <= {{RAPID_TURNAROUND_SLA_MIN}} min | Maintenance Technician (UC-04); Resource Hub (SE-01); Terminal (SE-02) | Dual-Technician sign-off; BMS state-of-charge check; Sortie Release Token | INCOSE SEH v5.0 §3.2 |
-| **MTC-02** | Scheduled 50-Hour Phase Check | I-Level (Intermediate) | Cumulative runtime reaching {{PHASE_CHECK_INTERVAL_HOURS}} operating hours (+/- 5 hr) | t_phase <= 120 min | Senior Maintenance Specialist; Test Box (SE-04); Alignment Rig (SE-05) | Intermediate Maintenance Certificate; Diagnostic calibration record | ISO/IEC/IEEE 29148:2018 §6.4.2 |
-| **MTC-03** | 100-Hour Major Overhaul | D-Level (Depot / Factory) | Cumulative runtime reaching {{OVERHAUL_INTERVAL_HOURS}} operating hours (+/- 10 hr) | t_overhaul <= 24 hr | Factory Depot Engineering Team; Phased-Array NDI; ESS Test Chamber | Factory Recertification Certificate; NDI structural inspection dossier | MIL-STD-1629A Method 101 |
-| **MTC-04** | Unscheduled Field LRU Swap | I-Level / O-Level Workshop | On-condition upon diagnostic BIT failure or anomaly alert | t_swap <= tau_swap_LRU (2 to 10 min) | Field Maintenance Technician; Field Spares Kit (FSK-01); Test Box (SE-04) | Automated bus discovery PASS; Configuration hash verification log | MIL-HDBK-470A §4.3 |
-| **MTC-05** | Post-Incident Blackbox Quarantine | I-Level / Safety Authority | Mandatory after any emergency containment state (EMG-01..07) | t_quarantine <= {{BLACKBOX_QUARANTINE_SLA_MIN}} min | System Safety Officer; Data Terminal (SE-02); Tamper-Sealed Kit | Safety Officer Incident Audit Record; Non-volatile cryptographic dump | MIL-STD-882E Task 205 |
+#### 10.1.4 Depot-Level (D-Level) Maintenance Scope
 
-#### 10.1.2 Rapid Sortie Turnaround Workflow & 7-Step Protocol
-To achieve sustained high-tempo operational availability ($N_{\mathrm{sorties}} \ge N_{\mathrm{target}}$), the system enforces a strict 15-minute Service Level Agreement (SLA) rapid turnaround protocol ($t_{\text{turnaround}} \le \tau_{\text{turnaround\_max}} = {{RAPID_TURNAROUND_SLA_MIN}}\text{ min}$) executed through the following 7-step sequence (Fixes #124, #140):
+- **Structural non-destructive inspection:** The OEM sources do not state an inspection method, interval, or acceptance threshold; all such values are Not stated in OEM sources.
+- **Propulsion overhaul:** The propulsion chain comprises the ESC IBEX160 and the Motor AXI 5345/16 HD GOLD LINE V3; the OEM overhaul interval is Not stated in OEM sources (oem_bom.md:21, oem_bom.md:22).
+- **ESAD recertification:** The ESAD is Critical (DAL-A) and all ESAD ICD rows carry prototype-reference and Derived status; depot recertification is mandatory before return to service, and the recertification interval is Not stated in OEM sources (oem_bom.md:52).
+- **Parachute deployment module:** The module is a non-mission configuration with baseline false; it is excluded from the depot sustainment baseline (oem_bom.md:47).
+- **Battery depot capacity test and cycle replacement:** Not stated in OEM sources.
 
-```mermaid
-flowchart TD
-    Step1["Step 1: System Ingress &<br/>Safe-State Disarm (T+0 to T+2 min)"]
-    Step2["Step 2: Telemetry Data Offload<br/>& Log Audit (T+2 to T+4 min)"]
-    Step3["Step 3: Rapid Energy Module<br/>Hot-Swap (T+4 to T+6 min)<br/>t_swap <= 2 min"]
-    Step4["Step 4: Rapid Visual &<br/>Structural Inspection<br/>(T+6 to T+9 min)"]
-    Step5["Step 5: Mission Re-Tasking<br/>& Key Injection (T+9 to T+11 min)"]
-    Step6["Step 6: Automated PBIT<br/>Diagnostics (T+11 to T+13 min)<br/>t_PBIT <= tau_PBIT_max"]
-    GateCheck{"PBIT Diagnostics &<br/>Safety Interlocks"}
-    Step7["Step 7: Final Arming &<br/>Sortie Release (T+13 to T+15 min)"]
-    AbortMTC04["Abort Turnaround &<br/>Route to MTC-04 LRU Swap"]
-    SortieLaunch["Nominal Sortie Launch<br/>(Phase_NominalExecution)"]
+### 10.2 Ground Support Equipment (GSE) Support
 
-    Step1 --> Step2
-    Step2 --> Step3
-    Step3 --> Step4
-    Step4 --> Step5
-    Step5 --> Step6
-    Step6 --> GateCheck
-    GateCheck -- "PASS (100%)" --> Step7
-    GateCheck -- "FAIL" --> AbortMTC04
-    Step7 --> SortieLaunch
-```
+The GSE baseline is bounded by JARUS SORA v2.5 Annex E Section E.11 (Ground Support Equipment and Launch/Recovery Maintenance) and MIL-STD-882E Task 205 Section 4.2. Only GSE items present in the OEM sources are listed; any GSE capability absent from those sources is marked Not stated in OEM sources.
 
-1. **Step 1: System Recovery & Ingress Safe-Area Positioning ($T_0 + 0\text{ min}$ to $T_0 + 2\text{ min}$):**
-   - System completes recovery alignment and transitions to `Phase_SecureShutdown`.
-   - Maintenance Technician attaches ESD grounding strap and verifies high-voltage bus de-energization.
-   - Safety exclusion perimeter is established around the staging platform.
-2. **Step 2: Telemetry Data Offload & Non-Volatile Log Dump ($T_0 + 2\text{ min}$ to $T_0 + 4\text{ min}$):**
-   - High-speed diagnostic interface connects to the Field Control Terminal (`SE-02`).
-   - Non-volatile system telemetry, sensor logs, and watchdog audit traces are offloaded and cryptographically hashed.
-   - Automated fault-scan algorithm verifies zero recorded unmitigated anomaly flags during the preceding sortie.
-3. **Step 3: Rapid Tool-less Energy / Battery Module Hot-Swap ($T_0 + 4\text{ min}$ to $T_0 + 6\text{ min}$):**
-   - Maintenance Technician disengages the primary quick-release retention latches.
-   - Depleted smart energy module is withdrawn and transferred to the Multi-Bay Charging Hub (`SE-01`).
-   - Fully charged, balanced smart energy module ($\text{SoC} \ge 95\%$) is inserted along keyed guide rails until positive mechanical latch engagement is confirmed ($t_{\text{swap}} \le \tau_{\text{swap\_battery}} = {{SWAP_TIME_BATTERY_MAX_MIN}}\text{ min}$).
-4. **Step 4: Rapid Visual Inspection & Mechanical Check ($T_0 + 6\text{ min}$ to $T_0 + 9\text{ min}$):**
-   - 360-degree walkaround visual inspection verifying enclosure integrity, lens cleanliness, seal compression, and fastener tightness.
-   - Actuator control linkages and mechanical interfaces checked for zero foreign object debris (FOD) and nominal play.
-5. **Step 5: Mission Re-Tasking & Cryptographic Plan Injection ($T_0 + 9\text{ min}$ to $T_0 + 11\text{ min}$):**
-   - Next-phase operational mission plan, geofence boundary parameters, and Bingo energy thresholds are uploaded via `SE-02`.
-   - Authenticated Sortie Release Token and mission encryption keys are injected into the core guidance controller.
-6. **Step 6: Automated Power-On Built-In-Test (PBIT) Diagnostics ($T_0 + 11\text{ min}$ to $T_0 + 13\text{ min}$):**
-   - Automated PBIT initiated via operator terminal ($t_{\mathrm{PBIT}} \le \tau_{\text{PBIT\_max}}$).
-   - Verifies multi-channel sensor parity, actuator sweep response, C2 communication link margins, and safety watchdog health.
-   - All pre-operation go/no-go gates (`GNG-01` through `GNG-05`) must evaluate strictly to `TRUE`.
-7. **Step 7: Final Arming, Crew Clear & Sortie Release ($T_0 + 13\text{ min}$ to $T_0 + 15\text{ min}$):**
-   - Diagnostic umbilical disconnected; weather-sealed port covers secured.
-   - Maintenance Technician confirms all interlocks green, signs electronic sortie authorization, and clears launch area.
-   - System transitions to `Phase_NominalExecution` within the 15-minute SLA envelope ($t_{\mathrm{turnaround}} \le {{RAPID_TURNAROUND_SLA_MIN}}\text{ min}$).
+#### 10.2.1 PL-40 Pneumatic Catapult Launcher
 
-#### 10.1.3 Tool-less Modular Line Replaceable Unit (LRU) Replacement Procedures
-To guarantee rapid unscheduled field repair capability (`MTC-04`), primary subsystems are architected as tool-less modular Line Replaceable Units (LRUs) with strict replacement time bounds ($t_{\text{swap}} \le \tau_{\text{swap\_LRU}}$) (Fixes #140, #141):
+| GSE Item | Grounded Specification | Grounding |
+| :--- | :--- | :--- |
+| PL-40 Rail assembly | Mass 68 kg; rail length 5 m assembled and 1.28 m disassembled | schema/extracted/parametric_limits.md PL-69, PL-93, PL-94; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:715, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:713, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:714 |
+| PL-40 Transport Case | Mass 43 kg | schema/extracted/parametric_limits.md PL-70; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:716 |
+| PL-40 Compressor Unit | Mass 25 kg | schema/extracted/parametric_limits.md PL-71; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:717 |
+| Launched air vehicle envelope | Maximum launched plane mass 30 kg; maximum launch velocity 25 m/s; launch angle 12 deg | schema/extracted/parametric_limits.md PL-64, PL-65, PL-66; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:718, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:719, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:712 |
+| Pneumatic pressure envelope | Maximum compressor working pressure 14 bar; auxiliary filling pressure 16 bar | schema/extracted/parametric_limits.md PL-67 and PL-68; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:132, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:133 |
+| Launcher operating temperature | -20 C to +50 C | schema/extracted/parametric_limits.md PL-73 and PL-74; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:723 |
+| Launcher setup time | 0 min to 5 min | schema/extracted/parametric_limits.md PL-72; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:722 |
+| Trigger hold time | At least 2 s | schema/extracted/parametric_limits.md PL-88; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:530 |
+| Launcher battery | Makita 18 V Li-Ion 6000 mAh battery, quantity of 2 units | schema/extracted/parametric_limits.md PL-75 and PL-76; oem_bom.md:99; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:39 |
+| Pulling rope | High-strength pulling rope from piston to carriage; replacement at most every 100 launches | schema/extracted/parametric_limits.md PL-80; oem_bom.md:86; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:13 |
+| Carriage geometry | Overall length 271 mm; lever tip span 206.5 mm; overall height 232.5 mm | schema/extracted/parametric_limits.md PL-81, PL-82, PL-83; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:142 |
+| Launcher center-of-mass envelope | 0 mm to 200 mm longitudinal; 0 mm to 100 mm normal | schema/extracted/parametric_limits.md PL-84 and PL-85; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:144 |
+| Launcher installed geometry | Overall height 1115 mm; front bipod stance width 602 mm | schema/extracted/parametric_limits.md PL-86 and PL-87; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:143 |
+| Launcher maintenance kits | Pulling rope replacement kit and carriage wheel bearing replacement kit | oem_bom.md:103; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:53, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:54 |
+| Wheel bearing preheat temperature | Not stated in OEM sources | No value appears in oem_bom.md or schema/extracted/parametric_limits.md |
+| Wheel bearing relubrication interval | Not stated in OEM sources | No value appears in oem_bom.md or schema/extracted/parametric_limits.md |
 
-| LRU Designation | Subsystem Nomenclature | Modular Interface & Latching Type | Max Swap Time | Tooling Requirement | Post-Swap Verification Protocol |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **LRU-01: Core Guidance Computer** | Core Processing & Guidance Module | Ruggedized ZIF Cam-Lock Backplane | t_swap <= {{SWAP_TIME_FC_MAX_MIN}} min | Tool-less (Manual Cam Lever) | Automated Firmware Hash & PBIT |
-| **LRU-02: Battery / Energy Module** | Smart Modular Energy Pack | Polarized Keyed Blind-Mate Rail | t_swap <= {{SWAP_TIME_BATTERY_MAX_MIN}} min | Tool-less (Spring Detent Latch) | BMS Bus Handshake & SoC Telemetry |
-| **LRU-03: Primary Sensor Payload** | Multi-Modal Sensor Subsystem | Kinematic Mount with Bayonet Collar | t_swap <= {{SWAP_TIME_PAYLOAD_MAX_MIN}} min | Tool-less (Quick-Disconnect Ring) | Bus Enumeration & Boresight Check |
-| **LRU-04: Actuator / Motor Assembly** | Dynamic Actuator Module | Precision Index Dowel & Bayonet Ring | t_swap <= {{SWAP_TIME_ACTUATOR_MAX_MIN}} min | Tool-less (Positive-Stop Clamp) | Actuator Sweep & Dynamic Response |
+The PL-40 launcher set further comprises the rear, middle, and front rail modules, the carriage with four support levers, the red-handled carriage safety lock pin, the compressor unit, main tank, remote release valve, pressure gauge, power switching circuit, trigger handle, connection hose, three ground anchors, transport case, and hook options A, B, and C (oem_bom.md:82 to oem_bom.md:102). The launcher pneumatic supply is delivered at a maximum of 14 bar and the trigger handle receives 18 V DC (schema/extracted/interface_table.md at line 60, schema/extracted/interface_table.md at line 62; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:132, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:81).
 
-1. **Core Guidance Computer Module Replacement ($t_{\text{swap}} \le \tau_{\text{swap\_FC}} = {{SWAP_TIME_FC_MAX_MIN}}\text{ min}$):**
-   - **Step 1 (De-Energize & Access):** Verify system de-energization; rotate quarter-turn captive quick-release avionics bay fasteners to open access hatch.
-   - **Step 2 (Ejection):** Actuate the zero-insertion-force (ZIF) cam-lock lever to decouple the guidance computer module from the ruggedized backplane connector.
-   - **Step 3 (Insertion & Latching):** Slide the replacement guidance computer module into keyed card guide rails; depress ZIF cam-lock lever until fully seated and mechanical retention locks engage.
-   - **Step 4 (Verification):** Close avionics bay hatch; energize system; confirm automated firmware cryptographic hash match and backplane bus discovery in $t \le 60\text{ s}$.
-2. **Battery / Energy Module Replacement ($t_{\text{swap}} \le \tau_{\text{swap\_battery}} = {{SWAP_TIME_BATTERY_MAX_MIN}}\text{ min}$):**
-   - **Step 1 (Release):** Depress dual spring-loaded mechanical retention latch tabs on the energy compartment bulkhead.
-   - **Step 2 (Extraction):** Slide the depleted module along low-friction guide rails; blind-mate high-current power connector disconnects with arc-suppression.
-   - **Step 3 (Insertion):** Insert replacement smart energy module along polarized keyways until blind-mate connectors engage and spring latches click into locked detents.
-   - **Step 4 (Verification):** BMS digital bus handshakes automatically with Core Controller; verify state-of-charge ($\text{SoC} \ge 95\%$) and cell balance on terminal display.
-3. **Primary Sensor Payload Replacement ($t_{\text{swap}} \le \tau_{\text{swap\_payload}} = {{SWAP_TIME_PAYLOAD_MAX_MIN}}\text{ min}$):**
-   - **Step 1 (Unlock):** Rotate quick-disconnect mechanical payload locking collar counter-clockwise by $45^\circ$; release blind-mate high-speed data umbilical.
-   - **Step 2 (Demount):** Disengage payload chassis from kinematic mounting pins and withdraw unit.
-   - **Step 3 (Mount Replacement):** Seat replacement sensor payload onto precision kinematic locating dowels; rotate locking collar clockwise by $45^\circ$ until primary detent clicks.
-   - **Step 4 (Verification):** Re-engage blind-mate umbilical; execute automated sensor enumeration test and optical/inertial boresight calibration check via `SE-05` in $t \le 180\text{ s}$.
-4. **Actuator / Motor Assembly Replacement ($t_{\text{swap}} \le \tau_{\text{swap\_actuator}} = {{SWAP_TIME_ACTUATOR_MAX_MIN}}\text{ min}$):**
-   - **Step 1 (Interface Release):** Release quick-release mechanical clamp ring securing the actuator housing to structural mounting interface.
-   - **Step 2 (Harness Disconnect):** Disconnect hermetic circular blind-mate power and feedback harness using single-twist quick-break coupling.
-   - **Step 3 (Extraction & Insertion):** Withdraw faulted actuator module; align replacement matched actuator module with structural alignment keyway; seat into place.
-   - **Step 4 (Locking & Harness Reconnect):** Re-couple circular harness until positive click; tighten mechanical clamp ring to positive mechanical stop.
-   - **Step 5 (Verification):** Initiate automated actuator range-of-motion sweep, backlash calibration, and closed-loop step response verification via `SE-04`.
+#### 10.2.2 Battery Support Equipment
 
-### 10.2 Support Equipment (SE) Taxonomy
-The Support Equipment (SE) suite provides all electrical, mechanical, diagnostic, and calibration interfaces required for operational staging, rapid turnaround, and field sustainment (Fixes #124, #141):
+| Battery | Grounded Specification | Grounding |
+| :--- | :--- | :--- |
+| UAV Battery 12S2P Li Metal BEI | Removable 12S2P Li metal battery with retaining strap and locking connector; 36 V to 50.4 V DC main power | oem_bom.md:18; schema/extracted/parametric_limits.md PL-23 and PL-24 |
+| PL-40 Launcher Battery | Makita BL1860B 18 V Li-Ion 6000 mAh, quantity of two units; over-discharge cutoff 14.5 V; recovery 16 V after a 5 s delay | oem_bom.md:99; schema/extracted/parametric_limits.md PL-75, PL-76, PL-77, PL-78, PL-79 |
+| GCS Battery | Ground control station battery, quantity of 2 units | oem_bom.md:77; a5-user-manual-2.md:350 |
+| UAV battery charge rate and charge time | Not stated in OEM sources | No value appears in oem_bom.md or schema/extracted/parametric_limits.md |
+| UAV battery storage humidity and temperature | Not stated in OEM sources | No value appears in oem_bom.md or schema/extracted/parametric_limits.md |
 
-| SE Identifier | SE Nomenclature | Functional Purpose & Capabilities | Operating Constraints & Ratings | Public Standard Baseline |
-| :--- | :--- | :--- | :--- | :--- |
-| **SE-01** | Multi-Bay Intelligent Resource Management Hub | Simultaneously balances, conditions, and charges multiple smart resource modules at charge rate {{BATTERY_CHARGE_C_RATE}}; incorporates fire-suppressed containment chamber, thermal runaway isolation, and CAN/SMBus state-of-health logging. | Input: Multi-source 100-240 VAC / 12-28 VDC; Charge Time: {{BATTERY_CHARGE_TIME_HOURS}}h; Rating: {{INGRESS_PROTECTION_RATING}}; Operating Temp: [{{OPERATING_TEMPERATURE_MIN_C}}°C, {{OPERATING_TEMPERATURE_MAX_C}}°C] | IEC 62133-2 / UN 38.3 |
-| **SE-02** | Ruggedized Field Control Terminal | Dual-screen daylight-readable (>= {{TERMINAL_DISPLAY_LUMINANCE_NITS}} nits) field terminal executing supervisory control, telemetry display, diagnostic PBIT execution, and cryptographic mission plan injection. | Operating Temp: [{{OPERATING_TEMPERATURE_MIN_C}}°C, {{OPERATING_TEMPERATURE_MAX_C}}°C]; Battery Life: {{SUPPORT_EQUIPMENT_BATTERY_HOURS}}h; Rating: {{INGRESS_PROTECTION_RATING}}; MIL-STD-810H Shock/Vibration | MIL-STD-810H / NIST SP 800-82r3 |
-| **SE-03** | Telescoping Antenna Transceiver Mast | Deployable pneumatic/mechanical mast with multi-axis motorized tracking positioner for high-gain directional PACE communication links and mesh relay nodes. | Mast Height: {{MAST_HEIGHT_M}} m; Deployment Time: t_deploy; Disturbance Limit: v_dist_mast; Azimuth: 360 deg Continuous Span | MIL-STD-810H / IEEE Std 1558-2020 |
-| **SE-04** | Environmental Diagnostic Test Unit | Precision diagnostic pressure, temperature, and environmental sensor test unit used to verify sensor calibration, telemetry bus ports, and enclosure seal integrity. | Accuracy: +/- epsilon_diag; Operating Range: [p_min, p_max]; Portable ruggedized chassis; Battery powered | ISO/IEC 17025 / MIL-STD-810H |
-| **SE-05** | Precision Sensor Alignment Rig | Optical collimator and reference alignment fixture for zeroing payload sensor axes and optical boresights against the physical reference frame. | Angular Precision: epsilon_align (<= {{SENSOR_ALIGNMENT_TOLERANCE_MRAD}} mrad); Field-portable kinematic mounting frame | ISO/IEC 17025 §7.6 / IEEE Std 1558-2020 |
-| **SE-06** | Automated Calibration & Metrology Bench | Stationary/shelter calibration standard for dynamic actuator torque calibration, multi-axis inertial sensor turntable characterization, and RF spectrum validation. | Metrology Standard Traceability: ISO/IEC 17025; Torque Accuracy: +/- epsilon_torque; Inertial Slew Precision: epsilon_slew | ISO/IEC 17025:2017 / NIST Traceable |
+#### 10.2.3 Tools, Spares, and Maintenance Kits
 
-#### 10.2.1 ISO/IEC 17025 Support Equipment Calibration Matrix
-In accordance with ISO/IEC 17025:2017 §6.5 (Metrological Traceability) and ISO/IEC/IEEE 29148:2018 §5.2.4, all support equipment, diagnostic test boxes, torque limiters, and alignment fixtures maintain unbroken traceability to national metrological standards (Fixes #124, #141):
+- **Support Tools:** The OEM support package includes a set of tools and 30 spare attachment bolts (oem_bom.md:81; a5-user-manual-2.md:365, a5-user-manual-2.md:368). The 30 spare attachment bolts cover the M6 x 30 mm wing surface fasteners (oem_bom.md:31).
+- **Support Spare Propeller:** The OEM support package includes 2 spare propeller blades and 1 propeller assembly (oem_bom.md:80; a5-user-manual-2.md:366, a5-user-manual-2.md:367).
+- **PL-40 Maintenance Kits:** The launcher maintenance kit comprises the pulling rope replacement kit and the carriage wheel bearing replacement kit (oem_bom.md:103; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:53, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:54).
+- **Calibrated torque values for airframe fasteners:** Not stated in OEM sources.
+- **ESD wrist strap, connector pin extraction tools, lens cleaning kits, and diagnostic bus analyzers:** Not stated in OEM sources; the only grounded ESD item is the yellow-label ESD grounding point (oem_bom.md:69).
+- **GSE calibration interval and metrological traceability:** Not stated in OEM sources.
 
-| Equipment ID | Equipment Nomenclature | Parameter / Physical Quantity Measured | Calibration Interval | Reference Standards Baseline | Allowable Tolerance Limits | Recalibration Triggers |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **SE-01** | Multi-Bay Resource Management Hub | Voltage, Current, Temperature, Balancing Delta | 12 Months | NIST Traceable Multi-Meter / ISO/IEC 17025 Cal Standard | Delta_V <= +/- 0.01 V; Delta_I <= +/- 0.05 A; Delta_T <= +/- 1.0 degC | Cell over-voltage anomaly, charger firmware update, or annual expiration |
-| **SE-02** | Ruggedized Field Control Terminal | Clock Synchronization, RF Power, Display Luminance | 12 Months | UTC (NIST) Time Standard / IEEE Std 1588 PTP / IEEE 802.3 | Time Skew Delta_t <= 1.0 ms; RF Output Power <= +/- 0.5 dBm | RTC battery replacement, system OS re-image, or time drift alarm |
-| **SE-03** | Antenna Transceiver Mast & Tracker | Azimuth/Elevation Pointing Angle, Slew Rate | 6 Months | Optical Theodolite / Calibrated Digital Inclinometer | Angular Error Delta_theta <= 0.1 deg; Slew Rate Error <= 2.0% | Mast physical drop/shock, motor gear backlash alert, or semi-annual schedule |
-| **SE-04** | Environmental Diagnostic Test Unit | Pressure, Temperature, Flow Rate, Seal Leak Rate | 6 Months | Deadweight Tester / Primary Temperature & Pressure Standard | Delta_p <= +/- 0.1 hPa; Delta_T <= +/- 0.2 degC; Leak Rate <= 0.01 sccm | Pressure transducer zero drift > limit, physical shock, or semi-annual schedule |
-| **SE-05** | Precision Sensor Alignment Rig | Optical Collimation Angle, Kinematic Pin Alignment | 12 Months | NIST Optical Autocollimator / Granite Master Surface | Optical Alignment Delta_phi <= 0.05 mrad; Pin Orthogonality <= 0.01 mm | Physical drop/shock > 5g, fixture frame deformation, or annual schedule |
-| **SE-06** | Automated Calibration & Metrology Bench | Torque, Inertial Angular Rate, Acceleration Scale Factor | 12 Months | Primary National Metrology Standards / ISO/IEC 17025 Lab | Torque Delta_tau <= +/- 0.1% FS; Rate Error <= 0.01 deg/s | Load cell zero-offset breach, annual lab audit, or hardware component replacement |
-| **FTK-01** | Digital Torque Limiter Suite | Mechanical Fastener Torque (tau_torque) | 6 Months | ISO 6789-1:2017 / NIST Torque Standard | Delta_tau <= +/- 4.0% of setting | Mechanical drop, torque overload trip > 120% FS, or semi-annual cycle |
+### 10.3 Sustainment Constraints
 
-1. **Metrological Traceability Invariant:** Every calibration measurement must trace to an unbroken chain of comparisons back to National Metrology Institutes (e.g., NIST, PTB, NPL) with documented measurement uncertainties per ISO/IEC 17025:2017 §6.5.
-2. **Tamper-Evident Certification Labeling:** Calibrated GSE units display physical tamper-evident inspection seals recording: Calibration Date, Calibration Certificate Number, Calibration Expiration Date, and Certifying Laboratory ID.
-3. **Out-of-Tolerance Quarantine Protocol:** Any Support Equipment item exceeding allowable tolerance limits, sustaining physical impact shock, or with expired certification is immediately tagged with a physical lockout tag ("QUARANTINED - DO NOT USE") and isolated from operational service.
+- **Mass and payload limits:** The maximum take-off weight is 17 kg, the warhead mass is 5 kg, and the maximum launched plane mass is 30 kg (schema/extracted/parametric_limits.md PL-12, PL-13, PL-64; a5-user-manual-2.md:299, avenger-5-spec-sheet-rev3.md:133, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:718).
+- **Launch pressure limits:** The catapult launch pressure is 13 bar to 14 bar, the maximum compressor working pressure is 14 bar, and the auxiliary filling pressure is 16 bar (schema/extracted/parametric_limits.md PL-40, PL-41, PL-67, PL-68; a5-user-manual-2.md:1329, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:132, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:133).
+- **Thermal limits:** The PL-40 launcher operating temperature is -20 C to +50 C, and the PL-40 battery charging temperature is 10 C to 40 C (schema/extracted/parametric_limits.md PL-73, PL-74, PL-91, PL-92; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:723, uav_launcher_pl_40_sysml_v2_ingestion_manual.md:137). The air vehicle storage and operating temperature limits are Not stated in OEM sources.
+- **C2 link constraint:** The GCS-to-UAV telemetry and command link operates in the 4.4 GHz to 5.0 GHz band, and the ground radio output setting is 2 W (schema/extracted/interface_table.md at line 63; schema/extracted/parametric_limits.md PL-39; a5-user-manual-2.md:1273, a5-user-manual-2.md:1690).
+- **ESAD handling constraints:** The ESAD is Critical (DAL-A); its umbilical continuity is 0 Ohm to 0.5 Ohm at 20 mA, its arm enable uses a 1 ms period at 50 percent duty, its RS-485 link runs at 115200 bps with a 100 Hz command interval, and its high-voltage measurement range is 0 V to 1800 V (oem_bom.md:52; schema/extracted/parametric_limits.md PL-49, PL-50, PL-54, PL-55, PL-56, PL-57, PL-60); its arm enable levels are specified in VDC as 0 VDC to 0.7 VDC low and 2.5 VDC to 3.3 VDC high (schema/extracted/parametric_limits.md PL-51, PL-52, PL-53).
+- **Ruddervator and wing servo constraints:** The Ruddervator uses four servos on the first CAN bus and the wings use four servos on the second CAN bus, for eight servos in total; all servo power is supplied by the 8 V DC rail (schema/extracted/parametric_limits.md PL-14, PL-16, PL-17, PL-18, PL-22; oem_bom.md:23, oem_bom.md:28).
+- **Parachute exclusion:** The parachute deployment module is a non-mission configuration with baseline false and imposes no sustainment constraint on the mission baseline (oem_bom.md:47).
+- **Spares constraint:** Sustained operations depend on the 30 spare attachment bolts, 2 spare propeller blades, and 1 propeller assembly listed in the OEM support package (oem_bom.md:80, oem_bom.md:81; a5-user-manual-2.md:365, a5-user-manual-2.md:366, a5-user-manual-2.md:367, a5-user-manual-2.md:368).
+- **Maintenance interval ceiling:** The only OEM-stated recurring maintenance interval is the PL-40 pulling rope replacement at most every 100 launches; all other recurring intervals are Not stated in OEM sources (schema/extracted/parametric_limits.md PL-80; uav_launcher_pl_40_sysml_v2_ingestion_manual.md:138).
 
-### 10.3 Calibration Fixtures & Sensor Alignment Rigs
-- **Multi-Axis Inertial Calibration Fixture:** Used during I-Level calibration to verify gyroscopic scale factors, accelerometer bias drift, and thermal compensation polynomials over $[T_{\text{op\_min}}, T_{\text{op\_max}}]$.
-- **Magnetic & Heading Calibration Base:** Non-magnetic designated field fixture utilized to calibrate soft-iron and hard-iron magnetometer compensation vectors.
-- **Optical & Payload Boresight Target Board:** Precision retro-reflective collimator array positioned at standardized optical distance $d_{\mathrm{boresight}}$ to verify angular alignment between primary sensor boresights and vehicle reference frame.
+## Source References
 
-### 10.4 Ruggedized Transit Cases & Environmental Storage
-- All system elements are enclosed in high-impact transit cases with pressure equalization valves and custom closed-cell foam inserts.
-- Built-in humidity indicator cards and desiccant ports ensure relative humidity inside storage containers remains below $\text{RH}_{\text{storage\_max}}$ during transport.
-- Cases incorporate shock-attenuating elastomeric corner bumpers certified to MIL-STD-810H Method 516.8 (Transit Drop).
-
-### 10.5 Field Maintenance Tooling & Spares Provisioning
-- **Standard Field Tool Kit (FTK-01):** Includes calibrated digital torque limiters ($\tau_{\mathrm{min}}$ to $\tau_{\mathrm{max}}$), ESD-grounding wrist straps, connector pin extraction tools, optical lens cleaning kits, and diagnostic bus analyzer dongles.
-- **Authorized Field Spares Kit (FSK-01):** Pre-packaged spares allocation supporting the operational endurance window $t_{\text{spares\_endurance}}$ of autonomous operations (includes matched mechanical components, motor sets, sensor probes, replacement seals, and spare fasteners).
-- **Consumable Management:** Hermetically sealed replacement O-rings, desiccant cartridges, conformal seal grease, and fastener sets packaged in serialized tamper-evident bags with expiration date tracking.
+Source citations: schema/extracted/oem_bom.md at line 9; schema/extracted/parametric_limits.md at line 7; schema/extracted/interface_table.md at line 9; docs/research/RESEARCH_INVENTORY.md at line 16; .pipeline/schema.sysml; ISO/IEC/IEEE 29148:2018 Section 6.4.2; JARUS SORA v2.5 Annex E Section E.11
